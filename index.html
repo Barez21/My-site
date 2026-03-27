@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>b-place.org</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080810;
+      --bg-card: #0f0f1a;
+      --bg-card-hover: #141425;
+      --border: rgba(255,255,255,0.07);
+      --border-hover: rgba(255,255,255,0.16);
+      --text: #e8e8f0;
+      --muted: #7070a0;
+      --dimmed: #3a3a5a;
+
+      --teal: #00d4aa;
+      --teal-dim: rgba(0,212,170,0.08);
+      --teal-mid: rgba(0,212,170,0.18);
+
+      --violet: #a78bfa;
+      --violet-dim: rgba(167,139,250,0.08);
+      --violet-mid: rgba(167,139,250,0.18);
+
+      --amber: #fb923c;
+      --amber-dim: rgba(251,146,60,0.08);
+      --amber-mid: rgba(251,146,60,0.18);
+
+      --rose: #f472b6;
+      --rose-dim: rgba(244,114,182,0.08);
+      --rose-mid: rgba(244,114,182,0.18);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Subtle dot grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.035) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Ambient glow blobs */
+    .glow-1, .glow-2, .glow-3 {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.18;
+    }
+    .glow-1 { width: 600px; height: 600px; background: var(--teal); top: -200px; right: -100px; }
+    .glow-2 { width: 500px; height: 500px; background: var(--violet); bottom: 20%; left: -150px; }
+    .glow-3 { width: 400px; height: 400px; background: var(--rose); bottom: -100px; right: 10%; }
+
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 2rem 6rem;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 7rem 0 5rem;
+    }
+
+    .hero-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 1.4rem;
+    }
+
+    .hero-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(3rem, 8vw, 6.5rem);
+      font-weight: 800;
+      line-height: 0.92;
+      letter-spacing: -0.03em;
+      color: #fff;
+      margin-bottom: 1.8rem;
+    }
+
+    .hero-title span {
+      background: linear-gradient(135deg, var(--teal) 0%, var(--violet) 60%, var(--rose) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-desc {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 480px;
+      font-weight: 300;
+    }
+
+    /* ── SECTION ── */
+    .section {
+      margin-top: 4.5rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 1.4rem;
+    }
+
+    .section-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── CARDS GRID ── */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 12px;
+    }
+
+    .card {
+      display: block;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.4rem 1.5rem;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s, background 0.2s, transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    .card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+    }
+
+    .card:hover::before { opacity: 1; }
+
+    /* Section-specific card accents */
+    .s-tools .card::before    { background: var(--teal-dim); }
+    .s-edu .card::before      { background: var(--violet-dim); }
+    .s-games .card::before    { background: var(--amber-dim); }
+    .s-art .card::before      { background: var(--rose-dim); }
+
+    .s-tools .card:hover      { border-color: rgba(0,212,170,0.28); }
+    .s-edu .card:hover        { border-color: rgba(167,139,250,0.28); }
+    .s-games .card:hover      { border-color: rgba(251,146,60,0.28); }
+    .s-art .card:hover        { border-color: rgba(244,114,182,0.28); }
+
+    .s-tools .section-dot     { background: var(--teal); box-shadow: 0 0 10px var(--teal); }
+    .s-edu .section-dot       { background: var(--violet); box-shadow: 0 0 10px var(--violet); }
+    .s-games .section-dot     { background: var(--amber); box-shadow: 0 0 10px var(--amber); }
+    .s-art .section-dot       { background: var(--rose); box-shadow: 0 0 10px var(--rose); }
+
+    .card-icon {
+      font-size: 22px;
+      margin-bottom: 0.85rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 0.3rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 300;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-tag {
+      display: inline-block;
+      margin-top: 0.8rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      padding: 3px 8px;
+      border-radius: 99px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .s-tools .card-tag  { background: var(--teal-mid); color: var(--teal); }
+    .s-edu .card-tag    { background: var(--violet-mid); color: var(--violet); }
+    .s-games .card-tag  { background: var(--amber-mid); color: var(--amber); }
+    .s-art .card-tag    { background: var(--rose-mid); color: var(--rose); }
+
+    /* "soon" badge */
+    .card.soon {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 3rem 2rem 2rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--dimmed);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .hero { padding: 5rem 0 3rem; }
+      .cards { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 400px) {
+      .cards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="glow-1"></div>
+  <div class="glow-2"></div>
+  <div class="glow-3"></div>
+
+  <main>
+
+    <!-- HERO -->
+    <header class="hero">
+      <p class="hero-eyebrow">Osobní rozcestník &mdash; b-place.org</p>
+      <h1 class="hero-title"><span>b&#8202;-&#8202;place</span></h1>
+      <p class="hero-desc">Nástroje, projekty, hry a umění na jednom místě.</p>
+    </header>
+
+    <!-- NÁSTROJE -->
+    <section class="section s-tools">
+      <div class="section-header">
+        <span class="section-dot"></span>
+        <span class="section-title">Nástroje</span>
+        <span class="section-line"></span>
+      </div>
+      <div class="cards">
+
+        <a href="/wikiscraper/" class="card">
+          <div class="card-icon">🔍</div>
+          <div class="card-name">WikiScraper</div>
+          <div class="card-desc">Stahování a analýza dat z Wikipedie.</div>
+          <span class="card-tag">python · gui</span>
+        </a>
+
+        <a href="/energytracker/" class="card">
+          <div class="card-icon">⚡</div>
+          <div class="card-name">EnergyTracker</div>
+          <div class="card-desc">Sledování spotřeby elektřiny a plynu.</div>
+          <span class="card-tag">energie · grafy</span>
+        </a>
+
+        <a href="/electricity-prices/" class="card">
+          <div class="card-icon">📈</div>
+          <div class="card-name">Ceny elektřiny</div>
+          <div class="card-desc">Vývoj cen elektřiny na trhu v reálném čase.</div>
+          <span class="card-tag">trh · data</span>
+        </a>
+
+        <!-- Placeholder pro další nástroje -->
+        <a href="#" class="card soon">
+          <div class="card-icon">🛠</div>
+          <div class="card-name">Brzy</div>
+          <div class="card-desc">Další nástroje v přípravě.</div>
+          <span class="card-tag">soon</span>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- VZDĚLÁVÁNÍ -->
+    <section class="section s-edu">
+      <div class="section-header">
+        <span class="section-dot"></span>
+        <span class="section-title">Vzdělávání</span>
+        <span class="section-line"></span>
+      </div>
+      <div class="cards">
+
+        <a href="/periodic-table/" class="card">
+          <div class="card-icon">🧪</div>
+          <div class="card-name">Periodická tabulka</div>
+          <div class="card-desc">Interaktivní průvodce prvky a jejich vlastnostmi.</div>
+          <span class="card-tag">chemie · interaktivní</span>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- HRY -->
+    <section class="section s-games">
+      <div class="section-header">
+        <span class="section-dot"></span>
+        <span class="section-title">Hry</span>
+        <span class="section-line"></span>
+      </div>
+      <div class="cards">
+
+        <a href="/ripples/" class="card">
+          <div class="card-icon">🌊</div>
+          <div class="card-name">Ripples</div>
+          <div class="card-desc">Relaxační hra plná vln a reakcí.</div>
+          <span class="card-tag">originální hra</span>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- MOJE UMĚNÍ -->
+    <section class="section s-art">
+      <div class="section-header">
+        <span class="section-dot"></span>
+        <span class="section-title">Moje umění</span>
+        <span class="section-line"></span>
+      </div>
+      <div class="cards">
+
+        <a href="/music/" class="card">
+          <div class="card-icon">🎵</div>
+          <div class="card-name">Hudba</div>
+          <div class="card-desc">Autorské skladby a nahrávky.</div>
+          <span class="card-tag">audio · tvorba</span>
+        </a>
+
+        <a href="/lyrics/" class="card">
+          <div class="card-icon">✍️</div>
+          <div class="card-name">Texty</div>
+          <div class="card-desc">Psané texty, slova, příběhy za hudbou.</div>
+          <span class="card-tag">texty · literatura</span>
+        </a>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    &copy; <span id="yr"></span> &nbsp;b-place.org
+  </footer>
+
+  <script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>
