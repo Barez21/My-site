@@ -331,12 +331,18 @@
     }
 
     /* ── POEM READER ── */
-    .poem-reader {
-      max-width: 620px;
-    }
 
-    .poem-header {
-      margin-bottom: 3rem;
+    /* Sem dosaď svůj font až bude hotový — stačí změnit tuto jednu proměnnou */
+    :root { --poem-font: 'Lora', Georgia, serif; }
+
+    .poem-reader { max-width: 680px; }
+
+    /* Meta nad papírem */
+    .poem-meta-above {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1.8rem;
     }
 
     .poem-collection-label {
@@ -345,7 +351,6 @@
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--rose);
-      margin-bottom: 0.8rem;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -359,42 +364,60 @@
       background: var(--rose);
     }
 
+    /* ── PAPÍR ── */
+    .poem-paper {
+      background: #f5f0e8;
+      border-radius: 3px;
+      padding: 4rem 3.5rem 5rem;
+      text-align: center;
+      position: relative;
+      box-shadow:
+        0 1px 1px rgba(0,0,0,0.15),
+        0 4px 8px rgba(0,0,0,0.2),
+        0 16px 40px rgba(0,0,0,0.35),
+        0 32px 80px rgba(0,0,0,0.25);
+    }
+
+    /* Přehyb rohu */
+    .poem-paper::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 0; height: 0;
+      border-style: solid;
+      border-width: 0 28px 28px 0;
+      border-color: transparent #d4cfc6 transparent transparent;
+      border-radius: 0 3px 0 0;
+    }
+
     .poem-title-h {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(1.8rem, 4vw, 3rem);
-      font-weight: 800;
-      color: #fff;
-      line-height: 1.05;
-      letter-spacing: -0.02em;
-      margin-bottom: 1.2rem;
+      font-family: var(--poem-font);
+      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+      font-weight: 700;
+      color: #2a1f14;
+      line-height: 1.2;
+      font-style: italic;
+      margin-bottom: 0.5rem;
     }
 
     .poem-divider {
-      width: 48px;
-      height: 2px;
-      background: linear-gradient(90deg, var(--rose), var(--violet));
-      border-radius: 2px;
+      width: 36px;
+      height: 1px;
+      background: #b0a898;
+      margin: 1.4rem auto 2rem;
     }
 
     .poem-body {
-      font-family: 'Lora', serif;
+      font-family: var(--poem-font);
       font-size: 17px;
-      line-height: 1.95;
-      color: #d0d0e8;
-      white-space: pre-wrap;
+      line-height: 2;
+      color: #2a1f14;
       font-weight: 400;
     }
 
-    .poem-body em {
-      font-style: italic;
-      color: var(--muted);
-    }
+    .poem-body em { font-style: italic; color: #6b5c4a; }
 
-    /* stanza break: blank lines become spacer */
-    .stanza-break {
-      display: block;
-      height: 1.4em;
-    }
+    .stanza-break { display: block; height: 1.2em; }
 
     /* ── LOADING / ERROR states ── */
     .state-box {
@@ -649,12 +672,14 @@
 
           const bodyHtml = formatPoem(raw);
           document.getElementById('poem-reader').innerHTML = `
-            <div class="poem-header fade-in">
+            <div class="poem-meta-above fade-in">
               <div class="poem-collection-label">${escHtml(collectionName)}</div>
+            </div>
+            <div class="poem-paper fade-in" style="animation-delay:0.1s">
               <h2 class="poem-title-h">${escHtml(title)}</h2>
               <div class="poem-divider"></div>
+              <div class="poem-body">${bodyHtml}</div>
             </div>
-            <div class="poem-body fade-in" style="animation-delay:0.12s">${bodyHtml}</div>
           `;
         })
         .catch(err => {
