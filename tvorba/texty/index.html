@@ -366,28 +366,71 @@
 
     /* ── PAPÍR ── */
     .poem-paper {
-      background: #f5f0e8;
-      border-radius: 3px;
-      padding: 4rem 3.5rem 5rem;
+      background: #f4ede0;
+      border-radius: 2px 2px 2px 2px;
+      padding: 4.5rem 4rem 5.5rem;
       text-align: center;
       position: relative;
+      isolation: isolate;
+
+      /* Realistické stíny — více vrstev */
       box-shadow:
-        0 1px 1px rgba(0,0,0,0.15),
-        0 4px 8px rgba(0,0,0,0.2),
-        0 16px 40px rgba(0,0,0,0.35),
-        0 32px 80px rgba(0,0,0,0.25);
+        0 1px 0px rgba(0,0,0,0.08),
+        0 2px 4px rgba(0,0,0,0.10),
+        0 8px 20px rgba(0,0,0,0.18),
+        0 20px 50px rgba(0,0,0,0.22),
+        0 40px 100px rgba(0,0,0,0.18),
+        inset 0 0 0 1px rgba(0,0,0,0.04);
+    }
+
+    /* Textura — grain přes celý papír */
+    .poem-paper::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.045;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='512' height='512' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 220px 220px;
+      mix-blend-mode: multiply;
+    }
+
+    /* Gradient — mírné ztmavení okrajů (vignette) */
+    .poem-paper::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      z-index: 2;
+      background: radial-gradient(
+        ellipse at center,
+        transparent 60%,
+        rgba(180,160,130,0.12) 100%
+      );
     }
 
     /* Přehyb rohu */
-    .poem-paper::before {
-      content: '';
+    .poem-paper .paper-corner {
       position: absolute;
       top: 0; right: 0;
       width: 0; height: 0;
       border-style: solid;
-      border-width: 0 28px 28px 0;
-      border-color: transparent #d4cfc6 transparent transparent;
-      border-radius: 0 3px 0 0;
+      border-width: 0 32px 32px 0;
+      border-color: transparent #c8bfaf transparent transparent;
+      border-radius: 0 2px 0 0;
+      z-index: 3;
+    }
+
+    /* Vše uvnitř papíru musí být nad pseudo-elementy */
+    .poem-paper > * { position: relative; z-index: 4; }
+
+    /* Levý okraj — jemné světlo */
+    .poem-paper {
+      border-left: 1px solid rgba(255,255,255,0.6);
+      border-top: 1px solid rgba(255,255,255,0.5);
     }
 
     .poem-title-h {
@@ -413,6 +456,7 @@
       line-height: 2;
       color: #2a1f14;
       font-weight: 400;
+      font-feature-settings: 'rand' 1;
     }
 
     .poem-body em { font-style: italic; color: #6b5c4a; }
@@ -676,6 +720,7 @@
               <div class="poem-collection-label">${escHtml(collectionName)}</div>
             </div>
             <div class="poem-paper fade-in" style="animation-delay:0.1s">
+              <div class="paper-corner"></div>
               <h2 class="poem-title-h">${escHtml(title)}</h2>
               <div class="poem-divider"></div>
               <div class="poem-body">${bodyHtml}</div>
