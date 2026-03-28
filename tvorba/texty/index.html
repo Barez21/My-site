@@ -4,11 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Texty — b-place.org</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    @font-face {
+      font-family: 'TomasRand';
+      src: url('/res/fonts/tomas_rand.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
 
     :root {
       --bg: #080810;
@@ -40,7 +44,7 @@
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'DM Sans', sans-serif;
+      font-family: 'TomasRand', serif;
       font-size: 15px;
       line-height: 1.6;
       min-height: 100vh;
@@ -88,7 +92,7 @@
       padding: 1.6rem 2rem;
       max-width: 900px;
       margin: 0 auto;
-      font-family: 'DM Mono', monospace;
+      font-family: 'TomasRand', serif;
       font-size: 11px;
       letter-spacing: 0.1em;
       color: var(--dimmed);
@@ -113,7 +117,7 @@
     }
 
     .hero-eyebrow {
-      font-family: 'DM Mono', monospace;
+      font-family: 'TomasRand', serif;
       font-size: 11px;
       letter-spacing: 0.18em;
       color: var(--muted);
@@ -122,7 +126,7 @@
     }
 
     .hero-title {
-      font-family: 'Syne', sans-serif;
+      font-family: 'TomasRand', serif;
       font-size: clamp(2.4rem, 6vw, 4.5rem);
       font-weight: 800;
       line-height: 0.95;
@@ -162,7 +166,7 @@
     }
 
     .section-title {
-      font-family: 'Syne', sans-serif;
+      font-family: 'TomasRand', serif;
       font-size: 11px;
       font-weight: 600;
       letter-spacing: 0.2em;
@@ -222,7 +226,7 @@
     }
 
     .card-name {
-      font-family: 'Syne', sans-serif;
+      font-family: 'TomasRand', serif;
       font-size: 15px;
       font-weight: 700;
       color: #fff;
@@ -242,7 +246,7 @@
     .card-tag {
       display: inline-block;
       margin-top: 0.8rem;
-      font-family: 'DM Mono', monospace;
+      font-family: 'TomasRand', serif;
       font-size: 10px;
       letter-spacing: 0.08em;
       padding: 3px 8px;
@@ -258,7 +262,7 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      font-family: 'DM Mono', monospace;
+      font-family: 'TomasRand', serif;
       font-size: 11px;
       letter-spacing: 0.1em;
       color: var(--muted);
@@ -305,7 +309,7 @@
     }
 
     .poem-num {
-      font-family: 'DM Mono', monospace;
+      font-family: 'TomasRand', serif;
       font-size: 11px;
       color: var(--dimmed);
       width: 22px;
@@ -314,7 +318,7 @@
     }
 
     .poem-title-text {
-      font-family: 'Syne', sans-serif;
+      font-family: 'TomasRand', serif;
       font-size: 15px;
       font-weight: 600;
       color: var(--text);
@@ -333,7 +337,7 @@
     /* ── POEM READER ── */
 
     /* Sem dosaď svůj font až bude hotový — stačí změnit tuto jednu proměnnou */
-    :root { --poem-font: 'Lora', Georgia, serif; }
+    :root { --poem-font: 'TomasRand', serif; }
 
     .poem-reader { max-width: 680px; }
 
@@ -346,7 +350,7 @@
     }
 
     .poem-collection-label {
-      font-family: 'DM Mono', monospace;
+      font-family: 'TomasRand', serif;
       font-size: 10px;
       letter-spacing: 0.15em;
       text-transform: uppercase;
@@ -481,7 +485,7 @@
     }
 
     .state-label {
-      font-family: 'DM Mono', monospace;
+      font-family: 'TomasRand', serif;
       font-size: 12px;
       letter-spacing: 0.1em;
     }
@@ -501,7 +505,7 @@
       z-index: 1;
       text-align: center;
       padding: 3rem 2rem 2rem;
-      font-family: 'DM Mono', monospace;
+      font-family: 'TomasRand', serif;
       font-size: 11px;
       letter-spacing: 0.1em;
       color: var(--dimmed);
