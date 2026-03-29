@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Texty — b-place.org</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+
+    :root {
+      --bg: #080810;
+      --bg-card: #0f0f1a;
+      --bg-card-hover: #141425;
+      --border: rgba(255,255,255,0.07);
+      --border-hover: rgba(255,255,255,0.16);
+      --text: #e8e8f0;
+      --muted: #7070a0;
+      --dimmed: #3a3a5a;
+
+      --teal: #00d4aa;
+      --teal-dim: rgba(0,212,170,0.08);
+
+      --violet: #a78bfa;
+      --violet-dim: rgba(167,139,250,0.08);
+      --violet-mid: rgba(167,139,250,0.18);
+
+      --amber: #fb923c;
+      --amber-dim: rgba(251,146,60,0.08);
+
+      --rose: #f472b6;
+      --rose-dim: rgba(244,114,182,0.08);
+      --rose-mid: rgba(244,114,182,0.18);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.035) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .glow-1, .glow-2, .glow-3 {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.15;
+    }
+    .glow-1 { width: 500px; height: 500px; background: var(--rose);   top: -150px; right: -80px; }
+    .glow-2 { width: 400px; height: 400px; background: var(--violet); bottom: 30%; left: -120px; }
+    .glow-3 { width: 350px; height: 350px; background: var(--teal);   bottom: -80px; right: 15%; }
+
+    /* ── LAYOUT ── */
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem 6rem;
+    }
+
+    /* ── NAV / BREADCRUMB ── */
+    .topnav {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 1.6rem 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--dimmed);
+    }
+
+    .topnav a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .topnav a:hover { color: var(--text); }
+
+    .breadcrumb-sep { color: var(--dimmed); }
+
+    .breadcrumb-current {
+      color: var(--rose);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 3.5rem 0 3rem;
+    }
+
+    .hero-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.4rem, 6vw, 4.5rem);
+      font-weight: 800;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+
+    .hero-title span {
+      background: linear-gradient(135deg, var(--rose) 0%, var(--violet) 70%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-desc {
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 300;
+      max-width: 400px;
+    }
+
+    /* ── SECTION HEADER ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 1.4rem;
+    }
+
+    .section-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--rose);
+      box-shadow: 0 0 10px var(--rose);
+      flex-shrink: 0;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── COLLECTION CARDS ── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .collection-card {
+      display: block;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.4rem 1.5rem;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s, transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .collection-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--rose-dim);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    .collection-card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(244,114,182,0.3);
+      transform: translateY(-2px);
+    }
+
+    .collection-card:hover::before { opacity: 1; }
+
+    .card-icon {
+      font-size: 24px;
+      margin-bottom: 0.85rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-name {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.3rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-meta {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 300;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-tag {
+      display: inline-block;
+      margin-top: 0.8rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      padding: 3px 8px;
+      border-radius: 99px;
+      background: var(--rose-mid);
+      color: var(--rose);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── POEM LIST ── */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 14px;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+      margin-bottom: 2.5rem;
+    }
+    .back-btn:hover { color: var(--text); border-color: var(--border-hover); }
+
+    .poem-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .poem-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem 1.4rem;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s, transform 0.15s;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .poem-item:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(244,114,182,0.25);
+      transform: translateX(4px);
+    }
+
+    .poem-item-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .poem-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--dimmed);
+      width: 22px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .poem-title-text {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .poem-arrow {
+      color: var(--dimmed);
+      font-size: 14px;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .poem-item:hover .poem-arrow {
+      color: var(--rose);
+      transform: translateX(3px);
+    }
+
+    /* ── POEM READER ── */
+
+    /* Sem dosaď svůj font až bude hotový — stačí změnit tuto jednu proměnnou */
+    :root { --poem-font: 'Lora', Georgia, serif; }
+
+    .poem-reader { max-width: 680px; }
+
+    /* Meta nad papírem */
+    .poem-meta-above {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1.8rem;
+    }
+
+    .poem-collection-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--rose);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .poem-collection-label::before {
+      content: '';
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--rose);
+    }
+
+    /* ── PAPÍR ── */
+    .poem-paper {
+      background: #f4ede0;
+      border-radius: 2px 2px 2px 2px;
+      padding: 4.5rem 4rem 5.5rem;
+      text-align: center;
+      position: relative;
+      isolation: isolate;
+
+      /* Realistické stíny — více vrstev */
+      box-shadow:
+        0 1px 0px rgba(0,0,0,0.08),
+        0 2px 4px rgba(0,0,0,0.10),
+        0 8px 20px rgba(0,0,0,0.18),
+        0 20px 50px rgba(0,0,0,0.22),
+        0 40px 100px rgba(0,0,0,0.18),
+        inset 0 0 0 1px rgba(0,0,0,0.04);
+    }
+
+    /* Textura — grain přes celý papír */
+    .poem-paper::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.045;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='512' height='512' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 220px 220px;
+      mix-blend-mode: multiply;
+    }
+
+    /* Gradient — mírné ztmavení okrajů (vignette) */
+    .poem-paper::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      z-index: 2;
+      background: radial-gradient(
+        ellipse at center,
+        transparent 60%,
+        rgba(180,160,130,0.12) 100%
+      );
+    }
+
+    /* Přehyb rohu */
+    .poem-paper .paper-corner {
+      position: absolute;
+      top: 0; right: 0;
+      width: 0; height: 0;
+      border-style: solid;
+      border-width: 0 32px 32px 0;
+      border-color: transparent #c8bfaf transparent transparent;
+      border-radius: 0 2px 0 0;
+      z-index: 3;
+    }
+
+    /* Vše uvnitř papíru musí být nad pseudo-elementy */
+    .poem-paper > * { position: relative; z-index: 4; }
+
+    /* Levý okraj — jemné světlo */
+    .poem-paper {
+      border-left: 1px solid rgba(255,255,255,0.6);
+      border-top: 1px solid rgba(255,255,255,0.5);
+    }
+
+    .poem-title-h {
+      font-family: var(--poem-font);
+      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+      font-weight: 700;
+      color: #2a1f14;
+      line-height: 1.2;
+      font-style: italic;
+      margin-bottom: 0.5rem;
+    }
+
+    .poem-divider {
+      width: 36px;
+      height: 1px;
+      background: #b0a898;
+      margin: 1.4rem auto 2rem;
+    }
+
+    .poem-body {
+      font-family: var(--poem-font);
+      font-size: 17px;
+      line-height: 2;
+      color: #2a1f14;
+      font-weight: 400;
+      font-feature-settings: 'rand' 1;
+    }
+
+    .poem-body em { font-style: italic; color: #6b5c4a; }
+
+    .stanza-break { display: block; height: 1.2em; }
+
+    /* ── LOADING / ERROR states ── */
+    .state-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      padding: 4rem 2rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .state-icon {
+      font-size: 2.5rem;
+      opacity: 0.5;
+    }
+
+    .state-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+    }
+
+    .spinner {
+      width: 32px; height: 32px;
+      border: 2px solid var(--border);
+      border-top-color: var(--rose);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 3rem 2rem 2rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--dimmed);
+    }
+
+    /* ── FADE ANIM ── */
+    .fade-in {
+      animation: fadeIn 0.35s ease both;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .hero { padding: 2rem 0 2rem; }
+      .cards-grid { grid-template-columns: 1fr 1fr; }
+      .poem-body { font-size: 15px; }
+    }
+    @media (max-width: 380px) {
+      .cards-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="glow-1"></div>
+  <div class="glow-2"></div>
+  <div class="glow-3"></div>
+
+  <nav class="topnav" id="breadcrumb">
+    <a href="/">b-place</a>
+    <span class="breadcrumb-sep">›</span>
+    <span class="breadcrumb-current">texty</span>
+  </nav>
+
+  <main id="app">
+    <div class="state-box">
+      <div class="spinner"></div>
+      <span class="state-label">Načítám sbírky…</span>
+    </div>
+  </main>
+
+  <footer>
+    &copy; <span id="yr"></span> &nbsp;b-place.org
+  </footer>
+
+  <script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    // ── CONFIG ─────────────────────────────────────────────────────────────────
+    const REPO   = 'Barez21/My-site';           // GitHub owner/repo
+    const FOLDER = 'tvorba/texty/básně';          // Root folder in repo
+    const API    = `https://api.github.com/repos/${REPO}/contents/`;
+
+    // Emoji pool for collections (cycles if more than array length)
+    const ICONS = ['📖','🌿','🌙','🔥','🎭','💫','🌊','🍂','✨','🕯️'];
+
+    // ── STATE ──────────────────────────────────────────────────────────────────
+    let state = { view: 'home', collection: null, poem: null };
+
+    // ── ROUTER ─────────────────────────────────────────────────────────────────
+    function navigate(view, extra = {}) {
+      state = { view, ...extra };
+      render();
+    }
+
+    // ── API HELPERS ────────────────────────────────────────────────────────────
+    async function fetchJSON(path) {
+      const r = await fetch(API + encodeURIComponent(path).replace(/%2F/g, '/'), {
+        headers: { Accept: 'application/vnd.github+json' }
+      });
+      if (!r.ok) throw new Error(`GitHub API error: ${r.status}`);
+      return r.json();
+    }
+
+    function decodeBase64(str) {
+      // GitHub returns base64 with newlines
+      return decodeURIComponent(
+        atob(str.replace(/\s/g, ''))
+          .split('')
+          .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+          .join('')
+      );
+    }
+
+    function cleanName(filename) {
+      // Strip extension and leading numbers like "01 - " or "01."
+      return filename
+        .replace(/\.[^.]+$/, '')         // remove extension
+        .replace(/^\d+[\s.\-–—]+/, '')   // remove leading numbering
+        .trim();
+    }
+
+    // ── RENDER FUNCTIONS ───────────────────────────────────────────────────────
+
+    function renderHome() {
+      updateBreadcrumb([]);
+      const app = document.getElementById('app');
+      app.innerHTML = `
+        <header class="hero fade-in">
+          <p class="hero-eyebrow">Sbírky básní — b-place.org</p>
+          <h1 class="hero-title"><span>Texty</span></h1>
+          <p class="hero-desc">Psané texty, slova a příběhy. Vyberte si sbírku.</p>
+        </header>
+        <section class="fade-in" style="animation-delay:0.1s">
+          <div class="section-header">
+            <span class="section-dot"></span>
+            <span class="section-title">Sbírky</span>
+            <span class="section-line"></span>
+          </div>
+          <div class="cards-grid" id="collections-grid">
+            <div class="state-box"><div class="spinner"></div><span class="state-label">Načítám…</span></div>
+          </div>
+        </section>
+      `;
+
+      fetchJSON(FOLDER)
+        .then(items => {
+          const dirs = items.filter(i => i.type === 'dir');
+          const grid = document.getElementById('collections-grid');
+          if (!dirs.length) {
+            grid.innerHTML = `<div class="state-box"><span class="state-icon">📭</span><span class="state-label">Žádné sbírky zatím</span></div>`;
+            return;
+          }
+          grid.innerHTML = dirs.map((dir, idx) => `
+            <button class="collection-card" onclick="navigate('collection',{collection:'${escHtml(dir.name)}'})">
+              <div class="card-icon">${ICONS[idx % ICONS.length]}</div>
+              <div class="card-name">${escHtml(dir.name)}</div>
+              <div class="card-meta">Sbírka básní</div>
+              <span class="card-tag">sbírka</span>
+            </button>
+          `).join('');
+        })
+        .catch(err => {
+          document.getElementById('collections-grid').innerHTML =
+            `<div class="state-box"><span class="state-icon">⚠️</span><span class="state-label">${escHtml(err.message)}</span></div>`;
+        });
+    }
+
+    function renderCollection(collectionName) {
+      updateBreadcrumb([
+        { label: collectionName }
+      ]);
+      const app = document.getElementById('app');
+      app.innerHTML = `
+        <div class="fade-in" style="padding-top:2.5rem">
+          <button class="back-btn" onclick="navigate('home')">← Zpět na sbírky</button>
+          <header style="margin-bottom:2.5rem">
+            <p class="hero-eyebrow">Sbírka</p>
+            <h1 class="hero-title"><span>${escHtml(collectionName)}</span></h1>
+          </header>
+          <div class="section-header">
+            <span class="section-dot"></span>
+            <span class="section-title">Básně</span>
+            <span class="section-line"></span>
+          </div>
+          <div class="poem-list" id="poem-list">
+            <div class="state-box"><div class="spinner"></div><span class="state-label">Načítám básně…</span></div>
+          </div>
+        </div>
+      `;
+
+      fetchJSON(`${FOLDER}/${collectionName}`)
+        .then(items => {
+          const files = items.filter(i => i.type === 'file');
+          const list = document.getElementById('poem-list');
+          if (!files.length) {
+            list.innerHTML = `<div class="state-box"><span class="state-icon">📭</span><span class="state-label">Sbírka je prázdná</span></div>`;
+            return;
+          }
+          list.innerHTML = files.map((f, idx) => `
+            <button class="poem-item" onclick="navigate('poem',{collection:'${escHtml(collectionName)}',poem:'${escHtml(f.name)}',poemUrl:'${escHtml(f.url)}'})">
+              <div class="poem-item-left">
+                <span class="poem-num">${String(idx + 1).padStart(2, '0')}</span>
+                <span class="poem-title-text">${escHtml(cleanName(f.name))}</span>
+              </div>
+              <span class="poem-arrow">→</span>
+            </button>
+          `).join('');
+        })
+        .catch(err => {
+          document.getElementById('poem-list').innerHTML =
+            `<div class="state-box"><span class="state-icon">⚠️</span><span class="state-label">${escHtml(err.message)}</span></div>`;
+        });
+    }
+
+    function renderPoem(collectionName, poemFile, poemUrl) {
+      const title = cleanName(poemFile);
+      updateBreadcrumb([
+        { label: collectionName, action: () => navigate('collection', { collection: collectionName }) },
+        { label: title }
+      ]);
+      const app = document.getElementById('app');
+      app.innerHTML = `
+        <div class="fade-in" style="padding-top:2.5rem">
+          <button class="back-btn" onclick="navigate('collection',{collection:'${escHtml(collectionName)}'})">← Zpět do sbírky</button>
+          <div class="poem-reader" id="poem-reader">
+            <div class="state-box"><div class="spinner"></div><span class="state-label">Načítám báseň…</span></div>
+          </div>
+        </div>
+      `;
+
+      // Fetch file metadata (includes download_url or content)
+      fetch(poemUrl, { headers: { Accept: 'application/vnd.github+json' } })
+        .then(r => r.json())
+        .then(data => {
+          const raw = data.encoding === 'base64'
+            ? decodeBase64(data.content)
+            : data.content;
+
+          const bodyHtml = formatPoem(raw);
+          document.getElementById('poem-reader').innerHTML = `
+            <div class="poem-meta-above fade-in">
+              <div class="poem-collection-label">${escHtml(collectionName)}</div>
+            </div>
+            <div class="poem-paper fade-in" style="animation-delay:0.1s">
+              <div class="paper-corner"></div>
+              <h2 class="poem-title-h">${escHtml(title)}</h2>
+              <div class="poem-divider"></div>
+              <div class="poem-body">${bodyHtml}</div>
+            </div>
+          `;
+        })
+        .catch(err => {
+          document.getElementById('poem-reader').innerHTML =
+            `<div class="state-box"><span class="state-icon">⚠️</span><span class="state-label">${escHtml(err.message)}</span></div>`;
+        });
+    }
+
+    function formatPoem(text) {
+      // Convert raw text to HTML, preserving stanza breaks (double newlines)
+      const escaped = text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+
+      // Split into stanzas on double newlines, lines within stanzas on single newlines
+      const stanzas = escaped.split(/\n{2,}/);
+      return stanzas
+        .map(s => s.trim())
+        .filter(Boolean)
+        .map(s => `<span>${s.replace(/\n/g, '<br>')}</span>`)
+        .join('<span class="stanza-break"></span>');
+    }
+
+    // ── BREADCRUMB ─────────────────────────────────────────────────────────────
+    function updateBreadcrumb(crumbs) {
+      const nav = document.getElementById('breadcrumb');
+      let html = `<a href="/">b-place</a><span class="breadcrumb-sep">›</span><a href="/lyrics/">texty</a>`;
+      crumbs.forEach((c, i) => {
+        html += `<span class="breadcrumb-sep">›</span>`;
+        if (c.action) {
+          html += `<a href="#" onclick="event.preventDefault();(${c.action.toString()})()" class="breadcrumb-current" style="color:var(--muted)">${escHtml(c.label)}</a>`;
+        } else {
+          html += `<span class="breadcrumb-current">${escHtml(c.label)}</span>`;
+        }
+      });
+      nav.innerHTML = html;
+    }
+
+    // ── UTILS ──────────────────────────────────────────────────────────────────
+    function escHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    // ── MAIN RENDER ────────────────────────────────────────────────────────────
+    function render() {
+      const { view, collection, poem, poemUrl } = state;
+      if (view === 'home')       renderHome();
+      else if (view === 'collection') renderCollection(collection);
+      else if (view === 'poem')  renderPoem(collection, poem, poemUrl);
+    }
+
+    // ── BOOT ───────────────────────────────────────────────────────────────────
+    navigate('home');
+  </script>
+
+</body>
+</html>
