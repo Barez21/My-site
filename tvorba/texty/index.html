@@ -6,871 +6,842 @@
   <title>Texty — b-place.org</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:     #080810;
-      --text:   #e8e8f0;
-      --muted:  #7070a0;
-      --dimmed: #3a3a5a;
-      --border: rgba(255,255,255,0.07);
-      --rose:   #f472b6;
-      --violet: #a78bfa;
-      --teal:   #00d4aa;
-
-      /* Paper */
-      --paper:      #f4ede0;
-      --paper-dark: #e8dfd0;
-      --ink:        #2a1f14;
-      --ink-muted:  #7a6a58;
-
-      /* Wood shelf */
-      --wood-top:  #3d2b1a;
-      --wood-mid:  #2e1f0f;
-      --wood-edge: #1e1208;
-
+      --bg:        #080810;
+      --text:      #e8e8f0;
+      --muted:     #7070a0;
+      --dimmed:    #3a3a5a;
+      --border:    rgba(255,255,255,0.07);
+      --rose:      #f472b6;
+      --violet:    #a78bfa;
+      --paper:     #f4ede0;
+      --ink:       #2a1f14;
+      --ink-mid:   #5a4838;
+      --ink-muted: #9a8878;
       --poem-font: 'Lora', Georgia, serif;
+      /* Dimensions used for DOM measurement pagination */
+      --pg-w: 300px;
+      --pg-h: 400px;
     }
 
     html, body { height: 100%; }
-
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 15px;
-      line-height: 1.6;
-      min-height: 100vh;
-      overflow-x: hidden;
+      background: var(--bg); color: var(--text);
+      font-family: 'DM Sans', sans-serif; font-size: 15px; line-height: 1.6;
+      min-height: 100vh; overflow-x: hidden;
     }
-
     body::before {
-      content: '';
-      position: fixed; inset: 0;
+      content: ''; position: fixed; inset: 0;
       background-image: radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px);
-      background-size: 28px 28px;
-      pointer-events: none; z-index: 0;
+      background-size: 28px 28px; pointer-events: none; z-index: 0;
     }
-
-    .glow-1, .glow-2 {
-      position: fixed; border-radius: 50%;
-      filter: blur(140px); pointer-events: none; z-index: 0; opacity: 0.1;
-    }
-    .glow-1 { width: 600px; height: 600px; background: var(--rose);   top: -200px; right: -100px; }
-    .glow-2 { width: 500px; height: 500px; background: var(--violet); bottom: -100px; left: -150px; }
+    .glow { position: fixed; border-radius: 50%; filter: blur(140px); pointer-events: none; z-index: 0; opacity: 0.1; }
+    .glow-1 { width: 600px; height: 600px; background: var(--rose);   top:-200px; right:-100px; }
+    .glow-2 { width: 500px; height: 500px; background: var(--violet); bottom:-100px; left:-150px; }
 
     /* ── NAV ── */
     .topnav {
       position: relative; z-index: 10;
       display: flex; align-items: center; gap: 10px;
       padding: 1.6rem 2.5rem;
-      font-family: 'DM Mono', monospace;
-      font-size: 11px; letter-spacing: 0.1em; color: var(--dimmed);
+      font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: var(--dimmed);
     }
     .topnav a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
     .topnav a:hover { color: var(--text); }
-    .breadcrumb-sep { color: var(--dimmed); }
-    .breadcrumb-current { color: var(--rose); }
 
     /* ── HERO ── */
-    .hero {
-      position: relative; z-index: 1;
-      max-width: 900px; margin: 0 auto;
-      padding: 1rem 2.5rem 0;
-    }
-    .hero-eyebrow {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px; letter-spacing: 0.18em;
-      color: var(--muted); text-transform: uppercase; margin-bottom: 0.6rem;
-    }
-    .hero-title {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(2.4rem, 6vw, 4.5rem);
-      font-weight: 800; line-height: 0.95;
-      letter-spacing: -0.03em; color: #fff;
-    }
-    .hero-title span {
-      background: linear-gradient(135deg, var(--rose) 0%, var(--violet) 70%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
+    .hero { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 0 2.5rem; }
+    .hero-eyebrow { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: var(--muted); text-transform: uppercase; margin-bottom: 0.5rem; }
+    .hero-title { font-family: 'Syne', sans-serif; font-size: clamp(2.4rem, 6vw, 4.5rem); font-weight: 800; line-height: 0.95; letter-spacing: -0.03em; color: #fff; }
+    .hero-title span { background: linear-gradient(135deg, var(--rose) 0%, var(--violet) 70%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
 
-    /* ─────────────────────────────────────────
-       LIBRARY / BOOKSHELF VIEW
-    ───────────────────────────────────────── */
-    .library {
-      position: relative; z-index: 1;
-      max-width: 1000px; margin: 3rem auto 0;
-      padding: 0 2rem 4rem;
-    }
+    /* ════════════════════════════════════
+       BOOKSHELF
+    ════════════════════════════════════ */
+    .library { position: relative; z-index: 1; padding: 3rem 2.5rem 5rem; }
 
-    /* The shelf structure */
     .shelf {
-      position: relative;
+      max-width: 1000px; margin: 0 auto; position: relative;
       padding: 3rem 3rem 0;
-      display: flex;
-      align-items: flex-end;
-      gap: 10px;
-      min-height: 260px;
+      display: flex; align-items: flex-end; gap: 10px;
+      min-height: 280px;
     }
-
-    /* Wooden shelf board */
-    .shelf::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 28px;
-      background: linear-gradient(180deg,
-        var(--wood-top) 0%,
-        var(--wood-mid) 40%,
-        var(--wood-edge) 100%
-      );
+    .shelf::before { /* back wall */
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, #07050a, #0d0807); border-radius: 4px;
+    }
+    .shelf::after { /* board */
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 30px;
+      background: linear-gradient(180deg, #3d2b1a 0%, #2e1f0f 40%, #1e1208 100%);
       border-radius: 3px 3px 0 0;
-      box-shadow:
-        0 4px 20px rgba(0,0,0,0.6),
-        inset 0 1px 0 rgba(255,255,255,0.08),
-        inset 0 -1px 0 rgba(0,0,0,0.4);
+      box-shadow: 0 6px 28px rgba(0,0,0,0.75), inset 0 1px 0 rgba(255,255,255,0.08);
     }
 
-    /* Shelf back wall */
-    .shelf::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, #0a0808 0%, #120c06 100%);
-      border-radius: 4px;
-    }
-
-    /* ── BOOK ── */
     .book-wrap {
-      position: relative;
-      z-index: 2;
-      flex-shrink: 0;
-      cursor: pointer;
-      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative; z-index: 2; flex-shrink: 0; cursor: pointer;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
       transform-origin: bottom center;
     }
-
-    .book-wrap:hover {
-      transform: translateY(-28px);
-    }
-
-    .book-wrap:hover .book-spine {
-      box-shadow:
-        4px 0 12px rgba(0,0,0,0.5),
-        inset -2px 0 6px rgba(0,0,0,0.3),
-        -2px 0 20px rgba(255,200,100,0.08);
+    .book-wrap:hover { transform: translateY(-30px) scale(1.03); }
+    .book-wrap.extracting {
+      transform: translateY(-70px) scale(1.08) rotateZ(-1.5deg);
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .book-spine {
-      width: 52px;
-      height: 220px;
-      border-radius: 2px 0 0 2px;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 50px; height: 220px; border-radius: 2px 0 0 2px; position: relative;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 4px 0 10px rgba(0,0,0,0.5), inset -2px 0 4px rgba(0,0,0,0.25), inset 2px 0 4px rgba(255,255,255,0.06);
       transition: box-shadow 0.3s;
-      box-shadow:
-        4px 0 8px rgba(0,0,0,0.4),
-        inset -2px 0 4px rgba(0,0,0,0.25),
-        inset 2px 0 4px rgba(255,255,255,0.06);
     }
-
-    /* Leather texture via gradient */
-    .book-spine::before {
-      content: '';
-      position: absolute; inset: 0;
-      border-radius: inherit;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 3px,
-        rgba(0,0,0,0.06) 3px,
-        rgba(0,0,0,0.06) 4px
-      );
+    .book-wrap:hover .book-spine { box-shadow: 4px 0 18px rgba(0,0,0,0.65), -4px 0 30px rgba(255,200,80,0.08), inset -2px 0 5px rgba(0,0,0,0.3); }
+    .book-spine::before { /* leather grain */
+      content: ''; position: absolute; inset: 0; border-radius: inherit;
+      background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.07) 3px, rgba(0,0,0,0.07) 4px);
     }
-
-    /* Decorative top/bottom bands */
-    .book-spine::after {
-      content: '';
-      position: absolute;
-      left: 0; right: 0;
-      top: 14px; bottom: 14px;
-      border-top: 1px solid rgba(255,255,255,0.12);
-      border-bottom: 1px solid rgba(255,255,255,0.12);
+    .book-spine::after { /* top/bottom bands */
+      content: ''; position: absolute; left: 5px; right: 5px; top: 16px; bottom: 16px;
+      border-top: 1px solid rgba(255,255,255,0.13); border-bottom: 1px solid rgba(255,255,255,0.13);
     }
-
     .book-title-spine {
-      writing-mode: vertical-rl;
-      transform: rotate(180deg);
-      font-family: 'Lora', serif;
-      font-size: 11px;
-      font-style: italic;
-      letter-spacing: 0.08em;
-      color: rgba(255,220,140,0.85);
-      text-shadow: 0 1px 3px rgba(0,0,0,0.6);
-      position: relative; z-index: 1;
-      max-height: 160px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      padding: 0 4px;
+      writing-mode: vertical-rl; transform: rotate(180deg);
+      font-family: 'Lora', serif; font-size: 11px; font-style: italic; letter-spacing: 0.08em;
+      color: rgba(255,220,140,0.88); text-shadow: 0 1px 3px rgba(0,0,0,0.7);
+      position: relative; z-index: 1; max-height: 160px; overflow: hidden; white-space: nowrap; padding: 0 4px;
     }
-
-    /* Book page edge (right side) */
     .book-pages {
-      position: absolute;
-      right: -8px; top: 3px; bottom: 3px;
-      width: 8px;
-      background: repeating-linear-gradient(
-        90deg,
-        #e8ddd0 0px, #d4c9bc 1px,
-        #ede3d6 1px, #ede3d6 3px
-      );
-      border-radius: 0 1px 1px 0;
-      box-shadow: 2px 0 4px rgba(0,0,0,0.3);
+      position: absolute; right: -9px; top: 3px; bottom: 3px; width: 9px;
+      background: repeating-linear-gradient(90deg, #e4d9cc 0px, #c8bfb0 1px, #ede3d3 1px, #ede3d3 3px);
+      border-radius: 0 1px 1px 0; box-shadow: 2px 0 6px rgba(0,0,0,0.3);
     }
+    .shelf-loading { position: relative; z-index: 2; padding-bottom: 2rem; align-self: center; }
 
-    /* LOADING state book */
-    .book-placeholder {
-      width: 52px; height: 220px;
-      background: rgba(255,255,255,0.04);
-      border-radius: 2px;
-      border: 1px dashed rgba(255,255,255,0.08);
+    /* ════════════════════════════════════
+       OVERLAY
+    ════════════════════════════════════ */
+    .overlay {
+      position: fixed; inset: 0; z-index: 200;
       display: flex; align-items: center; justify-content: center;
+      background: rgba(4,3,10,0.94); backdrop-filter: blur(14px);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.45s ease;
     }
+    .overlay.visible { opacity: 1; pointer-events: all; }
 
-    .spinner-small {
-      width: 16px; height: 16px;
-      border: 1.5px solid rgba(255,255,255,0.1);
-      border-top-color: var(--rose);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* ── Empty library ── */
-    .shelf-empty {
-      position: relative; z-index: 2;
-      color: var(--muted);
-      font-family: 'DM Mono', monospace;
-      font-size: 11px; letter-spacing: 0.1em;
-      padding-bottom: 2rem;
-      align-self: center;
-    }
-
-    /* Error */
-    .shelf-error {
-      position: relative; z-index: 1;
-      text-align: center;
-      padding: 3rem;
-      color: var(--muted);
-      font-family: 'DM Mono', monospace;
-      font-size: 12px;
-    }
-
-    /* ─────────────────────────────────────────
-       OPEN BOOK OVERLAY
-    ───────────────────────────────────────── */
-    .book-overlay {
-      position: fixed; inset: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: center;
-      background: rgba(4,3,8,0.92);
-      backdrop-filter: blur(8px);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s ease;
-    }
-
-    .book-overlay.visible {
-      opacity: 1;
-      pointer-events: all;
-    }
-
-    /* Close button */
     .close-btn {
-      position: absolute;
-      top: 2rem; right: 2rem;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1);
-      color: var(--muted);
-      font-family: 'DM Mono', monospace;
-      font-size: 11px; letter-spacing: 0.1em;
-      padding: 8px 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: color 0.2s, border-color 0.2s, background 0.2s;
-      z-index: 10;
+      position: absolute; top: 1.6rem; right: 1.6rem; z-index: 20;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+      color: var(--muted); font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.1em;
+      padding: 7px 14px; border-radius: 8px; cursor: pointer; transition: all 0.2s;
     }
-    .close-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.1); }
+    .close-btn:hover { background: rgba(255,255,255,0.1); color: var(--text); border-color: rgba(255,255,255,0.2); }
 
-    /* ── The open book ── */
+    /* ── CLOSED BOOK SCENE ── */
+    .closed-scene {
+      display: flex; flex-direction: column; align-items: center; gap: 1.8rem;
+      transform: translateY(40px) scale(0.88); opacity: 0;
+      transition: transform 0.55s cubic-bezier(0.34, 1.4, 0.64, 1), opacity 0.4s ease;
+    }
+    .overlay.visible .closed-scene:not(.gone) { transform: translateY(0) scale(1); opacity: 1; }
+    .closed-scene.gone { opacity: 0 !important; transform: scale(0.94) translateY(-16px) !important; transition: all 0.3s ease !important; pointer-events: none; }
+
+    .closed-book-3d {
+      display: flex; cursor: pointer;
+      filter: drop-shadow(0 32px 64px rgba(0,0,0,0.7));
+      transition: transform 0.3s ease;
+    }
+    .closed-book-3d:hover { transform: scale(1.025) translateY(-5px); }
+
+    .closed-spine {
+      width: 22px; border-radius: 2px 0 0 2px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: inset -2px 0 5px rgba(0,0,0,0.35);
+    }
+    .closed-spine span {
+      writing-mode: vertical-rl; transform: rotate(180deg);
+      font-family: 'Lora', serif; font-size: 9px; font-style: italic; letter-spacing: 0.12em;
+      color: rgba(255,220,120,0.6); white-space: nowrap; overflow: hidden; max-height: 180px; padding: 0 3px;
+    }
+
+    .closed-cover {
+      width: 200px; min-height: 290px; position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center; padding: 1.6rem 1.4rem;
+    }
+    .closed-cover::before { /* leather grain */
+      content: ''; position: absolute; inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.06) 3px, rgba(0,0,0,0.06) 4px);
+    }
+    .closed-cover::after { /* vignette */
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.35) 100%);
+    }
+    .cover-inner {
+      position: relative; z-index: 1; width: 100%;
+      border: 1px solid rgba(255,210,100,0.2); padding: 1.4rem 1rem; text-align: center;
+    }
+    .cover-inner::before { content: ''; position: absolute; inset: 5px; border: 1px solid rgba(255,210,100,0.1); }
+    .cover-orn { display: block; font-size: 13px; color: rgba(255,210,100,0.45); letter-spacing: 0.25em; margin: 0.5rem 0; }
+    .cover-title-text {
+      font-family: 'Lora', serif; font-size: 16px; font-style: italic; font-weight: 500;
+      color: rgba(255,220,140,0.92); text-shadow: 0 1px 6px rgba(0,0,0,0.6);
+      line-height: 1.3; margin: 0.5rem 0; letter-spacing: 0.02em;
+    }
+    .cover-sub { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,200,100,0.35); margin-top: 0.6rem; }
+
+    .closed-pages-edge {
+      width: 10px; flex-shrink: 0;
+      background: repeating-linear-gradient(90deg, #ddd0be 0px, #c4b8a5 1px, #eae0ce 1px, #eae0ce 3px);
+      border-radius: 0 2px 2px 0; box-shadow: 3px 0 8px rgba(0,0,0,0.35);
+    }
+
+    .open-hint {
+      font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--muted); animation: blink 2.5s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:0.4} 50%{opacity:0.9} }
+
+    /* ── OPEN BOOK SCENE ── */
+    .open-scene {
+      display: none; flex-direction: column; align-items: center; gap: 1.2rem;
+      transform: scale(0.9) translateY(24px); opacity: 0;
+      transition: transform 0.5s cubic-bezier(0.34, 1.4, 0.64, 1), opacity 0.45s ease;
+    }
+    .open-scene.ready { display: flex; }
+    .open-scene.animated { transform: scale(1) translateY(0); opacity: 1; }
+
     .open-book {
-      position: relative;
-      width: min(900px, 92vw);
-      height: min(600px, 85vh);
       display: flex;
-      transform: scale(0.88) translateY(30px);
-      transition: transform 0.45s cubic-bezier(0.34, 1.4, 0.64, 1);
-      filter: drop-shadow(0 40px 80px rgba(0,0,0,0.7));
-    }
-
-    .book-overlay.visible .open-book {
-      transform: scale(1) translateY(0);
-    }
-
-    /* Spine in the middle */
-    .open-book-spine {
-      width: 24px;
-      flex-shrink: 0;
-      background: linear-gradient(90deg, #1a1008 0%, #2e1f0f 40%, #1a1008 100%);
-      box-shadow:
-        0 0 20px rgba(0,0,0,0.8),
-        inset 1px 0 3px rgba(255,255,255,0.05),
-        inset -1px 0 3px rgba(255,255,255,0.05);
-      z-index: 5;
-    }
-
-    /* ── PAGE ── */
-    .book-page {
-      flex: 1;
-      background: var(--paper);
+      width: min(880px, 94vw);
+      height: min(580px, 80vh);
+      filter: drop-shadow(0 44px 88px rgba(0,0,0,0.75));
       position: relative;
-      overflow: hidden;
-      padding: 3rem 2.8rem;
     }
 
-    /* Paper texture */
-    .book-page::before {
-      content: '';
-      position: absolute; inset: 0; pointer-events: none; z-index: 0;
-      opacity: 0.03;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='512' height='512' filter='url(%23noise)'/%3E%3C/svg%3E");
+    /* ── BOOK PAGES ── */
+    .bk-page {
+      flex: 1; position: relative; overflow: hidden;
+      padding: 2.5rem 2.6rem 2.2rem;
+    }
+    .bk-page::before { /* paper grain */
+      content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='512' height='512' filter='url(%23n)'/%3E%3C/svg%3E");
       background-size: 200px 200px;
     }
-
-    .book-page-left {
+    .bk-page-l {
+      background: linear-gradient(90deg, #e2d8c8 0%, var(--paper) 10%);
       border-radius: 4px 0 0 4px;
-      background: linear-gradient(90deg, #ece5d8 0%, var(--paper) 8%);
     }
-
-    .book-page-right {
+    .bk-page-l::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent 80%, rgba(0,0,0,0.06) 100%); pointer-events: none; }
+    .bk-page-r {
+      background: linear-gradient(270deg, #e2d8c8 0%, var(--paper) 10%);
       border-radius: 0 4px 4px 0;
-      background: linear-gradient(270deg, #ece5d8 0%, var(--paper) 8%);
-      perspective: 1200px;
+    }
+    .bk-page-r::after { content: ''; position: absolute; inset: 0; background: linear-gradient(270deg, transparent 80%, rgba(0,0,0,0.06) 100%); pointer-events: none; }
+
+    .bk-spine {
+      width: 22px; flex-shrink: 0; z-index: 10;
+      background: linear-gradient(90deg, #150a03 0%, #2e1c0a 45%, #150a03 100%);
+      box-shadow: 0 0 28px rgba(0,0,0,0.9), inset 1px 0 2px rgba(255,255,255,0.04), inset -1px 0 2px rgba(255,255,255,0.04);
     }
 
-    /* Vignette shadow on inner edges */
-    .book-page-left::after {
-      content: '';
-      position: absolute; inset: 0; pointer-events: none;
-      background: linear-gradient(90deg, transparent 85%, rgba(0,0,0,0.08) 100%);
-    }
-
-    .book-page-right::after {
-      content: '';
-      position: absolute; inset: 0; pointer-events: none;
-      background: linear-gradient(270deg, transparent 85%, rgba(0,0,0,0.08) 100%);
-    }
-
-    .page-content { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; }
-
-    /* ── LEFT PAGE: TABLE OF CONTENTS ── */
-    .toc-title {
-      font-family: 'Lora', serif;
-      font-size: 11px;
-      font-style: italic;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--ink-muted);
-      margin-bottom: 0.5rem;
-    }
-
-    .toc-collection-name {
-      font-family: 'Lora', serif;
-      font-size: 22px;
-      font-weight: 500;
-      color: var(--ink);
-      line-height: 1.2;
-      margin-bottom: 1.5rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid rgba(42,31,20,0.15);
-    }
-
-    .toc-list {
-      flex: 1;
-      overflow-y: auto;
-      scrollbar-width: none;
-    }
-    .toc-list::-webkit-scrollbar { display: none; }
-
-    .toc-item {
-      display: flex;
-      align-items: baseline;
-      gap: 0;
-      padding: 0.45rem 0;
-      cursor: pointer;
-      border-bottom: 1px dotted rgba(42,31,20,0.1);
-      transition: color 0.15s;
-    }
-
-    .toc-item:hover { color: var(--ink); }
-    .toc-item:last-child { border-bottom: none; }
-
-    .toc-item.active .toc-item-name {
-      font-style: italic;
-      color: var(--ink);
-    }
-
-    .toc-num {
-      font-family: 'Lora', serif;
-      font-size: 10px;
-      color: var(--ink-muted);
-      width: 24px;
-      flex-shrink: 0;
-    }
-
-    .toc-dots {
-      flex: 1;
-      border-bottom: 1px dotted rgba(42,31,20,0.2);
-      margin: 0 6px;
-      position: relative;
-      top: -3px;
-    }
-
-    .toc-item-name {
-      font-family: 'Lora', serif;
-      font-size: 13px;
-      color: rgba(42,31,20,0.7);
-      transition: color 0.15s;
-      max-width: 70%;
-    }
-
-    /* Page number at bottom */
-    .page-number {
-      font-family: 'Lora', serif;
-      font-size: 10px;
-      font-style: italic;
-      color: var(--ink-muted);
-      text-align: center;
-      margin-top: 1rem;
-      padding-top: 0.8rem;
-      border-top: 1px solid rgba(42,31,20,0.1);
-    }
-
-    /* ── RIGHT PAGE: POEM ── */
-    .poem-page-wrap {
-      flex: 1;
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* Flipping animation */
-    .poem-page-inner {
-      position: absolute; inset: 0;
+    /* ── PAGE CONTENT WRAP ── */
+    .pg-content {
+      position: relative; z-index: 1; height: 100%;
       display: flex; flex-direction: column;
-      transform-origin: left center;
-      transition: transform 0.55s cubic-bezier(0.645, 0.045, 0.355, 1.000), opacity 0.25s ease;
     }
 
-    .poem-page-inner.flip-out {
-      transform: perspective(1200px) rotateY(-25deg);
-      opacity: 0;
-    }
+    /* Spinner inside page */
+    .pg-loading { flex: 1; display: flex; align-items: center; justify-content: center; }
 
-    .poem-page-inner.flip-in {
-      transform: perspective(1200px) rotateY(25deg);
-      opacity: 0;
-    }
+    /* ── PAGE TYPES ── */
 
-    .poem-pg-title {
-      font-family: 'Lora', serif;
-      font-size: 18px;
-      font-weight: 500;
-      font-style: italic;
-      color: var(--ink);
-      margin-bottom: 0.4rem;
-      line-height: 1.3;
-    }
+    /* VERSO (blank) */
+    .pg-verso { flex: 1; }
 
-    .poem-pg-divider {
-      width: 32px; height: 1px;
-      background: rgba(42,31,20,0.25);
-      margin: 0.8rem 0 1.4rem;
-    }
+    /* TITLE PAGE */
+    .pg-title { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+    .pt-orn { font-size: 15px; color: var(--ink-muted); letter-spacing: 0.3em; margin: 0.7rem 0; }
+    .pt-main { font-family: 'Lora', serif; font-size: 24px; font-weight: 500; font-style: italic; color: var(--ink); line-height: 1.2; margin: 0.4rem 0; }
+    .pt-rule { width: 44px; height: 1px; background: var(--ink-muted); opacity: 0.4; margin: 0.8rem auto; }
+    .pt-series { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-muted); }
+    .pt-author { font-family: 'Lora', serif; font-size: 12px; font-style: italic; color: var(--ink-mid); margin-top: 0.25rem; }
 
-    .poem-pg-body {
-      flex: 1;
-      font-family: var(--poem-font);
-      font-size: 15px;
-      line-height: 2;
-      color: var(--ink);
-      text-align: center;
-      overflow-y: auto;
-      scrollbar-width: none;
+    /* TOC PAGE */
+    .pg-toc { flex: 1; display: flex; flex-direction: column; }
+    .toc-hd { font-family: 'Lora', serif; font-size: 13px; font-style: italic; color: var(--ink-muted); letter-spacing: 0.08em; padding-bottom: 0.7rem; border-bottom: 1px solid rgba(42,31,20,0.14); margin-bottom: 0.8rem; }
+    .toc-entries { flex: 1; }
+    .toc-row { display: flex; align-items: baseline; gap: 4px; padding: 0.3rem 0; border-bottom: 1px dotted rgba(42,31,20,0.08); cursor: pointer; transition: opacity 0.15s; }
+    .toc-row:last-child { border-bottom: none; }
+    .toc-row:hover { opacity: 0.65; }
+    .toc-n { font-family: 'Lora', serif; font-size: 10px; color: var(--ink-muted); width: 18px; flex-shrink: 0; }
+    .toc-t { font-family: 'Lora', serif; font-size: 12px; color: var(--ink-mid); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 4px; }
+    .toc-dots { flex: 0.5; border-bottom: 1px dotted rgba(42,31,20,0.2); margin: 0 4px; position: relative; top: -3px; min-width: 8px; }
+    .toc-p { font-family: 'Lora', serif; font-size: 10px; color: var(--ink-muted); flex-shrink: 0; }
+
+    /* PREFACE PAGE */
+    .pg-preface { flex: 1; display: flex; flex-direction: column; }
+    .pref-hd { font-family: 'Lora', serif; font-size: 13px; font-style: italic; color: var(--ink-muted); padding-bottom: 0.6rem; border-bottom: 1px solid rgba(42,31,20,0.12); margin-bottom: 0.8rem; }
+    .pref-body { font-family: var(--poem-font); font-size: 12px; line-height: 1.85; color: var(--ink-mid); flex: 1; }
+    .pref-body p { margin-bottom: 0.6em; }
+
+    /* POEM PAGE */
+    .pg-poem { flex: 1; display: flex; flex-direction: column; }
+    .poem-hd { font-family: 'Lora', serif; font-size: 15px; font-weight: 500; font-style: italic; color: var(--ink); line-height: 1.3; margin-bottom: 0.25rem; }
+    .poem-rule { width: 26px; height: 1px; background: rgba(42,31,20,0.22); margin: 0.65rem 0 0.9rem; }
+    .poem-cont-lbl { font-family: 'Lora', serif; font-size: 9px; font-style: italic; color: var(--ink-muted); text-align: center; margin-bottom: 0.8rem; }
+    .poem-body {
+      flex: 1; font-family: var(--poem-font); font-size: 13px; line-height: 1.95;
+      color: var(--ink); text-align: center;
       font-feature-settings: 'rand' 1, 'calt' 1;
     }
-    .poem-pg-body::-webkit-scrollbar { display: none; }
+    .poem-sbr { display: block; height: 0.85em; }
 
-    .poem-pg-stanza { display: block; height: 1em; }
-
-    .poem-pg-empty {
-      flex: 1;
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Lora', serif;
-      font-size: 13px;
-      font-style: italic;
-      color: var(--ink-muted);
+    /* PAGE NUMBER */
+    .pg-num {
+      font-family: 'Lora', serif; font-size: 9.5px; font-style: italic; color: var(--ink-muted);
+      text-align: center; padding-top: 0.6rem; border-top: 1px solid rgba(42,31,20,0.1);
+      margin-top: auto; flex-shrink: 0;
     }
 
-    /* ── NAVIGATION ARROWS ── */
-    .book-nav {
-      position: absolute;
-      bottom: 1.5rem;
-      right: 2.8rem;
-      display: flex;
-      gap: 8px;
-      z-index: 10;
+    /* ════════════════════════════════════
+       3-D PAGE FLIPPER
+    ════════════════════════════════════ */
+    .flipper {
+      position: absolute; inset: 0; z-index: 30;
+      transform-style: preserve-3d; display: none;
+      pointer-events: none;
+    }
+    #flipR { transform-origin: left center; }
+    #flipL { transform-origin: right center; }
+
+    .flip-face {
+      position: absolute; inset: 0;
+      backface-visibility: hidden;
+      padding: 2.5rem 2.6rem 2.2rem;
+    }
+    .flip-face.is-back { transform: rotateY(180deg); }
+
+    /* right flipper faces */
+    #flipR .flip-face         { background: linear-gradient(270deg, #e2d8c8 0%, var(--paper) 10%); }
+    #flipR .flip-face.is-back { background: linear-gradient(90deg,  #e2d8c8 0%, var(--paper) 10%); }
+    /* left flipper faces */
+    #flipL .flip-face         { background: linear-gradient(90deg,  #e2d8c8 0%, var(--paper) 10%); }
+    #flipL .flip-face.is-back { background: linear-gradient(270deg, #e2d8c8 0%, var(--paper) 10%); }
+
+    /* shadow overlay on turning page for depth */
+    .flipper::after {
+      content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background: linear-gradient(90deg, rgba(0,0,0,0.12) 0%, transparent 30%);
+      backface-visibility: hidden; opacity: 0;
+      transition: opacity 0.65s ease;
+    }
+    .flipper.turning::after { opacity: 1; }
+
+    /* ── BOOK NAVIGATION ── */
+    .bk-nav { display: flex; align-items: center; gap: 14px; }
+    .nav-btn {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+      color: var(--muted); cursor: pointer; display: flex; align-items: center; justify-content: center;
+      font-size: 14px; transition: all 0.2s;
+    }
+    .nav-btn:hover:not(:disabled) { background: rgba(255,255,255,0.1); color: var(--text); border-color: rgba(255,255,255,0.2); }
+    .nav-btn:disabled { opacity: 0.22; cursor: default; }
+    .pg-indicator {
+      font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.12em;
+      color: var(--dimmed); min-width: 60px; text-align: center;
     }
 
-    .book-nav-btn {
-      width: 32px; height: 32px;
-      background: rgba(42,31,20,0.08);
-      border: 1px solid rgba(42,31,20,0.15);
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 13px;
-      color: var(--ink-muted);
-      transition: background 0.2s, color 0.2s;
-    }
-    .book-nav-btn:hover { background: rgba(42,31,20,0.15); color: var(--ink); }
-    .book-nav-btn:disabled { opacity: 0.3; cursor: default; }
-
-    /* ── Responsive ── */
-    @media (max-width: 700px) {
-      .open-book { flex-direction: column; height: min(85vh, 700px); }
-      .open-book-spine { width: 100%; height: 16px; }
-      .book-page-left { border-radius: 4px 4px 0 0; }
-      .book-page-right { border-radius: 0 0 4px 4px; }
-      .shelf { padding: 2rem 1.5rem 0; gap: 8px; }
-      .book-spine { width: 42px; height: 180px; }
-    }
+    /* ── SPINNERS ── */
+    .spin { width: 20px; height: 20px; border: 1.5px solid var(--border); border-top-color: var(--rose); border-radius: 50%; animation: rot 0.8s linear infinite; }
+    .spin-sm { width: 14px; height: 14px; border-width: 1.5px; }
+    @keyframes rot { to { transform: rotate(360deg); } }
 
     /* ── FOOTER ── */
-    footer {
-      position: relative; z-index: 1;
-      text-align: center;
-      padding: 2rem;
-      font-family: 'DM Mono', monospace;
-      font-size: 10px; letter-spacing: 0.1em;
-      color: var(--dimmed);
+    footer { position: relative; z-index: 1; text-align: center; padding: 2rem; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: var(--dimmed); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 680px) {
+      .open-book { flex-direction: column; }
+      .bk-spine { width: 100%; height: 16px; }
+      .bk-page-l { border-radius: 4px 4px 0 0; }
+      .bk-page-r { border-radius: 0 0 4px 4px; }
+      .shelf { padding: 2rem 1.2rem 0; gap: 7px; }
+      .book-spine { width: 42px; height: 190px; }
     }
   </style>
 </head>
 <body>
-
-  <div class="glow-1"></div>
-  <div class="glow-2"></div>
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
 
   <nav class="topnav">
-    <a href="/">b-place</a>
-    <span class="breadcrumb-sep">›</span>
-    <a href="/tvorba/">tvorba</a>
-    <span class="breadcrumb-sep">›</span>
-    <span class="breadcrumb-current">texty</span>
+    <a href="/">b-place</a><span style="color:var(--dimmed)">›</span>
+    <a href="/tvorba/">tvorba</a><span style="color:var(--dimmed)">›</span>
+    <span style="color:var(--rose)">texty</span>
   </nav>
 
   <div class="hero">
-    <p class="hero-eyebrow">Sbírky básní</p>
+    <p class="hero-eyebrow">Knihovna textů</p>
     <h1 class="hero-title"><span>Texty</span></h1>
   </div>
 
   <div class="library">
     <div class="shelf" id="shelf">
-      <div class="book-placeholder"><div class="spinner-small"></div></div>
+      <div class="shelf-loading"><div class="spin"></div></div>
     </div>
   </div>
 
-  <!-- OPEN BOOK OVERLAY -->
-  <div class="book-overlay" id="overlay">
+  <!-- ══ OVERLAY ══ -->
+  <div class="overlay" id="overlay">
     <button class="close-btn" id="closeBtn">✕ &nbsp;Zavřít</button>
-    <div class="open-book" id="openBook">
 
-      <!-- LEFT PAGE: Table of contents -->
-      <div class="book-page book-page-left">
-        <div class="page-content">
-          <div class="toc-title">Obsah</div>
-          <div class="toc-collection-name" id="tocCollectionName"></div>
-          <div class="toc-list" id="tocList"></div>
-          <div class="page-number" id="leftPageNum">i</div>
+    <!-- CLOSED BOOK -->
+    <div class="closed-scene" id="closedScene">
+      <div class="closed-book-3d" id="closedBook">
+        <div class="closed-spine" id="closedSpine">
+          <span id="closedSpineText"></span>
         </div>
-      </div>
-
-      <!-- SPINE -->
-      <div class="open-book-spine"></div>
-
-      <!-- RIGHT PAGE: Poem -->
-      <div class="book-page book-page-right">
-        <div class="page-content">
-          <div class="poem-page-wrap" id="poemPageWrap">
-            <div class="poem-page-inner" id="poemPageInner">
-              <div class="poem-pg-empty">Vyberte báseň ze seznamu vlevo →</div>
-            </div>
-          </div>
-          <div class="book-nav">
-            <button class="book-nav-btn" id="prevBtn" title="Předchozí" disabled>←</button>
-            <button class="book-nav-btn" id="nextBtn" title="Další" disabled>→</button>
+        <div class="closed-cover" id="closedCover">
+          <div class="cover-inner">
+            <span class="cover-orn">✦ &nbsp; ✦ &nbsp; ✦</span>
+            <div class="cover-title-text" id="coverTitleText"></div>
+            <div class="cover-sub">Sbírka básní</div>
+            <span class="cover-orn">✦ &nbsp; ✦ &nbsp; ✦</span>
           </div>
         </div>
+        <div class="closed-pages-edge"></div>
       </div>
-
+      <div class="open-hint">klikněte pro otevření</div>
     </div>
-  </div>
+
+    <!-- OPEN BOOK -->
+    <div class="open-scene" id="openScene">
+      <div class="open-book">
+
+        <!-- LEFT PAGE -->
+        <div class="bk-page bk-page-l" id="pageL">
+          <div class="pg-content" id="pageLC">
+            <div class="pg-loading"><div class="spin spin-sm"></div></div>
+          </div>
+          <div class="flipper" id="flipL">
+            <div class="flip-face" id="flipLF"></div>
+            <div class="flip-face is-back" id="flipLB"></div>
+          </div>
+        </div>
+
+        <div class="bk-spine"></div>
+
+        <!-- RIGHT PAGE -->
+        <div class="bk-page bk-page-r" id="pageR">
+          <div class="pg-content" id="pageRC">
+            <div class="pg-loading"><div class="spin spin-sm"></div></div>
+          </div>
+          <div class="flipper" id="flipR">
+            <div class="flip-face" id="flipRF"></div>
+            <div class="flip-face is-back" id="flipRB"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="bk-nav">
+        <button class="nav-btn" id="prevBtn" disabled>←</button>
+        <span class="pg-indicator" id="pgInd"></span>
+        <button class="nav-btn" id="nextBtn" disabled>→</button>
+      </div>
+    </div>
+
+  </div><!-- /overlay -->
 
   <footer>&copy; <span id="yr"></span> &nbsp;b-place.org</footer>
 
   <script>
-    document.getElementById('yr').textContent = new Date().getFullYear();
+  'use strict';
+  document.getElementById('yr').textContent = new Date().getFullYear();
 
-    // ── CONFIG ──────────────────────────────────────────────────────────────
-    const REPO   = 'Barez21/My-site';
-    const FOLDER = 'tvorba/texty/básně';
-    const API    = `https://api.github.com/repos/${REPO}/contents/`;
+  // ── CONFIG ─────────────────────────────────────────────────────────────────
+  const REPO   = 'Barez21/My-site';
+  const FOLDER = 'tvorba/texty/básně';
+  const API    = `https://api.github.com/repos/${REPO}/contents/`;
 
-    // Book spine colors (leather tones)
-    const LEATHER = [
-      ['#5c2d0e','#7a3d12'],
-      ['#1a2e4a','#243d63'],
-      ['#2d1a3a','#3d2252'],
-      ['#1a3a2d','#22523d'],
-      ['#3a2a0e','#523c12'],
-      ['#2e1a1a','#522222'],
-      ['#1a1a3a','#222252'],
-      ['#3a1a2d','#52223d'],
-    ];
+  const LEATHER = [
+    ['#4a1e0a','#6b2d10','#321408'],
+    ['#0f2040','#1c3560','#0a1830'],
+    ['#2b1340','#3e1c58','#1e0d30'],
+    ['#103020','#1a5030','#0a2418'],
+    ['#3e280a','#5a3c10','#2c1c06'],
+    ['#380e10','#501618','#280a0c'],
+    ['#1a1840','#282558','#12102c'],
+    ['#2e1820','#483040','#200f18'],
+  ];
 
-    // ── STATE ────────────────────────────────────────────────────────────────
-    let collections = [];
-    let currentCollection = null;  // { name, poems: [{name, url}] }
-    let currentPoemIndex = -1;
+  // Measurement box dimensions (match actual page inner area approximately)
+  const MW = 295, MH = 395;
 
-    // ── UTILS ────────────────────────────────────────────────────────────────
-    function esc(str) {
-      return String(str)
-        .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-        .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  // ── STATE ──────────────────────────────────────────────────────────────────
+  let collections  = [];
+  let pages        = [];   // all built pages
+  let spread       = 0;    // current spread index
+  let flipping     = false;
+
+  // ── UTILS ──────────────────────────────────────────────────────────────────
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  const $  = id => document.getElementById(id);
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function clean(fn){ return fn.replace(/\.[^.]+$/,'').replace(/^\d+[\s.\-–—]+/,'').trim(); }
+
+  // ── GITHUB API ─────────────────────────────────────────────────────────────
+  async function apiGet(path){
+    const r = await fetch(API + path, { headers:{ Accept:'application/vnd.github+json' }});
+    if(!r.ok) throw new Error(`GitHub ${r.status}`);
+    return r.json();
+  }
+  async function fileText(url){
+    const d = await fetch(url, { headers:{ Accept:'application/vnd.github+json' }}).then(r=>r.json());
+    if(d.encoding==='base64')
+      return decodeURIComponent(atob(d.content.replace(/\s/g,'')).split('').map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+    return d.content||'';
+  }
+
+  // ── PAGINATION ─────────────────────────────────────────────────────────────
+  function parseUnits(raw){
+    const units=[];
+    raw.split(/\n{2,}/).forEach((st,si)=>{
+      if(si>0) units.push({t:'br'});
+      st.trim().split('\n').forEach(ln=>{ const l=ln.trim(); if(l) units.push({t:'ln',text:l}); });
+    });
+    while(units.length && units[units.length-1].t==='br') units.pop();
+    return units;
+  }
+
+  function unitsHTML(units){
+    return units.map(u=> u.t==='ln'
+      ? `<span style="display:block">${esc(u.text)}</span>`
+      : `<span class="poem-sbr"></span>`
+    ).join('');
+  }
+
+  function paginatePoem(title, raw, mDiv){
+    const units = parseUnits(raw);
+    if(!units.length) return [{ type:'poem', title, units:[], poemTitle:title }];
+    const out=[];
+    let i=0, first=true;
+    while(i<units.length){
+      const pageUnits=[];
+      let j=i;
+      const hdr = first
+        ? `<div style="font-family:'Lora',serif;font-size:15px;font-style:italic;font-weight:500;line-height:1.3;margin-bottom:.25rem">${esc(title)}</div><div style="width:26px;height:1px;background:rgba(42,31,20,.22);margin:.65rem 0 .9rem"></div>`
+        : `<div style="font-family:'Lora',serif;font-size:9px;font-style:italic;color:#9a8878;text-align:center;margin-bottom:.8rem">— pokračování —</div>`;
+      const foot = `<div style="height:26px"></div>`;
+
+      while(j<units.length){
+        const test=[...pageUnits,units[j]];
+        mDiv.innerHTML = hdr + `<div style="font-family:'Lora',serif;font-size:13px;line-height:1.95;text-align:center">${unitsHTML(test)}</div>` + foot;
+        if(mDiv.scrollHeight > mDiv.clientHeight && pageUnits.length>0) break;
+        pageUnits.push(units[j]); j++;
+      }
+      if(!pageUnits.length){ pageUnits.push(units[j]||{t:'ln',text:''}); j++; }
+      out.push({ type: first?'poem':'poem-cont', title: first?title:null, units:pageUnits, poemTitle:title });
+      i=j; first=false;
+    }
+    return out;
+  }
+
+  // ── RENDER PAGE HTML ───────────────────────────────────────────────────────
+  function renderPage(pg, pgNum){
+    if(!pg || pg.type==='verso'){
+      return `<div class="pg-content"><div class="pg-verso"></div>${pgNum?`<div class="pg-num">${pgNum}</div>`:''}</div>`;
+    }
+    if(pg.type==='title'){
+      return `<div class="pg-content"><div class="pg-title">
+        <div class="pt-orn">✦ &nbsp;✦ &nbsp;✦</div>
+        <div class="pt-main">${esc(pg.title)}</div>
+        <div class="pt-rule"></div>
+        <div class="pt-series">Sbírka básní</div>
+        <div class="pt-author">b-place.org</div>
+        <div class="pt-orn">✦ &nbsp;✦ &nbsp;✦</div>
+      </div></div>`;
+    }
+    if(pg.type==='toc'){
+      const rows = pg.entries.map((e,i)=>`
+        <div class="toc-row" data-spread="${e.spread}">
+          <span class="toc-n">${i+1}</span>
+          <span class="toc-t">${esc(e.title)}</span>
+          <span class="toc-dots"></span>
+          <span class="toc-p">${e.pgNum}</span>
+        </div>`).join('');
+      return `<div class="pg-content"><div class="pg-toc"><div class="toc-hd">Obsah</div><div class="toc-entries">${rows}</div></div><div class="pg-num">${pgNum}</div></div>`;
+    }
+    if(pg.type==='preface'){
+      const body = esc(pg.text).replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>');
+      return `<div class="pg-content"><div class="pg-preface"><div class="pref-hd">Předmluva</div><div class="pref-body"><p>${body}</p></div></div><div class="pg-num">${pgNum}</div></div>`;
+    }
+    if(pg.type==='poem'||pg.type==='poem-cont'){
+      const hdr = pg.type==='poem'
+        ? `<div class="poem-hd">${esc(pg.title)}</div><div class="poem-rule"></div>`
+        : `<div class="poem-cont-lbl">— pokračování —</div>`;
+      return `<div class="pg-content"><div class="pg-poem">${hdr}<div class="poem-body">${unitsHTML(pg.units)}</div></div><div class="pg-num">${pgNum}</div></div>`;
+    }
+    return `<div class="pg-content"><div class="pg-verso"></div></div>`;
+  }
+
+  function attachTOC(){
+    document.querySelectorAll('.toc-row[data-spread]').forEach(el=>{
+      el.addEventListener('click',()=>{ jumpSpread(parseInt(el.dataset.spread)); });
+    });
+  }
+
+  // ── BUILD PAGES ────────────────────────────────────────────────────────────
+  async function buildPages(col){
+    const path = encodeURIComponent(FOLDER).replace(/%2F/g,'/') + '/' + encodeURIComponent(col.name);
+    const items = await apiGet(path);
+    const files = items.filter(i=>i.type==='file');
+
+    const prefaceFile = files.find(f=>/^(predmluva|preface|uvod|intro)/i.test(f.name));
+    const poemFiles   = files.filter(f=>f!==prefaceFile);
+
+    const [prefaceText, ...poemTexts] = await Promise.all([
+      prefaceFile ? fileText(prefaceFile.url) : Promise.resolve(null),
+      ...poemFiles.map(f=>fileText(f.url))
+    ]);
+
+    const poems = poemFiles.map((f,i)=>({ name: clean(f.name), text: poemTexts[i]||'' }));
+
+    // Start building
+    const pgs = [];
+    pgs.push({ type:'verso' });                      // [0] L blank
+    pgs.push({ type:'title', title: col.name });     // [1] R title
+    pgs.push({ type:'toc', entries:[] });             // [2] L toc
+    if(prefaceText){
+      pgs.push({ type:'preface', text: prefaceText }); // [3] R preface
+    } else {
+      pgs.push({ type:'verso' });                    // [3] R blank
     }
 
-    function cleanName(filename) {
-      return filename
-        .replace(/\.[^.]+$/, '')
-        .replace(/^\d+[\s.\-–—]+/, '')
-        .trim();
+    // Measurement div
+    const mDiv = document.createElement('div');
+    mDiv.style.cssText = `position:fixed;left:-9999px;top:0;width:${MW}px;height:${MH}px;overflow:hidden;visibility:hidden;`;
+    document.body.appendChild(mDiv);
+
+    const tocEntries=[];
+    for(const poem of poems){
+      const startIdx = pgs.length;
+      const poemPages = paginatePoem(poem.name, poem.text, mDiv);
+      tocEntries.push({ title: poem.name, pgNum: startIdx+1, spread: Math.floor(startIdx/2) });
+      pgs.push(...poemPages);
     }
+    document.body.removeChild(mDiv);
 
-    async function fetchJSON(path) {
-      const r = await fetch(API + path, { headers: { Accept: 'application/vnd.github+json' } });
-      if (!r.ok) throw new Error(`GitHub API: ${r.status}`);
-      return r.json();
-    }
+    // Fill TOC
+    pgs[2].entries = tocEntries;
 
-    function decodeB64(str) {
-      return decodeURIComponent(
-        atob(str.replace(/\s/g,''))
-          .split('').map(c => '%' + ('00'+c.charCodeAt(0).toString(16)).slice(-2)).join('')
-      );
-    }
+    // Pad to even
+    if(pgs.length%2!==0) pgs.push({ type:'verso' });
+    return pgs;
+  }
 
-    function formatPoem(text) {
-      const esc2 = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-      return esc2.split(/\n{2,}/)
-        .map(s => s.trim()).filter(Boolean)
-        .map(s => `<span>${s.replace(/\n/g,'<br>')}</span>`)
-        .join('<span class="poem-pg-stanza"></span>');
-    }
+  // ── SPREAD RENDER ──────────────────────────────────────────────────────────
+  function showSpread(idx){
+    const li=idx*2, ri=li+1;
+    $('pageLC').innerHTML = renderPage(pages[li],  li+1);
+    $('pageRC').innerHTML = renderPage(pages[ri],  ri+1);
+    attachTOC();
+    spread = idx;
+    updateNav();
+  }
 
-    // ── BOOKSHELF ────────────────────────────────────────────────────────────
-    async function loadShelf() {
-      const shelf = document.getElementById('shelf');
-      try {
-        const items = await fetchJSON(encodeURIComponent(FOLDER).replace(/%2F/g,'/'));
-        const dirs  = items.filter(i => i.type === 'dir');
+  function jumpSpread(idx){
+    if(idx===spread||flipping) return;
+    showSpread(idx);
+  }
 
-        if (!dirs.length) {
-          shelf.innerHTML = `<div class="shelf-empty">Žádné sbírky zatím</div>`;
-          return;
-        }
+  function updateNav(){
+    const total = Math.ceil(pages.length/2);
+    $('prevBtn').disabled = spread<=0;
+    $('nextBtn').disabled = spread>=total-1;
+    $('pgInd').textContent = `${spread*2+1} — ${Math.min((spread+1)*2, pages.length)}`;
+  }
 
-        collections = dirs.map((d, i) => ({ name: d.name, colors: LEATHER[i % LEATHER.length], poems: null }));
+  // ── PAGE FLIP ──────────────────────────────────────────────────────────────
+  async function flipForward(){
+    if(flipping || spread >= Math.ceil(pages.length/2)-1) return;
+    flipping=true;
 
-        shelf.innerHTML = collections.map((col, i) => `
-          <div class="book-wrap" data-idx="${i}" title="${esc(col.name)}">
-            <div class="book-spine" style="background: linear-gradient(90deg, ${col.colors[0]} 0%, ${col.colors[1]} 50%, ${col.colors[0]} 100%);">
-              <span class="book-title-spine">${esc(col.name)}</span>
-            </div>
-            <div class="book-pages"></div>
+    const ns = spread+1;
+    const li=spread*2, ri=li+1, nli=ns*2, nri=nli+1;
+
+    const fl=$('flipR'), ff=$('flipRF'), fb=$('flipRB');
+    ff.innerHTML = renderPage(pages[ri],  ri+1);
+    fb.innerHTML = renderPage(pages[nli], nli+1);
+
+    fl.style.display='block';
+    fl.style.transition='none';
+    fl.style.transform='rotateY(0deg)';
+    fl.classList.remove('turning');
+    await sleep(20);
+
+    fl.style.transition='transform 0.7s cubic-bezier(0.645,0.045,0.355,1)';
+    fl.style.transform='rotateY(-180deg)';
+    fl.classList.add('turning');
+
+    await sleep(350);
+    $('pageLC').innerHTML = renderPage(pages[nli], nli+1);
+    attachTOC();
+
+    await sleep(360);
+    fl.style.display='none';
+    fl.classList.remove('turning');
+    $('pageRC').innerHTML = renderPage(pages[nri], nri+1);
+    attachTOC();
+
+    spread=ns;
+    updateNav();
+    flipping=false;
+  }
+
+  async function flipBackward(){
+    if(flipping || spread<=0) return;
+    flipping=true;
+
+    const ps=spread-1;
+    const li=spread*2, pli=ps*2, pri=pli+1;
+
+    const fl=$('flipL'), ff=$('flipLF'), fb=$('flipLB');
+    ff.innerHTML = renderPage(pages[li],  li+1);
+    fb.innerHTML = renderPage(pages[pri], pri+1);
+
+    fl.style.display='block';
+    fl.style.transition='none';
+    fl.style.transform='rotateY(0deg)';
+    fl.classList.remove('turning');
+    await sleep(20);
+
+    fl.style.transition='transform 0.7s cubic-bezier(0.645,0.045,0.355,1)';
+    fl.style.transform='rotateY(180deg)';
+    fl.classList.add('turning');
+
+    await sleep(350);
+    $('pageRC').innerHTML = renderPage(pages[pri], pri+1);
+    attachTOC();
+
+    await sleep(360);
+    fl.style.display='none';
+    fl.classList.remove('turning');
+    $('pageLC').innerHTML = renderPage(pages[pli], pli+1);
+    attachTOC();
+
+    spread=ps;
+    updateNav();
+    flipping=false;
+  }
+
+  // ── SHELF ──────────────────────────────────────────────────────────────────
+  async function loadShelf(){
+    const shelf=$('shelf');
+    try{
+      const items = await apiGet(encodeURIComponent(FOLDER).replace(/%2F/g,'/'));
+      const dirs  = items.filter(i=>i.type==='dir');
+      if(!dirs.length){ shelf.innerHTML=`<div style="position:relative;z-index:2;color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;padding-bottom:2rem;align-self:center">Žádné sbírky</div>`; return; }
+      collections = dirs.map((d,i)=>({ name:d.name, leather:LEATHER[i%LEATHER.length] }));
+      shelf.innerHTML = collections.map((c,i)=>`
+        <div class="book-wrap" data-i="${i}" title="${esc(c.name)}">
+          <div class="book-spine" style="background:linear-gradient(90deg,${c.leather[0]} 0%,${c.leather[1]} 50%,${c.leather[0]} 100%)">
+            <span class="book-title-spine">${esc(c.name)}</span>
           </div>
-        `).join('');
-
-        document.querySelectorAll('.book-wrap').forEach(el => {
-          el.addEventListener('click', () => openCollection(parseInt(el.dataset.idx)));
-        });
-
-      } catch(e) {
-        shelf.innerHTML = `<div class="shelf-error">Nepodařilo se načíst sbírky: ${esc(e.message)}</div>`;
-      }
-    }
-
-    // ── OPEN COLLECTION ──────────────────────────────────────────────────────
-    async function openCollection(idx) {
-      const col = collections[idx];
-
-      // Load poems if not yet loaded
-      if (!col.poems) {
-        try {
-          const items = await fetchJSON(
-            encodeURIComponent(FOLDER).replace(/%2F/g,'/') + '/' +
-            encodeURIComponent(col.name)
-          );
-          col.poems = items
-            .filter(i => i.type === 'file')
-            .map(f => ({ name: cleanName(f.name), url: f.url }));
-        } catch(e) {
-          col.poems = [];
-        }
-      }
-
-      currentCollection = col;
-      currentPoemIndex = -1;
-
-      // Populate TOC
-      document.getElementById('tocCollectionName').textContent = col.name;
-      const tocList = document.getElementById('tocList');
-
-      if (!col.poems.length) {
-        tocList.innerHTML = `<div style="font-family:'Lora',serif;font-style:italic;font-size:13px;color:var(--ink-muted);padding:1rem 0">Sbírka je prázdná</div>`;
-      } else {
-        tocList.innerHTML = col.poems.map((p, i) => `
-          <div class="toc-item" data-poem-idx="${i}">
-            <span class="toc-num">${i + 1}</span>
-            <span class="toc-item-name">${esc(p.name)}</span>
-            <span class="toc-dots"></span>
-          </div>
-        `).join('');
-
-        tocList.querySelectorAll('.toc-item').forEach(el => {
-          el.addEventListener('click', () => showPoem(parseInt(el.dataset.poemIdx)));
-        });
-      }
-
-      // Show empty right page
-      setRightPage(null);
-
-      // Update nav buttons
-      updateNavBtns();
-
-      // Show overlay
-      document.getElementById('overlay').classList.add('visible');
-      document.body.style.overflow = 'hidden';
-    }
-
-    // ── SHOW POEM ────────────────────────────────────────────────────────────
-    async function showPoem(idx, direction = 'next') {
-      if (!currentCollection || !currentCollection.poems[idx]) return;
-      const poem = currentCollection.poems[idx];
-
-      // Animate out
-      const inner = document.getElementById('poemPageInner');
-      inner.classList.add(direction === 'next' ? 'flip-out' : 'flip-in');
-
-      await sleep(200);
-
-      // Set loading
-      inner.innerHTML = `<div class="poem-pg-empty"><div class="spinner-small"></div></div>`;
-      inner.classList.remove('flip-out','flip-in');
-
-      // Trigger flip-in from opposite side
-      inner.classList.add(direction === 'next' ? 'flip-in' : 'flip-out');
-      await sleep(20);
-      inner.classList.remove('flip-in','flip-out');
-
-      // Fetch poem
-      try {
-        const data = await fetch(poem.url, { headers: { Accept: 'application/vnd.github+json' } }).then(r => r.json());
-        const raw  = data.encoding === 'base64' ? decodeB64(data.content) : data.content;
-        setRightPage({ title: poem.name, body: formatPoem(raw) });
-      } catch(e) {
-        setRightPage({ title: poem.name, body: `<span style="color:var(--ink-muted);font-style:italic">Nepodařilo se načíst báseň.</span>` });
-      }
-
-      currentPoemIndex = idx;
-
-      // Update TOC active state
-      document.querySelectorAll('.toc-item').forEach((el, i) => {
-        el.classList.toggle('active', i === idx);
+          <div class="book-pages"></div>
+        </div>`).join('');
+      document.querySelectorAll('.book-wrap').forEach(el=>{
+        el.addEventListener('click',()=>openCollection(+el.dataset.i));
       });
+    } catch(e){
+      shelf.innerHTML=`<div style="position:relative;z-index:2;color:var(--muted);padding:2rem">Chyba: ${esc(e.message)}</div>`;
+    }
+  }
 
-      // Page numbers
-      document.getElementById('leftPageNum').textContent = `${idx + 1} — ${currentCollection.poems.length}`;
+  // ── OPEN COLLECTION ────────────────────────────────────────────────────────
+  async function openCollection(idx){
+    const col = collections[idx];
+    const leather = col.leather;
 
-      updateNavBtns();
+    // Animate book out of shelf
+    const bookEl = document.querySelector(`.book-wrap[data-i="${idx}"]`);
+    if(bookEl){ bookEl.classList.add('extracting'); await sleep(200); }
+
+    // Dress the closed book
+    $('coverTitleText').textContent   = col.name;
+    $('closedSpineText').textContent  = col.name;
+    $('closedCover').style.background = `linear-gradient(135deg, ${leather[1]} 0%, ${leather[0]} 60%, ${leather[2]} 100%)`;
+    $('closedSpine').style.background = `linear-gradient(180deg, ${leather[2]} 0%, ${leather[0]} 100%)`;
+
+    // Show overlay with closed book
+    const cs=$('closedScene'), os=$('openScene');
+    cs.classList.remove('gone');
+    os.classList.remove('ready','animated');
+    $('overlay').classList.add('visible');
+    document.body.style.overflow='hidden';
+
+    if(bookEl){ await sleep(250); bookEl.classList.remove('extracting'); }
+
+    // Wire open handlers
+    $('closedBook').onclick = ()=>openBook(col);
+    document.querySelector('.open-hint').onclick = ()=>openBook(col);
+  }
+
+  async function openBook(col){
+    const cs=$('closedScene'), os=$('openScene');
+
+    // Fade out closed scene
+    cs.classList.add('gone');
+    await sleep(320);
+    cs.style.display='none';
+
+    // Show open scene (loading state)
+    os.classList.add('ready');
+    await sleep(20);
+    os.classList.add('animated');
+
+    // Fetch + build pages
+    try{
+      pages = await buildPages(col);
+    } catch(e){
+      pages=[{type:'verso'},{type:'title',title:col.name},{type:'toc',entries:[]},{type:'verso'}];
     }
 
-    function setRightPage(poem) {
-      const inner = document.getElementById('poemPageInner');
-      if (!poem) {
-        inner.innerHTML = `<div class="poem-pg-empty">Vyberte báseň ze seznamu →</div>`;
-        return;
-      }
-      inner.innerHTML = `
-        <div class="poem-pg-title">${esc(poem.title)}</div>
-        <div class="poem-pg-divider"></div>
-        <div class="poem-pg-body">${poem.body}</div>
-      `;
-    }
+    spread=0;
+    showSpread(0);
+  }
 
-    function updateNavBtns() {
-      const poems = currentCollection?.poems || [];
-      document.getElementById('prevBtn').disabled = currentPoemIndex <= 0;
-      document.getElementById('nextBtn').disabled = currentPoemIndex < 0 || currentPoemIndex >= poems.length - 1;
-    }
+  // ── CLOSE ──────────────────────────────────────────────────────────────────
+  function closeOverlay(){
+    $('overlay').classList.remove('visible');
+    document.body.style.overflow='';
+    setTimeout(()=>{
+      const cs=$('closedScene'), os=$('openScene');
+      cs.style.display=''; cs.classList.remove('gone');
+      os.classList.remove('ready','animated');
+      pages=[]; spread=0;
+    }, 500);
+  }
 
-    function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+  // ── EVENTS ─────────────────────────────────────────────────────────────────
+  $('closeBtn').addEventListener('click', closeOverlay);
+  $('overlay').addEventListener('click', e=>{ if(e.target===$('overlay')) closeOverlay(); });
+  $('prevBtn').addEventListener('click', flipBackward);
+  $('nextBtn').addEventListener('click', flipForward);
+  document.addEventListener('keydown', e=>{
+    if(!$('overlay').classList.contains('visible')) return;
+    if(e.key==='Escape')      closeOverlay();
+    if(e.key==='ArrowRight')  flipForward();
+    if(e.key==='ArrowLeft')   flipBackward();
+  });
 
-    // ── NAV BUTTONS ──────────────────────────────────────────────────────────
-    document.getElementById('prevBtn').addEventListener('click', () => {
-      if (currentPoemIndex > 0) showPoem(currentPoemIndex - 1, 'prev');
-    });
-    document.getElementById('nextBtn').addEventListener('click', () => {
-      if (currentCollection && currentPoemIndex < currentCollection.poems.length - 1)
-        showPoem(currentPoemIndex + 1, 'next');
-    });
-
-    // ── CLOSE ────────────────────────────────────────────────────────────────
-    document.getElementById('closeBtn').addEventListener('click', closeBook);
-    document.getElementById('overlay').addEventListener('click', e => {
-      if (e.target === document.getElementById('overlay')) closeBook();
-    });
-
-    function closeBook() {
-      document.getElementById('overlay').classList.remove('visible');
-      document.body.style.overflow = '';
-    }
-
-    // Keyboard navigation
-    document.addEventListener('keydown', e => {
-      if (!document.getElementById('overlay').classList.contains('visible')) return;
-      if (e.key === 'Escape') closeBook();
-      if (e.key === 'ArrowRight') document.getElementById('nextBtn').click();
-      if (e.key === 'ArrowLeft')  document.getElementById('prevBtn').click();
-    });
-
-    // ── BOOT ─────────────────────────────────────────────────────────────────
-    loadShelf();
+  // ── BOOT ───────────────────────────────────────────────────────────────────
+  loadShelf();
   </script>
-
 </body>
 </html>
