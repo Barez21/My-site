@@ -93,7 +93,7 @@
     }
 
     .book-spine {
-      width: 72px; height: 280px; border-radius: 2px 0 0 2px; position: relative;
+      width: 80px; height: 300px; border-radius: 2px 0 0 2px; position: relative;
       display: flex; align-items: center; justify-content: center;
       box-shadow: 4px 0 10px rgba(0,0,0,0.5), inset -2px 0 4px rgba(0,0,0,0.25), inset 2px 0 4px rgba(255,255,255,0.06);
       transition: box-shadow 0.3s;
@@ -111,7 +111,7 @@
       writing-mode: vertical-rl; transform: rotate(180deg);
       font-family: 'Lora', serif; font-size: 13px; font-style: italic; letter-spacing: 0.1em;
       color: rgba(255,220,140,0.92); text-shadow: 0 1px 3px rgba(0,0,0,0.7);
-      position: relative; z-index: 1; max-height: 220px; overflow: hidden; white-space: nowrap; padding: 0 6px;
+      position: relative; z-index: 1; width: 100%; overflow: hidden; white-space: normal; word-break: break-word; hyphens: auto; padding: 0 8px; text-align: center;
     }
     .book-pages { display: none; }
     .shelf-loading { position: relative; z-index: 2; padding-bottom: 2rem; align-self: center; }
@@ -211,8 +211,8 @@
 
     .open-book {
       display: flex;
-      width: min(calc(127.3vh + 22px), 96vw);
-      height: min(90vh, 900px);
+      width: min(calc(127.28vh + 22px), 96vw);
+      height: min(90vh, 920px);
       filter: drop-shadow(0 44px 88px rgba(0,0,0,0.75));
       position: relative;
     }
@@ -606,7 +606,7 @@
   }
 
   // ── BUILD PAGES ────────────────────────────────────────────────────────────
-  async function buildPages(col){
+  async function buildPages(col, _dims){ const _DW=(_dims||{}).w||300, _DH=(_dims||{}).h||480;
     const path = encodeURIComponent(FOLDER).replace(/%2F/g,'/') + '/' + encodeURIComponent(col.name);
     const items = await apiGet(path);
     const files = items.filter(i=>i.type==='file');
@@ -635,7 +635,7 @@
     // Measurement div — sized to actual page content area
     const dims = getPageDims();
     const mDiv = document.createElement('div');
-    mDiv.style.cssText = `position:fixed;left:-9999px;top:0;width:${dims.w}px;height:${dims.h}px;overflow:hidden;visibility:hidden;font-family:'Lora',serif;`;
+    mDiv.style.cssText = `position:fixed;left:-9999px;top:0;width:${_DW}px;height:${_DH}px;overflow:hidden;visibility:hidden;font-family:'Lora',serif;`;
     document.body.appendChild(mDiv);
 
     const tocEntries=[];
@@ -816,9 +816,16 @@
     os.classList.add('animated');
 
     // Fetch + build pages
-    measurePage();
+    // Measure actual page area for pagination
+    const _pR = document.getElementById('pageR');
+    let _dims = { w: 300, h: 480 };
+    if(_pR){
+      const _cs = getComputedStyle(_pR);
+      _dims.w = Math.floor(_pR.clientWidth  - parseFloat(_cs.paddingLeft) - parseFloat(_cs.paddingRight));
+      _dims.h = Math.floor(_pR.clientHeight - parseFloat(_cs.paddingTop)  - parseFloat(_cs.paddingBottom) - 32);
+    }
     try{
-      pages = await buildPages(col);
+      pages = await buildPages(col, _dims);
     } catch(e){
       pages=[{type:'verso'},{type:'title',title:col.name},{type:'toc',entries:[]},{type:'verso'}];
     }
