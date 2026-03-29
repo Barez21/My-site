@@ -206,7 +206,7 @@
 
     /* ── OPEN BOOK SCENE ── */
     .open-scene {
-      display: none; flex-direction: column; align-items: center; gap: 1.2rem;
+      display: none; flex-direction: column; align-items: center; gap: 0.7rem;
       transform: scale(0.9) translateY(24px); opacity: 0;
       transition: transform 0.5s cubic-bezier(0.34, 1.4, 0.64, 1), opacity 0.45s ease;
     }
@@ -215,8 +215,8 @@
 
     .open-book {
       display: flex;
-      width: min(880px, 94vw);
-      height: min(580px, 80vh);
+      width: min(1060px, 96vw);
+      height: min(900px, 90vh);
       filter: drop-shadow(0 44px 88px rgba(0,0,0,0.75));
       position: relative;
     }
@@ -252,6 +252,7 @@
     .pg-content {
       position: relative; z-index: 1; height: 100%;
       display: flex; flex-direction: column;
+      overflow: hidden;
     }
 
     /* Spinner inside page */
@@ -273,7 +274,7 @@
     /* TOC PAGE */
     .pg-toc { flex: 1; display: flex; flex-direction: column; }
     .toc-hd { font-family: 'Lora', serif; font-size: 13px; font-style: italic; color: var(--ink-muted); letter-spacing: 0.08em; padding-bottom: 0.7rem; border-bottom: 1px solid rgba(42,31,20,0.14); margin-bottom: 0.8rem; }
-    .toc-entries { flex: 1; }
+    .toc-entries { flex: 1; overflow: hidden; }
     .toc-row { display: flex; align-items: baseline; gap: 4px; padding: 0.3rem 0; border-bottom: 1px dotted rgba(42,31,20,0.08); cursor: pointer; transition: opacity 0.15s; }
     .toc-row:last-child { border-bottom: none; }
     .toc-row:hover { opacity: 0.65; }
@@ -285,7 +286,7 @@
     /* PREFACE PAGE */
     .pg-preface { flex: 1; display: flex; flex-direction: column; }
     .pref-hd { font-family: 'Lora', serif; font-size: 13px; font-style: italic; color: var(--ink-muted); padding-bottom: 0.6rem; border-bottom: 1px solid rgba(42,31,20,0.12); margin-bottom: 0.8rem; }
-    .pref-body { font-family: var(--poem-font); font-size: 12px; line-height: 1.85; color: var(--ink-mid); flex: 1; }
+    .pref-body { font-family: var(--poem-font); font-size: 12px; line-height: 1.85; color: var(--ink-mid); flex: 1; overflow: hidden; }
     .pref-body p { margin-bottom: 0.6em; }
 
     /* POEM PAGE */
@@ -297,6 +298,7 @@
       flex: 1; font-family: var(--poem-font); font-size: 13px; line-height: 1.95;
       color: var(--ink); text-align: center;
       font-feature-settings: 'rand' 1, 'calt' 1;
+      overflow: hidden;
     }
     .poem-sbr { display: block; height: 0.85em; }
 
@@ -481,7 +483,6 @@
   ];
 
   // Measurement box dimensions (match actual page inner area approximately)
-  const MW = 295, MH = 395;
 
   // ── STATE ──────────────────────────────────────────────────────────────────
   let collections  = [];
@@ -509,6 +510,15 @@
   }
 
   // ── PAGINATION ─────────────────────────────────────────────────────────────
+  // Measure actual page content area at runtime
+  function getPageDims(){
+    const pg = document.getElementById('pageR');
+    const style = getComputedStyle(pg);
+    const w = pg.clientWidth  - parseFloat(style.paddingLeft)  - parseFloat(style.paddingRight);
+    const h = pg.clientHeight - parseFloat(style.paddingTop)   - parseFloat(style.paddingBottom);
+    return { w: Math.floor(w), h: Math.floor(h) };
+  }
+
   function parseUnits(raw){
     const units=[];
     raw.split(/\n{2,}/).forEach((st,si)=>{
@@ -526,7 +536,8 @@
     ).join('');
   }
 
-  function paginatePoem(title, raw, mDiv){
+  function paginatePoem(title, raw, mDiv, dims){
+    const MH = dims.h, MW = dims.w;
     const units = parseUnits(raw);
     if(!units.length) return [{ type:'poem', title, units:[], poemTitle:title }];
     const out=[];
@@ -623,15 +634,16 @@
       pgs.push({ type:'verso' });                    // [3] R blank
     }
 
-    // Measurement div
+    // Measurement div — sized to actual page content area
+    const dims = getPageDims();
     const mDiv = document.createElement('div');
-    mDiv.style.cssText = `position:fixed;left:-9999px;top:0;width:${MW}px;height:${MH}px;overflow:hidden;visibility:hidden;`;
+    mDiv.style.cssText = `position:fixed;left:-9999px;top:0;width:${dims.w}px;height:${dims.h}px;overflow:hidden;visibility:hidden;font-family:'Lora',serif;`;
     document.body.appendChild(mDiv);
 
     const tocEntries=[];
     for(const poem of poems){
       const startIdx = pgs.length;
-      const poemPages = paginatePoem(poem.name, poem.text, mDiv);
+      const poemPages = paginatePoem(poem.name, poem.text, mDiv, dims);
       tocEntries.push({ title: poem.name, pgNum: startIdx+1, spread: Math.floor(startIdx/2) });
       pgs.push(...poemPages);
     }
