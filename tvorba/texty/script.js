@@ -103,9 +103,29 @@
         pageUnits.push(units[j]); j++;
       }
       if(!pageUnits.length){ pageUnits.push(units[j]||{t:'ln',text:''}); j++; }
+
+      // Orphan protection — pokud zbývá málo řádků (≤2 linek textu),
+      // přidej je na tuto stránku aby nebyly samy na další
+      const remainingLines = units.slice(j).filter(u=>u.t==='ln').length;
+      if(remainingLines > 0 && remainingLines <= 2 && j < units.length){
+        while(j < units.length){ pageUnits.push(units[j]); j++; }
+      }
       out.push({ type: first?'poem':'poem-cont', title: first?title:null, units:pageUnits, poemTitle:title });
       i=j; first=false;
     }
+
+    // Orphan control: pokud poslední stránka má méně než 3 obsahové řádky,
+    // přesunout je na předposlední (pokud existuje a má místo)
+    if(out.length >= 2){
+      const last = out[out.length-1];
+      const contentUnits = last.units.filter(u => u.t==='ln');
+      if(contentUnits.length <= 2 && contentUnits.length > 0){
+        const prev = out[out.length-2];
+        prev.units = [...prev.units, ...last.units];
+        out.pop();
+      }
+    }
+
     return out;
   }
 
@@ -379,6 +399,7 @@
   }
 
   async function openBook(col){
+    _currentCol = col;
     const cs=$('closedScene'), os=$('openScene');
 
     // Fade out closed scene
@@ -493,6 +514,29 @@
     if(flipping) return;
     showMobilePage(mobilePage - 1);
   }
+
+  // ── RESIZE: přestavět stránky při změně okna ──────────────────────────────
+  let _resizeTimer = null;
+  let _currentCol  = null;
+
+  window.addEventListener('resize', () => {
+    if(!$('overlay').classList.contains('visible')) return;
+    if(!_currentCol) return;
+    clearTimeout(_resizeTimer);
+    _resizeTimer = setTimeout(async () => {
+      const _pR = document.getElementById('pageR');
+      if(!_pR) return;
+      const _cs = getComputedStyle(_pR);
+      const _w = Math.floor(_pR.clientWidth  - parseFloat(_cs.paddingLeft) - parseFloat(_cs.paddingRight));
+      const _h = Math.floor(_pR.clientHeight - parseFloat(_cs.paddingTop)  - parseFloat(_cs.paddingBottom) - 32);
+      if(_w < 50 || _h < 50) return;
+      const oldSpread = spread;
+      pages = await buildPages(_currentCol, { w:_w, h:_h });
+      const newTotal = Math.ceil(pages.length/2);
+      showSpread(Math.min(oldSpread, newTotal-1));
+      if(isMobile()) showMobilePage(Math.min(mobilePage, pages.length-1));
+    }, 400);
+  });
 
   // ── BOOT ───────────────────────────────────────────────────────────────────
   loadShelf();
