@@ -1,26 +1,45 @@
 {
   "collections": [
     {
+      "name": "Semínka Touhy",
+      "poems": [
+        "01 Kříž touhy vláčím….txt",
+        "02 Je mi jedno kolik času uplyne….txt",
+        "03 Kdo zachrání Tě….txt",
+        "04 Špendlík pod nehet.txt",
+        "05 Vysoká laťka.txt",
+        "06 Ty víš, že chci víc.txt",
+        "07 Vždycky Tě potkám poprvé.txt",
+        "08 Nevadí mi, že volíš jiného.txt",
+        "09 Moštárna C.txt",
+        "10 Dotknout se Tě.txt",
+        "11 Stanu se Láskou.txt",
+        "12 To kouzlo.txt",
+        "13 Vítr smetl poslední listí.txt",
+        "14 Obléhání.txt"
+      ]
+    },
+    {
       "name": "Verše pro Bílou čarodějku ze Severu",
       "preface": "predmluva.txt",
       "poems": [
-      "01 Znám Tě, Ženo....txt",
-      "02 V Tobě se ztrácím....txt",
-      "03 Když sráží se galaxie....txt",
-      "04 Mé srdce žije daleko odsud....txt",
-      "05 Naplněni láskou vyhlížíme katastrofu....txt",
-      "06 V kožíšku spáváš....txt",
-      "07 Dva sloni v teráriu.txt",
-      "08 Pýcha.txt",
-      "09 Už nevidím jinou cestu kterak míti klid....txt",
-      "10 Svěrací kazajka mého strachu.txt",
-      "11 Mrzí mě....txt",
-      "12 Jsi jemný jarní vánek....txt",
-      "13 Láska....txt",
-      "14 Vypustit tu bolest....txt",
-      "15 Prsty projet Tvé dlouhé vlasy.txt",
-      "16 Smrt jednoho vztahu.txt",
-      "17 Jsem jednorožec, vole....txt"
+        "01 Znám Tě, Ženo....txt",
+        "02 V Tobě se ztrácím....txt",
+        "03 Když sráží se galaxie....txt",
+        "04 Mé srdce žije daleko odsud....txt",
+        "05 Naplněni láskou vyhlížíme katastrofu....txt",
+        "06 V kožíšku spáváš....txt",
+        "07 Dva sloni v teráriu.txt",
+        "08 Pýcha.txt",
+        "09 Už nevidím jinou cestu kterak míti klid....txt",
+        "10 Svěrací kazajka mého strachu.txt",
+        "11 Mrzí mě....txt",
+        "12 Jsi jemný jarní vánek....txt",
+        "13 Láska....txt",
+        "14 Vypustit tu bolest....txt",
+        "15 Prsty projet Tvé dlouhé vlasy.txt",
+        "16 Smrt jednoho vztahu.txt",
+        "17 Jsem jednorožec, vole....txt"
       ]
     }
   ]
