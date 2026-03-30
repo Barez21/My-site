@@ -12,7 +12,13 @@
       --ink:       #2a1f14;
       --ink-mid:   #5a4838;
       --ink-muted: #9a8878;
-      --poem-font: 'Lora', Georgia, serif;
+	  @font-face {
+  font-family: 'TomasRand';
+  src: url('/res/fonts/tomas_rand.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+      --poem-font: 'TomasRand', serif;
       /* Dimensions used for DOM measurement pagination */
       --pg-w: 300px;
       --pg-h: 400px;
