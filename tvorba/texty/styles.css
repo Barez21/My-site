@@ -250,7 +250,7 @@
     .pt-author { font-family: 'Lora', serif; font-size: 12px; font-style: italic; color: var(--ink-mid); margin-top: 0.25rem; }
 
     /* TOC PAGE */
-    .pg-toc { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+    .pg-toc { flex: 1; display: flex; flex-direction: column; justify-content: flex-start; min-height: 0; }
     .toc-hd { font-family: 'Lora', serif; font-size: 11px; font-style: italic; color: var(--ink-muted); letter-spacing: 0.08em; padding-bottom: 0.4rem; border-bottom: 1px solid rgba(42,31,20,0.14); margin-bottom: 0.5rem; flex-shrink: 0; }
     .toc-entries { flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: space-evenly; }
     .toc-row { display: flex; align-items: baseline; gap: 4px; padding: 0.15rem 0; border-bottom: 1px dotted rgba(42,31,20,0.06); cursor: pointer; transition: opacity 0.15s; flex-shrink: 0; }
