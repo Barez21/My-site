@@ -1,0 +1,72 @@
+name: Aktualizovat manifest básní
+
+on:
+  push:
+    paths:
+      - 'tvorba/texty/básně/**'
+
+jobs:
+  update-manifest:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generovat manifest.json
+        run: |
+          python3 << 'PYEOF'
+          import os, json
+
+          BASNE_DIR = 'tvorba/texty/básně'
+          MANIFEST  = 'tvorba/texty/manifest.json'
+
+          # Načíst existující manifest (kvůli zachování předmluv)
+          existing = {}
+          if os.path.exists(MANIFEST):
+              with open(MANIFEST, 'r', encoding='utf-8') as f:
+                  data = json.load(f)
+              for col in data.get('collections', []):
+                  existing[col['name']] = col.get('preface', None)
+
+          collections = []
+          for col_name in sorted(os.listdir(BASNE_DIR)):
+              col_path = os.path.join(BASNE_DIR, col_name)
+              if not os.path.isdir(col_path):
+                  continue
+
+              files = sorted(os.listdir(col_path))
+
+              # Detekovat předmluvu
+              preface = None
+              for f in files:
+                  if f.lower().startswith(('predmluva', 'preface', 'uvod', 'intro')):
+                      preface = f
+                      break
+
+              # Básně = vše ostatní
+              poems = [f for f in files if f != preface]
+
+              col = {'name': col_name, 'poems': poems}
+              if preface:
+                  col['preface'] = preface
+              collections.append(col)
+
+          manifest = {'collections': collections}
+          with open(MANIFEST, 'w', encoding='utf-8') as f:
+              json.dump(manifest, f, ensure_ascii=False, indent=2)
+
+          print(f"Hotovo — {len(collections)} sbírek zapsáno do {MANIFEST}")
+          for c in collections:
+              print(f"  • {c['name']}: {len(c['poems'])} básní")
+          PYEOF
+
+      - name: Commit manifest.json
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add tvorba/texty/manifest.json
+          git diff --staged --quiet || git commit -m "auto: aktualizovat manifest.json"
+          git push
