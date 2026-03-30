@@ -93,7 +93,7 @@
     }
 
     .book-spine {
-      width: 80px; height: 300px; border-radius: 2px 0 0 2px; position: relative;
+      width: 96px; height: 300px; border-radius: 2px 0 0 2px; position: relative;
       display: flex; align-items: center; justify-content: center;
       box-shadow: 4px 0 10px rgba(0,0,0,0.5), inset -2px 0 4px rgba(0,0,0,0.25), inset 2px 0 4px rgba(255,255,255,0.06);
       transition: box-shadow 0.3s;
@@ -111,7 +111,8 @@
       writing-mode: vertical-rl; transform: rotate(180deg);
       font-family: 'Lora', serif; font-size: 13px; font-style: italic; letter-spacing: 0.1em;
       color: rgba(255,220,140,0.92); text-shadow: 0 1px 3px rgba(0,0,0,0.7);
-      position: relative; z-index: 1; width: 100%; overflow: hidden; white-space: normal; word-break: break-word; hyphens: auto; padding: 0 8px; text-align: center;
+      position: relative; z-index: 1; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+      overflow: hidden; white-space: normal; word-break: break-word; hyphens: auto; padding: 10px 10px; text-align: center;
     }
     .book-pages { display: none; }
     .shelf-loading { position: relative; z-index: 2; padding-bottom: 2rem; align-self: center; }
@@ -138,34 +139,26 @@
 
     /* ── CLOSED BOOK SCENE ── */
     .closed-scene {
-      display: flex; flex-direction: column; align-items: center; gap: 1.8rem;
-      transform: translateY(40px) scale(0.88); opacity: 0;
-      transition: transform 0.55s cubic-bezier(0.34, 1.4, 0.64, 1), opacity 0.4s ease;
+      display: flex; flex-direction: column; align-items: center; gap: 1.4rem;
+      transform: translateY(30px); opacity: 0;
+      transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease;
     }
-    .overlay.visible .closed-scene:not(.gone) { transform: translateY(0) scale(1); opacity: 1; }
+    .overlay.visible .closed-scene:not(.gone) { transform: translateY(0); opacity: 1; }
     .closed-scene.gone { opacity: 0 !important; transform: scale(0.94) translateY(-16px) !important; transition: all 0.3s ease !important; pointer-events: none; }
 
     .closed-book-3d {
       display: flex; cursor: pointer;
-      filter: drop-shadow(0 32px 64px rgba(0,0,0,0.7));
+      filter: drop-shadow(0 32px 80px rgba(0,0,0,0.75));
       transition: transform 0.3s ease;
     }
-    .closed-book-3d:hover { transform: scale(1.025) translateY(-5px); }
+    .closed-book-3d:hover { transform: translateY(-6px); }
 
-    .closed-spine {
-      width: 38px; border-radius: 2px 0 0 2px; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: inset -2px 0 5px rgba(0,0,0,0.35);
-    }
-    .closed-spine span {
-      writing-mode: vertical-rl; transform: rotate(180deg);
-      font-family: 'Lora', serif; font-size: 12px; font-style: italic; letter-spacing: 0.12em;
-      color: rgba(255,220,120,0.75); white-space: nowrap; overflow: hidden; max-height: 350px; padding: 0 5px;
-    }
+    .closed-spine { display: none; }
 
     .closed-cover {
-      width: 320px; min-height: 452px; position: relative; overflow: hidden;
-      display: flex; align-items: center; justify-content: center; padding: 2.2rem 2rem;
+      width: min(63.64vh, 46vw); height: min(90vh, 920px); position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center; padding: 2.6rem 2.4rem;
+      border-radius: 2px 4px 4px 2px;
     }
     .closed-cover::before { /* leather grain */
       content: ''; position: absolute; inset: 0;
@@ -182,17 +175,13 @@
     .cover-inner::before { content: ''; position: absolute; inset: 5px; border: 1px solid rgba(255,210,100,0.1); }
     .cover-orn { display: block; font-size: 13px; color: rgba(255,210,100,0.45); letter-spacing: 0.25em; margin: 0.5rem 0; }
     .cover-title-text {
-      font-family: 'Lora', serif; font-size: 22px; font-style: italic; font-weight: 500;
+      font-family: 'Lora', serif; font-size: 26px; font-style: italic; font-weight: 500;
       color: rgba(255,220,140,0.92); text-shadow: 0 1px 6px rgba(0,0,0,0.6);
-      line-height: 1.3; margin: 0.8rem 0; letter-spacing: 0.02em;
+      line-height: 1.3; margin: 1rem 0; letter-spacing: 0.02em;
     }
     .cover-sub { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,200,100,0.35); margin-top: 0.6rem; }
 
-    .closed-pages-edge {
-      width: 16px; flex-shrink: 0;
-      background: repeating-linear-gradient(90deg, #ddd0be 0px, #c4b8a5 1px, #eae0ce 1px, #eae0ce 3px);
-      border-radius: 0 2px 2px 0; box-shadow: 3px 0 8px rgba(0,0,0,0.35);
-    }
+    .closed-pages-edge { display: none; }
 
     .open-hint {
       font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
@@ -203,11 +192,11 @@
     /* ── OPEN BOOK SCENE ── */
     .open-scene {
       display: none; flex-direction: column; align-items: center; gap: 0.7rem;
-      transform: scale(0.9) translateY(24px); opacity: 0;
-      transition: transform 0.5s cubic-bezier(0.34, 1.4, 0.64, 1), opacity 0.45s ease;
+      transform: translateY(18px); opacity: 0;
+      transition: transform 0.4s ease, opacity 0.35s ease;
     }
     .open-scene.ready { display: flex; }
-    .open-scene.animated { transform: scale(1) translateY(0); opacity: 1; }
+    .open-scene.animated { transform: translateY(0); opacity: 1; }
 
     .open-book {
       display: flex;
@@ -221,6 +210,7 @@
     .bk-page {
       flex: 1; position: relative; overflow: hidden;
       padding: 2.5rem 2.6rem 2.2rem;
+      cursor: pointer; user-select: none;
     }
     .open-book { align-items: stretch; }
     .bk-page { align-self: stretch; }
@@ -682,32 +672,37 @@
     if(flipping || spread >= Math.ceil(pages.length/2)-1) return;
     flipping=true;
 
-    const ns = spread+1;
-    const li=spread*2, ri=li+1, nli=ns*2, nri=nli+1;
+    const ns=spread+1;
+    const ri=spread*2+1, nli=ns*2, nri=nli+1;
 
+    // Pre-render BOTH target pages into the flipper faces BEFORE animating
     const fl=$('flipR'), ff=$('flipRF'), fb=$('flipRB');
-    ff.innerHTML = renderPage(pages[ri],  ri+1);
-    fb.innerHTML = renderPage(pages[nli], nli+1);
+    ff.innerHTML = renderPage(pages[ri],  ri+1);   // front = current right
+    fb.innerHTML = renderPage(pages[nli], nli+1);  // back  = next left
 
+    // Also pre-render the new right page (hidden behind) so it's ready
+    $('pageRC').innerHTML = renderPage(pages[nri], nri+1);
+    attachTOC();
+
+    // Start flip — from flat to -180deg
     fl.style.display='block';
     fl.style.transition='none';
     fl.style.transform='rotateY(0deg)';
     fl.classList.remove('turning');
-    await sleep(20);
+    void fl.offsetWidth; // force reflow
 
-    fl.style.transition='transform 0.7s cubic-bezier(0.645,0.045,0.355,1)';
+    fl.style.transition='transform 0.7s cubic-bezier(0.77,0,0.175,1)';
     fl.style.transform='rotateY(-180deg)';
     fl.classList.add('turning');
 
+    // At halfway (350ms), swap left page to next-left (already matches fb)
     await sleep(350);
     $('pageLC').innerHTML = renderPage(pages[nli], nli+1);
     attachTOC();
 
-    await sleep(360);
+    await sleep(370);
     fl.style.display='none';
     fl.classList.remove('turning');
-    $('pageRC').innerHTML = renderPage(pages[nri], nri+1);
-    attachTOC();
 
     spread=ns;
     updateNav();
@@ -722,16 +717,20 @@
     const li=spread*2, pli=ps*2, pri=pli+1;
 
     const fl=$('flipL'), ff=$('flipLF'), fb=$('flipLB');
-    ff.innerHTML = renderPage(pages[li],  li+1);
-    fb.innerHTML = renderPage(pages[pri], pri+1);
+    ff.innerHTML = renderPage(pages[li],  li+1);   // front = current left
+    fb.innerHTML = renderPage(pages[pri], pri+1);  // back  = prev right
+
+    // Pre-render new left page
+    $('pageLC').innerHTML = renderPage(pages[pli], pli+1);
+    attachTOC();
 
     fl.style.display='block';
     fl.style.transition='none';
     fl.style.transform='rotateY(0deg)';
     fl.classList.remove('turning');
-    await sleep(20);
+    void fl.offsetWidth;
 
-    fl.style.transition='transform 0.7s cubic-bezier(0.645,0.045,0.355,1)';
+    fl.style.transition='transform 0.7s cubic-bezier(0.77,0,0.175,1)';
     fl.style.transform='rotateY(180deg)';
     fl.classList.add('turning');
 
@@ -739,11 +738,9 @@
     $('pageRC').innerHTML = renderPage(pages[pri], pri+1);
     attachTOC();
 
-    await sleep(360);
+    await sleep(370);
     fl.style.display='none';
     fl.classList.remove('turning');
-    $('pageLC').innerHTML = renderPage(pages[pli], pli+1);
-    attachTOC();
 
     spread=ps;
     updateNav();
@@ -848,6 +845,8 @@
 
   // ── EVENTS ─────────────────────────────────────────────────────────────────
   $('closeBtn').addEventListener('click', closeOverlay);
+  $('pageL').addEventListener('click', flipBackward);
+  $('pageR').addEventListener('click', flipForward);
   $('overlay').addEventListener('click', e=>{ if(e.target===$('overlay')) closeOverlay(); });
   $('prevBtn').addEventListener('click', flipBackward);
   $('nextBtn').addEventListener('click', flipForward);
