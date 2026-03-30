@@ -149,7 +149,10 @@
 
   function attachTOC(){
     document.querySelectorAll('.toc-row[data-spread]').forEach(el=>{
-      el.addEventListener('click',()=>{ jumpSpread(parseInt(el.dataset.spread)); });
+      el.addEventListener('click',(e)=>{
+        e.stopPropagation(); // nezastavit flip na pageL
+        jumpSpread(parseInt(el.dataset.spread));
+      });
     });
   }
 
