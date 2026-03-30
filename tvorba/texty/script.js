@@ -35,7 +35,10 @@
 
   // ── RAW FETCH (bez GitHub API, bez rate limitu) ────────────────────────────
   async function rawGet(path){
-    const r = await fetch(RAW + path.split('/').map(encodeURIComponent).join('/'));
+    // encodeURIComponent nekóduje tečky — ale '..' v URL browser normalizuje jako 'jdi výš'
+    // Proto nahrazujeme '..' za '%2E%2E' aby browser neinterpretoval čtyři tečky v názvu souboru
+    const encoded = path.split('/').map(s => encodeURIComponent(s).replace(/\.\./g, '%2E%2E')).join('/');
+    const r = await fetch(RAW + encoded);
     if(!r.ok) throw new Error(`Fetch ${r.status}: ${path}`);
     return r.text();
   }
