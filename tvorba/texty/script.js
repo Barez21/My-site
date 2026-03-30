@@ -33,15 +33,28 @@
 
   // ── GITHUB API ─────────────────────────────────────────────────────────────
   async function apiGet(path){
+    const cacheKey = 'gh_' + path;
+    const cached = sessionStorage.getItem(cacheKey);
+    if(cached) return JSON.parse(cached);
     const r = await fetch(API + path, { headers:{ Accept:'application/vnd.github+json' }});
     if(!r.ok) throw new Error(`GitHub ${r.status}`);
-    return r.json();
+    const data = await r.json();
+    try{ sessionStorage.setItem(cacheKey, JSON.stringify(data)); } catch(e){}
+    return data;
   }
   async function fileText(url){
+    const cacheKey = 'gh_file_' + url;
+    const cached = sessionStorage.getItem(cacheKey);
+    if(cached) return cached;
     const d = await fetch(url, { headers:{ Accept:'application/vnd.github+json' }}).then(r=>r.json());
-    if(d.encoding==='base64')
-      return decodeURIComponent(atob(d.content.replace(/\s/g,'')).split('').map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join(''));
-    return d.content||'';
+    if(d.encoding==='base64'){
+      const text = decodeURIComponent(atob(d.content.replace(/\s/g,'')).split('').map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+      try{ sessionStorage.setItem(cacheKey, text); } catch(e){}
+      return text;
+    }
+    const text = d.content||'';
+    try{ sessionStorage.setItem(cacheKey, text); } catch(e){}
+    return text;
   }
 
   // ── PAGINATION ─────────────────────────────────────────────────────────────
