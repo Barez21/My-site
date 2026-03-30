@@ -33,6 +33,9 @@
   function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
   function clean(fn){ return fn.replace(/\.[^.]+$/,'').replace(/^\d+[\s.\-–—]+/,'').trim(); }
 
+const encoded = path.split('/').map(s => encodeURIComponent(s).replace(/\.\./g, '%2E%2E')).join('/');
+console.log('FETCH URL:', RAW + encoded);
+const r = await fetch(RAW + encoded);
   // ── RAW FETCH (bez GitHub API, bez rate limitu) ────────────────────────────
   async function rawGet(path){
     // encodeURIComponent nekóduje tečky — ale '..' v URL browser normalizuje jako 'jdi výš'
