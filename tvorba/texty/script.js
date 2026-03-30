@@ -31,7 +31,7 @@
   const sleep = ms => new Promise(r => setTimeout(r, ms));
   const $  = id => document.getElementById(id);
   function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-  function clean(fn){ return fn.replace(/\.[^.]+$/,'').replace(/^\d+[\s.\-–—]+/,'').trim(); }
+  function clean(fn){ return fn.normalize('NFC').replace(/\.[^.]+$/,'').replace(/^\d+[\s.\-–—]+/,'').trim(); }
 
   // ── RAW FETCH (bez GitHub API, bez rate limitu) ────────────────────────────
   async function rawGet(path){
