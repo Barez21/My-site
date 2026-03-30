@@ -356,17 +356,15 @@
       /* Hřbet skrýt */
       .bk-spine { display: none; }
 
-      /* Levá stránka skrytá — zobrazuje se jen pravá */
+      /* Na mobilu: levá skrytá, jen pravý slot se používá pro všechny stránky */
       .bk-page-l { display: none; }
+      #flipL { display: none !important; }
+      #flipR { display: none !important; }
 
-      /* Pravá stránka = celá šířka knihy */
       .bk-page-r {
         flex: 1;
         border-radius: 4px;
       }
-
-      /* Flipper pro levou stránku skrýt */
-      #flipL { display: none !important; }
 
       /* Police */
       .shelf { padding: 2rem 1.2rem 0; gap: 7px; }

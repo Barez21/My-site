@@ -414,6 +414,7 @@
 
     spread=0;
     showSpread(0);
+    if(isMobile()) showMobilePage(1);
   }
 
   // ── CLOSE ──────────────────────────────────────────────────────────────────
@@ -430,16 +431,16 @@
 
   // ── EVENTS ─────────────────────────────────────────────────────────────────
   $('closeBtn').addEventListener('click', closeOverlay);
-  $('pageL').addEventListener('click', flipBackward);
-  $('pageR').addEventListener('click', flipForward);
+  $('pageL').addEventListener('click', ()=> isMobile() ? mobileFlipBackward() : flipBackward());
+  $('pageR').addEventListener('click', ()=> isMobile() ? mobileFlipForward()  : flipForward());
   $('overlay').addEventListener('click', e=>{ if(e.target===$('overlay')) closeOverlay(); });
-  $('prevBtn').addEventListener('click', flipBackward);
-  $('nextBtn').addEventListener('click', flipForward);
+  $('prevBtn').addEventListener('click', ()=> isMobile() ? mobileFlipBackward() : flipBackward());
+  $('nextBtn').addEventListener('click', ()=> isMobile() ? mobileFlipForward()  : flipForward());
   document.addEventListener('keydown', e=>{
     if(!$('overlay').classList.contains('visible')) return;
     if(e.key==='Escape')      closeOverlay();
-    if(e.key==='ArrowRight')  flipForward();
-    if(e.key==='ArrowLeft')   flipBackward();
+    if(e.key==='ArrowRight')  isMobile() ? mobileFlipForward()  : flipForward();
+    if(e.key==='ArrowLeft')   isMobile() ? mobileFlipBackward() : flipBackward();
   });
 
   // ── SWIPE GESTA — drátujeme na overlay (vždy v DOM) ──────────────────────
@@ -454,31 +455,44 @@
     const dx = e.changedTouches[0].clientX - _touchStartX;
     _touchStartX = null;
     if(Math.abs(dx) < 40) return;
-    if(dx < 0) flipForward();
-    else        flipBackward();
+    if(isMobile()){
+      if(dx < 0) mobileFlipForward();
+      else        mobileFlipBackward();
+    } else {
+      if(dx < 0) flipForward();
+      else        flipBackward();
+    }
   }, { passive: true });
 
-  // ── MOBILE: na mobilu zobrazovat jen jednu stránku ─────────────────────────
-  // Levá stránka je skrytá přes CSS — přepíšeme showSpread aby správně
-  // zobrazoval obsah i pro sudé spreads kde by byl obsah jen v levé stránce
-  function mobileFixSpread(idx){
-    if(window.innerWidth > 680) return;
-    const li = idx*2, ri = li+1;
-    const leftPg  = pages[li];
-    const rightPg = pages[ri];
-    // Pravá prázdná ale levá má obsah → zobrazit levou v pravém slotu
-    if(leftPg && leftPg.type !== 'verso' && (!rightPg || rightPg.type === 'verso')){
-      $('pageRC').innerHTML = renderPage(leftPg, li+1);
-      attachTOC();
-    }
+  // ── MOBILE: listování po jedné stránce ────────────────────────────────────
+  // Na desktopu: spread = dvojstrana (index páru stránek)
+  // Na mobilu: mobilePage = index jednotlivé stránky (přeskočíme stránku 0 = prázdnou)
+  let mobilePage = 1; // začínáme na stránce 1 (titulní)
+
+  function isMobile(){ return window.innerWidth <= 680; }
+
+  function showMobilePage(pgIdx){
+    // Přeskočit první prázdnou stránku
+    if(pgIdx < 1) pgIdx = 1;
+    if(pgIdx >= pages.length) pgIdx = pages.length - 1;
+    mobilePage = pgIdx;
+    $('pageRC').innerHTML = renderPage(pages[pgIdx], pgIdx + 1);
+    attachTOC();
+    // Nav tlačítka
+    $('prevBtn').disabled = mobilePage <= 1;
+    $('nextBtn').disabled = mobilePage >= pages.length - 1;
+    $('pgInd').textContent = `${mobilePage} — ${pages.length - 1}`;
   }
 
-  // Obalit showSpread
-  const _showSpreadOrig = showSpread;
-  showSpread = function(idx){
-    _showSpreadOrig(idx);
-    mobileFixSpread(idx);
-  };
+  function mobileFlipForward(){
+    if(flipping) return;
+    showMobilePage(mobilePage + 1);
+  }
+
+  function mobileFlipBackward(){
+    if(flipping) return;
+    showMobilePage(mobilePage - 1);
+  }
 
   // ── BOOT ───────────────────────────────────────────────────────────────────
   loadShelf();
