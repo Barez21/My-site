@@ -346,10 +346,38 @@
 
     /* ── RESPONSIVE ── */
     @media (max-width: 680px) {
-      .open-book { flex-direction: column; }
-      .bk-spine { width: 100%; height: 16px; }
-      .bk-page-l { border-radius: 4px 4px 0 0; }
-      .bk-page-r { border-radius: 0 0 4px 4px; }
+      /* Kniha — jedna stránka, A-formát */
+      .open-book {
+        width: min(90vw, 420px);
+        height: min(calc(90vw * 1.4142), calc(420px * 1.4142), 90vh);
+        flex-direction: row; /* zachovat row, ale spine + jedna stránka skryté */
+      }
+
+      /* Hřbet skrýt */
+      .bk-spine { display: none; }
+
+      /* Levá stránka skrytá — zobrazuje se jen pravá */
+      .bk-page-l { display: none; }
+
+      /* Pravá stránka = celá šířka knihy */
+      .bk-page-r {
+        flex: 1;
+        border-radius: 4px;
+      }
+
+      /* Flipper pro levou stránku skrýt */
+      #flipL { display: none !important; }
+
+      /* Police */
       .shelf { padding: 2rem 1.2rem 0; gap: 7px; }
       .book-spine { width: 42px; height: 190px; }
+
+      /* Nav šipky větší na mobilu */
+      .nav-btn { width: 44px; height: 44px; font-size: 18px; }
+
+      /* Closed cover menší */
+      .closed-cover {
+        width: min(72vw, 320px);
+        height: min(calc(72vw * 1.4142), calc(320px * 1.4142));
+      }
     }

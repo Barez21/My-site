@@ -442,5 +442,44 @@
     if(e.key==='ArrowLeft')   flipBackward();
   });
 
+  // ── SWIPE GESTA ────────────────────────────────────────────────────────────
+  let _touchStartX = null;
+  const _book = document.getElementById('openBook');
+
+  _book.addEventListener('touchstart', e => {
+    _touchStartX = e.touches[0].clientX;
+  }, { passive: true });
+
+  _book.addEventListener('touchend', e => {
+    if(_touchStartX === null) return;
+    const dx = e.changedTouches[0].clientX - _touchStartX;
+    _touchStartX = null;
+    if(Math.abs(dx) < 40) return;
+    if(dx < 0) flipForward();
+    else        flipBackward();
+  }, { passive: true });
+
+  // ── MOBILE: na mobilu zobrazovat jen jednu stránku ─────────────────────────
+  // Levá stránka je skrytá přes CSS — přepíšeme showSpread aby správně
+  // zobrazoval obsah i pro sudé spreads kde by byl obsah jen v levé stránce
+  function mobileFixSpread(idx){
+    if(window.innerWidth > 680) return;
+    const li = idx*2, ri = li+1;
+    const leftPg  = pages[li];
+    const rightPg = pages[ri];
+    // Pravá prázdná ale levá má obsah → zobrazit levou v pravém slotu
+    if(leftPg && leftPg.type !== 'verso' && (!rightPg || rightPg.type === 'verso')){
+      $('pageRC').innerHTML = renderPage(leftPg, li+1);
+      attachTOC();
+    }
+  }
+
+  // Obalit showSpread
+  const _showSpreadOrig = showSpread;
+  showSpread = function(idx){
+    _showSpreadOrig(idx);
+    mobileFixSpread(idx);
+  };
+
   // ── BOOT ───────────────────────────────────────────────────────────────────
   loadShelf();
