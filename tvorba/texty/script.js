@@ -145,9 +145,10 @@
       </div></div>`;
     }
     if(pg.type==='toc'){
+      const _tocStart = pg.startIndex || 0;
       const rows = pg.entries.map((e,i)=>`
         <div class="toc-row" data-spread="${e.spread}">
-          <span class="toc-n">${i+1}</span>
+          <span class="toc-n">${_tocStart + i + 1}</span>
           <span class="toc-t">${esc(e.title)}</span>
           <span class="toc-dots"></span>
           <span class="toc-p">${e.pgNum}</span>
@@ -242,7 +243,7 @@
         let j = i;
         while(j < entries.length){
           const test = [...batch, entries[j]];
-          const rows = test.map((e,idx)=>`<div style="display:flex;align-items:baseline;gap:4px;padding:.3rem 0;border-bottom:1px dotted rgba(42,31,20,.08)"><span style="font-size:10px;color:#9a8878;width:18px">${idx+1}</span><span style="font-size:12px;color:#5a4838;flex:1">${esc(e.title)}</span><span style="font-size:10px;color:#9a8878">${e.pgNum}</span></div>`).join('');
+          const rows = test.map((e,idx)=>`<div style="display:flex;align-items:baseline;gap:4px;padding:.15rem 0;border-bottom:1px dotted rgba(42,31,20,.06)"><span style="font-size:10px;color:#9a8878;width:18px">${i + idx+1}</span><span style="font-size:12px;color:#5a4838;flex:1">${esc(e.title)}</span><span style="font-size:10px;color:#9a8878">${e.pgNum}</span></div>`).join('');
           mDiv.innerHTML = `<div style="font-family:'Lora',serif;font-size:13px"><div style="padding-bottom:.7rem;border-bottom:1px solid rgba(42,31,20,.14);margin-bottom:.8rem;font-style:italic;color:#9a8878;font-size:13px">Obsah</div>${rows}</div><div style="height:26px"></div>`;
           if(mDiv.scrollHeight > mDiv.clientHeight && batch.length > 0) break;
           batch.push(entries[j]); j++;
@@ -308,12 +309,13 @@
         }
       }
     }
-    // Rozdělit tocEntries mezi TOC stránky — každá dostane jen svoji část
+    // Rozdělit tocEntries mezi TOC stránky — každá dostane jen svoji část + startIndex
     let entryOffset = 0;
     for(const pg of pgs){
       if(pg.type === 'toc'){
         const count = pg.entries.length;
         pg.entries = tocEntries.slice(entryOffset, entryOffset + count);
+        pg.startIndex = entryOffset;
         entryOffset += count;
       }
     }
