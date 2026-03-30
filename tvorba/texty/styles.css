@@ -280,7 +280,7 @@
     .poem-rule { width: 26px; height: 1px; background: rgba(42,31,20,0.22); margin: 0.65rem 0 0.9rem; }
     .poem-cont-lbl { font-family: 'TomasRand', serif; font-size: 9px; font-style: italic; color: var(--ink-muted); text-align: center; margin-bottom: 0.8rem; }
     .poem-body {
-      font-family: var(--poem-font); font-size: 15px; line-height: 1.75;
+      font-family: var(--poem-font); font-size: 32px; line-height: 1.75;
       color: var(--ink); text-align: center;
       font-feature-settings: 'rand' 1, 'calt' 1;
       overflow: hidden;
