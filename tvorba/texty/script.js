@@ -33,15 +33,12 @@
   function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
   function clean(fn){ return fn.replace(/\.[^.]+$/,'').replace(/^\d+[\s.\-–—]+/,'').trim(); }
 
-const encoded = path.split('/').map(s => encodeURIComponent(s).replace(/\.\./g, '%2E%2E')).join('/');
-console.log('FETCH URL:', RAW + encoded);
-const r = await fetch(RAW + encoded);
   // ── RAW FETCH (bez GitHub API, bez rate limitu) ────────────────────────────
   async function rawGet(path){
-    // encodeURIComponent nekóduje tečky — ale '..' v URL browser normalizuje jako 'jdi výš'
-    // Proto nahrazujeme '..' za '%2E%2E' aby browser neinterpretoval čtyři tečky v názvu souboru
     const encoded = path.split('/').map(s => encodeURIComponent(s).replace(/\.\./g, '%2E%2E')).join('/');
-    const r = await fetch(RAW + encoded);
+    const url = RAW + encoded;
+    console.log('FETCH:', url);
+    const r = await fetch(url);
     if(!r.ok) throw new Error(`Fetch ${r.status}: ${path}`);
     return r.text();
   }
