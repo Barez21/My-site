@@ -308,8 +308,15 @@
         }
       }
     }
-    // Aktualizovat TOC stránky s opravenými indexy
-    for(const pg of pgs){ if(pg.type === 'toc') pg.entries = tocEntries; }
+    // Rozdělit tocEntries mezi TOC stránky — každá dostane jen svoji část
+    let entryOffset = 0;
+    for(const pg of pgs){
+      if(pg.type === 'toc'){
+        const count = pg.entries.length;
+        pg.entries = tocEntries.slice(entryOffset, entryOffset + count);
+        entryOffset += count;
+      }
+    }
 
     // Pad to even
     if(pgs.length % 2 !== 0) pgs.push({ type:'verso' });
