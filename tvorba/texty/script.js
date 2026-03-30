@@ -33,12 +33,12 @@
 
   // ── GITHUB API ─────────────────────────────────────────────────────────────
   async function apiGet(path){
-    const r = await fetch(API + path, { headers:{ Accept:'application/vnd.github+json' }});
+    const r = await fetch(API + path, { headers:{ Accept:'application/vnd.github+json', Authorization:'Bearer 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' }});
     if(!r.ok) throw new Error(`GitHub ${r.status}`);
     return r.json();
   }
   async function fileText(url){
-    const d = await fetch(url, { headers:{ Accept:'application/vnd.github+json' }}).then(r=>r.json());
+    const d = await fetch(url, { headers:{ Accept:'application/vnd.github+json', Authorization:'Bearer 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' }}).then(r=>r.json());
     if(d.encoding==='base64')
       return decodeURIComponent(atob(d.content.replace(/\s/g,'')).split('').map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join(''));
     return d.content||'';
