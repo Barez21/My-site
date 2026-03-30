@@ -194,49 +194,131 @@
 
     const poems = poemNames.map((fn, i) => ({ name: clean(fn), text: poemTexts[i]||'' }));
 
-    // Start building
-    const pgs = [];
-    pgs.push({ type:'verso' });                      // [0] L blank
-    pgs.push({ type:'title', title: col.name });     // [1] R title
-    pgs.push({ type:'toc', entries:[] });             // [2] L toc
-    if(prefaceText){
-      pgs.push({ type:'preface', text: prefaceText }); // [3] R preface
-    } else {
-      pgs.push({ type:'verso' });                    // [3] R blank
-    }
-
-    // Measurement div — sized to actual page content area
+    // Measurement div
     const dims = getPageDims();
-    // Vytvořit dočasný .poem-body element, připojit do DOM a přečíst jeho computed style
-    // Tím se automaticky použijí styly z CSS bez ohledu na aktuální font-size
     const _probe = document.createElement('div');
     _probe.className = 'poem-body';
     _probe.style.cssText = 'position:fixed;left:-9999px;top:0;visibility:hidden;';
     document.body.appendChild(_probe);
-    const _probeCS  = getComputedStyle(_probe);
-    const _dynFont  = _probeCS.fontFamily;
-    const _dynSize  = _probeCS.fontSize;
-    const _dynLH    = _probeCS.lineHeight;
+    const _probeCS = getComputedStyle(_probe);
+    const _dynFont = _probeCS.fontFamily;
+    const _dynSize = _probeCS.fontSize;
+    const _dynLH   = _probeCS.lineHeight;
     document.body.removeChild(_probe);
 
     const mDiv = document.createElement('div');
     mDiv.style.cssText = `position:fixed;left:-9999px;top:0;width:${_DW}px;height:${_DH}px;overflow:hidden;visibility:hidden;font-family:${_dynFont};font-size:${_dynSize};line-height:${_dynLH};`;
     document.body.appendChild(mDiv);
 
-    const tocEntries=[];
+    // ── Paginace TOC ──────────────────────────────────────────────────────────
+    // TOC entries jsou zatím prázdné — doplníme je po paginaci básní
+    // Nejdřív spočítáme básně abychom věděli čísla stránek
+    const tempPgs = [];
+    tempPgs.push({ type:'verso' });
+    tempPgs.push({ type:'title', title: col.name });
+
+    // Básně — paginovat
+    const poemPgs = [];
+    const tocEntries = [];
+    // Rezervujeme místo pro TOC a preface (doplníme počet stránek níže)
+    const TOC_SLOT = 2; // index kde bude TOC
+
+    // Spočítáme offset (po verso+title+TOC+preface)
+    const fixedPgs = 2 + 1 + (prefaceText ? 1 : 1); // verso, title, toc, preface/verso
+
     for(const poem of poems){
-      const startIdx = pgs.length;
-      const poemPages = paginatePoem(poem.name, poem.text, mDiv, dims);
+      const startIdx = fixedPgs + poemPgs.length;
+      const pp = paginatePoem(poem.name, poem.text, mDiv, dims);
       tocEntries.push({ title: poem.name, pgNum: startIdx+1, spread: Math.floor(startIdx/2) });
-      pgs.push(...poemPages);
+      poemPgs.push(...pp);
     }
+
+    // ── Paginace TOC ──────────────────────────────────────────────────────────
+    function paginateTOC(entries){
+      const pages = [];
+      let i = 0;
+      while(i < entries.length){
+        const batch = [];
+        let j = i;
+        while(j < entries.length){
+          const test = [...batch, entries[j]];
+          const rows = test.map((e,idx)=>`<div style="display:flex;align-items:baseline;gap:4px;padding:.3rem 0;border-bottom:1px dotted rgba(42,31,20,.08)"><span style="font-size:10px;color:#9a8878;width:18px">${idx+1}</span><span style="font-size:12px;color:#5a4838;flex:1">${esc(e.title)}</span><span style="font-size:10px;color:#9a8878">${e.pgNum}</span></div>`).join('');
+          mDiv.innerHTML = `<div style="font-family:'Lora',serif;font-size:13px"><div style="padding-bottom:.7rem;border-bottom:1px solid rgba(42,31,20,.14);margin-bottom:.8rem;font-style:italic;color:#9a8878;font-size:13px">Obsah</div>${rows}</div><div style="height:26px"></div>`;
+          if(mDiv.scrollHeight > mDiv.clientHeight && batch.length > 0) break;
+          batch.push(entries[j]); j++;
+        }
+        if(!batch.length){ batch.push(entries[j]||entries[entries.length-1]); j++; }
+        pages.push({ type:'toc', entries: batch });
+        i = j;
+      }
+      return pages.length ? pages : [{ type:'toc', entries: [] }];
+    }
+
+    const tocPages = paginateTOC(tocEntries);
+
+    // ── Paginace předmluvy ────────────────────────────────────────────────────
+    function paginatePreface(text){
+      if(!text) return [];
+      const lines = text.split('
+');
+      const pages = [];
+      let i = 0;
+      while(i < lines.length){
+        const batch = [];
+        let j = i;
+        while(j < lines.length){
+          const test = [...batch, lines[j]];
+          const body = test.join('
+').replace(/
+
+/g,'</p><p>').replace(/
+/g,'<br>');
+          mDiv.innerHTML = `<div style="font-family:'Lora',serif"><div style="padding-bottom:.6rem;border-bottom:1px solid rgba(42,31,20,.12);margin-bottom:.8rem;font-style:italic;color:#9a8878;font-size:13px">Předmluva</div><div style="font-size:12px;line-height:1.85;color:#5a4838"><p>${body}</p></div></div><div style="height:26px"></div>`;
+          if(mDiv.scrollHeight > mDiv.clientHeight && batch.length > 0) break;
+          batch.push(lines[j]); j++;
+        }
+        if(!batch.length){ batch.push(lines[j]||''); j++; }
+        pages.push({ type:'preface', text: batch.join('
+') });
+        i = j;
+      }
+      return pages;
+    }
+
+    const prefacePages = paginatePreface(prefaceText);
+
     document.body.removeChild(mDiv);
 
-    // Fill TOC
-    pgs[2].entries = tocEntries;
+    // ── Sestavit finální pole stránek ─────────────────────────────────────────
+    const pgs = [];
+    pgs.push({ type:'verso' });                    // 0: prázdná
+    pgs.push({ type:'title', title: col.name });   // 1: titulní
+    pgs.push(...tocPages);                          // 2+: obsah (1-N stránek)
+    if(prefacePages.length){
+      pgs.push(...prefacePages);                   // N+: předmluva (1-N stránek)
+    } else {
+      pgs.push({ type:'verso' });
+    }
+    pgs.push(...poemPgs);                          // básně
+
+    // Opravit spread indexy v TOC podle finálního pořadí stránek
+    const firstPoemIdx = pgs.findIndex(p => p.type === 'poem');
+    let poemCounter = 0;
+    for(const pg of pgs){
+      if(pg.type === 'poem'){
+        if(tocEntries[poemCounter]){
+          const pgIdx = pgs.indexOf(pg);
+          tocEntries[poemCounter].pgNum   = pgIdx + 1;
+          tocEntries[poemCounter].spread  = Math.floor(pgIdx / 2);
+          poemCounter++;
+        }
+      }
+    }
+    // Aktualizovat TOC stránky s opravenými indexy
+    for(const pg of pgs){ if(pg.type === 'toc') pg.entries = tocEntries; }
 
     // Pad to even
-    if(pgs.length%2!==0) pgs.push({ type:'verso' });
+    if(pgs.length % 2 !== 0) pgs.push({ type:'verso' });
     return pgs;
   }
 
