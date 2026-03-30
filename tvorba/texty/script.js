@@ -259,8 +259,7 @@
     // ── Paginace předmluvy ────────────────────────────────────────────────────
     function paginatePreface(text){
       if(!text) return [];
-      const lines = text.split('
-');
+      const lines = text.split('\n');
       const pages = [];
       let i = 0;
       while(i < lines.length){
