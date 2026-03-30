@@ -370,23 +370,29 @@
     await sleep(320);
     cs.style.display='none';
 
-    // Show open scene (loading state)
+    // Show open scene — loading spinner visible
     os.classList.add('ready');
     await sleep(20);
     os.classList.add('animated');
 
-    // Fetch + build pages
-    // Measure actual page area for pagination
+    // Počkat na dokončení CSS transition, aby pageR měl správné rozměry
+    await sleep(450);
+
+    // Teď měřit — scéna je plně viditelná a pageR má správnou výšku
     const _pR = document.getElementById('pageR');
     let _dims = { w: 300, h: 480 };
     if(_pR){
       const _cs = getComputedStyle(_pR);
-      _dims.w = Math.floor(_pR.clientWidth  - parseFloat(_cs.paddingLeft) - parseFloat(_cs.paddingRight));
-      _dims.h = Math.floor(_pR.clientHeight - parseFloat(_cs.paddingTop)  - parseFloat(_cs.paddingBottom) - 32);
+      const _w = Math.floor(_pR.clientWidth  - parseFloat(_cs.paddingLeft) - parseFloat(_cs.paddingRight));
+      const _h = Math.floor(_pR.clientHeight - parseFloat(_cs.paddingTop)  - parseFloat(_cs.paddingBottom) - 32);
+      if(_w > 50 && _h > 50){ _dims.w = _w; _dims.h = _h; }
     }
+    console.log('Page dims:', _dims);
+
     try{
       pages = await buildPages(col, _dims);
     } catch(e){
+      console.error('buildPages error:', e);
       pages=[{type:'verso'},{type:'title',title:col.name},{type:'toc',entries:[]},{type:'verso'}];
     }
 
