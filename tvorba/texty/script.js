@@ -171,13 +171,19 @@
 
     // Measurement div — sized to actual page content area
     const dims = getPageDims();
+    // Vytvořit dočasný .poem-body element, připojit do DOM a přečíst jeho computed style
+    // Tím se automaticky použijí styly z CSS bez ohledu na aktuální font-size
+    const _probe = document.createElement('div');
+    _probe.className = 'poem-body';
+    _probe.style.cssText = 'position:fixed;left:-9999px;top:0;visibility:hidden;';
+    document.body.appendChild(_probe);
+    const _probeCS  = getComputedStyle(_probe);
+    const _dynFont  = _probeCS.fontFamily;
+    const _dynSize  = _probeCS.fontSize;
+    const _dynLH    = _probeCS.lineHeight;
+    document.body.removeChild(_probe);
+
     const mDiv = document.createElement('div');
-    // Přečíst styly přímo z živého .poem-body elementu — automaticky se přizpůsobí jakékoliv změně v CSS
-    const _livePoemBody = document.querySelector('.poem-body') || document.getElementById('pageR');
-    const _liveCS = _livePoemBody ? getComputedStyle(_livePoemBody) : null;
-    const _dynFont   = _liveCS ? _liveCS.fontFamily   : "'Lora', serif";
-    const _dynSize   = _liveCS ? _liveCS.fontSize      : "13px";
-    const _dynLH     = _liveCS ? _liveCS.lineHeight    : "1.95";
     mDiv.style.cssText = `position:fixed;left:-9999px;top:0;width:${_DW}px;height:${_DH}px;overflow:hidden;visibility:hidden;font-family:${_dynFont};font-size:${_dynSize};line-height:${_dynLH};`;
     document.body.appendChild(mDiv);
 
