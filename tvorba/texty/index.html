@@ -93,7 +93,7 @@
     }
 
     .book-spine {
-      width: 85px; height: 320px; border-radius: 2px 0 0 2px; position: relative;
+      width: 60px; height: 320px; border-radius: 2px 0 0 2px; position: relative;
       display: flex; align-items: center; justify-content: center;
       box-shadow: 4px 0 10px rgba(0,0,0,0.5), inset -2px 0 4px rgba(0,0,0,0.25), inset 2px 0 4px rgba(255,255,255,0.06);
       transition: box-shadow 0.3s;
@@ -278,13 +278,13 @@
     .pref-body p { margin-bottom: 0.6em; }
 
     /* POEM PAGE */
-    .pg-poem { flex: 1; display: flex; flex-direction: column; }
+    .pg-poem { flex: 1; display: flex; flex-direction: column; justify-content: center;}
     .poem-hd { font-family: 'Lora', serif; font-size: 13px; font-weight: 500; font-style: italic; color: var(--ink); text-align: center; line-height: 1.3; margin-bottom: 0.25rem; }
     .poem-rule { width: 26px; height: 1px; background: rgba(42,31,20,0.22); margin: 0.65rem 0 0.9rem; }
     .poem-cont-lbl { font-family: 'Lora', serif; font-size: 9px; font-style: italic; color: var(--ink-muted); text-align: center; margin-bottom: 0.8rem; }
     .poem-body {
-      flex: 1; font-family: var(--poem-font); font-size: 13px; line-height: 1.95;
-      color: var(--ink); text-align: center;
+      flex: 1; font-family: var(--poem-font); font-size: 9px; line-height: 1.75;
+      color: var(--ink); text-align: center; 
       font-feature-settings: 'rand' 1, 'calt' 1;
       overflow: hidden;
     }
