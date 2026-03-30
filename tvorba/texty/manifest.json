@@ -1,0 +1,27 @@
+{
+  "collections": [
+    {
+      "name": "Verše pro Bílou Čarodějku ze Severu",
+      "preface": "predmluva.txt",
+      "poems": [
+      "01 Znám Tě, Ženo....txt",
+      "02 V Tobě se ztrácím....txt",
+      "03 Když sráží se galaxie....txt",
+      "04 Mé srdce žije daleko odsud....txt",
+      "05 Naplněni láskou vyhlížíme katastrofu....txt",
+      "06 V kožíšku spáváš, jak bojíš se zimy.txt",
+      "07 Dva sloni v teráriu.txt",
+      "08 Pýcha.txt",
+      "09 Už nevidím jinou cestu kterak míti klid....txt",
+      "10 Svěrací kazajka mého strachu.txt",
+      "11 Mrzí mě....txt",
+      "12 Jsi jemný jarní vánek....txt",
+      "13 Láska....txt",
+      "14 Vypustit tu bolest....txt",
+      "15 Prsty projet Tvé dlouhé vlasy.txt",
+      "16 Smrt jednoho vztahu.txt",
+      "17 Jsem jednorožec, vole....txt"
+      ]
+    }
+  ]
+}

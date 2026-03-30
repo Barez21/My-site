@@ -2,9 +2,11 @@
   document.getElementById('yr').textContent = new Date().getFullYear();
 
   // ── CONFIG ─────────────────────────────────────────────────────────────────
-  const REPO   = 'Barez21/My-site';
-  const FOLDER = 'tvorba/texty/básně';
-  const API    = `https://api.github.com/repos/${REPO}/contents/`;
+  const REPO     = 'Barez21/My-site';
+  const BRANCH   = 'main';
+  const RAW      = `https://raw.githubusercontent.com/${REPO}/${BRANCH}/`;
+  const MANIFEST = RAW + 'tvorba/texty/manifest.json';
+  const POEMS_PATH = 'tvorba/texty/básně/';
 
   const LEATHER = [
     ['#4a1e0a','#6b2d10','#321408'],
@@ -31,30 +33,22 @@
   function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
   function clean(fn){ return fn.replace(/\.[^.]+$/,'').replace(/^\d+[\s.\-–—]+/,'').trim(); }
 
-  // ── GITHUB API ─────────────────────────────────────────────────────────────
-  async function apiGet(path){
-    const cacheKey = 'gh_' + path;
-    const cached = sessionStorage.getItem(cacheKey);
-    if(cached) return JSON.parse(cached);
-    const r = await fetch(API + path, { headers:{ Accept:'application/vnd.github+json' }});
-    if(!r.ok) throw new Error(`GitHub ${r.status}`);
-    const data = await r.json();
-    try{ sessionStorage.setItem(cacheKey, JSON.stringify(data)); } catch(e){}
-    return data;
+  // ── RAW FETCH (bez GitHub API, bez rate limitu) ────────────────────────────
+  async function rawGet(path){
+    const r = await fetch(RAW + path.split('/').map(encodeURIComponent).join('/'));
+    if(!r.ok) throw new Error(`Fetch ${r.status}: ${path}`);
+    return r.text();
   }
-  async function fileText(url){
-    const cacheKey = 'gh_file_' + url;
-    const cached = sessionStorage.getItem(cacheKey);
-    if(cached) return cached;
-    const d = await fetch(url, { headers:{ Accept:'application/vnd.github+json' }}).then(r=>r.json());
-    if(d.encoding==='base64'){
-      const text = decodeURIComponent(atob(d.content.replace(/\s/g,'')).split('').map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join(''));
-      try{ sessionStorage.setItem(cacheKey, text); } catch(e){}
-      return text;
-    }
-    const text = d.content||'';
-    try{ sessionStorage.setItem(cacheKey, text); } catch(e){}
-    return text;
+
+  async function loadManifest(){
+    const r = await fetch(MANIFEST);
+    if(!r.ok) throw new Error(`manifest.json nenalezen (${r.status})`);
+    return r.json();
+  }
+
+  async function fileText(collection, filename){
+    const path = POEMS_PATH + collection + '/' + filename;
+    return rawGet(path);
   }
 
   // ── PAGINATION ─────────────────────────────────────────────────────────────
@@ -157,19 +151,16 @@
 
   // ── BUILD PAGES ────────────────────────────────────────────────────────────
   async function buildPages(col, _dims){ const _DW=(_dims||{}).w||300, _DH=(_dims||{}).h||480;
-    const path = encodeURIComponent(FOLDER).replace(/%2F/g,'/') + '/' + encodeURIComponent(col.name);
-    const items = await apiGet(path);
-    const files = items.filter(i=>i.type==='file');
-
-    const prefaceFile = files.find(f=>/^(predmluva|preface|uvod|intro)/i.test(f.name));
-    const poemFiles   = files.filter(f=>f!==prefaceFile);
+    // Načtení textů z raw.githubusercontent.com — bez GitHub API, bez rate limitu
+    const prefaceName = (col.preface||null);
+    const poemNames   = col.poems || [];
 
     const [prefaceText, ...poemTexts] = await Promise.all([
-      prefaceFile ? fileText(prefaceFile.url) : Promise.resolve(null),
-      ...poemFiles.map(f=>fileText(f.url))
+      prefaceName ? fileText(col.name, prefaceName) : Promise.resolve(null),
+      ...poemNames.map(fn => fileText(col.name, fn))
     ]);
 
-    const poems = poemFiles.map((f,i)=>({ name: clean(f.name), text: poemTexts[i]||'' }));
+    const poems = poemNames.map((fn, i) => ({ name: clean(fn), text: poemTexts[i]||'' }));
 
     // Start building
     const pgs = [];
@@ -323,10 +314,10 @@
   async function loadShelf(){
     const shelf=$('shelf');
     try{
-      const items = await apiGet(encodeURIComponent(FOLDER).replace(/%2F/g,'/'));
-      const dirs  = items.filter(i=>i.type==='dir');
-      if(!dirs.length){ shelf.innerHTML=`<div style="position:relative;z-index:2;color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;padding-bottom:2rem;align-self:center">Žádné sbírky</div>`; return; }
-      collections = dirs.map((d,i)=>({ name:d.name, leather:LEATHER[i%LEATHER.length] }));
+      const manifest = await loadManifest();
+      const cols = manifest.collections || [];
+      if(!cols.length){ shelf.innerHTML=`<div style="position:relative;z-index:2;color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;padding-bottom:2rem;align-self:center">Žádné sbírky</div>`; return; }
+      collections = cols.map((c,i)=>({ ...c, leather:LEATHER[i%LEATHER.length] }));
       shelf.innerHTML = collections.map((c,i)=>`
         <div class="book-wrap" data-i="${i}" title="${esc(c.name)}">
           <div class="book-spine" style="background:linear-gradient(90deg,${c.leather[0]} 0%,${c.leather[1]} 50%,${c.leather[0]} 100%)">
@@ -341,7 +332,7 @@
       console.error('loadShelf error:', e);
       shelf.innerHTML=`<div style="position:relative;z-index:2;color:#f472b6;padding:2rem;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.08em">
         ⚠ ${esc(e.message)}<br><br>
-        <span style="color:#7070a0">Repozitář: Barez21/My-site<br>Složka: ${esc(FOLDER)}</span>
+        <span style="color:#7070a0">manifest.json: ${esc(MANIFEST)}</span>
       </div>`;
     }
   }
