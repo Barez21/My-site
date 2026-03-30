@@ -244,14 +244,14 @@
     /* TITLE PAGE */
     .pg-title { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
     .pt-orn { font-size: 15px; color: var(--ink-muted); letter-spacing: 0.3em; margin: 0.7rem 0; }
-    .pt-main { font-family: 'Lora', serif; font-size: 24px; font-weight: 500; font-style: italic; color: var(--ink); line-height: 1.2; margin: 0.4rem 0; }
+    .pt-main { font-family: 'tomas_rand', serif; font-size: 24px; font-weight: 500; font-style: italic; color: var(--ink); line-height: 1.2; margin: 0.4rem 0; }
     .pt-rule { width: 44px; height: 1px; background: var(--ink-muted); opacity: 0.4; margin: 0.8rem auto; }
-    .pt-series { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-muted); }
-    .pt-author { font-family: 'Lora', serif; font-size: 12px; font-style: italic; color: var(--ink-mid); margin-top: 0.25rem; }
+    .pt-series { font-family: 'tomas_rand', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-muted); }
+    .pt-author { font-family: 'tomas_rand', serif; font-size: 12px; font-style: italic; color: var(--ink-mid); margin-top: 0.25rem; }
 
     /* TOC PAGE */
     .pg-toc { flex: 1; display: flex; flex-direction: column; justify-content: flex-start; min-height: 0; }
-    .toc-hd { font-family: 'Lora', serif; font-size: 11px; font-style: italic; color: var(--ink-muted); letter-spacing: 0.08em; padding-bottom: 0.4rem; border-bottom: 1px solid rgba(42,31,20,0.14); margin-bottom: 0.5rem; flex-shrink: 0; }
+    .toc-hd { font-family: 'tomas_rand', serif; font-size: 11px; font-style: italic; color: var(--ink-muted); letter-spacing: 0.08em; padding-bottom: 0.4rem; border-bottom: 1px solid rgba(42,31,20,0.14); margin-bottom: 0.5rem; flex-shrink: 0; }
     .toc-entries { min-height: 0; overflow: hidden; }
     .toc-row { display: flex; align-items: baseline; gap: 4px; padding: 0.15rem 0; border-bottom: 1px dotted rgba(42,31,20,0.06); cursor: pointer; transition: opacity 0.15s; flex-shrink: 0; }
     .toc-row:last-child { border-bottom: none; }
@@ -263,15 +263,15 @@
 
     /* PREFACE PAGE */
     .pg-preface { flex: 1; display: flex; flex-direction: column; }
-    .pref-hd { font-family: 'Lora', serif; font-size: 13px; font-style: italic; color: var(--ink-muted); padding-bottom: 0.6rem; border-bottom: 1px solid rgba(42,31,20,0.12); margin-bottom: 0.8rem; }
+    .pref-hd { font-family: 'tomas_rand', serif; font-size: 13px; font-style: italic; color: var(--ink-muted); padding-bottom: 0.6rem; border-bottom: 1px solid rgba(42,31,20,0.12); margin-bottom: 0.8rem; }
     .pref-body { font-family: var(--poem-font); font-size: 12px; line-height: 1.85; color: var(--ink-mid); flex: 1; overflow: hidden; }
     .pref-body p { margin-bottom: 0.6em; }
 
     /* POEM PAGE */
     .pg-poem { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    .poem-hd { font-family: 'Lora', serif; font-size: 13px; font-weight: 500; font-style: italic; color: var(--ink); text-align: center; line-height: 1.3; margin-bottom: 0.25rem; }
+    .poem-hd { font-family: 'tomas_rand', serif; font-size: 13px; font-weight: 500; font-style: italic; color: var(--ink); text-align: center; line-height: 1.3; margin-bottom: 0.25rem; }
     .poem-rule { width: 26px; height: 1px; background: rgba(42,31,20,0.22); margin: 0.65rem 0 0.9rem; }
-    .poem-cont-lbl { font-family: 'Lora', serif; font-size: 9px; font-style: italic; color: var(--ink-muted); text-align: center; margin-bottom: 0.8rem; }
+    .poem-cont-lbl { font-family: 'tomas_rand', serif; font-size: 9px; font-style: italic; color: var(--ink-muted); text-align: center; margin-bottom: 0.8rem; }
     .poem-body {
       font-family: var(--poem-font); font-size: 9px; line-height: 1.75;
       color: var(--ink); text-align: center;
