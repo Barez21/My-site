@@ -442,15 +442,14 @@
     if(e.key==='ArrowLeft')   flipBackward();
   });
 
-  // ── SWIPE GESTA ────────────────────────────────────────────────────────────
+  // ── SWIPE GESTA — drátujeme na overlay (vždy v DOM) ──────────────────────
   let _touchStartX = null;
-  const _book = document.getElementById('openBook');
 
-  _book.addEventListener('touchstart', e => {
+  $('overlay').addEventListener('touchstart', e => {
     _touchStartX = e.touches[0].clientX;
   }, { passive: true });
 
-  _book.addEventListener('touchend', e => {
+  $('overlay').addEventListener('touchend', e => {
     if(_touchStartX === null) return;
     const dx = e.changedTouches[0].clientX - _touchStartX;
     _touchStartX = null;
