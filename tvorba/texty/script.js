@@ -155,10 +155,15 @@
     const prefaceName = (col.preface||null);
     const poemNames   = col.poems || [];
 
-    const [prefaceText, ...poemTexts] = await Promise.all([
-      prefaceName ? fileText(col.name, prefaceName) : Promise.resolve(null),
-      ...poemNames.map(fn => fileText(col.name, fn))
-    ]);
+    // Předmluva — pokud soubor neexistuje, tiše ignorovat
+    const prefaceText = prefaceName
+      ? await fileText(col.name, prefaceName).catch(() => null)
+      : null;
+
+    // Básně — načíst paralelně, chyba u jedné nepoloží zbytek
+    const poemTexts = await Promise.all(
+      poemNames.map(fn => fileText(col.name, fn).catch(e => { console.warn('Nelze načíst:', fn, e); return ''; }))
+    );
 
     const poems = poemNames.map((fn, i) => ({ name: clean(fn), text: poemTexts[i]||'' }));
 
