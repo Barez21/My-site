@@ -238,13 +238,18 @@
     function paginateTOC(entries){
       const pages = [];
       let i = 0;
+      const isFirst = () => pages.length === 0;
       while(i < entries.length){
         const batch = [];
         let j = i;
         while(j < entries.length){
           const test = [...batch, entries[j]];
           const rows = test.map((e,idx)=>`<div style="display:flex;align-items:baseline;gap:4px;padding:.15rem 0;border-bottom:1px dotted rgba(42,31,20,.06)"><span style="font-size:10px;color:#9a8878;width:18px">${i + idx+1}</span><span style="font-size:12px;color:#5a4838;flex:1">${esc(e.title)}</span><span style="font-size:10px;color:#9a8878">${e.pgNum}</span></div>`).join('');
-          mDiv.innerHTML = `<div style="font-family:'Lora',serif;font-size:13px"><div style="padding-bottom:.7rem;border-bottom:1px solid rgba(42,31,20,.14);margin-bottom:.8rem;font-style:italic;color:#9a8878;font-size:13px">Obsah</div>${rows}</div><div style="height:26px"></div>`;
+          // Hlavičku "Obsah" zahrnout do měření jen na první stránce
+          const hdr = isFirst()
+            ? `<div style="padding-bottom:.7rem;border-bottom:1px solid rgba(42,31,20,.14);margin-bottom:.8rem;font-style:italic;color:#9a8878;font-size:13px">Obsah</div>`
+            : '';
+          mDiv.innerHTML = `<div style="font-family:'Lora',serif;font-size:13px">${hdr}${rows}</div><div style="height:26px"></div>`;
           if(mDiv.scrollHeight > mDiv.clientHeight && batch.length > 0) break;
           batch.push(entries[j]); j++;
         }
