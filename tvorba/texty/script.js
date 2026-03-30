@@ -33,12 +33,12 @@
 
   // ── GITHUB API ─────────────────────────────────────────────────────────────
   async function apiGet(path){
-    const r = await fetch(API + path, { headers:{ Accept:'application/vnd.github+json', Authorization:'Bearer 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' }});
+    const r = await fetch(API + path, { headers:{ Accept:'application/vnd.github+json' }});
     if(!r.ok) throw new Error(`GitHub ${r.status}`);
     return r.json();
   }
   async function fileText(url){
-    const d = await fetch(url, { headers:{ Accept:'application/vnd.github+json', Authorization:'Bearer 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' }}).then(r=>r.json());
+    const d = await fetch(url, { headers:{ Accept:'application/vnd.github+json' }}).then(r=>r.json());
     if(d.encoding==='base64')
       return decodeURIComponent(atob(d.content.replace(/\s/g,'')).split('').map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join(''));
     return d.content||'';
@@ -87,7 +87,7 @@
 
       while(j<units.length){
         const test=[...pageUnits,units[j]];
-        mDiv.innerHTML = hdr + `<div style="font-family:'Lora',serif;font-size:13px;line-height:1.95;text-align:center">${unitsHTML(test)}</div>` + foot;
+        mDiv.innerHTML = hdr + `<div style="font-family:inherit;font-size:inherit;line-height:inherit;text-align:center">${unitsHTML(test)}</div>` + foot;
         if(mDiv.scrollHeight > mDiv.clientHeight && pageUnits.length>0) break;
         pageUnits.push(units[j]); j++;
       }
@@ -172,7 +172,13 @@
     // Measurement div — sized to actual page content area
     const dims = getPageDims();
     const mDiv = document.createElement('div');
-    mDiv.style.cssText = `position:fixed;left:-9999px;top:0;width:${_DW}px;height:${_DH}px;overflow:hidden;visibility:hidden;font-family:'Lora',serif;`;
+    // Přečíst styly přímo z živého .poem-body elementu — automaticky se přizpůsobí jakékoliv změně v CSS
+    const _livePoemBody = document.querySelector('.poem-body') || document.getElementById('pageR');
+    const _liveCS = _livePoemBody ? getComputedStyle(_livePoemBody) : null;
+    const _dynFont   = _liveCS ? _liveCS.fontFamily   : "'Lora', serif";
+    const _dynSize   = _liveCS ? _liveCS.fontSize      : "13px";
+    const _dynLH     = _liveCS ? _liveCS.lineHeight    : "1.95";
+    mDiv.style.cssText = `position:fixed;left:-9999px;top:0;width:${_DW}px;height:${_DH}px;overflow:hidden;visibility:hidden;font-family:${_dynFont};font-size:${_dynSize};line-height:${_dynLH};`;
     document.body.appendChild(mDiv);
 
     const tocEntries=[];
