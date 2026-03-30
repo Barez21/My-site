@@ -267,18 +267,13 @@
         let j = i;
         while(j < lines.length){
           const test = [...batch, lines[j]];
-          const body = test.join('
-').replace(/
-
-/g,'</p><p>').replace(/
-/g,'<br>');
+          const body = test.join('\n').replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>');
           mDiv.innerHTML = `<div style="font-family:'Lora',serif"><div style="padding-bottom:.6rem;border-bottom:1px solid rgba(42,31,20,.12);margin-bottom:.8rem;font-style:italic;color:#9a8878;font-size:13px">Předmluva</div><div style="font-size:12px;line-height:1.85;color:#5a4838"><p>${body}</p></div></div><div style="height:26px"></div>`;
           if(mDiv.scrollHeight > mDiv.clientHeight && batch.length > 0) break;
           batch.push(lines[j]); j++;
         }
         if(!batch.length){ batch.push(lines[j]||''); j++; }
-        pages.push({ type:'preface', text: batch.join('
-') });
+        pages.push({ type:'preface', text: batch.join('\n') });
         i = j;
       }
       return pages;
