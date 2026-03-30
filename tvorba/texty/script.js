@@ -35,7 +35,8 @@
 
   // ── RAW FETCH (bez GitHub API, bez rate limitu) ────────────────────────────
   async function rawGet(path){
-    const encoded = path.split('/').map(s => encodeURIComponent(s).replace(/\.\./g, '%2E%2E')).join('/');
+    // Normalizovat na NFC — Mac někdy ukládá názvy v NFD (decomposed)
+    const encoded = path.split('/').map(s => encodeURIComponent(s.normalize('NFC')).replace(/\.\./g, '%2E%2E')).join('/');
     const url = RAW + encoded;
     console.log('FETCH:', url);
     const r = await fetch(url);
