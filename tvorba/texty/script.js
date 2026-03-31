@@ -443,10 +443,10 @@
       shelf.innerHTML = collections.map((c,i)=>{
         // Výška podle délky názvu: krátký název = nižší knížka, dlouhý = vyšší
         const titleLen = c.name.length;
-        const height = Math.round(Math.min(Math.max(200 + titleLen * 3.5, 220), 360));
+        const height = Math.round(Math.min(Math.max(200 + titleLen * 3.5, 200), 360));
         // Šířka (tloušťka hřbetu) podle počtu básní
         const poemCount = (c.poems||[]).length;
-        const width = Math.round(Math.min(Math.max(44 + poemCount * 2.2, 48), 110));
+        const width = Math.round(Math.min(Math.max(25 + poemCount * 2.2, 25), 110));
         // Velikost písma na hřbetu podle šířky
         const spineFs = Math.round(Math.min(Math.max(width * 0.18, 10), 15));
         return `
