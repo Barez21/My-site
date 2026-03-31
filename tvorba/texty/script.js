@@ -440,13 +440,23 @@
       const cols = manifest.collections || [];
       if(!cols.length){ shelf.innerHTML=`<div style="position:relative;z-index:2;color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;padding-bottom:2rem;align-self:center">Žádné sbírky</div>`; return; }
       collections = cols.map((c,i)=>({ ...c, leather:LEATHER[i%LEATHER.length] }));
-      shelf.innerHTML = collections.map((c,i)=>`
+      shelf.innerHTML = collections.map((c,i)=>{
+        // Výška podle délky názvu: krátký název = nižší knížka, dlouhý = vyšší
+        const titleLen = c.name.length;
+        const height = Math.round(Math.min(Math.max(200 + titleLen * 3.5, 220), 360));
+        // Šířka (tloušťka hřbetu) podle počtu básní
+        const poemCount = (c.poems||[]).length;
+        const width = Math.round(Math.min(Math.max(44 + poemCount * 2.2, 48), 110));
+        // Velikost písma na hřbetu podle šířky
+        const spineFs = Math.round(Math.min(Math.max(width * 0.18, 10), 15));
+        return `
         <div class="book-wrap" data-i="${i}" title="${esc(c.name)}">
-          <div class="book-spine" style="background:linear-gradient(90deg,${c.leather[0]} 0%,${c.leather[1]} 50%,${c.leather[0]} 100%)">
-            <span class="book-title-spine">${esc(c.name)}</span>
+          <div class="book-spine" style="background:linear-gradient(90deg,${c.leather[0]} 0%,${c.leather[1]} 50%,${c.leather[0]} 100%);width:${width}px;height:${height}px">
+            <span class="book-title-spine" style="font-size:${spineFs}px">${esc(c.name)}</span>
           </div>
           <div class="book-pages"></div>
-        </div>`).join('');
+        </div>`;
+      }).join('');
       document.querySelectorAll('.book-wrap').forEach(el=>{
         el.addEventListener('click',()=>openCollection(+el.dataset.i));
       });
