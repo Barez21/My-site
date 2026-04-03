@@ -446,9 +446,9 @@
         const height = Math.round(Math.min(Math.max(200 + titleLen * 3.5, 220), 360));
         // Šířka (tloušťka hřbetu) podle počtu básní
         const poemCount = (c.poems||[]).length;
-        const width = Math.round(Math.min(Math.max(30 + poemCount * 1.4, 30), 110));
+        const width = Math.round(Math.min(Math.max(44 + poemCount * 2.2, 44), 110));
         // Velikost písma na hřbetu podle šířky
-        const spineFs = Math.round(Math.min(Math.max(width * 0.4, 10), 20));
+        const spineFs = Math.round(Math.min(Math.max(width * 0.18, 10), 20));
         return `
         <div class="book-wrap" data-i="${i}" title="${esc(c.name)}">
           <div class="book-spine" style="background:linear-gradient(90deg,${c.leather[0]} 0%,${c.leather[1]} 50%,${c.leather[0]} 100%);width:${width}px;height:${height}px">
