@@ -1,6 +1,22 @@
 {
   "collections": [
     {
+      "name": "Proudy myšlení Petera Sternberga",
+      "poems": [
+        "01 V dobách kdy….txt",
+        "02 Věčnost je zalimovná (na motivy z Přísloví pekla).txt",
+        "03 Žeru Tě (věnováno múze Jeanette).txt",
+        "04 Ta noc (Věnováno múze Edith).txt",
+        "05 Jdi dál (věnováno Peterovi Sternbergovi).txt",
+        "06 Přiznání.txt",
+        "07 Pavučina chtění.txt",
+        "08 Proboha Tiše! (reakce na šťáru).txt",
+        "09 S výrazem štvané zvěři.txt",
+        "10 Za velikost platíme slzami (pro Westona Hailey).txt",
+        "11 Jsi mrdka v mých vlasech (věnováno Jeanette, sepisováno v....txt"
+      ]
+    },
+    {
       "name": "Verše pro Bílou čarodějku ze Severu",
       "preface": "predmluva.txt",
       "poems": [
