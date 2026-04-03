@@ -269,11 +269,11 @@
 
     /* POEM PAGE */
     .pg-poem { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    .poem-hd { font-family: 'Caveat', cursive; font-size: clamp(14px, 1.62vw, 27px); font-weight: 500; font-style: italic; color: var(--ink); text-align: center; line-height: 1.3; margin-bottom: 0.25rem; }
+    .poem-hd { font-family: 'Caveat', cursive; font-size: clamp(9px, 1.98vw, 22px); font-weight: 500; font-style: italic; color: var(--ink); text-align: center; line-height: 1.3; margin-bottom: 0.25rem; }
     .poem-rule { width: 26px; height: 1px; background: rgba(42,31,20,0.22); margin: 0.65rem 0 0.9rem; }
     .poem-cont-lbl { font-family: 'Caveat', cursive; font-size: clamp(9px, 0.9vw, 13px); font-style: italic; color: var(--ink-muted); text-align: center; margin-bottom: 0.8rem; }
     .poem-body {
-      font-family: var(--poem-font); font-size: clamp(14px, 1.8vw, 14px); line-height: 1.75;
+      font-family: var(--poem-font); font-size: clamp(9px, 2.2vw, 16px); line-height: 1.75;
       color: var(--ink); text-align: center;
       font-feature-settings: 'rand' 1, 'calt' 1;
       overflow: hidden;

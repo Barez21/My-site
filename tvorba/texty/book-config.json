@@ -2,6 +2,6 @@
   "author": "Tomáš \"Baréz\" Alvarez",
   "series": "Sbírka básní",
   "ornament": "✦   ✦   ✦",
-  "spineTemplate": "{název}",
+  "spineTemplate": "T.A.--- {název} --",
   "coverBottom": "Tomáš \"Baréz\" Alvarez"
 }
