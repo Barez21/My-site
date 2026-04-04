@@ -2,3 +2,6 @@ flask
 requests
 beautifulsoup4
 openpyxl
+pyarrow
+gunicorn
+werkzeug
