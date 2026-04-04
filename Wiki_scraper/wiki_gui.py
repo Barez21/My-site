@@ -153,6 +153,7 @@ HTML = r"""<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="base-path" content="{{ script_name }}">
 <meta name="theme-color" content="#0f1117" id="metaThemeColor">
 <title>Wiki Scraper</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2795,7 +2796,7 @@ function checkCP(){
   if(!out) return;
   // Hledat checkpoint nejprve s session prefixem, pak bez
   const prefixedOut=sessionOutput(out);
-  fetch('/check_cp?output='+encodeURIComponent(prefixedOut))
+  fetch(BASE_PATH + '/check_cp?output='+encodeURIComponent(prefixedOut))
     .then(r=>r.json()).then(d=>{
       const box=document.getElementById('resumeBox');
       if(d.exists){
@@ -2937,7 +2938,7 @@ function go(resume){
   }
 
   // Fáze 1 — jen sbírání
-  evtSrc=new EventSource('/run_phase1?'+new URLSearchParams({
+  evtSrc=new EventSource(BASE_PATH + '/run_phase1?'+new URLSearchParams({
     url:p.url, depth:p.depth, limit:p.limit, delay:p.delay, output:p.output, s:p.s||getSessionId()
   }));
 
@@ -2976,7 +2977,7 @@ function go(resume){
       document.getElementById('pp1').textContent='100%';
       setPhase(1,'Faze 1 hotova — nacitam prehled...','');
       clog('Nacitam pending soubor: '+p.output,'dim');
-      fetch('/get_pending?output='+encodeURIComponent(p.output))
+      fetch(BASE_PATH + '/get_pending?output='+encodeURIComponent(p.output))
         .then(r=>{
           if(!r.ok) throw new Error('HTTP '+r.status+' — pending soubor nenalezen (output='+p.output+')');
           return r.json();
@@ -3458,7 +3459,7 @@ function runJobsSequentially(jobs, p, idx){
   window._runParams=jobParams;
 
   // Uložit URL a spustit
-  fetch('/save_urls',{
+  fetch(BASE_PATH + '/save_urls',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({output:job.output, urls:job.urls})
@@ -3477,7 +3478,7 @@ function runJobsSequentially(jobs, p, idx){
       incremental:p.incremental?'1':'0',
       s:p.s||getSessionId(),
     });
-    evtSrc=new EventSource('/run_phase2_sse?'+qp);
+    evtSrc=new EventSource(BASE_PATH + '/run_phase2_sse?'+qp);
     // Po dokončení spustit další job
     const originalDone=()=>{
       stopTimer(); evtSrc.close(); 
@@ -3542,7 +3543,7 @@ function runPhase2Direct(p){
   document.getElementById('btnRun').classList.add('hidden');
   document.getElementById('btnStop').classList.remove('hidden');
   const params={...p, resume:'1', s:p.s||getSessionId()};
-  evtSrc=new EventSource('/run?'+new URLSearchParams(params));
+  evtSrc=new EventSource(BASE_PATH + '/run?'+new URLSearchParams(params));
   attachPhase2Listeners(p.output);
 }
 
@@ -3556,7 +3557,7 @@ function runPhase2WithUrls(urls, p){
   document.getElementById('btnStop').classList.remove('hidden');
 
   // Nejdříve POST uloží URL file, pak GET stream spustí fázi 2
-  fetch('/save_urls',{
+  fetch(BASE_PATH + '/save_urls',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({output:p.output, urls:urls})
@@ -3569,7 +3570,7 @@ function runPhase2WithUrls(urls, p){
       delay:p.delay,
       fields:p.fields
     });
-    evtSrc=new EventSource('/run_phase2_sse?'+qp);
+    evtSrc=new EventSource(BASE_PATH + '/run_phase2_sse?'+qp);
     attachPhase2Listeners(p.output);
   })
   .catch(e=>{
@@ -3652,7 +3653,7 @@ function attachPhase2Listeners(output, onDone){
 
 function discardCP(){
   const output=sessionOutput(document.getElementById('output').value||'wiki_data');
-  fetch('/discard_checkpoint',{method:'POST',headers:{'Content-Type':'application/json'},
+  fetch(BASE_PATH + '/discard_checkpoint',{method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({output})})
     .then(()=>{
       document.getElementById('resumeBox').classList.remove('on');
@@ -3661,7 +3662,7 @@ function discardCP(){
 }
 
 function stop(){
-  fetch('/stop',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({s:getSessionId()})});
+  fetch(BASE_PATH + '/stop',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({s:getSessionId()})});
   if(evtSrc)evtSrc.close();
   stopTimer(); setStatus('idle'); setStep(0);
   _phase2Running=false;
@@ -4161,7 +4162,7 @@ function exportParquet(){
       st.className='export-status ok'; return;
     }
     const params=new URLSearchParams({output:outputs[i],s:getSessionId()});
-    fetch('/export_parquet?'+params).then(r=>{
+    fetch(BASE_PATH + '/export_parquet?'+params).then(r=>{
       if(!r.ok) return r.json().then(d=>{ throw new Error(d.error||r.status); });
       return r.blob();
     }).then(blob=>{
@@ -4190,7 +4191,7 @@ function exportJsonLd(){
       st.className='export-status ok'; return;
     }
     const params=new URLSearchParams({output:outputs[i],s:getSessionId()});
-    fetch('/export_jsonld?'+params).then(r=>{
+    fetch(BASE_PATH + '/export_jsonld?'+params).then(r=>{
       if(!r.ok) return r.json().then(d=>{ throw new Error(d.error||r.status); });
       return r.blob();
     }).then(blob=>{
@@ -4210,7 +4211,7 @@ function exportJsonLd(){
 function pauseScraping(){
   // Pauza = zastavit subprocess (checkpoint se uloží automaticky)
   // ale zachovat UI stav = zobrazit "Pokračovat" tlačítko
-  fetch('/stop',{method:'POST',headers:{'Content-Type':'application/json'},
+  fetch(BASE_PATH + '/stop',{method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({s:getSessionId()})});
   if(evtSrc){ evtSrc.close(); evtSrc=null; }
   stopTimer();
@@ -4251,7 +4252,7 @@ function dlXlsx(){
 function _dlXlsxSingle(output, ibCols, onDone){
   const params=new URLSearchParams({output});
   if(ibCols) params.set('ib_cols', ibCols);
-  fetch('/export_xlsx?'+params)
+  fetch(BASE_PATH + '/export_xlsx?'+params)
     .then(r=>{
       if(!r.ok) return r.json().then(d=>{throw new Error(d.error||r.statusText);});
       return r.blob();
@@ -4378,7 +4379,7 @@ function exportTxtZip(){
   const st=document.getElementById('extraSt');
   btn.disabled=true;
   st.textContent='Generuji ZIP s textovymi soubory...'; st.className='export-status';
-  fetch('/export_txt_zip',{
+  fetch(BASE_PATH + '/export_txt_zip',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({outputs})
@@ -4414,7 +4415,7 @@ function _deleteCompletedFiles(cb){
   let done=0;
   if(!jobs.length){ if(cb)cb(); return; }
   jobs.forEach(output=>{
-    fetch('/discard_checkpoint',{method:'POST',headers:{'Content-Type':'application/json'},
+    fetch(BASE_PATH + '/discard_checkpoint',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({output, delete_results:true})})
       .finally(()=>{ done++; if(done>=jobs.length && cb) cb(); });
   });
@@ -4476,7 +4477,7 @@ function exportSqlite(){
       st.textContent=`✅ SQLite staženo (${outputs.length} soubor${outputs.length===1?'':'ů'})`;
       st.className='export-status ok'; return;
     }
-    fetch('/export_sqlite',{method:'POST',headers:{'Content-Type':'application/json'},
+    fetch(BASE_PATH + '/export_sqlite',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({output:outputs[i]})})
       .then(r=>r.json()).then(d=>{
         if(d.ok) window.location=`/download_file?file=${encodeURIComponent(outputs[i]+'.db')}`;
@@ -4492,7 +4493,7 @@ function exportReadme(){
   const url=document.getElementById('url').value||'';
   const st=document.getElementById('extraSt');
   st.textContent='⏳ Generuji README…'; st.className='export-status';
-  fetch('/export_readme',{method:'POST',headers:{'Content-Type':'application/json'},
+  fetch(BASE_PATH + '/export_readme',{method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({output,url})})
     .then(r=>r.json()).then(d=>{
       if(d.ok){
@@ -4516,7 +4517,7 @@ function openMerge(){
 function loadMergeFiles(){
   const list=document.getElementById('mergeFileList');
   list.innerHTML='<div style="font-family:var(--mono);font-size:11px;color:var(--text3);padding:8px 0">Načítám…</div>';
-  fetch('/list_outputs?s='+encodeURIComponent(getSessionId())).then(r=>r.json()).then(files=>{
+  fetch(BASE_PATH + '/list_outputs?s='+encodeURIComponent(getSessionId())).then(r=>r.json()).then(files=>{
     const entries=Object.entries(files).sort((a,b)=>b[1].mtime-a[1].mtime);
     list.innerHTML=entries.map(([stem,info])=>`
       <div class="merge-file-row${_mergeSelected.has(stem)?' selected':''}" data-stem="${esc(stem)}" onclick="toggleMergeFile('${esc(stem)}')">
@@ -4549,7 +4550,7 @@ function doMerge(){
   const output=document.getElementById('mergeOutput').value.trim()||'merged';
   const res=document.getElementById('mergeResult');
   res.classList.remove('on'); res.textContent='⏳ Slučuji…';
-  fetch('/merge_files',{method:'POST',headers:{'Content-Type':'application/json'},
+  fetch(BASE_PATH + '/merge_files',{method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({sources:[..._mergeSelected],output})})
     .then(r=>r.json()).then(d=>{
       if(d.ok){
@@ -4704,7 +4705,7 @@ function cpConfirmExport(){
 
 /* ── DATA TABLE ───────────────────────────────────────────────────────────── */
 function loadData(output){
-  fetch('/results?file='+encodeURIComponent(output))
+  fetch(BASE_PATH + '/results?file='+encodeURIComponent(output))
     .then(r=>r.json())
     .then(d=>{
       allData=d;
@@ -4721,7 +4722,7 @@ function loadData(output){
 
 function loadDataMultiple(outputs){
   Promise.all(outputs.map(o=>
-    fetch('/results?file='+encodeURIComponent(o))
+    fetch(BASE_PATH + '/results?file='+encodeURIComponent(o))
       .then(r=>r.json())
       .then(d=>d.map(rec=>({...rec, _source:o})))
       .catch(()=>[])
@@ -5048,7 +5049,7 @@ async function testUrl(){
   btn.disabled=true; btn.textContent='⏳';
   res.className='test-result on'; res.textContent='Načítám…';
   try{
-    const r=await fetch('/test_url?url='+encodeURIComponent(url));
+    const r=await fetch(BASE_PATH + '/test_url?url='+encodeURIComponent(url));
     const d=await r.json();
     if(d.ok){
       res.className='test-result on ok';
@@ -5192,7 +5193,7 @@ function toggleRename(){
 function renameFile(){
   const newName=document.getElementById('renameInput').value.trim();
   if(!newName||newName===_currentFile) return;
-  fetch('/rename_file',{method:'POST',headers:{'Content-Type':'application/json'},
+  fetch(BASE_PATH + '/rename_file',{method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({old:_currentFile,new:newName})})
     .then(r=>r.json()).then(d=>{
       if(d.ok){
@@ -5602,12 +5603,12 @@ let _globalIndex=[];  // [{title, intro, url, source}]
 let _globalSearchTimer=null;
 
 function buildGlobalIndex(){
-  fetch('/list_outputs?s='+encodeURIComponent(getSessionId())).then(r=>r.json()).then(files=>{
+  fetch(BASE_PATH + '/list_outputs?s='+encodeURIComponent(getSessionId())).then(r=>r.json()).then(files=>{
     const names=Object.keys(files);
     _globalIndex=[];
     const loadNext=(i)=>{
       if(i>=names.length) return;
-      fetch('/results?file='+encodeURIComponent(names[i]))
+      fetch(BASE_PATH + '/results?file='+encodeURIComponent(names[i]))
         .then(r=>r.json())
         .then(data=>{
           data.forEach(r=>{
@@ -7410,7 +7411,10 @@ def require_login():
         return redirect(url_for("login_page", next=request.url))
 
 @app.route("/")
-def index(): return HTML
+def index():
+    import os
+    sn = os.environ.get("SCRIPT_NAME","").rstrip("/")
+    return HTML.replace("{{ script_name }}", sn)
 
 
 @app.route("/run")
