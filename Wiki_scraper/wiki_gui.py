@@ -7354,6 +7354,11 @@ def login_page():
                 app.permanent_session_lifetime = datetime.timedelta(days=30)
             log_audit("login_ok", username)
             app_log.info(f"Login OK: {username} from {request.remote_addr}")
+            # Po přihlášení: pokud next_url je absolutní URL, vzít jen cestu
+            import urllib.parse as _up
+            if next_url.startswith("http"):
+                _parsed = _up.urlparse(next_url)
+                next_url = _parsed.path or "/"
             return redirect(next_url if next_url.startswith("/") else "/")
         else:
             error_msg = "Nesprávné jméno nebo heslo"
