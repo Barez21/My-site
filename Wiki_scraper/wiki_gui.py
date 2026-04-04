@@ -8,6 +8,24 @@ import functools, hashlib, os
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
+
+# ProxyFix — správně čte X-Forwarded-* headers od Traefiku
+# a nastavuje SCRIPT_NAME podle SCRIPT_NAME env proměnné
+from werkzeug.middleware.proxy_fix import ProxyFix
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
+
+def _make_app():
+    import os
+    prefix = os.environ.get("SCRIPT_NAME", "")
+    if prefix:
+        # Namontovat app na prefix
+        from werkzeug.wrappers import Response as _R
+        def _empty(env, start): return _R("", status=404)(env, start)
+        _wrapped = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
+        app.wsgi_app = DispatcherMiddleware(_empty, {prefix: _wrapped})
+    else:
+        app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
+    return app
 app.secret_key = os.environ.get("SECRET_KEY", "wikiscraper2025-change-me")
 app.permanent_session_lifetime = datetime.timedelta(days=30)
 
@@ -3715,6 +3733,15 @@ function mobTab(name){
 
 // Inicializace mobile layoutu
 function initMobile(){
+  // Zobrazit/skrýt mobilní nav podle šířky
+  function applyMobileLayout(){
+    const mob = _isMobile();
+    const nav = document.getElementById('mobileNav');
+    if(nav) nav.style.display = mob ? 'flex' : 'none';
+    if(!mob) mobCloseSidebar();
+  }
+  applyMobileLayout();
+  window.addEventListener('resize', applyMobileLayout, {passive:true});
   if(!_isMobile()) return;
 
   // Zavřít sidebar swipe dolů
@@ -7958,12 +7985,12 @@ a{{color:#64748b;text-decoration:none;font-size:12px}}a:hover{{color:#94a3b8}}</
 {warn}{msg_html}{err_html}
 <div class="card"><h2>Uživatelé</h2>{rows}</div>
 <div class="card"><h2>Přidat uživatele</h2>
-<form method="POST" action="add">
+<form method="POST" action="/admin/users/add">
 <label>Jméno</label><input name="username" type="text" placeholder="novak" autocomplete="off" required>
 <label>Heslo</label><input name="password" type="password" placeholder="••••••••" required>
 <button type="submit" class="btn">+ Přidat uživatele</button></form></div>
 <div class="card"><h2>Změnit moje heslo</h2>
-<form method="POST" action="change_password" style="display:flex;gap:8px">
+<form method="POST" action="/admin/users/change_password" style="display:flex;gap:8px">
 <input name="new_password" type="password" placeholder="Nové heslo (min. 6 znaků)" required style="flex:1">
 <button type="submit" class="btn-sm">Uložit</button></form></div>
 </div></body></html>"""
@@ -8034,7 +8061,7 @@ a{{color:#64748b;text-decoration:none;font-size:12px}}a:hover{{color:#94a3b8}}</
 <p style="font-size:12px;color:#64748b;margin-bottom:24px">Změna hesla.</p>
 {msg_html}{err_html}
 <div class="card">
-<form method="POST" action="change_password">
+<form method="POST" action="/admin/users/change_password">
 <label>Nové heslo</label><input name="new_password" type="password" placeholder="••••••••" required>
 <label>Zopakovat heslo</label><input name="confirm_password" type="password" placeholder="••••••••" required>
 <div class="btn"><button type="submit">Uložit heslo</button></div>
@@ -8176,4 +8203,4 @@ if __name__=="__main__":
     print("  http://localhost:7842")
     print("  Ukonči: Ctrl+C")
     print("─"*44+"\n")
-    app.run(host="0.0.0.0",port=7842,debug=False,threaded=True)
+    _make_app().run(host="0.0.0.0",port=7842,debug=False,threaded=True)
