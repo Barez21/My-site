@@ -7911,14 +7911,16 @@ def admin_users():
             'border-radius:8px;padding:12px;font-size:12px;color:#fbbf24;margin-bottom:16px">'
             '&#9888; Výchozí heslo pro "admin" je stále "admin" — změň ho níže!</div>'
             if _check_password("admin","admin") else "")
-    rows = "".join(
-        f'<div style="display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid #1e2130">'
-        f'<span style="flex:1;font-family:monospace;font-size:13px">{u}'
-        f'{"&nbsp;<span style='font-size:10px;padding:2px 7px;border-radius:10px;background:rgba(110,231,183,.1);color:#6ee7b7'>ty</span>" if u==user else ""}</span>'
-        f'{"" if u==user else f"""<form method="POST" action="/admin/users/delete" style="display:inline"><input type="hidden" name="username" value="{u}"><button style="background:transparent;border:1px solid #2a2d3a;color:#64748b;border-radius:6px;padding:5px 12px;font-size:12px;cursor:pointer" onclick="return confirm('Smazat {u}?')">Smazat</button></form>"""}'
-        f'</div>'
-        for u in USERS
-    )
+    rows = ""
+    for u in USERS:
+        is_me = (u == user)
+        if is_me:
+            row_badge = '<span style="font-size:10px;padding:2px 7px;border-radius:10px;background:rgba(110,231,183,.1);color:#6ee7b7">ty</span>'
+            row_del = ""
+        else:
+            row_badge = ""
+            row_del = "<form method='POST' action='/admin/users/delete' style='display:inline'><input type='hidden' name='username' value='{n}'><button style='background:transparent;border:1px solid #2a2d3a;color:#64748b;border-radius:6px;padding:5px 12px;font-size:12px;cursor:pointer'>Smazat</button></form>".replace("{n}", u)
+        rows += "<div style='display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid #1e2130'><span style='flex:1;font-family:monospace;font-size:13px'>{n} {b}</span>{d}</div>".replace("{n}", u).replace("{b}", row_badge).replace("{d}", row_del)
     msg_html = f'<div style="background:rgba(110,231,183,.1);border:1px solid rgba(110,231,183,.3);border-radius:8px;padding:10px;font-size:12px;color:#6ee7b7;margin-bottom:12px">{msg}</div>' if msg else ""
     err_html = f'<div style="background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);border-radius:8px;padding:10px;font-size:12px;color:#f87171;margin-bottom:12px">{err}</div>' if err else ""
     html = f"""<!DOCTYPE html><html lang="cs"><head><meta charset="UTF-8">
