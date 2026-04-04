@@ -1742,9 +1742,9 @@ tbody tr.tr-focused { background: var(--accent2-tint) !important; outline: 1px s
   <div class="header-logo">Wiki<em>Scraper</em></div>
   <div class="header-badge">v7</div>
   <div class="header-badge" id="sessionBadge" title="Tvoje session ID" style="color:var(--text3);cursor:default;font-size:9px"></div>
-  <a href="/admin/users" class="logout-btn" style="margin-left:auto" title="Správa uživatelů (jen admin)">👥</a>
-  <a href="/profile" class="logout-btn" title="Změnit heslo">🔑</a>
-  <a href="/logout" class="logout-btn" title="Odhlásit se">Odhlásit</a>
+  <a href="admin/users" class="logout-btn" style="margin-left:auto" title="Správa uživatelů (jen admin)">👥</a>
+  <a href="profile" class="logout-btn" title="Změnit heslo">🔑</a>
+  <a href="logout" class="logout-btn" title="Odhlásit se">Odhlásit</a>
   <!-- STEPPER -->
   <div class="stepper" id="stepper">
     <div class="step" id="step0"><div class="step-dot" id="sd0">1</div>Sbírání</div>
@@ -3681,7 +3681,7 @@ function stop(){
 
 
 /* ── MOBILE ──────────────────────────────────────────────────────────────── */
-const _isMobile = () => window.innerWidth <= 768;
+const _isMobile = () => window.innerWidth <= 768 && window.screen.width <= 768;
 
 function mobToggleSidebar(){
   const sidebar = document.querySelector('aside.sidebar');
