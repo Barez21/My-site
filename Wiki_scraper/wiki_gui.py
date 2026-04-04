@@ -52,6 +52,12 @@ def _is_admin(username: str) -> bool:
     if not USERS: return False
     return username == next(iter(USERS))
 
+
+def _redirect(path):
+    """Redirect respektující SCRIPT_NAME prefix."""
+    prefix = request.environ.get("SCRIPT_NAME", "")
+    return redirect(prefix + path)
+
 def login_required(f):
     """Decorator — přesměruje na /login pokud není přihlášen."""
     @functools.wraps(f)
@@ -7379,7 +7385,7 @@ def login_page():
 def logout():
     user = session.pop("user", "")
     log_audit("logout", user)
-    return redirect("/login")
+    return _redirect("/login")
 
 # ─── AUTH GUARD ───────────────────────────────────────────────────────────────
 PUBLIC_ROUTES = frozenset(["/login", "/logout", "/favicon.ico", "/api/openapi.yaml"])
@@ -7952,12 +7958,12 @@ a{{color:#64748b;text-decoration:none;font-size:12px}}a:hover{{color:#94a3b8}}</
 {warn}{msg_html}{err_html}
 <div class="card"><h2>Uživatelé</h2>{rows}</div>
 <div class="card"><h2>Přidat uživatele</h2>
-<form method="POST" action="/admin/users/add">
+<form method="POST" action="add">
 <label>Jméno</label><input name="username" type="text" placeholder="novak" autocomplete="off" required>
 <label>Heslo</label><input name="password" type="password" placeholder="••••••••" required>
 <button type="submit" class="btn">+ Přidat uživatele</button></form></div>
 <div class="card"><h2>Změnit moje heslo</h2>
-<form method="POST" action="/admin/users/change_password" style="display:flex;gap:8px">
+<form method="POST" action="change_password" style="display:flex;gap:8px">
 <input name="new_password" type="password" placeholder="Nové heslo (min. 6 znaků)" required style="flex:1">
 <button type="submit" class="btn-sm">Uložit</button></form></div>
 </div></body></html>"""
@@ -7969,9 +7975,9 @@ def admin_add_user():
     if not _is_admin(session.get("user","")): return "Přístup odepřen", 403
     u = request.form.get("username","").strip()
     p = request.form.get("password","")
-    if not u or not p: return redirect("/admin/users?err=Jméno+a+heslo+nesmí+být+prázdné")
+    if not u or not p: return _redirect("/admin/users?err=Jméno+a+heslo+nesmí+být+prázdné")
     if u in USERS: return redirect(f"/admin/users?err=Uživatel+{u}+už+existuje")
-    if len(p) < 6: return redirect("/admin/users?err=Heslo+musí+mít+aspoň+6+znaků")
+    if len(p) < 6: return _redirect("/admin/users?err=Heslo+musí+mít+aspoň+6+znaků")
     USERS[u] = generate_password_hash(p)
     _save_users(USERS)
     log_audit("user_add", u, session["user"])
@@ -7982,8 +7988,8 @@ def admin_add_user():
 def admin_delete_user():
     if not _is_admin(session.get("user","")): return "Přístup odepřen", 403
     u = request.form.get("username","")
-    if u == session["user"]: return redirect("/admin/users?err=Nemůžeš+smazat+sám+sebe")
-    if u not in USERS: return redirect("/admin/users?err=Uživatel+neexistuje")
+    if u == session["user"]: return _redirect("/admin/users?err=Nemůžeš+smazat+sám+sebe")
+    if u not in USERS: return _redirect("/admin/users?err=Uživatel+neexistuje")
     del USERS[u]
     _save_users(USERS)
     log_audit("user_delete", u, session["user"])
@@ -7993,14 +7999,14 @@ def admin_delete_user():
 @app.route("/admin/users/change_password", methods=["POST"])
 def admin_change_password():
     user = session.get("user","")
-    if not user or user not in USERS: return redirect("/login")
+    if not user or user not in USERS: return _redirect("/login")
     pw = request.form.get("new_password","")
     if len(pw) < 6:
-        return redirect("/admin/users?err=Heslo+musí+mít+aspoň+6+znaků")
+        return _redirect("/admin/users?err=Heslo+musí+mít+aspoň+6+znaků")
     USERS[user] = generate_password_hash(pw)
     _save_users(USERS)
     log_audit("password_change", user, user)
-    return redirect("/admin/users?msg=Heslo+úspěšně+změněno")
+    return _redirect("/admin/users?msg=Heslo+úspěšně+změněno")
 
 
 @app.route("/profile")
@@ -8028,7 +8034,7 @@ a{{color:#64748b;text-decoration:none;font-size:12px}}a:hover{{color:#94a3b8}}</
 <p style="font-size:12px;color:#64748b;margin-bottom:24px">Změna hesla.</p>
 {msg_html}{err_html}
 <div class="card">
-<form method="POST" action="/profile/change_password">
+<form method="POST" action="change_password">
 <label>Nové heslo</label><input name="new_password" type="password" placeholder="••••••••" required>
 <label>Zopakovat heslo</label><input name="confirm_password" type="password" placeholder="••••••••" required>
 <div class="btn"><button type="submit">Uložit heslo</button></div>
@@ -8039,15 +8045,15 @@ a{{color:#64748b;text-decoration:none;font-size:12px}}a:hover{{color:#94a3b8}}</
 @app.route("/profile/change_password", methods=["POST"])
 def profile_change_password():
     user = session.get("user","")
-    if not user or user not in USERS: return redirect("/login")
+    if not user or user not in USERS: return _redirect("/login")
     pw  = request.form.get("new_password","")
     pw2 = request.form.get("confirm_password","")
-    if pw != pw2: return redirect("/profile?err=Hesla+se+neshodují")
-    if len(pw) < 6: return redirect("/profile?err=Heslo+musí+mít+aspoň+6+znaků")
+    if pw != pw2: return _redirect("/profile?err=Hesla+se+neshodují")
+    if len(pw) < 6: return _redirect("/profile?err=Heslo+musí+mít+aspoň+6+znaků")
     USERS[user] = generate_password_hash(pw)
     _save_users(USERS)
     log_audit("password_change", user, user)
-    return redirect("/profile?msg=Heslo+úspěšně+změněno")
+    return _redirect("/profile?msg=Heslo+úspěšně+změněno")
 
 
 @app.route("/export_parquet")
