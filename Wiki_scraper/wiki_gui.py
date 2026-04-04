@@ -236,18 +236,13 @@ body {
 
 @media (max-width: 768px) {
 
-  /* ── Základní layout ─────────────────────────────────────────────────────── */
+  /* ── Základní layout — grid NEZMĚNĚN, sidebar je overlay ─────────────────── */
   .app {
-    grid-template-rows: 48px auto auto 1fr 56px; /* přidat spodní nav lištu */
-    height: 100dvh; /* dynamic viewport height — správně na iOS Safari */
+    height: 100dvh;
   }
+  /* Sidebar jde přes obsah jako overlay — main area zůstane na celou šířku */
   .body {
-    grid-template-columns: 1fr;
-    position: relative;
-  }
-  .main {
-    grid-column: 1 / -1;
-    width: 100%;
+    grid-template-columns: 0 1fr; /* sidebar má 0 šířku v gridu, je fixed overlay */
   }
 
   /* ── Header ─────────────────────────────────────────────────────────────── */
