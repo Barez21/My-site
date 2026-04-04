@@ -795,7 +795,13 @@ def collect_urls_from_category(start_url, max_depth, limit, phase1_cp_path=None)
             log(f"⚠ Nelze načíst phase1 checkpoint: {e} — začínám od nuly")
 
     while cat_queue:
-        cat_url, depth, parent_name = cat_queue.popleft()
+        item = cat_queue.popleft()
+        # Zpětná kompatibilita: staré checkpointy mají [url, depth], nové [url, depth, parent]
+        if len(item) == 2:
+            cat_url, depth = item
+            parent_name = None
+        else:
+            cat_url, depth, parent_name = item
         if cat_url in visited_cats: continue
         visited_cats.add(cat_url)
         s["cats"] += 1

@@ -7413,6 +7413,9 @@ def run_scraper():
            "--fields",fields,"--verbose"]
     if resume: cmd.append("--resume")
 
+    s = request.args.get("s", "")
+    job = get_job(s)
+
     def generate():
         job["running"] = True
         try:
