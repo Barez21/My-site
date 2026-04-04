@@ -8,24 +8,8 @@ import functools, hashlib, os
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
-
-# ProxyFix — správně čte X-Forwarded-* headers od Traefiku
-# a nastavuje SCRIPT_NAME podle SCRIPT_NAME env proměnné
 from werkzeug.middleware.proxy_fix import ProxyFix
-from werkzeug.middleware.dispatcher import DispatcherMiddleware
-
-def _make_app():
-    import os
-    prefix = os.environ.get("SCRIPT_NAME", "")
-    if prefix:
-        # Namontovat app na prefix
-        from werkzeug.wrappers import Response as _R
-        def _empty(env, start): return _R("", status=404)(env, start)
-        _wrapped = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
-        app.wsgi_app = DispatcherMiddleware(_empty, {prefix: _wrapped})
-    else:
-        app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
-    return app
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 app.secret_key = os.environ.get("SECRET_KEY", "wikiscraper2025-change-me")
 app.permanent_session_lifetime = datetime.timedelta(days=30)
 
@@ -8203,4 +8187,4 @@ if __name__=="__main__":
     print("  http://localhost:7842")
     print("  Ukonči: Ctrl+C")
     print("─"*44+"\n")
-    _make_app().run(host="0.0.0.0",port=7842,debug=False,threaded=True)
+    app.run(host="0.0.0.0",port=7842,debug=False,threaded=True)
