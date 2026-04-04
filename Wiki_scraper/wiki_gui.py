@@ -228,33 +228,33 @@ body {
 
 /* ── REDUCED MOTION ───────────────────────────────────────────────────────── */
 
-/* ── MOBILNÍ CSS (zjednodušený) ────────────────────────────────────────────── */
-@media (max-width: 768px) {
-  /* Spodní nav lišta */
-  #mobileNav { display: flex !important; position: fixed; bottom: 0; left: 0; right: 0;
-    height: 56px; background: var(--surface); border-top: 1px solid var(--border);
-    z-index: 250; align-items: stretch; }
-  .mob-nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center;
-    justify-content: center; gap: 3px; font-size: 9px; color: var(--text3);
-    background: transparent; border: none; cursor: pointer; transition: color .15s; }
-  .mob-nav-btn.active { color: var(--accent); }
-  .mob-nav-btn .nav-icon { font-size: 20px; line-height: 1; }
-  /* Sidebar jako fixed drawer zleva */
-  aside.sidebar { position: fixed !important; top: 0; left: -100%; bottom: 56px;
-    width: 85vw; max-width: 340px; z-index: 200;
-    transition: left .3s cubic-bezier(.4,0,.2,1); box-shadow: 4px 0 24px rgba(0,0,0,.4); }
-  aside.sidebar.mob-open { left: 0 !important; }
-  /* Backdrop */
-  #mobSidebarBackdrop { display: none; position: fixed; inset: 0;
-    background: rgba(0,0,0,.5); z-index: 190; }
-  #mobSidebarBackdrop.on { display: block; }
-  /* Tabs scrollovatelné */
-  .tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
-  .tabs::-webkit-scrollbar { display: none; }
-  .tab-btn { white-space: nowrap; flex-shrink: 0; }
-  /* Tabulka — skrýt méně důležité sloupce */
-  .col-c3, .col-c4 { display: none; }
+/* ── MOBILNÍ CSS — aktivuje se třídou .is-mobile na <html> (nastavuje JS) ─── */
+/* Desktop layout se nikdy nemění přes media query — jen přes JS třídu */
+
+html.is-mobile #mobileNav { display: flex !important; }
+html.is-mobile aside.sidebar {
+  position: fixed !important; top: 0; left: -100%; bottom: 56px;
+  width: 85vw; max-width: 340px; z-index: 200;
+  transition: left .3s cubic-bezier(.4,0,.2,1); box-shadow: 4px 0 24px rgba(0,0,0,.4);
 }
+html.is-mobile aside.sidebar.mob-open { left: 0 !important; }
+html.is-mobile #mobSidebarBackdrop.on { display: block; }
+html.is-mobile .tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+html.is-mobile .tabs::-webkit-scrollbar { display: none; }
+html.is-mobile .tab-btn { white-space: nowrap; flex-shrink: 0; }
+html.is-mobile .col-c3, html.is-mobile .col-c4 { display: none; }
+
+/* Spodní nav lišta — vždy skrytá dokud JS nepřidá .is-mobile */
+#mobileNav { display: none; position: fixed; bottom: 0; left: 0; right: 0;
+  height: 56px; background: var(--surface); border-top: 1px solid var(--border);
+  z-index: 250; align-items: stretch; }
+.mob-nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 3px; font-size: 9px; color: var(--text3);
+  background: transparent; border: none; cursor: pointer; transition: color .15s; }
+.mob-nav-btn.active { color: var(--accent); }
+.mob-nav-btn .nav-icon { font-size: 20px; line-height: 1; }
+#mobSidebarBackdrop { display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,.5); z-index: 190; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -981,8 +981,9 @@ body.resizing-y { user-select: none; cursor: row-resize !important; }
 
 
 /* ── LAYOUT ──────────────────────────────────────────────────────────────── */
-.app { display: grid; grid-template-rows: 48px auto auto 1fr; height: 100vh; }
-.body { display: grid; grid-template-columns: var(--sidebar-w,320px) 1fr; overflow: hidden; }
+.app { display: grid; grid-template-rows: 48px auto auto 1fr; height: 100vh; width: 100%; }
+.body { display: grid; grid-template-columns: var(--sidebar-w,320px) 1fr; overflow: hidden; width: 100%; }
+.main { min-width: 0; overflow: hidden; }
 
 /* ── HEADER ──────────────────────────────────────────────────────────────── */
 .header {
@@ -3544,7 +3545,10 @@ function stop(){
 
 
 /* ── MOBILE ──────────────────────────────────────────────────────────────── */
-const _isMobile = () => window.innerWidth <= 768 && window.screen.width <= 768;
+// Mobilní detekce: skutečný mobil/tablet NEBO velmi úzké okno (<= 600px)
+// 600px místo 768px aby desktop se zúženým oknem nebyl považován za mobil
+const _isPhone = () => /Android|iPhone|iPad|iPod|Mobile|Tablet/i.test(navigator.userAgent);
+const _isMobile = () => _isPhone() || window.innerWidth <= 600;
 
 function mobToggleSidebar(){
   const sidebar = document.querySelector('aside.sidebar');
@@ -3580,12 +3584,14 @@ function mobTab(name){
 
 // Inicializace mobile layoutu
 function initMobile(){
-  // Zobrazit/skrýt mobilní nav podle šířky
   function applyMobileLayout(){
     const mob = _isMobile();
-    const nav = document.getElementById('mobileNav');
-    if(nav) nav.style.display = mob ? 'flex' : 'none';
-    if(!mob) mobCloseSidebar();
+    if(mob){
+      document.documentElement.classList.add('is-mobile');
+    } else {
+      document.documentElement.classList.remove('is-mobile');
+      mobCloseSidebar();
+    }
   }
   applyMobileLayout();
   window.addEventListener('resize', applyMobileLayout, {passive:true});
