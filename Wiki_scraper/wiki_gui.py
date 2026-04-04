@@ -242,9 +242,12 @@ body {
     height: 100dvh; /* dynamic viewport height — správně na iOS Safari */
   }
   .body {
-    grid-template-columns: 1fr; /* sidebar schovat, main na celou šířku */
-    grid-column: 1 / -1;
+    grid-template-columns: 1fr;
     position: relative;
+  }
+  .main {
+    grid-column: 1 / -1;
+    width: 100%;
   }
 
   /* ── Header ─────────────────────────────────────────────────────────────── */
@@ -1121,6 +1124,7 @@ body.resizing-y { user-select: none; cursor: row-resize !important; }
 /* ── LAYOUT ──────────────────────────────────────────────────────────────── */
 .app { display: grid; grid-template-rows: 48px auto auto 1fr; height: 100vh; }
 .body { display: grid; grid-template-columns: var(--sidebar-w,320px) 1fr; overflow: hidden; }
+.main { min-width: 0; flex: 1; }
 
 /* ── HEADER ──────────────────────────────────────────────────────────────── */
 .header {
