@@ -228,168 +228,32 @@ body {
 
 /* ── REDUCED MOTION ───────────────────────────────────────────────────────── */
 
-/* ════════════════════════════════════════════════════════════════════════════
-   MOBILNÍ RESPONZIVITA — breakpoint 768px
-   Filosofie: sidebar se stane spodní navigací (bottom drawer), hlavní obsah
-   zabírá celou výšku, taby se scrollují horizontálně.
-   ════════════════════════════════════════════════════════════════════════════ */
-
+/* ── MOBILNÍ CSS (zjednodušený) ────────────────────────────────────────────── */
 @media (max-width: 768px) {
-
-  /* ── Základní layout — grid NEZMĚNĚN, sidebar je overlay ─────────────────── */
-  .app {
-    height: 100dvh;
-  }
-  /* Sidebar jde přes obsah jako overlay — main area zůstane na celou šířku */
-  .body {
-    grid-template-columns: 0 1fr; /* sidebar má 0 šířku v gridu, je fixed overlay */
-  }
-
-  /* ── Header ─────────────────────────────────────────────────────────────── */
-  .header { padding: 0 12px; gap: 8px; }
-  .header-logo { font-size: 15px; }
-  .header-badge { display: none; } /* skrýt verzi badge — šetřit místo */
-  #sessionBadge { display: none; }
-  .stepper { display: none; } /* stepper na mobilu zabírá moc místa */
-  .logout-btn { padding: 3px 8px; font-size: 10px; }
-
-  /* ── Progress sekce ─────────────────────────────────────────────────────── */
-  .progress-section { padding: 6px 12px; }
-  .progress-name { font-size: 9px; min-width: 80px; }
-  .current-task { padding: 4px 6px; min-height: 24px; }
-  .task-phase { font-size: 9px; padding: 2px 5px; }
-  .task-name { font-size: 10px; }
-
-  /* ── Stats bar ──────────────────────────────────────────────────────────── */
-  .stats-bar { gap: 8px; padding: 4px 12px; overflow-x: auto; }
-  .stat-val { font-size: 16px; }
-  .stat-lbl { font-size: 9px; }
-
-  /* ── Tabs ───────────────────────────────────────────────────────────────── */
-  .tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; gap: 0;
-          scrollbar-width: none; padding: 0 4px; }
-  .tabs::-webkit-scrollbar { display: none; }
-  .tab-btn { white-space: nowrap; padding: 8px 12px; font-size: 11px; flex-shrink: 0; }
-
-  /* ── Main content ───────────────────────────────────────────────────────── */
-  .main { height: calc(100dvh - 48px - var(--progress-h, 80px)); }
-  .tab-panel { overflow-y: auto; -webkit-overflow-scrolling: touch; }
-
-  /* ── Data tabulka ───────────────────────────────────────────────────────── */
-  .dt-toolbar { flex-wrap: wrap; gap: 4px; padding: 8px; }
-  .dt-toolbar input { min-width: 0; }
-  /* Skrýt méně důležité sloupce na malém displeji */
-  .col-c3, .col-c4 { display: none; } /* kategorie, délka */
-  .td-title { max-width: none; }
-  .td-text { max-width: 160px; }
-  thead th { padding: 6px 8px; font-size: 9px; }
-  tbody td { padding: 5px 8px; font-size: 10px; }
-
-  /* ── Sidebar — přesunut do bottom sheet ─────────────────────────────────── */
-  aside.sidebar {
-    position: fixed;
-    bottom: 56px; /* nad spodní nav lištou */
-    left: 0; right: 0;
-    height: auto;
-    max-height: 80dvh;
-    border-radius: 16px 16px 0 0;
-    border-top: 1px solid var(--border2);
-    box-shadow: 0 -8px 32px rgba(0,0,0,.4);
-    z-index: 200;
-    transform: translateY(100%);
-    transition: transform .3s cubic-bezier(.4,0,.2,1);
-    overflow: hidden;
-    /* Schovat resize handle na mobilu */
-  }
-  aside.sidebar.mob-open {
-    transform: translateY(0);
-  }
-  .sidebar-scroll { padding: 12px; max-height: calc(80dvh - 56px); }
-  .resize-handle-x { display: none; }
-
-  /* ── Spodní nav lišta ───────────────────────────────────────────────────── */
-  #mobileNav {
-    display: flex !important;
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-    height: 56px;
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    z-index: 250;
-    align-items: stretch;
-  }
-  .mob-nav-btn {
-    flex: 1;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 3px;
-    font-size: 9px; color: var(--text3);
-    background: transparent; border: none;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    transition: color .15s;
-  }
+  /* Spodní nav lišta */
+  #mobileNav { display: flex !important; position: fixed; bottom: 0; left: 0; right: 0;
+    height: 56px; background: var(--surface); border-top: 1px solid var(--border);
+    z-index: 250; align-items: stretch; }
+  .mob-nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 3px; font-size: 9px; color: var(--text3);
+    background: transparent; border: none; cursor: pointer; transition: color .15s; }
   .mob-nav-btn.active { color: var(--accent); }
   .mob-nav-btn .nav-icon { font-size: 20px; line-height: 1; }
-
-  /* ── Sidebar overlay backdrop ───────────────────────────────────────────── */
-  #mobSidebarBackdrop {
-    display: none;
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,.5);
-    z-index: 190;
-  }
+  /* Sidebar jako fixed drawer zleva */
+  aside.sidebar { position: fixed !important; top: 0; left: -100%; bottom: 56px;
+    width: 85vw; max-width: 340px; z-index: 200;
+    transition: left .3s cubic-bezier(.4,0,.2,1); box-shadow: 4px 0 24px rgba(0,0,0,.4); }
+  aside.sidebar.mob-open { left: 0 !important; }
+  /* Backdrop */
+  #mobSidebarBackdrop { display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,.5); z-index: 190; }
   #mobSidebarBackdrop.on { display: block; }
-
-  /* ── Review dialog ──────────────────────────────────────────────────────── */
-  .review-modal-inner {
-    width: 100vw !important;
-    max-width: 100vw !important;
-    height: 100dvh !important;
-    max-height: 100dvh !important;
-    border-radius: 0 !important;
-  }
-  .review-cols { flex-direction: column; gap: 8px; }
-  .review-col { min-width: 0 !important; width: 100% !important; max-height: 280px; }
-
-  /* ── Export box ─────────────────────────────────────────────────────────── */
-  .export-details-body { gap: 6px; }
-  .export-btn { font-size: 11px; padding: 8px 10px; }
-
-  /* ── Overview karty ─────────────────────────────────────────────────────── */
-  .sg-card { padding: 10px 8px; }
-  .sg-val { font-size: 20px; }
-  .sg-lbl { font-size: 9px; }
-
-  /* ── Modals — full screen na mobilu ────────────────────────────────────── */
-  .modal-inner, .ib-popup {
-    width: 96vw !important;
-    max-width: 96vw !important;
-    max-height: 85dvh !important;
-  }
-  .tbl-popup { width: 96vw; left: 2vw !important; }
-
-  /* ── Console ────────────────────────────────────────────────────────────── */
-  .console-body.open { max-height: 120px; }
-
-  /* ── Tlačítka sidebar footer ────────────────────────────────────────────── */
-  .sidebar-footer { padding: 8px 12px; }
-  .btn { font-size: 12px; padding: 9px 12px; }
-}
-
-/* Extra malé displeje — 380px a méně */
-@media (max-width: 380px) {
-  .tab-btn { padding: 7px 9px; font-size: 10px; }
-  .col-c5, .col-c6 { display: none; } /* skrýt quality a infobox count */
-}
-
-/* Landscape mobile — horizontální orientace */
-@media (max-width: 768px) and (orientation: landscape) {
-  .app { grid-template-rows: 40px auto 1fr 48px; }
-  .header { height: 40px; }
-  aside.sidebar { max-height: 90dvh; bottom: 48px; }
-  #mobileNav { height: 48px; }
-  .mob-nav-btn .nav-icon { font-size: 16px; }
+  /* Tabs scrollovatelné */
+  .tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab-btn { white-space: nowrap; flex-shrink: 0; }
+  /* Tabulka — skrýt méně důležité sloupce */
+  .col-c3, .col-c4 { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1119,7 +983,6 @@ body.resizing-y { user-select: none; cursor: row-resize !important; }
 /* ── LAYOUT ──────────────────────────────────────────────────────────────── */
 .app { display: grid; grid-template-rows: 48px auto auto 1fr; height: 100vh; }
 .body { display: grid; grid-template-columns: var(--sidebar-w,320px) 1fr; overflow: hidden; }
-.main { min-width: 0; flex: 1; }
 
 /* ── HEADER ──────────────────────────────────────────────────────────────── */
 .header {
