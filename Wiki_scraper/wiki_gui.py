@@ -7316,7 +7316,7 @@ LOGIN_HTML = """<!DOCTYPE html>
       </div>
     </details>
     <div class="error" style="display:{error_display}">{error_msg}</div>
-    <form method="POST" action="/login">
+    <form method="POST" action="login">
       <input type="hidden" name="next" value="{next_url}">
       <label for="username">Uživatelské jméno</label>
       <input id="username" name="username" type="text" autocomplete="username"
