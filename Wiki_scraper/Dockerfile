@@ -7,7 +7,4 @@ COPY wiki_scraper.py .
 COPY openapi.yaml .
 RUN mkdir -p wiki_output wiki_logs
 EXPOSE 7842
-ENV SCRIPT_NAME=/wiki_scraper
-ENV WERKZEUG_RUN_MAIN=true
-CMD ["gunicorn", "-w", "1", "--threads", "8", "--timeout", "120", "-b", "0.0.0.0:7842", "--forwarded-allow-ips=*", "--proxy-protocol", "wiki_gui:app"]
-allow-ips=*", "wiki_gui:app"]
+CMD ["gunicorn", "-w", "1", "--threads", "8", "--timeout", "120", "-b", "0.0.0.0:7842", "--forwarded-allow-ips=*", "wiki_gui:app"]
