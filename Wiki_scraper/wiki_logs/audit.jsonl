@@ -1,0 +1,7 @@
+{"ts": "2026-04-04T14:50:23.547286Z", "level": "INFO", "logger": "wikiscraper.audit", "msg": "{\"action\": \"stop\", \"detail\": \"\", \"session\": \"test_session\", \"ip\": \"127.0.0.1\"}"}
+{"ts": "2026-04-04T14:50:23.559459Z", "level": "INFO", "logger": "wikiscraper.audit", "msg": "{\"action\": \"export_parquet\", \"detail\": \"test_data\", \"session\": \"test\", \"ip\": \"127.0.0.1\"}"}
+{"ts": "2026-04-04T14:50:23.562663Z", "level": "INFO", "logger": "wikiscraper.audit", "msg": "{\"action\": \"export_jsonld\", \"detail\": \"jsonld_test\", \"session\": \"test\", \"ip\": \"127.0.0.1\"}"}
+{"ts": "2026-04-04T16:52:24.584296Z", "level": "INFO", "logger": "wikiscraper.audit", "msg": "{\"action\": \"stop\", \"detail\": \"\", \"session\": \"test_session\", \"ip\": \"127.0.0.1\"}"}
+{"ts": "2026-04-04T16:52:24.592701Z", "level": "INFO", "logger": "wikiscraper.audit", "msg": "{\"action\": \"export_parquet\", \"detail\": \"test_data\", \"session\": \"test\", \"ip\": \"127.0.0.1\"}"}
+{"ts": "2026-04-04T16:52:24.595442Z", "level": "INFO", "logger": "wikiscraper.audit", "msg": "{\"action\": \"export_jsonld\", \"detail\": \"jsonld_test\", \"session\": \"test\", \"ip\": \"127.0.0.1\"}"}
+{"ts": "2026-04-04T17:04:08.911449Z", "level": "INFO", "logger": "wikiscraper.audit", "msg": "{\"action\": \"phase1_start\", \"detail\": \"https://cs.wikipedia.org/wiki/Kategorie:Chemické_prvky\", \"session\": \"61730v6spyp1\", \"ip\": \"127.0.0.1\"}"}

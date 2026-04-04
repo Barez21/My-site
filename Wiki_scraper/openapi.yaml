@@ -1,0 +1,425 @@
+openapi: "3.0.3"
+info:
+  title: WikiScraper API
+  version: "8.0"
+  description: |
+    REST API pro WikiScraper GUI. Všechny endpointy přijímají parametr `s` (session ID)
+    pro izolaci dat mezi uživateli.
+  contact:
+    name: WikiScraper
+servers:
+  - url: "http://localhost:7842"
+    description: Lokální instance
+
+tags:
+  - name: Scraping
+    description: Spuštění, sledování a zastavení scrapingu
+  - name: Data
+    description: Načítání a práce s výsledky
+  - name: Export
+    description: Export dat do různých formátů
+  - name: Soubory
+    description: Správa souborů a checkpointů
+
+paths:
+  /run_phase1:
+    get:
+      tags: [Scraping]
+      summary: Spustit fázi 1 — sběr URL kategorií
+      description: |
+        Server-Sent Events (SSE) stream. Klient přijímá JSON události:
+        `raw`, `phase1_cat`, `phase1_list`, `phase1_complete`, `error`.
+      parameters:
+        - {name: url, in: query, required: true, schema: {type: string}, description: Startovní URL Wikipedie}
+        - {name: depth, in: query, schema: {type: integer, default: 5}}
+        - {name: limit, in: query, schema: {type: integer, default: 0}, description: "0 = neomezeno"}
+        - {name: output, in: query, required: true, schema: {type: string}}
+        - {name: s, in: query, required: true, schema: {type: string}, description: Session ID}
+      responses:
+        "200":
+          description: SSE stream
+          content:
+            text/event-stream:
+              schema:
+                type: string
+
+  /run_phase2_sse:
+    get:
+      tags: [Scraping]
+      summary: Spustit fázi 2 — stahování hesel
+      parameters:
+        - {name: output, in: query, required: true, schema: {type: string}}
+        - {name: format, in: query, schema: {type: string, enum: [json, csv, both, all, parquet, jsonld]}}
+        - {name: delay, in: query, schema: {type: number, default: 0.5}}
+        - {name: workers, in: query, schema: {type: integer, minimum: 1, maximum: 5, default: 1}}
+        - {name: api, in: query, schema: {type: string, enum: ["0","1"]}}
+        - {name: fields, in: query, schema: {type: string}, description: "Čárkou oddělená pole: title,intro,infobox,..."}
+        - {name: tags, in: query, schema: {type: string, enum: ["0","1"]}}
+        - {name: wikidata, in: query, schema: {type: string, enum: ["0","1"]}}
+        - {name: s, in: query, required: true, schema: {type: string}}
+      responses:
+        "200":
+          description: SSE stream s událostmi progress, done, error
+
+  /stop:
+    post:
+      tags: [Scraping]
+      summary: Zastavit běžící scraping
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                s: {type: string, description: Session ID}
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: {type: boolean}
+
+  /results:
+    get:
+      tags: [Data]
+      summary: Načíst výsledky scrapingu jako JSON pole
+      parameters:
+        - {name: file, in: query, required: true, schema: {type: string}, description: Název souboru bez přípony}
+      responses:
+        "200":
+          description: Pole záznamů
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Article"
+        "404":
+          description: Soubor nenalezen
+
+  /list_outputs:
+    get:
+      tags: [Data]
+      summary: Výpis dostupných výstupních souborů
+      parameters:
+        - {name: s, in: query, schema: {type: string}}
+      responses:
+        "200":
+          description: Slovník název → velikost v bajtech
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: integer
+
+  /get_pending:
+    get:
+      tags: [Data]
+      summary: Načíst výsledky fáze 1 pro review dialog
+      parameters:
+        - {name: output, in: query, required: true, schema: {type: string}}
+      responses:
+        "200":
+          description: Pending data včetně cat_tree
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PendingData"
+
+  /check_cp:
+    get:
+      tags: [Data]
+      summary: Zkontrolovat existenci checkpointu
+      parameters:
+        - {name: output, in: query, required: true, schema: {type: string}}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  exists: {type: boolean}
+                  phase: {type: integer, enum: [1, 2]}
+                  cats: {type: integer}
+                  articles: {type: integer}
+                  done: {type: integer}
+                  total: {type: integer}
+                  saved_at: {type: string}
+
+  /save_urls:
+    post:
+      tags: [Data]
+      summary: Uložit URL seznam z review pro fázi 2
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                output: {type: string}
+                urls: {type: array, items: {type: string}}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: {type: boolean}
+                  count: {type: integer}
+
+  /download:
+    get:
+      tags: [Export]
+      summary: Stáhnout výsledky jako ZIP (JSON + CSV)
+      parameters:
+        - {name: output, in: query, required: true, schema: {type: string}}
+        - {name: s, in: query, schema: {type: string}}
+      responses:
+        "200":
+          description: ZIP archiv
+          content:
+            application/zip:
+              schema: {type: string, format: binary}
+
+  /export_xlsx:
+    get:
+      tags: [Export]
+      summary: Exportovat do Excel (.xlsx)
+      parameters:
+        - {name: output, in: query, required: true, schema: {type: string}}
+        - {name: ib_cols, in: query, schema: {type: string}, description: Čárkou oddělené klíče infoboxu}
+        - {name: thresh, in: query, schema: {type: number, default: 0.2}, description: Minimální frekvence klíče}
+        - {name: s, in: query, schema: {type: string}}
+      responses:
+        "200":
+          description: Excel soubor
+          content:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema: {type: string, format: binary}
+
+  /export_sqlite:
+    post:
+      tags: [Export]
+      summary: Exportovat do SQLite databáze
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                outputs: {type: array, items: {type: string}}
+                s: {type: string}
+      responses:
+        "200":
+          description: SQLite soubor (.db)
+
+  /export_parquet:
+    get:
+      tags: [Export]
+      summary: Exportovat do Apache Parquet (pandas/polars kompatibilní)
+      description: Vyžaduje nainstalovaný balíček `pyarrow`.
+      parameters:
+        - {name: output, in: query, required: true, schema: {type: string}}
+        - {name: s, in: query, schema: {type: string}}
+      responses:
+        "200":
+          description: Parquet soubor (snappy komprese)
+          content:
+            application/octet-stream:
+              schema: {type: string, format: binary}
+        "500":
+          description: Chybí pyarrow nebo jiná chyba
+
+  /export_jsonld:
+    get:
+      tags: [Export]
+      summary: Exportovat jako JSON-LD se schema.org anotacemi
+      parameters:
+        - {name: output, in: query, required: true, schema: {type: string}}
+        - {name: s, in: query, schema: {type: string}}
+      responses:
+        "200":
+          description: JSON-LD soubor
+          content:
+            application/ld+json:
+              schema: {type: object}
+
+  /export_readme:
+    post:
+      tags: [Export]
+      summary: Generovat README.md pro dataset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                outputs: {type: array, items: {type: string}}
+                s: {type: string}
+      responses:
+        "200":
+          description: Markdown soubor
+
+  /test_url:
+    get:
+      tags: [Data]
+      summary: Otestovat URL — zjistit typ stránky a odhad hesel
+      parameters:
+        - {name: url, in: query, required: true, schema: {type: string}}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type: {type: string, enum: [category, list, article, unknown]}
+                  count: {type: integer}
+                  name: {type: string}
+
+  /merge_files:
+    post:
+      tags: [Soubory]
+      summary: Sloučit více výstupních souborů do jednoho
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                files: {type: array, items: {type: string}}
+                output: {type: string}
+                s: {type: string}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: {type: boolean}
+                  count: {type: integer}
+
+  /discard_checkpoint:
+    post:
+      tags: [Soubory]
+      summary: Smazat checkpoint soubory pro daný výstup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                output: {type: string}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: {type: boolean}
+
+  /rename_file:
+    post:
+      tags: [Soubory]
+      summary: Přejmenovat výstupní soubory
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                old_name: {type: string}
+                new_name: {type: string}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: {type: boolean}
+
+components:
+  schemas:
+    Article:
+      type: object
+      properties:
+        url:        {type: string, description: "URL hesla na Wikipedii"}
+        title:      {type: string}
+        intro:      {type: string, description: "První odstavec (perex)"}
+        infobox:    {type: object, additionalProperties: {type: string}}
+        categories: {type: array, items: {type: string}}
+        coordinates:{type: string, description: "Surový text souřadnic"}
+        coordinates_norm:
+          type: object
+          properties:
+            lat: {type: number}
+            lng: {type: number}
+        full_text:  {type: string}
+        sections:   {type: object, additionalProperties: {type: string}}
+        links:
+          type: array
+          items:
+            type: object
+            properties:
+              url:  {type: string}
+              text: {type: string}
+        images:
+          type: array
+          items:
+            type: object
+            properties:
+              url:     {type: string}
+              thumb:   {type: string}
+              caption: {type: string}
+              licence: {type: string}
+              author:  {type: string}
+        tables:
+          type: array
+          items:
+            type: object
+            properties:
+              caption: {type: string}
+              headers: {type: array, items: {type: string}}
+              rows:    {type: array, items: {type: array, items: {type: string}}}
+        is_stub:    {type: boolean}
+        _quality:
+          type: object
+          properties:
+            score:   {type: integer, minimum: 0, maximum: 100}
+            details: {type: array, items: {type: string}}
+        _tags:      {type: array, items: {type: string}}
+        _anomalies:
+          type: array
+          items:
+            type: object
+            properties:
+              rule:     {type: string}
+              message:  {type: string}
+              severity: {type: string, enum: [error, warn, info]}
+        _fetched_at:{type: string, format: date-time}
+        error:      {type: string, nullable: true}
+
+    PendingData:
+      type: object
+      properties:
+        cat_articles:
+          type: object
+          additionalProperties:
+            type: array
+            items: {type: string}
+        cat_tree:
+          type: object
+          description: "Hierarchie kategorií — {cat_name: {parent, children}}"
+        root_cat:   {type: string}
+        total:      {type: integer}
+        saved_at:   {type: string}
