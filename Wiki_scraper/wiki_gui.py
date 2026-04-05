@@ -2470,6 +2470,9 @@ názvem z předchozího scrapingu.">
 </div>
 
 <script>
+// Základní cesta aplikace — prázdné lokálně, '/wiki_scraper' na serveru
+const BASE_PATH = (document.querySelector('meta[name="base-path"]') || {}).content || '';
+
 /* ── EXAMPLES ─────────────────────────────────────────────────────────────── */
 const EX=[
   {i:'⚗️',t:'Chemické prvky',      u:'https://cs.wikipedia.org/wiki/Kategorie:Chemické_prvky',              n:'chemicke_prvky'},
