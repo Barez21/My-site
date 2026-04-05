@@ -1913,7 +1913,7 @@ názvem z předchozího scrapingu.">
 
 <!-- SIDEBAR FOOTER — always visible -->
 <div class="sidebar-footer">
-  <button class="btn btn-primary hidden" id="btnRun" onclick="go(false)" title="Spustit scraper — fáze 1 sbírá kategorie, pak review (Space)">▶ Spustit scraper</button>
+  <button class="btn btn-primary" id="btnRun" onclick="go(false)" title="Spustit scraper — fáze 1 sbírá kategorie, pak review (Space)">▶ Spustit scraper</button>
   <div class="hidden" id="btnStopGroup" style="display:none;flex-direction:column;gap:6px">
     <button class="btn btn-ghost hidden" id="btnPause" onclick="pauseScraping()" title="Pozastavit — uloží checkpoint, lze navázat">⏸ Pauza</button>
     <button class="btn btn-danger hidden" id="btnStop" onclick="stop()" title="Zastavit a zrušit scraping">■ Zastavit</button>
