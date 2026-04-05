@@ -7846,12 +7846,12 @@ a{{color:#64748b;text-decoration:none;font-size:12px}}a:hover{{color:#94a3b8}}</
 {warn}{msg_html}{err_html}
 <div class="card"><h2>Uživatelé</h2>{rows}</div>
 <div class="card"><h2>Přidat uživatele</h2>
-<form method="POST" action="/admin/users/add">
+<form method="POST" action="add">
 <label>Jméno</label><input name="username" type="text" placeholder="novak" autocomplete="off" required>
 <label>Heslo</label><input name="password" type="password" placeholder="••••••••" required>
 <button type="submit" class="btn">+ Přidat uživatele</button></form></div>
 <div class="card"><h2>Změnit moje heslo</h2>
-<form method="POST" action="/admin/users/change_password" style="display:flex;gap:8px">
+<form method="POST" action="change_password" style="display:flex;gap:8px">
 <input name="new_password" type="password" placeholder="Nové heslo (min. 6 znaků)" required style="flex:1">
 <button type="submit" class="btn-sm">Uložit</button></form></div>
 </div></body></html>"""
@@ -7922,7 +7922,7 @@ a{{color:#64748b;text-decoration:none;font-size:12px}}a:hover{{color:#94a3b8}}</
 <p style="font-size:12px;color:#64748b;margin-bottom:24px">Změna hesla.</p>
 {msg_html}{err_html}
 <div class="card">
-<form method="POST" action="/admin/users/change_password">
+<form method="POST" action="change_password">
 <label>Nové heslo</label><input name="new_password" type="password" placeholder="••••••••" required>
 <label>Zopakovat heslo</label><input name="confirm_password" type="password" placeholder="••••••••" required>
 <div class="btn"><button type="submit">Uložit heslo</button></div>
