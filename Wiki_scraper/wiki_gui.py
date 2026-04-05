@@ -1606,7 +1606,7 @@ tbody tr.tr-focused { background: var(--accent2-tint) !important; outline: 1px s
   <div class="header-logo">Wiki<em>Scraper</em></div>
   <div class="header-badge">v7</div>
   <div class="header-badge" id="sessionBadge" title="Tvoje session ID" style="color:var(--text3);cursor:default;font-size:9px"></div>
-  <a href="admin/users" class="logout-btn" style="margin-left:auto" title="Správa uživatelů (jen admin)">👥</a>
+  {{ admin_btn }}
   <a href="profile" class="logout-btn" title="Změnit heslo">🔑</a>
   <a href="logout" class="logout-btn" title="Odhlásit se">Odhlásit</a>
   <!-- STEPPER -->
@@ -7290,7 +7290,12 @@ def require_login():
 def index():
     import os
     sn = os.environ.get("SCRIPT_NAME","").rstrip("/")
-    return HTML.replace("{{ script_name }}", sn)
+    user = session.get("user","")
+    admin_btn = "" if not _is_admin(user) else (
+        f'<a href="admin/users" class="logout-btn" style="margin-left:auto" '
+        f'title="Správa uživatelů">&#x1F465;</a>'
+    )
+    return HTML.replace("{{ script_name }}", sn).replace("{{ admin_btn }}", admin_btn)
 
 
 @app.route("/run")
