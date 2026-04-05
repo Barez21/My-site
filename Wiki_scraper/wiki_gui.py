@@ -7803,6 +7803,8 @@ def discard_checkpoint():
 @app.route("/admin/users")
 def admin_users():
     """Správa uživatelů — přístup jen pro admina (první uživatel)."""
+    import os as _os
+    prefix = _os.environ.get("SCRIPT_NAME","").rstrip("/")
     user = session.get("user")
     if not user: return redirect(url_for("login_page"))
     if not _is_admin(user): return Response("Přístup odepřen — jen pro správce.", status=403)
@@ -7846,12 +7848,12 @@ a{{color:#64748b;text-decoration:none;font-size:12px}}a:hover{{color:#94a3b8}}</
 {warn}{msg_html}{err_html}
 <div class="card"><h2>Uživatelé</h2>{rows}</div>
 <div class="card"><h2>Přidat uživatele</h2>
-<form method="POST" action="add">
+<form method="POST" action="{prefix}/admin/users/add">
 <label>Jméno</label><input name="username" type="text" placeholder="novak" autocomplete="off" required>
 <label>Heslo</label><input name="password" type="password" placeholder="••••••••" required>
 <button type="submit" class="btn">+ Přidat uživatele</button></form></div>
 <div class="card"><h2>Změnit moje heslo</h2>
-<form method="POST" action="change_password" style="display:flex;gap:8px">
+<form method="POST" action="{prefix}/admin/users/change_password" style="display:flex;gap:8px">
 <input name="new_password" type="password" placeholder="Nové heslo (min. 6 znaků)" required style="flex:1">
 <button type="submit" class="btn-sm">Uložit</button></form></div>
 </div></body></html>"""
@@ -7900,6 +7902,8 @@ def admin_change_password():
 @app.route("/profile")
 def profile():
     """Změna hesla pro běžné uživatele (ne-admini)."""
+    import os as _os
+    prefix = _os.environ.get("SCRIPT_NAME","").rstrip("/")
     user = session.get("user")
     if not user: return redirect(url_for("login_page"))
     msg = request.args.get("msg","")
@@ -7922,7 +7926,7 @@ a{{color:#64748b;text-decoration:none;font-size:12px}}a:hover{{color:#94a3b8}}</
 <p style="font-size:12px;color:#64748b;margin-bottom:24px">Změna hesla.</p>
 {msg_html}{err_html}
 <div class="card">
-<form method="POST" action="change_password">
+<form method="POST" action="{prefix}/profile/change_password">
 <label>Nové heslo</label><input name="new_password" type="password" placeholder="••••••••" required>
 <label>Zopakovat heslo</label><input name="confirm_password" type="password" placeholder="••••••••" required>
 <div class="btn"><button type="submit">Uložit heslo</button></div>
