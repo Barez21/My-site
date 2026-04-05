@@ -7215,7 +7215,7 @@ LOGIN_HTML = """<!DOCTYPE html>
              autocomplete="current-password" placeholder="••••••••" required>
       <button type="submit">Přihlásit se →</button>
     </form>
-    <p class="footer">WikiScraper v8</p>
+    <p class="footer">Nemáš účet? <a href="register" style="color:#6ee7b7;text-decoration:none">Zaregistruj se</a></p>
   </div>
 </body>
 </html>"""
@@ -7276,7 +7276,7 @@ def logout():
     return _redirect("/login")
 
 # ─── AUTH GUARD ───────────────────────────────────────────────────────────────
-PUBLIC_ROUTES = frozenset(["/login", "/logout", "/favicon.ico", "/api/openapi.yaml"])
+PUBLIC_ROUTES = frozenset(["/login", "/logout", "/register", "/favicon.ico", "/api/openapi.yaml"])
 
 @app.before_request
 def require_login():
@@ -7949,6 +7949,124 @@ def profile_change_password():
     _save_users(USERS)
     log_audit("password_change", user, user)
     return _redirect("/profile?msg=Heslo+úspěšně+změněno")
+
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    """Registrace nového uživatele — honeypot + matematická CAPTCHA."""
+    import os as _os, random as _random
+    prefix = _os.environ.get("SCRIPT_NAME","").rstrip("/")
+
+    # Generovat novou matematickou otázku
+    def _new_question():
+        a, b = _random.randint(2,9), _random.randint(2,9)
+        op = _random.choice(["+","-","*"])
+        if op == "+": ans = a + b
+        elif op == "-": ans = a - b; a, b = a, ans  # vždy kladné
+        else: ans = a * b; b = _random.randint(2,4); ans = a * b
+        # Uložit odpověď do session (zahashovanou)
+        return f"{a} {op} {b}", str(eval(f"{a}{op}{b}"))
+
+    error = ""
+    if request.method == "POST":
+        username = request.form.get("username","").strip()
+        password = request.form.get("password","")
+        confirm  = request.form.get("confirm","")
+        honeypot = request.form.get("website","")  # skryté pole
+        math_ans = request.form.get("math_answer","").strip()
+        expected = request.form.get("expected_answer","").strip()
+
+        # Honeypot check
+        if honeypot:
+            return Response("Bot detected.", status=400)
+
+        # CAPTCHA check
+        if math_ans != expected:
+            error = "Špatná odpověď na ověřovací otázku."
+        elif not username or len(username) < 3:
+            error = "Jméno musí mít aspoň 3 znaky."
+        elif len(password) < 6:
+            error = "Heslo musí mít aspoň 6 znaků."
+        elif password != confirm:
+            error = "Hesla se neshodují."
+        elif username in USERS:
+            error = "Toto jméno je již obsazeno."
+        else:
+            USERS[username] = generate_password_hash(password)
+            _save_users(USERS)
+            log_audit("register", username)
+            session["user"] = username
+            session.permanent = True
+            return _redirect("/")
+
+    question, answer = _new_question()
+
+    html = f"""<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WikiScraper — registrace</title>
+  <style>
+    *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
+    body {{ min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      background: #0f1117; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }}
+    .card {{ background: #1a1d27; border: 1px solid #2a2d3a; border-radius: 12px;
+      padding: 40px 36px; width: 380px; box-shadow: 0 16px 48px rgba(0,0,0,.5); }}
+    .logo {{ text-align: center; font-size: 32px; margin-bottom: 8px; }}
+    h1 {{ text-align: center; font-size: 18px; font-weight: 600; color: #e2e8f0; margin-bottom: 4px; }}
+    .sub {{ text-align: center; font-size: 12px; color: #64748b; margin-bottom: 24px; }}
+    label {{ display: block; font-size: 12px; color: #94a3b8; margin-bottom: 6px; margin-top: 16px; }}
+    input {{ width: 100%; padding: 10px 14px; border-radius: 8px; border: 1px solid #2a2d3a;
+      background: #0f1117; color: #e2e8f0; font-size: 14px; outline: none; transition: border-color .15s; }}
+    input:focus {{ border-color: #6ee7b7; }}
+    .captcha-box {{ background: rgba(110,231,183,.07); border: 1px solid rgba(110,231,183,.2);
+      border-radius: 8px; padding: 12px 14px; margin-top: 16px; }}
+    .captcha-q {{ font-size: 13px; color: #e2e8f0; margin-bottom: 8px; }}
+    .captcha-q strong {{ color: #6ee7b7; font-size: 18px; font-family: monospace; }}
+    .error {{ background: rgba(248,113,113,.1); border: 1px solid rgba(248,113,113,.3);
+      color: #f87171; border-radius: 8px; padding: 10px 14px; font-size: 12px; margin-bottom: 16px;
+      display: {"block" if error else "none"}; }}
+    button {{ width: 100%; margin-top: 24px; padding: 11px; background: #6ee7b7; color: #0f1117;
+      border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }}
+    button:hover {{ background: #5dd4a4; }}
+    .login-link {{ text-align: center; margin-top: 16px; font-size: 12px; color: #64748b; }}
+    .login-link a {{ color: #6ee7b7; text-decoration: none; }}
+    .hp {{ display: none; }}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">📚</div>
+    <h1>WikiScraper</h1>
+    <p class="sub">Vytvoř si účet</p>
+    <div class="error">{error}</div>
+    <form method="POST" action="{prefix}/register">
+      <label for="username">Uživatelské jméno</label>
+      <input id="username" name="username" type="text" autocomplete="username" autofocus
+             placeholder="min. 3 znaky" required>
+      <label for="password">Heslo</label>
+      <input id="password" name="password" type="password" placeholder="min. 6 znaků" required>
+      <label for="confirm">Heslo znovu</label>
+      <input id="confirm" name="confirm" type="password" placeholder="zopakuj heslo" required>
+      <!-- Honeypot — boti vyplní, lidé ne -->
+      <div class="hp">
+        <label for="website">Webová stránka</label>
+        <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+      </div>
+      <!-- Matematická CAPTCHA -->
+      <div class="captcha-box">
+        <div class="captcha-q">Ověření: kolik je <strong>{question}</strong>?</div>
+        <input name="math_answer" type="number" placeholder="Zadej výsledek" required>
+        <input name="expected_answer" type="hidden" value="{answer}">
+      </div>
+      <button type="submit">Registrovat se →</button>
+    </form>
+    <p class="login-link">Už máš účet? <a href="{prefix}/login">Přihlásit se</a></p>
+  </div>
+</body>
+</html>"""
+    return Response(html, mimetype="text/html")
 
 
 @app.route("/export_parquet")
