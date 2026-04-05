@@ -7240,12 +7240,17 @@ def login_page():
                 app.permanent_session_lifetime = datetime.timedelta(days=30)
             log_audit("login_ok", username)
             app_log.info(f"Login OK: {username} from {request.remote_addr}")
-            # Po přihlášení: pokud next_url je absolutní URL, vzít jen cestu
+            # Po přihlášení: přesměrovat vždy do kořene wiki_scraperu
             import urllib.parse as _up
+            import os as _os
+            prefix = _os.environ.get("SCRIPT_NAME", "").rstrip("/")
             if next_url.startswith("http"):
                 _parsed = _up.urlparse(next_url)
-                next_url = _parsed.path or "/"
-            return redirect(next_url if next_url.startswith("/") else "/")
+                next_url = _parsed.path or (prefix + "/")
+            # Zajistit že cílíme na wiki_scraper, ne na root domény
+            if not next_url.startswith(prefix) and prefix:
+                next_url = prefix + "/"
+            return redirect(next_url if next_url.startswith("/") else (prefix + "/"))
         else:
             error_msg = "Nesprávné jméno nebo heslo"
             log_audit("login_fail", username)
