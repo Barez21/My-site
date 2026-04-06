@@ -2797,9 +2797,21 @@ function go(resume){
   document.getElementById('pp1').textContent='…';
   tab('overview');
 
-  // Resume přeskočí fázi 1
+  // Resume — zkontrolovat typ checkpointu
   if(resume){
-    runPhase2Direct(p);
+    fetch(BASE_PATH + '/check_cp?output='+encodeURIComponent(p.output))
+      .then(r=>r.json()).then(d=>{
+        if(d.exists && d.phase===2){
+          // Fáze 2 checkpoint — pokračovat ve stahování
+          runPhase2Direct(p);
+        } else if(d.exists && d.phase===1){
+          // Fáze 1 checkpoint — obnovit sbírání URL od bodu přerušení
+          runPhase1WithResume(p);
+        } else {
+          // Žádný checkpoint — začít od začátku
+          runPhase1(p);
+        }
+      }).catch(()=>runPhase1(p));
     return;
   }
 
@@ -3401,15 +3413,51 @@ function runJobsSequentially(jobs, p, idx){
   });
 }
 
+function runPhase1(p){
+  // Spustit fázi 1 od začátku
+  evtSrc=new EventSource(BASE_PATH + '/run_phase1?'+new URLSearchParams({
+    url:p.url, depth:p.depth, limit:p.limit, delay:p.delay, output:p.output, s:p.s||getSessionId()
+  }));
+  attachPhase1Listeners(p);
+}
+
+function runPhase1WithResume(p){
+  // Obnovit fázi 1 z phase1 checkpointu
+  setStatus('running'); startTimer();
+  setPhase(1,'Obnovuji fázi 1 z checkpointu…','');
+  setStep(1);
+  document.getElementById('btnRun').classList.add('hidden');
+  document.getElementById('btnStop').classList.remove('hidden');
+  document.getElementById('btnPause').classList.remove('hidden');
+  evtSrc=new EventSource(BASE_PATH + '/run_phase1?'+new URLSearchParams({
+    url:p.url, depth:p.depth, limit:p.limit, delay:p.delay, output:p.output,
+    resume:'1', s:p.s||getSessionId()
+  }));
+  attachPhase1Listeners(p);
+}
+
 function runPhase2Direct(p){
   // Resume — přeskočit fázi 1, použít checkpoint fáze 2
   setStatus('running'); startTimer();
   setPhase(2,'Obnovuji z checkpointu…','');
   setStep(3);
+  _phase2Running=true;
   document.getElementById('btnRun').classList.add('hidden');
   document.getElementById('btnStop').classList.remove('hidden');
-  const params={...p, resume:'1', s:p.s||getSessionId()};
-  evtSrc=new EventSource(BASE_PATH + '/run?'+new URLSearchParams(params));
+  document.getElementById('btnPause').classList.remove('hidden');
+  const params={
+    output: p.output,
+    format: p.format||'both',
+    delay:  p.delay||'0.5',
+    workers:p.workers||'1',
+    api:    p.api||'false',
+    fields: p.fields||'title,intro,infobox,categories',
+    tags:   p.tags||'false',
+    wikidata:p.wikidata||'false',
+    resume: '1',
+    s:      p.s||getSessionId()
+  };
+  evtSrc=new EventSource(BASE_PATH + '/run_phase2_sse?'+new URLSearchParams(params));
   attachPhase2Listeners(p.output);
 }
 
@@ -3514,6 +3562,33 @@ function attachPhase2Listeners(output, onDone){
     stopTimer(); setStatus('error');
     document.getElementById('btnRun').classList.remove('hidden');
     document.getElementById('btnStop').classList.add('hidden');
+  };
+}
+
+function attachPhase1Listeners(p){
+  evtSrc.onmessage=e=>{
+    try{
+      const d=JSON.parse(e.data);
+      if(d.type==='raw') clog(d.msg);
+      if(d.type==='phase1_complete'){
+        evtSrc.close(); evtSrc=null;
+        // Fáze 1 hotova, načíst pending
+        loadPendingForReview(p.output);
+      }
+      if(d.type==='error'){
+        clog('❌ '+d.msg,'err');
+        evtSrc.close(); evtSrc=null;
+        setStatus('idle');
+        document.getElementById('btnRun').classList.remove('hidden');
+        document.getElementById('btnStopGroup').classList.remove('on');
+      }
+    }catch(ex){}
+  };
+  evtSrc.onerror=()=>{
+    evtSrc.close(); evtSrc=null;
+    setStatus('idle');
+    document.getElementById('btnRun').classList.remove('hidden');
+    document.getElementById('btnStopGroup').classList.remove('on');
   };
 }
 
@@ -7652,10 +7727,13 @@ def run_phase1():
     if not scraper.exists():
         return Response("data:"+json.dumps({"type":"error","msg":"wiki_scraper.py nenalezen!"})+"\n\n",mimetype="text/event-stream")
 
+    resume = request.args.get("resume","0") == "1"
     out_path = OUTPUT_DIR / output
     cmd = [sys.executable, str(scraper), url,
            "--depth",depth,"--limit",limit,"--delay",delay,
            "--output",str(out_path),"--phase1-only","--verbose"]
+    if resume:
+        cmd.append("--resume")
 
     def generate():
         job["running"] = True
