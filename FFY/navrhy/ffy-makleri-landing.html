@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Partnerský program pro makléře — FREE for YOU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:      #1a2e4a;
+    --green:     #3dd68c;
+    --green-dk:  #00b870;
+    --green-pale:#e6f9f1;
+    --bg:        #eef1f8;
+    --card:      #ffffff;
+    --text:      #1a2e4a;
+    --muted:     #6b7a99;
+    --border:    #dde3f0;
+    --radius:    14px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Ubuntu', sans-serif;
+    background: var(--bg); color: var(--text);
+    line-height: 1.6; -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  nav {
+    background: var(--card); border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 100; padding: 0 2rem;
+  }
+  .nav-inner {
+    max-width: 1120px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between; height: 64px;
+  }
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 700; font-size: 1.1rem; color: var(--text); text-decoration: none;
+  }
+  .logo-accent { color: var(--green-dk); }
+  .nav-cta {
+    background: var(--green); color: var(--navy);
+    border: none; border-radius: 100px; padding: 0.5rem 1.4rem;
+    font-family: 'Ubuntu', sans-serif; font-size: 0.9rem; font-weight: 700;
+    text-decoration: none; display: inline-block;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .nav-cta:hover { background: var(--green-dk); color: #fff; transform: translateY(-1px); }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--navy); padding: 85px 2rem 75px;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 65% 70% at 80% 45%, rgba(61,214,140,0.12) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-inner {
+    max-width: 1120px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 400px; gap: 3.5rem; align-items: start; padding-top: 1rem;
+  }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(61,214,140,0.15); border: 1px solid rgba(61,214,140,0.3);
+    border-radius: 100px; padding: 0.3rem 1rem;
+    font-size: 0.75rem; font-weight: 500; color: var(--green);
+    letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 1.4rem;
+  }
+  .hero-tag::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--green); border-radius: 50%; animation: blink 2s infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(1.5)} }
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.95rem, 3.5vw, 2.9rem);
+    font-weight: 700; line-height: 1.18; color: #fff; margin-bottom: 1.1rem;
+  }
+  .hero h1 em { color: var(--green); font-style: normal; }
+  .hero-sub {
+    font-size: 1rem; color: rgba(255,255,255,0.65);
+    max-width: 460px; margin-bottom: 2rem; line-height: 1.75; font-weight: 300;
+  }
+  .hero-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 100px; padding: 0.32rem 0.85rem;
+    font-size: 0.8rem; color: rgba(255,255,255,0.75); font-weight: 400;
+  }
+  .chip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+  .hero-cta-wrap { display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--green); color: var(--navy);
+    border: none; border-radius: 100px; padding: 0.9rem 2rem;
+    font-family: 'Ubuntu', sans-serif; font-size: 1rem; font-weight: 700;
+    text-decoration: none; display: inline-block;
+    box-shadow: 0 4px 20px rgba(61,214,140,0.35);
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  }
+  .btn-primary:hover { background: var(--green-dk); color: #fff; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(61,214,140,0.4); }
+  .btn-ghost {
+    color: rgba(255,255,255,0.5); font-size: 0.85rem; font-weight: 400;
+    text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.2);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .btn-ghost:hover { color: var(--green); border-color: var(--green); }
+  .hero-fine { font-size: 0.78rem; color: rgba(255,255,255,0.32); font-weight: 300; margin-top: 0.75rem; }
+
+  /* ── HERO CARDS ── */
+  .hero-cards {
+    display: flex; flex-direction: column; gap: 1rem;
+    animation: floatUp 0.7s 0.25s ease both;
+  }
+  @keyframes floatUp { from{opacity:0;transform:translateY(26px)} to{opacity:1;transform:translateY(0)} }
+  .hero-card {
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px); border-radius: var(--radius); padding: 1.6rem 1.8rem;
+  }
+  .hero-card-rewards { padding: 1.2rem 1.8rem; }
+  .hcard-label {
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.09em;
+    text-transform: uppercase; color: var(--green); margin-bottom: 1rem; display: block;
+  }
+  /* vizitka preview */
+  .vizitka-preview {
+    background: rgba(255,255,255,0.08); border-radius: 10px; padding: 1rem 1.2rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .vp-avatar {
+    width: 44px; height: 44px; border-radius: 50%; background: var(--green);
+    color: var(--navy); font-weight: 700; font-size: 0.85rem;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .vp-name { font-size: 0.98rem; font-weight: 700; color: #fff; line-height: 1.2; }
+  .vp-role { font-size: 0.74rem; color: rgba(255,255,255,0.45); font-weight: 300; margin-top: 2px; }
+  .vp-phone { font-size: 0.82rem; color: rgba(255,255,255,0.65); font-weight: 400; margin-top: 4px; }
+  .vp-appears {
+    margin-top: 0.85rem; font-size: 0.78rem; color: rgba(255,255,255,0.45);
+    font-weight: 300; line-height: 1.55;
+    padding: 0.65rem 0.9rem;
+    background: rgba(61,214,140,0.08); border-radius: 8px;
+  }
+  .vp-appears strong { color: rgba(255,255,255,0.7); font-weight: 500; }
+  /* odmeny rows */
+  .reward-row {
+    display: flex; align-items: baseline; justify-content: space-between;
+    padding: 0.52rem 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .reward-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .rr-label { font-size: 0.82rem; color: rgba(255,255,255,0.48); font-weight: 300; }
+  .rr-val { font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 600; color: #fff; }
+  .rr-val.g { color: var(--green); }
+
+  /* ── SHARED ── */
+  section { padding: 76px 2rem; }
+  .container { max-width: 1120px; margin: 0 auto; }
+  .eyebrow {
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--green-dk); display: block; margin-bottom: 0.8rem;
+  }
+  .sh2 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+    font-weight: 700; line-height: 1.22; color: var(--text); margin-bottom: 0.75rem;
+  }
+  .ssub {
+    font-size: 0.98rem; color: var(--muted);
+    max-width: 540px; line-height: 1.75; margin-bottom: 2.8rem; font-weight: 300;
+  }
+  .on-dark .eyebrow { color: var(--green); }
+  .on-dark .sh2 { color: #fff; }
+  .on-dark .ssub { color: rgba(255,255,255,0.5); }
+
+  /* ── SEC: VIZITKA (hlavní) ── */
+  #vizitka { background: var(--card); }
+  .vizitka-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+  .vizitka-text { }
+  .vizitka-explainer {
+    background: var(--bg); border-radius: var(--radius); padding: 2rem;
+    border: 1px solid var(--border);
+  }
+  .ve-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 1.1rem; }
+  .ve-items { display: flex; flex-direction: column; gap: 0.7rem; }
+  .ve-item {
+    display: flex; align-items: flex-start; gap: 0.8rem;
+    padding: 0.9rem 1rem; background: var(--card);
+    border-radius: 10px; border: 1px solid var(--border);
+  }
+  .ve-item.highlight { border-color: var(--green); background: #f5fdf9; }
+  .ve-icon {
+    width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
+    background: var(--green-pale); color: var(--green-dk);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ve-icon svg { width: 15px; height: 15px; }
+  .ve-body-title { font-size: 0.88rem; font-weight: 700; margin-bottom: 2px; }
+  .ve-body-desc { font-size: 0.8rem; color: var(--muted); font-weight: 300; line-height: 1.5; }
+  .vizitka-callout {
+    margin-top: 1.5rem;
+    background: var(--navy); border-radius: var(--radius); padding: 1.5rem 1.7rem;
+  }
+  .vc-text {
+    font-family: 'Fraunces', serif; font-size: 1.1rem; color: #fff;
+    line-height: 1.55; font-style: italic; margin-bottom: 0.6rem;
+  }
+  .vc-note { font-size: 0.78rem; color: rgba(255,255,255,0.38); font-weight: 300; }
+
+  /* ── SEC: JAK TO FUNGUJE ── */
+  #jak-to-funguje { background: var(--bg); }
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.4rem; }
+  .step-card {
+    background: var(--card); border-radius: var(--radius); padding: 1.7rem 1.4rem;
+    border: 1px solid var(--border);
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  }
+  .step-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(26,46,74,0.08); border-color: var(--green); }
+  .step-num {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: var(--green-pale); color: var(--green-dk);
+    font-weight: 700; font-size: 0.82rem;
+    display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;
+  }
+  .step-when { font-size: 0.72rem; color: var(--green-dk); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.4rem; }
+  .step-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.45rem; }
+  .step-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.6; font-weight: 300; }
+
+  /* ── SEC: ODMENA ── */
+  #odmena { background: var(--navy); }
+  .rewards-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: start; }
+  .reward-boxes { display: flex; flex-direction: column; gap: 1.1rem; }
+  .reward-box {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius); padding: 1.5rem 1.7rem;
+    display: flex; align-items: center; gap: 1.4rem;
+    transition: border-color 0.2s;
+  }
+  .reward-box:hover { border-color: rgba(61,214,140,0.4); }
+  .rb-num {
+    font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 700;
+    color: var(--green); line-height: 1; white-space: nowrap;
+  }
+  .rb-label { font-size: 0.88rem; font-weight: 500; color: #fff; margin-bottom: 2px; }
+  .rb-desc { font-size: 0.78rem; color: rgba(255,255,255,0.42); font-weight: 300; line-height: 1.5; }
+  .reward-info {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+    border-radius: var(--radius); padding: 1.8rem;
+  }
+  .ri-title { font-weight: 700; font-size: 0.88rem; color: rgba(255,255,255,0.7); margin-bottom: 1.1rem; }
+  .ri-item {
+    display: flex; align-items: flex-start; gap: 0.65rem;
+    font-size: 0.85rem; color: rgba(255,255,255,0.55);
+    font-weight: 300; line-height: 1.6; margin-bottom: 0.7rem;
+  }
+  .ri-item:last-child { margin-bottom: 0; }
+  .ri-dot { color: var(--green); font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+
+  /* ── SEC: VÝDĚLEK ── */
+  #vydelek { background: var(--bg); }
+  .scenarios { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
+  .scenario-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.9rem 1.7rem;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  }
+  .scenario-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(26,46,74,0.09); border-color: var(--green); }
+  .scenario-card.featured { border-color: var(--green); background: linear-gradient(135deg,#f5fdf9,#fff); }
+  .sc-badge {
+    display: inline-block; font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.07em; text-transform: uppercase;
+    color: var(--green-dk); background: var(--green-pale);
+    border-radius: 100px; padding: 0.22rem 0.7rem; margin-bottom: 1rem;
+  }
+  .sc-title { font-weight: 700; font-size: 1rem; margin-bottom: 0.25rem; }
+  .sc-sub { font-size: 0.8rem; color: var(--muted); font-weight: 300; margin-bottom: 1.3rem; padding-bottom: 1.2rem; border-bottom: 1px solid var(--border); }
+  .sc-earn-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 0.35rem; }
+  .sc-earn {
+    font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 700;
+    color: var(--text); line-height: 1; margin-bottom: 0.25rem;
+  }
+  .sc-earn-note { font-size: 0.77rem; color: var(--muted); font-weight: 300; }
+  .sc-rows { margin-top: 1.2rem; padding-top: 1.1rem; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 0.38rem; }
+  .sc-row { display: flex; justify-content: space-between; font-size: 0.79rem; }
+  .sc-row .k { color: var(--muted); font-weight: 300; }
+  .sc-row .v { font-weight: 500; color: var(--text); }
+
+  /* ── SEC: PRO KLIENTA ── */
+  #pro-klienta { background: var(--card); }
+  .client-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
+  .check-list { display: flex; flex-direction: column; gap: 0.85rem; }
+  .check-item {
+    display: flex; align-items: flex-start; gap: 0.85rem;
+    padding: 1rem 1.2rem; background: var(--bg); border-radius: 10px;
+  }
+  .ci-icon {
+    width: 32px; height: 32px; border-radius: 50%; background: var(--green);
+    color: var(--navy); display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .ci-icon svg { width: 13px; height: 13px; }
+  .ci-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 2px; }
+  .ci-desc { font-size: 0.81rem; color: var(--muted); font-weight: 300; line-height: 1.5; }
+  .client-right {
+    background: var(--navy); border-radius: var(--radius); padding: 2.2rem;
+  }
+  .cr-title { font-weight: 700; font-size: 0.85rem; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 1rem; }
+  .cr-text {
+    font-family: 'Fraunces', serif; font-size: 1.2rem; color: #fff;
+    line-height: 1.6; font-style: italic; margin-bottom: 1.5rem;
+  }
+  .cr-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--green); color: var(--navy);
+    border-radius: 100px; padding: 0.6rem 1.3rem;
+    font-family: 'Ubuntu', sans-serif; font-size: 0.85rem; font-weight: 700;
+    text-decoration: none; transition: background 0.2s;
+  }
+  .cr-link:hover { background: var(--green-dk); color: #fff; }
+
+  /* ── SEC: CAS ── */
+  #cas { background: var(--bg); }
+  .time-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+  .time-items { display: flex; flex-direction: column; gap: 0.9rem; }
+  .time-item {
+    display: flex; align-items: center; gap: 1.1rem;
+    background: var(--card); border-radius: 10px; padding: 1.1rem 1.4rem;
+    border: 1px solid var(--border);
+  }
+  .ti-num {
+    font-family: 'Fraunces', serif; font-size: 1.6rem; font-weight: 700;
+    color: var(--green-dk); min-width: 52px; text-align: center;
+  }
+  .ti-label { font-size: 0.9rem; font-weight: 500; }
+  .ti-sub { font-size: 0.79rem; color: var(--muted); font-weight: 300; }
+  .time-summary {
+    background: var(--card); border-radius: var(--radius); padding: 2.2rem;
+    border: 1px solid var(--border); text-align: center;
+  }
+  .ts-big {
+    font-family: 'Fraunces', serif; font-size: 3.5rem; font-weight: 700;
+    color: var(--text); line-height: 1; margin-bottom: 0.3rem;
+  }
+  .ts-unit { font-size: 0.95rem; color: var(--muted); font-weight: 300; margin-bottom: 1.2rem; }
+  .ts-note { font-size: 0.84rem; color: var(--muted); font-weight: 300; line-height: 1.7; }
+
+  /* ── SEC: O NAS ── */
+  #o-nas { background: var(--navy); }
+  .onas-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+  .onas-text { font-size: 0.95rem; color: rgba(255,255,255,0.6); line-height: 1.78; font-weight: 300; }
+  .onas-text p { margin-bottom: 0.9rem; }
+  .onas-text p:last-child { margin-bottom: 0; }
+  .onas-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .onas-stat {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09);
+    border-radius: var(--radius); padding: 1.4rem; text-align: center;
+  }
+  .os-num {
+    font-family: 'Fraunces', serif; font-size: 2.2rem; font-weight: 700;
+    color: var(--green); line-height: 1;
+  }
+  .os-label { font-size: 0.78rem; color: rgba(255,255,255,0.4); margin-top: 0.3rem; font-weight: 300; }
+
+  /* ── FAQ ── */
+  #faq { background: var(--card); }
+  .faq-list { max-width: 740px; display: flex; flex-direction: column; gap: 0.7rem; }
+  .faq-item {
+    background: var(--bg); border-radius: var(--radius);
+    padding: 1.2rem 1.5rem; cursor: pointer; transition: box-shadow 0.2s;
+  }
+  .faq-item:hover { box-shadow: 0 4px 16px rgba(26,46,74,0.07); }
+  .faq-q {
+    font-weight: 700; font-size: 0.93rem;
+    display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+  }
+  .faq-q svg { flex-shrink: 0; color: var(--green-dk); transition: transform 0.2s; }
+  .faq-a { font-size: 0.86rem; color: var(--muted); line-height: 1.65; margin-top: 0.7rem; display: none; font-weight: 300; }
+  .faq-item.open .faq-a { display: block; }
+  .faq-item.open .faq-q svg { transform: rotate(45deg); }
+
+  /* ── FINAL CTA ── */
+  #registrace { background: var(--navy); text-align: center; padding: 96px 2rem; }
+  #registrace .sh2 { color: #fff; max-width: 540px; margin: 0 auto 0.8rem; }
+  #registrace .ssub { color: rgba(255,255,255,0.42); margin: 0 auto 2.2rem; max-width: 460px; }
+  .cta-fine { font-size: 0.78rem; color: rgba(255,255,255,0.26); margin-top: 1rem; font-weight: 300; }
+
+  /* ── FOOTER ── */
+  footer { background: #111e30; padding: 2.4rem 2rem; text-align: center; }
+  .footer-inner { max-width: 1120px; margin: 0 auto; }
+  .footer-brand { display: inline-flex; align-items: center; gap: 8px; font-size: 0.88rem; font-weight: 700; color: rgba(255,255,255,0.36); margin-bottom: 0.7rem; }
+  .footer-p { font-size: 0.74rem; color: rgba(255,255,255,0.2); line-height: 1.75; font-weight: 300; }
+  .footer-links { margin-top: 0.7rem; display: flex; justify-content: center; gap: 1.4rem; }
+  .footer-links a { font-size: 0.74rem; color: rgba(255,255,255,0.24); text-decoration: none; }
+  .footer-links a:hover { color: var(--green); }
+
+  /* ── ANIM ── */
+  @keyframes fadeUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+  .hero-text > * { animation: fadeUp 0.55s ease both; }
+  .hero-text > *:nth-child(1){animation-delay:.05s}
+  .hero-text > *:nth-child(2){animation-delay:.13s}
+  .hero-text > *:nth-child(3){animation-delay:.22s}
+  .hero-text > *:nth-child(4){animation-delay:.31s}
+  .hero-text > *:nth-child(5){animation-delay:.40s}
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:960px){
+    .hero-inner,.vizitka-grid,.client-grid,.time-grid,.onas-grid,.rewards-layout{grid-template-columns:1fr}
+    .hero-card{max-width:420px}
+    .steps,.scenarios{grid-template-columns:1fr 1fr}
+    .onas-stats{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:580px){
+    .steps,.scenarios{grid-template-columns:1fr}
+    .hero-chips{flex-direction:column}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
+        <path d="M16 27s-11-7.2-11-14.5C5 8.4 8.1 6 11.5 6c1.9 0 3.6.8 4.5 2C17 6.8 18.6 6 20.5 6 23.9 6 27 8.4 27 12.5 27 19.8 16 27 16 27z" fill="#3dd68c"/>
+      </svg>
+      <span>Energo</span><span class="logo-accent">banking</span>
+    </a>
+    <a href="#registrace" class="nav-cta">Přidat se jako partner</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-tag">Partnerský program · Realitní makléři</div>
+      <h1>Vyřeš klientovi energie<br>při stěhování.<br><em>Získej odměnu.</em></h1>
+      <p class="hero-sub">
+        Jednoduchý přepis dodavatele bez administrativy.<br>
+        Ty doporučíš — my zajistíme zbytek.
+      </p>
+      <div class="hero-chips">
+        <span class="chip"><span class="chip-dot"></span>Vizitka v profilu klienta</span>
+        <span class="chip"><span class="chip-dot"></span>Jméno na každém vyúčtování</span>
+        <span class="chip"><span class="chip-dot"></span>601 Kč za odběrné místo</span>
+        <span class="chip"><span class="chip-dot"></span>Bez kroků po doporučení</span>
+      </div>
+      <div class="hero-cta-wrap">
+        <a href="#registrace" class="btn-primary">Přidat se jako partner</a>
+        <a href="#prepis" class="btn-ghost">Vyzkoušet přepis →</a>
+      </div>
+      <p class="hero-fine">Bez nákladů · Bez závazků · 2 minuty registrace</p>
+    </div>
+
+    <div class="hero-cards">
+      <div class="hero-card">
+        <span class="hcard-label">Tvoje vizitka v Energobankingu</span>
+        <div class="vizitka-preview">
+          <div class="vp-avatar">JN</div>
+          <div class="vp-info">
+            <div class="vp-name">Jan Novák</div>
+            <div class="vp-role">Realitní makléř · RE/MAX Praha</div>
+            <div class="vp-phone">+420 777 123 456</div>
+          </div>
+        </div>
+        <div class="vp-appears">
+          Zobrazuje se v profilu klienta a na <strong>každém vyúčtování</strong> — automaticky, měsíc co měsíc.
+        </div>
+      </div>
+
+      <div class="hero-card hero-card-rewards">
+        <span class="hcard-label">Odměna za přepisy</span>
+        <div class="reward-row">
+          <span class="rr-label">Základní sazba za OM</span>
+          <span class="rr-val g">601 Kč</span>
+        </div>
+        <div class="reward-row">
+          <span class="rr-label">Průběžně ze spotřeby</span>
+          <span class="rr-val">20 Kč / MWh</span>
+        </div>
+        <div class="reward-row">
+          <span class="rr-label">Maximální sazba za OM</span>
+          <span class="rr-val g">1 000 Kč</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEC: VIZITKA -->
+<section id="vizitka">
+  <div class="container">
+    <div class="vizitka-grid">
+      <div class="vizitka-text">
+        <span class="eyebrow">Hlavní benefit</span>
+        <h2 class="sh2">Tvoje jméno zůstane<br>v klientově životě — roky.</h2>
+        <p class="ssub">
+          Odměna za přepis je jednorazová. Vizitka je trvalá. Každý měsíc, kdy klient otevře vyúčtování nebo zkontroluje spotřebu v Energobankingu — vidí tě.
+        </p>
+        <div class="vizitka-callout">
+          <div class="vc-text">
+            „Stěhování je jediný přirozený moment, kdy klient energii řeší. Makléř, který tohle uchopí, je v jeho povědomí ještě roky po transakci."
+          </div>
+          <div class="vc-note">Bez aktivní práce. Bez dalšího kontaktu z tvé strany.</div>
+        </div>
+      </div>
+      <div class="vizitka-explainer">
+        <div class="ve-title">Kde se tvoje vizitka zobrazuje</div>
+        <div class="ve-items">
+          <div class="ve-item highlight">
+            <div class="ve-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <div>
+              <div class="ve-body-title">Profil klienta v Energobankingu</div>
+              <div class="ve-body-desc">Tvoje jméno a telefon jsou viditelné kdykoli, co klient kontroluje spotřebu nebo historii odběrů.</div>
+            </div>
+          </div>
+          <div class="ve-item highlight">
+            <div class="ve-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div>
+              <div class="ve-body-title">Každé vyúčtování energií</div>
+              <div class="ve-body-desc">Tvoje jméno je součástí každé faktury — měsíční nebo čtvrtletní. Klient dostane stovky faktur, než se znovu stěhuje.</div>
+            </div>
+          </div>
+          <div class="ve-item">
+            <div class="ve-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.82 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg>
+            </div>
+            <div>
+              <div class="ve-body-title">Přirozené doporučení zpět</div>
+              <div class="ve-body-desc">Až klient bude příště prodávat nebo kupovat, má tvůj kontakt přesně tam, kde ho potřebuje — bez hledání.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEC: JAK TO FUNGUJE -->
+<section id="jak-to-funguje">
+  <div class="container">
+    <span class="eyebrow">Jak to funguje</span>
+    <h2 class="sh2">Čtyři kroky — a pak to funguje samo.</h2>
+    <p class="ssub">Po doporučení nepotřebuješ dělat nic dalšího. Stav přepisu klient sleduje sám v Energobankingu.</p>
+    <div class="steps">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-when">Při podpisu nebo předání</div>
+        <div class="step-title">Doporučíš řešení klientovi</div>
+        <div class="step-desc">Zmíníš, že zajistíš přepis energií. Klient souhlasí — nic víc od tebe nepotřebuje.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-when">Pár kliknutí</div>
+        <div class="step-title">Nahraješ podklady</div>
+        <div class="step-desc">Smlouva a EAN číslo. Formulář tě provede krok za krokem — 3 minuty práce.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-when">Bez tvé účasti</div>
+        <div class="step-title">My zajistíme přepis</div>
+        <div class="step-desc">Komunikaci s dodavatelem, administrativu i potvrzení. Ty neřešíš nic.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <div class="step-when">Automaticky</div>
+        <div class="step-title">Odměna se připisuje</div>
+        <div class="step-desc">Průběžně se načítá ze spotřeby klienta. Na konci roku si ji vyberou — převodem nebo slevou na vlastní energie.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEC: ODMENA -->
+<section id="odmena">
+  <div class="container on-dark">
+    <span class="eyebrow">Odměna</span>
+    <h2 class="sh2">Kolik za to získáš</h2>
+    <p class="ssub">Tři složky. Načítají se průběžně, vyberou se na konci roku — převodem nebo slevou na vlastní energie.</p>
+    <div class="rewards-layout">
+      <div class="reward-boxes">
+        <div class="reward-box">
+          <div class="rb-num">601 Kč</div>
+          <div>
+            <div class="rb-label">Základ za přepis</div>
+            <div class="rb-desc">Za každé odběrné místo při přechodu. Roste s objemem doporučení — až na 1 000 Kč / OM.</div>
+          </div>
+        </div>
+        <div class="reward-box">
+          <div class="rb-num">20 Kč</div>
+          <div>
+            <div class="rb-label">Průběžně ze spotřeby</div>
+            <div class="rb-desc">Za každou MWh spotřeby klienta — načítá se automaticky každý měsíc bez tvé účasti.</div>
+          </div>
+        </div>
+        <div class="reward-box">
+          <div class="rb-num">1 000 Kč</div>
+          <div>
+            <div class="rb-label">Maximum za OM</div>
+            <div class="rb-desc">Při 20+ doporučeních za čtvrtletí. Sazba se upravuje automaticky.</div>
+          </div>
+        </div>
+      </div>
+      <div class="reward-info">
+        <div class="ri-title">Jak výplata funguje</div>
+        <div class="ri-item">
+          <span class="ri-dot">→</span>
+          Odměna se načítá průběžně do konce roku na tvůj partnerský účet v Energobankingu.
+        </div>
+        <div class="ri-item">
+          <span class="ri-dot">→</span>
+          Na konci roku si zůstatek vyberáš — buď <strong style="color:rgba(255,255,255,.65)">převodem na účet</strong>, nebo jako <strong style="color:rgba(255,255,255,.65)">slevu na vlastní energie</strong>.
+        </div>
+        <div class="ri-item">
+          <span class="ri-dot">→</span>
+          Žádné vstupní náklady, žádné poplatky za vedení účtu, žádné závazky.
+        </div>
+        <div class="ri-item">
+          <span class="ri-dot">→</span>
+          Odměna ze spotřeby trvá po celou dobu, co je klient u FEFY — bez dalšího doporučení z tvé strany.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEC: VÝDĚLEK -->
+<section id="vydelek">
+  <div class="container">
+    <span class="eyebrow">Reálný výdělek</span>
+    <h2 class="sh2">Co to znamená v praxi</h2>
+    <p class="ssub">Tři scénáře podle počtu klientů ročně. Čísla počítají se základní sazbou — při vyšším objemu je odměna za každé OM vyšší.</p>
+    <div class="scenarios">
+      <div class="scenario-card">
+        <div class="sc-badge">Občasné doporučení</div>
+        <div class="sc-title">5 klientů ročně</div>
+        <div class="sc-sub">1–2 doporučení za čtvrtletí → sazba ~571 Kč / OM</div>
+        <div class="sc-earn-label">Roční výdělek</div>
+        <div class="sc-earn">~3 tis. Kč</div>
+        <div class="sc-earn-note">+ ze spotřeby: ~350 Kč první rok, roste s portfóliem</div>
+        <div class="sc-rows">
+          <div class="sc-row"><span class="k">5 OM × ~571 Kč</span><span class="v">~2 850 Kč</span></div>
+          <div class="sc-row"><span class="k">Ze spotřeby (5 × 3,5 MWh × 20 Kč)</span><span class="v">+350 Kč / rok</span></div>
+        </div>
+      </div>
+      <div class="scenario-card featured">
+        <div class="sc-badge">Pravidelná aktivita</div>
+        <div class="sc-title">20 klientů ročně</div>
+        <div class="sc-sub">5 doporučení za čtvrtletí → sazba ~631 Kč / OM</div>
+        <div class="sc-earn-label">Roční výdělek</div>
+        <div class="sc-earn">~14–17 tis. Kč</div>
+        <div class="sc-earn-note">+ ze spotřeby: roste každý rok s každým novým klientem</div>
+        <div class="sc-rows">
+          <div class="sc-row"><span class="k">20 OM × ~631 Kč</span><span class="v">~12 600 Kč</span></div>
+          <div class="sc-row"><span class="k">Ze spotřeby (20 × 3,5 MWh × 20 Kč)</span><span class="v">+1 400 Kč / rok</span></div>
+        </div>
+      </div>
+      <div class="scenario-card">
+        <div class="sc-badge">Aktivní spolupráce</div>
+        <div class="sc-title">80+ klientů ročně</div>
+        <div class="sc-sub">20+ doporučení za čtvrtletí → sazba ~721 Kč / OM</div>
+        <div class="sc-earn-label">Roční výdělek</div>
+        <div class="sc-earn">až 60+ tis. Kč</div>
+        <div class="sc-earn-note">+ ze spotřeby: při 80 klientech ~5 600 Kč / rok a víc</div>
+        <div class="sc-rows">
+          <div class="sc-row"><span class="k">80 OM × ~721 Kč</span><span class="v">~57 700 Kč</span></div>
+          <div class="sc-row"><span class="k">Ze spotřeby (80 × 3,5 MWh × 20 Kč)</span><span class="v">+5 600 Kč / rok</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEC: PRO KLIENTA -->
+<section id="pro-klienta">
+  <div class="container">
+    <span class="eyebrow">Proč to klient přijme</span>
+    <h2 class="sh2">Co z toho má klient</h2>
+    <p class="ssub">Makléřovo doporučení musí dávat smysl klientovi — ne jen makléři. Tady je proč.</p>
+    <div class="client-grid">
+      <div class="check-list">
+        <div class="check-item">
+          <div class="ci-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div>
+            <div class="ci-title">Přepis bez starostí</div>
+            <div class="ci-desc">Nemusí sám kontaktovat dodavatele, hledat čísla smluv ani sledovat stav. Všechno se děje bez něj.</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="ci-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div>
+            <div class="ci-title">Online přehled v Energobankingu</div>
+            <div class="ci-desc">Spotřeba, historie faktur, stav přepisu — vše na jednom místě, bez nutnosti volat zákaznickou linku.</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="ci-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div>
+            <div class="ci-title">Žádné sankce za odchod</div>
+            <div class="ci-desc">FEFY klienty nezamyká. Žádné pokuty za předčasné ukončení — přechod při stěhování je čistý a bez rizika.</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="ci-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div>
+            <div class="ci-title">Komunitní dodavatel</div>
+            <div class="ci-desc">Zisk se reinvestuje do vlastních obnovitelných zdrojů a vrací komunitě — ne investorům.</div>
+          </div>
+        </div>
+      </div>
+      <div class="client-right">
+        <div class="cr-title">Přepis energií</div>
+        <div class="cr-text">
+          „Stěhování a přepis energií. Dvě věci, které klient nechce řešit sám. Ty mu nabídneš, že to za něj vyřešíš — za pět minut, online, bez čekání."
+        </div>
+        <a href="#prepis" class="cr-link">
+          Vyzkoušet přepis
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEC: CAS -->
+<section id="cas">
+  <div class="container">
+    <div class="time-grid">
+      <div>
+        <span class="eyebrow">Časová náročnost</span>
+        <h2 class="sh2">Kolik času ti to zabere</h2>
+        <p class="ssub">Na jednoho klienta jsou to jednotky minut. Pak žádná komunikace, žádné řešení po předání.</p>
+        <div class="time-items">
+          <div class="time-item">
+            <div class="ti-num">~2'</div>
+            <div>
+              <div class="ti-label">Jednorázová registrace</div>
+              <div class="ti-sub">Pak systém funguje pro každého dalšího klienta</div>
+            </div>
+          </div>
+          <div class="time-item">
+            <div class="ti-num">~3'</div>
+            <div>
+              <div class="ti-label">Nahrání podkladů za klienta</div>
+              <div class="ti-sub">Smlouva a EAN číslo — formulář tě provede</div>
+            </div>
+          </div>
+          <div class="time-item">
+            <div class="ti-num">0'</div>
+            <div>
+              <div class="ti-label">Po předání nemovitosti</div>
+              <div class="ti-sub">Žádná další komunikace. Odměna běží automaticky.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="time-summary">
+        <div class="ts-big">5 minut</div>
+        <div class="ts-unit">na jednoho klienta</div>
+        <div class="ts-note">
+          Pět minut přidaných k předání nemovitosti.<br><br>
+          Za každého klienta, který odebírá energie, načítáš odměnu ze spotřeby automaticky — bez jakékoli další aktivity z tvé strany.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEC: O NAS -->
+<section id="o-nas">
+  <div class="container on-dark">
+    <div class="onas-grid">
+      <div>
+        <span class="eyebrow">O nás</span>
+        <h2 class="sh2">FREE for YOU energie</h2>
+        <div class="onas-text">
+          <p>Komunitní dodavatel energií. Fungujeme 7 let. Zisk reinvestujeme do vlastních obnovitelných zdrojů — ne k investorům.</p>
+          <p>Zákaznický portál Energobanking. Klient vidí spotřebu, stav přepisu i historii — v reálném čase, bez nutnosti volat zákaznickou linku.</p>
+          <p>Klienty nezamykáme. Žádné sankce za předčasné ukončení. To je přesně ta výhoda, která přechod při stěhování dělá čistým.</p>
+        </div>
+      </div>
+      <div class="onas-stats">
+        <div class="onas-stat">
+          <div class="os-num">7</div>
+          <div class="os-label">let na trhu</div>
+        </div>
+        <div class="onas-stat">
+          <div class="os-num">2 000</div>
+          <div class="os-label">odběrných míst</div>
+        </div>
+        <div class="onas-stat">
+          <div class="os-num">0 Kč</div>
+          <div class="os-label">vstupní náklady</div>
+        </div>
+        <div class="onas-stat">
+          <div class="os-num">1×</div>
+          <div class="os-label">ročně výplata odměny</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="container">
+    <span class="eyebrow">Otázky a odpovědi</span>
+    <h2 class="sh2">Co tě pravděpodobně zajímá</h2>
+    <p class="ssub" style="margin-bottom:2rem">Přímé odpovědi.</p>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">Musím přepis nějak aktivně řešit?
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+        <div class="faq-a">Ne. Nahraješ podklady — a zbytek zajistíme my. Komunikaci s dodavatelem, administrativu i potvrzení. Ty neřešíš nic dalšího.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Kolik času mi to reálně zabere?
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+        <div class="faq-a">Registrace jednou: 2 minuty. Nahrání podkladů za klienta: 3 minuty. Po předání nemovitosti: 0 minut. Odměna ze spotřeby se připisuje automaticky.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Jak a kdy dostanu odměnu?
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+        <div class="faq-a">Odměna se načítá průběžně po celý rok na tvůj partnerský účet v Energobankingu. Na konci roku si zůstatek vyberáš — převodem na účet, nebo jako slevu na vlastní energie.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Je klient vázán smlouvou?
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+        <div class="faq-a">Ne. FEFY klienty nezamyká. Žádné sankce za předčasné ukončení. To je přesně ta výhoda, díky které přechod při stěhování dává smysl — nic klienta nebrzdí.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Musím klienta přepsat k vám?
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+        <div class="faq-a">V současnosti ano — přepis funguje k FREE for YOU. Do budoucna plánujeme možnost přepisu i k ostatním velkým dodavatelům.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Jak funguje odměna ze spotřeby?
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+        <div class="faq-a">Za každou MWh, kterou tvůj klient spotřebuje, dostaneš 20 Kč. Průměrná domácnost spotřebuje 3–4 MWh elektřiny ročně. Odměna se připisuje automaticky — bez jakékoli aktivity z tvé strany — po celou dobu, co je klient u FEFY.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section id="registrace">
+  <div class="container">
+    <span class="eyebrow" style="color:var(--green)">Registrace partnera</span>
+    <h2 class="sh2">Začni během 2 minut</h2>
+    <p class="ssub">
+      Bez nákladů. Bez závazků.<br>
+      Pouze možnost využít situace, které už řešíš.
+    </p>
+    <a href="https://energobanking.cz" class="btn-primary" style="font-size:1.05rem;padding:1rem 2.4rem">
+      Zaregistrovat se jako partner
+    </a>
+    <p class="cta-fine">Bez nákladů · Bez závazků · 2 minuty registrace</p>
+    <p style="margin-top:2.5rem;font-size:0.77rem;color:rgba(255,255,255,.19);font-weight:300">
+      Dotazy: Tomáš Alvarez · info@freeforyou.cz · +420 227 072 290
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <svg width="16" height="16" viewBox="0 0 32 32"><path d="M16 27s-11-7.2-11-14.5C5 8.4 8.1 6 11.5 6c1.9 0 3.6.8 4.5 2C17 6.8 18.6 6 20.5 6 23.9 6 27 8.4 27 12.5 27 19.8 16 27 16 27z" fill="#3dd68c"/></svg>
+      FREE for YOU s.r.o.
+    </div>
+    <p class="footer-p">
+      FREE for YOU s.r.o. · IČ 25336665 · Českomoravská 2255/12a, 190 00 Praha 9 – Libeň<br>
+      Zákaznický portál: Energobanking · info@freeforyou.cz · +420 227 072 290
+    </p>
+    <div class="footer-links">
+      <a href="#">Ochrana osobních údajů</a>
+      <a href="#">Obchodní podmínky</a>
+      <a href="https://energobanking.cz">Energobanking</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.step-card, .scenario-card, .onas-stat, .time-item, .check-item, .ve-item, .reward-box').forEach(el => {
+    el.style.opacity='0'; el.style.transform='translateY(18px)';
+    el.style.transition='opacity 0.45s ease, transform 0.45s ease';
+    obs.observe(el);
+  });
+</script>
+</body>
+</html>
