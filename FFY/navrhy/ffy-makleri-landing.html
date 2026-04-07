@@ -157,7 +157,51 @@
   .rr-val { font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 600; color: #fff; }
   .rr-val.g { color: var(--green); }
 
+  .rr-teaser {
+    font-size: 0.85rem; color: rgba(255,255,255,0.6); font-weight: 300;
+    line-height: 1.6; margin-bottom: 0.9rem;
+  }
+  .rr-link {
+    font-size: 0.82rem; font-weight: 700; color: var(--green);
+    text-decoration: none; border-bottom: 1px solid rgba(61,214,140,0.35);
+    transition: border-color 0.2s;
+  }
+  .rr-link:hover { border-color: var(--green); }
+
+  /* ── PROBLEM ── */
+
+  #problem { background: var(--bg); }
+  .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+  .problem-text .ssub { margin-bottom: 0; }
+  .problem-cards { display: flex; flex-direction: column; gap: 1rem; }
+  .problem-card {
+    background: var(--card); border-radius: var(--radius); padding: 1.3rem 1.5rem;
+    border: 1px solid var(--border); display: flex; align-items: flex-start; gap: 1rem;
+    transition: border-color 0.2s;
+  }
+  .problem-card:hover { border-color: rgba(255,90,90,0.3); }
+  .pc-icon {
+    width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+    background: #fff0f0; color: #e05555;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .pc-icon svg { width: 17px; height: 17px; }
+  .pc-title { font-weight: 700; font-size: 0.92rem; margin-bottom: 3px; }
+  .pc-desc { font-size: 0.83rem; color: var(--muted); font-weight: 300; line-height: 1.55; }
+
+  /* ── RESENI ── */
+  #reseni { background: var(--card); }
+  .btn-outline-green {
+    display: inline-block; color: var(--green-dk);
+    border: 1.5px solid var(--green-dk); border-radius: 100px;
+    padding: 0.65rem 1.5rem;
+    font-family: 'Ubuntu', sans-serif; font-size: 0.9rem; font-weight: 700;
+    text-decoration: none; transition: background 0.2s, color 0.2s;
+  }
+  .btn-outline-green:hover { background: var(--green-dk); color: #fff; }
+
   /* ── SHARED ── */
+
   section { padding: 76px 2rem; }
   .container { max-width: 1120px; margin: 0 auto; }
   .eyebrow {
@@ -408,7 +452,7 @@
 
   /* ── RESPONSIVE ── */
   @media(max-width:960px){
-    .hero-inner,.vizitka-grid,.client-grid,.time-grid,.onas-grid,.rewards-layout{grid-template-columns:1fr}
+    .hero-inner,.problem-grid,.vizitka-grid,.client-grid,.time-grid,.onas-grid,.rewards-layout{grid-template-columns:1fr}
     .hero-card{max-width:420px}
     .steps,.scenarios{grid-template-columns:1fr 1fr}
     .onas-stats{grid-template-columns:1fr 1fr}
@@ -447,12 +491,12 @@
       <div class="hero-chips">
         <span class="chip"><span class="chip-dot"></span>Vizitka v profilu klienta</span>
         <span class="chip"><span class="chip-dot"></span>Jméno na každém vyúčtování</span>
-        <span class="chip"><span class="chip-dot"></span>601 Kč za odběrné místo</span>
+        <span class="chip"><span class="chip-dot"></span>Odměna za každý přepis</span>
         <span class="chip"><span class="chip-dot"></span>Bez kroků po doporučení</span>
       </div>
       <div class="hero-cta-wrap">
         <a href="#registrace" class="btn-primary">Přidat se jako partner</a>
-        <a href="#prepis" class="btn-ghost">Vyzkoušet přepis →</a>
+        <a href="https://www.energobanking.cz/prepis" class="btn-ghost">Vyzkoušet přepis →</a>
       </div>
       <p class="hero-fine">Bez nákladů · Bez závazků · 2 minuty registrace</p>
     </div>
@@ -475,18 +519,126 @@
 
       <div class="hero-card hero-card-rewards">
         <span class="hcard-label">Odměna za přepisy</span>
-        <div class="reward-row">
-          <span class="rr-label">Základní sazba za OM</span>
-          <span class="rr-val g">601 Kč</span>
+        <div class="rr-teaser">Za každý přepis dostaneš odměnu — jednorázově za přechod i průběžně ze spotřeby klienta.</div>
+        <a href="#odmena" class="rr-link">Zjistit kolik →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEC: PROBLEM -->
+<section id="problem">
+  <div class="container">
+    <div class="problem-grid">
+      <div class="problem-text">
+        <span class="eyebrow">Realita přepisu</span>
+        <h2 class="sh2">Přepis energií kazí makléřům jméno. Zbytečně.</h2>
+        <p class="ssub">Klient se nastěhuje a čeká, kdo to vyřeší. Dodavatel nepřijme přihlášku, protože chybí dokument. Makléř začne řešit něco, co nebylo v jeho ceně ani v jeho popisu práce.</p>
+      </div>
+      <div class="problem-cards">
+        <div class="problem-card">
+          <div class="pc-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div class="pc-title">Klient volá zpátky</div>
+          <div class="pc-desc">Energetika se nestihla vyřešit při předání. Makléř řeší telefonáty ještě týdny po transakci.</div>
         </div>
-        <div class="reward-row">
-          <span class="rr-label">Průběžně ze spotřeby</span>
-          <span class="rr-val">20 Kč / MWh</span>
+        <div class="problem-card">
+          <div class="pc-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="pc-title">Čas na věci mimo obchod</div>
+          <div class="pc-desc">Komunikace s dodavateli, dohledávání EAN čísel, čekání na potvrzení. Tohle makléře nestojí čas — stojí ho příležitosti.</div>
         </div>
-        <div class="reward-row">
-          <span class="rr-label">Maximální sazba za OM</span>
-          <span class="rr-val g">1 000 Kč</span>
+        <div class="problem-card">
+          <div class="pc-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <div class="pc-title">Zbytečné riziko reputace</div>
+          <div class="pc-desc">Když přepis skřípe, klient si to spojí s makléřem. Ne s dodavatelem, ne s úřady — s makléřem.</div>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEC: RESENI -->
+<section id="reseni">
+  <div class="container">
+    <span class="eyebrow">Řešení</span>
+    <h2 class="sh2">U FREE for YOU je přepis<br>jednoduchý. Opravdu.</h2>
+    <p class="ssub">Žádné telefonáty s dodavatelem. Žádné dohledávání. Makléř nahraje podklady — a my zajistíme zbytek.</p>
+    <div class="steps">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-when">Při předání nemovitosti</div>
+        <div class="step-title">Doporučíš přepis klientovi</div>
+        <div class="step-desc">Klient souhlasí. To je celá tvoje práce na tomto kroku.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-when">3 minuty online</div>
+        <div class="step-title">Nahraješ podklady</div>
+        <div class="step-desc">Smlouva a EAN číslo. Formulář tě provede krok za krokem — žádné hledání, co kam patří.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-when">Bez tvé účasti</div>
+        <div class="step-title">My vyřešíme zbytek</div>
+        <div class="step-desc">Komunikaci s dodavatelem, administrativu i potvrzení. Klient dostane e-mail, až bude hotovo.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <div class="step-when">Automaticky</div>
+        <div class="step-title">Tvoje vizitka zůstane</div>
+        <div class="step-desc">V profilu klienta i na každé faktuře. Měsíc co měsíc, bez jakékoli další aktivity z tvé strany.</div>
+      </div>
+    </div>
+    <div style="margin-top:1.5rem; text-align:center;">
+      <a href="https://www.energobanking.cz/prepis" class="btn-outline-green">Vyzkoušet přepis →</a>
+    </div>
+  </div>
+</section>
+
+<!-- SEC: CENA PRO KLIENTA -->
+<section id="pro-klienta">
+  <div class="container">
+    <div class="client-grid">
+      <div>
+        <span class="eyebrow">Pro tvého klienta</span>
+        <h2 class="sh2">Dobrá cena. Bez starostí.<br>To je to, co klient chce.</h2>
+        <p class="ssub">Přepis je jedna věc. Ale makléř doporučuje dodavatele — a za tím doporučením stojí jeho jméno. Proto záleží na tom, koho doporučí.</p>
+        <div class="check-list">
+          <div class="check-item">
+            <div class="ci-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div>
+              <div class="ci-title">Férová cena energií</div>
+              <div class="ci-desc">FREE for YOU je komunitní dodavatel — zisk reinvestuje do vlastních zdrojů a vrací ho zpět, ne investorům.</div>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="ci-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div>
+              <div class="ci-title">Přehled online, kdykoli</div>
+              <div class="ci-desc">Spotřeba, faktury, stav přepisu — vše v Energobankingu. Klient nemusí nikam volat.</div>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="ci-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div>
+              <div class="ci-title">Žádné sankce za odchod</div>
+              <div class="ci-desc">FREE for YOU klienty nezamyká. Klient může odejít kdykoli — bez pokut, bez komplikací.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="client-right">
+        <div class="cr-title">Vizitka v profilu klienta</div>
+        <div class="cr-text">„Klient má vyřešené energie a v profilu vidí tvoje jméno a telefon. Až bude příště prodávat — ví, na koho se obrátit."</div>
+        <a href="https://www.energobanking.cz/prepis" class="cr-link">
+          Vyzkoušet přepis
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
       </div>
     </div>
   </div>
@@ -499,13 +651,9 @@
       <div class="vizitka-text">
         <span class="eyebrow">Hlavní benefit</span>
         <h2 class="sh2">Tvoje jméno zůstane<br>v klientově životě — roky.</h2>
-        <p class="ssub">
-          Odměna za přepis je jednorazová. Vizitka je trvalá. Každý měsíc, kdy klient otevře vyúčtování nebo zkontroluje spotřebu v Energobankingu — vidí tě.
-        </p>
+        <p class="ssub">Odměna za přepis je jednorazová. Vizitka je trvalá. Každý měsíc, kdy klient otevře vyúčtování nebo zkontroluje spotřebu v Energobankingu — vidí tě.</p>
         <div class="vizitka-callout">
-          <div class="vc-text">
-            „Stěhování je jediný přirozený moment, kdy klient energii řeší. Makléř, který tohle uchopí, je v jeho povědomí ještě roky po transakci."
-          </div>
+          <div class="vc-text">„Stěhování je jediný přirozený moment, kdy klient energii řeší. Makléř, který tohle uchopí, je v jeho povědomí ještě roky po transakci."</div>
           <div class="vc-note">Bez aktivní práce. Bez dalšího kontaktu z tvé strany.</div>
         </div>
       </div>
@@ -527,7 +675,7 @@
             </div>
             <div>
               <div class="ve-body-title">Každé vyúčtování energií</div>
-              <div class="ve-body-desc">Tvoje jméno je součástí každé faktury — měsíční nebo čtvrtletní. Klient dostane stovky faktur, než se znovu stěhuje.</div>
+              <div class="ve-body-desc">Tvoje jméno je součástí každé faktury. Klient dostane stovky faktur, než se znovu stěhuje.</div>
             </div>
           </div>
           <div class="ve-item">
@@ -536,45 +684,10 @@
             </div>
             <div>
               <div class="ve-body-title">Přirozené doporučení zpět</div>
-              <div class="ve-body-desc">Až klient bude příště prodávat nebo kupovat, má tvůj kontakt přesně tam, kde ho potřebuje — bez hledání.</div>
+              <div class="ve-body-desc">Až klient bude příště prodávat, má tvůj kontakt přesně tam, kde ho potřebuje — bez hledání.</div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SEC: JAK TO FUNGUJE -->
-<section id="jak-to-funguje">
-  <div class="container">
-    <span class="eyebrow">Jak to funguje</span>
-    <h2 class="sh2">Čtyři kroky — a pak to funguje samo.</h2>
-    <p class="ssub">Po doporučení nepotřebuješ dělat nic dalšího. Stav přepisu klient sleduje sám v Energobankingu.</p>
-    <div class="steps">
-      <div class="step-card">
-        <div class="step-num">1</div>
-        <div class="step-when">Při podpisu nebo předání</div>
-        <div class="step-title">Doporučíš řešení klientovi</div>
-        <div class="step-desc">Zmíníš, že zajistíš přepis energií. Klient souhlasí — nic víc od tebe nepotřebuje.</div>
-      </div>
-      <div class="step-card">
-        <div class="step-num">2</div>
-        <div class="step-when">Pár kliknutí</div>
-        <div class="step-title">Nahraješ podklady</div>
-        <div class="step-desc">Smlouva a EAN číslo. Formulář tě provede krok za krokem — 3 minuty práce.</div>
-      </div>
-      <div class="step-card">
-        <div class="step-num">3</div>
-        <div class="step-when">Bez tvé účasti</div>
-        <div class="step-title">My zajistíme přepis</div>
-        <div class="step-desc">Komunikaci s dodavatelem, administrativu i potvrzení. Ty neřešíš nic.</div>
-      </div>
-      <div class="step-card">
-        <div class="step-num">4</div>
-        <div class="step-when">Automaticky</div>
-        <div class="step-title">Odměna se připisuje</div>
-        <div class="step-desc">Průběžně se načítá ze spotřeby klienta. Na konci roku si ji vyberou — převodem nebo slevou na vlastní energie.</div>
       </div>
     </div>
   </div>
@@ -584,8 +697,8 @@
 <section id="odmena">
   <div class="container on-dark">
     <span class="eyebrow">Odměna</span>
-    <h2 class="sh2">Kolik za to získáš</h2>
-    <p class="ssub">Tři složky. Načítají se průběžně, vyberou se na konci roku — převodem nebo slevou na vlastní energie.</p>
+    <h2 class="sh2">A navíc — odměna za každý přepis</h2>
+    <p class="ssub">Načítá se průběžně po celý rok, vyberáš ji na konci roku — převodem nebo slevou na vlastní energie.</p>
     <div class="rewards-layout">
       <div class="reward-boxes">
         <div class="reward-box">
@@ -612,22 +725,10 @@
       </div>
       <div class="reward-info">
         <div class="ri-title">Jak výplata funguje</div>
-        <div class="ri-item">
-          <span class="ri-dot">→</span>
-          Odměna se načítá průběžně do konce roku na tvůj partnerský účet v Energobankingu.
-        </div>
-        <div class="ri-item">
-          <span class="ri-dot">→</span>
-          Na konci roku si zůstatek vyberáš — buď <strong style="color:rgba(255,255,255,.65)">převodem na účet</strong>, nebo jako <strong style="color:rgba(255,255,255,.65)">slevu na vlastní energie</strong>.
-        </div>
-        <div class="ri-item">
-          <span class="ri-dot">→</span>
-          Žádné vstupní náklady, žádné poplatky za vedení účtu, žádné závazky.
-        </div>
-        <div class="ri-item">
-          <span class="ri-dot">→</span>
-          Odměna ze spotřeby trvá po celou dobu, co je klient u FEFY — bez dalšího doporučení z tvé strany.
-        </div>
+        <div class="ri-item"><span class="ri-dot">→</span>Odměna se načítá průběžně do konce roku na tvůj partnerský účet v Energobankingu.</div>
+        <div class="ri-item"><span class="ri-dot">→</span>Na konci roku si zůstatek vyberáš — <strong style="color:rgba(255,255,255,.65)">převodem na účet</strong>, nebo jako <strong style="color:rgba(255,255,255,.65)">slevu na vlastní energie</strong>.</div>
+        <div class="ri-item"><span class="ri-dot">→</span>Žádné vstupní náklady, žádné poplatky za vedení účtu.</div>
+        <div class="ri-item"><span class="ri-dot">→</span>Odměna ze spotřeby trvá po celou dobu, co je klient u FREE for YOU.</div>
       </div>
     </div>
   </div>
@@ -638,7 +739,7 @@
   <div class="container">
     <span class="eyebrow">Reálný výdělek</span>
     <h2 class="sh2">Co to znamená v praxi</h2>
-    <p class="ssub">Tři scénáře podle počtu klientů ročně. Čísla počítají se základní sazbou — při vyšším objemu je odměna za každé OM vyšší.</p>
+    <p class="ssub">Tři scénáře podle počtu klientů ročně. Čísla počítají se sazbou platnou pro daný objem — čím více přepisů za čtvrtletí, tím vyšší sazba za každý.</p>
     <div class="scenarios">
       <div class="scenario-card">
         <div class="sc-badge">Občasné doporučení</div>
@@ -680,57 +781,6 @@
   </div>
 </section>
 
-<!-- SEC: PRO KLIENTA -->
-<section id="pro-klienta">
-  <div class="container">
-    <span class="eyebrow">Proč to klient přijme</span>
-    <h2 class="sh2">Co z toho má klient</h2>
-    <p class="ssub">Makléřovo doporučení musí dávat smysl klientovi — ne jen makléři. Tady je proč.</p>
-    <div class="client-grid">
-      <div class="check-list">
-        <div class="check-item">
-          <div class="ci-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-          <div>
-            <div class="ci-title">Přepis bez starostí</div>
-            <div class="ci-desc">Nemusí sám kontaktovat dodavatele, hledat čísla smluv ani sledovat stav. Všechno se děje bez něj.</div>
-          </div>
-        </div>
-        <div class="check-item">
-          <div class="ci-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-          <div>
-            <div class="ci-title">Online přehled v Energobankingu</div>
-            <div class="ci-desc">Spotřeba, historie faktur, stav přepisu — vše na jednom místě, bez nutnosti volat zákaznickou linku.</div>
-          </div>
-        </div>
-        <div class="check-item">
-          <div class="ci-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-          <div>
-            <div class="ci-title">Žádné sankce za odchod</div>
-            <div class="ci-desc">FEFY klienty nezamyká. Žádné pokuty za předčasné ukončení — přechod při stěhování je čistý a bez rizika.</div>
-          </div>
-        </div>
-        <div class="check-item">
-          <div class="ci-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-          <div>
-            <div class="ci-title">Komunitní dodavatel</div>
-            <div class="ci-desc">Zisk se reinvestuje do vlastních obnovitelných zdrojů a vrací komunitě — ne investorům.</div>
-          </div>
-        </div>
-      </div>
-      <div class="client-right">
-        <div class="cr-title">Přepis energií</div>
-        <div class="cr-text">
-          „Stěhování a přepis energií. Dvě věci, které klient nechce řešit sám. Ty mu nabídneš, že to za něj vyřešíš — za pět minut, online, bez čekání."
-        </div>
-        <a href="#prepis" class="cr-link">
-          Vyzkoušet přepis
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- SEC: CAS -->
 <section id="cas">
   <div class="container">
@@ -766,10 +816,7 @@
       <div class="time-summary">
         <div class="ts-big">5 minut</div>
         <div class="ts-unit">na jednoho klienta</div>
-        <div class="ts-note">
-          Pět minut přidaných k předání nemovitosti.<br><br>
-          Za každého klienta, který odebírá energie, načítáš odměnu ze spotřeby automaticky — bez jakékoli další aktivity z tvé strany.
-        </div>
+        <div class="ts-note">Pět minut přidaných k předání nemovitosti.<br><br>Za každého klienta, který odebírá energie, načítáš odměnu ze spotřeby automaticky — bez jakékoli další aktivity z tvé strany.</div>
       </div>
     </div>
   </div>
@@ -866,13 +913,11 @@
       Bez nákladů. Bez závazků.<br>
       Pouze možnost využít situace, které už řešíš.
     </p>
-    <a href="https://energobanking.cz" class="btn-primary" style="font-size:1.05rem;padding:1rem 2.4rem">
+    <a href="https://www.energobanking.cz/" class="btn-primary" style="font-size:1.05rem;padding:1rem 2.4rem">
       Zaregistrovat se jako partner
     </a>
     <p class="cta-fine">Bez nákladů · Bez závazků · 2 minuty registrace</p>
-    <p style="margin-top:2.5rem;font-size:0.77rem;color:rgba(255,255,255,.19);font-weight:300">
-      Dotazy: Tomáš Alvarez · info@freeforyou.cz · +420 227 072 290
-    </p>
+    
   </div>
 </section>
 
@@ -885,17 +930,17 @@
     </div>
     <p class="footer-p">
       FREE for YOU s.r.o. · IČ 25336665 · Českomoravská 2255/12a, 190 00 Praha 9 – Libeň<br>
-      Zákaznický portál: Energobanking · info@freeforyou.cz · +420 227 072 290
+      Zákaznický portál: Energobanking · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="8ae3e4ece5caecf8efefece5f8f3e5ffa4e9f0">[email&#160;protected]</a> · +420 227 072 290
     </p>
     <div class="footer-links">
       <a href="#">Ochrana osobních údajů</a>
       <a href="#">Obchodní podmínky</a>
-      <a href="https://energobanking.cz">Energobanking</a>
+      <a href="https://www.energobanking.cz/">Energobanking</a>
     </div>
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   document.querySelectorAll('.faq-item').forEach(item => {
     item.addEventListener('click', () => {
       const wasOpen = item.classList.contains('open');
@@ -907,14 +952,4 @@
   const obs = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; }
-    });
-  }, { threshold: 0.08 });
-
-  document.querySelectorAll('.step-card, .scenario-card, .onas-stat, .time-item, .check-item, .ve-item, .reward-box').forEach(el => {
-    el.style.opacity='0'; el.style.transform='translateY(18px)';
-    el.style.transition='opacity 0.45s ease, transform 0.45s ease';
-    obs.observe(el);
-  });
-</script>
-</body>
-</html>
+    })
