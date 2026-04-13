@@ -159,34 +159,67 @@
   .qr-label { font-size: 11px; color: var(--muted); text-align: center; margin-top: 8px; }
 
   /* ── 5. ROZPIS ── */
-  .price-section { padding: 28px 48px 0; }
+  .price-section { padding: 12px 48px 0; }
   .section-title-plain {
     font-size: 10.5px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
     color: var(--muted); padding-bottom: 10px; border-bottom: 1.5px solid var(--brd); margin-bottom: 14px;
   }
-  .price-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
-  .price-card {
-    border-radius: 14px; padding: 22px 20px 20px;
-    display: flex; flex-direction: column; gap: 8px;
-    position: relative; overflow: hidden;
+  /* ── 5. CHART ── */
+  .chart-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.55fr 1fr;
+    gap: 20px;
+    align-items: center;
+    position: relative;
   }
-  .price-card::after {
-    content:''; position: absolute; bottom: -20px; right: -20px;
-    width: 80px; height: 80px; border-radius: 50%; opacity: .12; background: white;
+  .chart-side-box {
+    display: flex;
+    flex-direction: column;
   }
-  .price-card.green { background: var(--green); }
-  .price-card.teal  { background: var(--teal); }
-  .price-card.slate { background: var(--slate); }
-  .card-icon   { font-size: 20px; margin-bottom: 2px; }
-  .card-label  { font-size: 11.5px; font-weight: 600; line-height: 1.4; color: rgba(0,0,0,.6); }
-  .price-card.teal  .card-label,
-  .price-card.slate .card-label { color: rgba(255,255,255,.75); }
-  .card-amount { font-size: 26px; font-weight: 700; color: #1A2740; margin-top: auto; }
-  .price-card.teal  .card-amount,
-  .price-card.slate .card-amount { color: var(--white); }
-  .card-sub { font-size: 11px; color: rgba(0,0,0,.4); }
-  .price-card.teal  .card-sub,
-  .price-card.slate .card-sub { color: rgba(255,255,255,.5); }
+  .chart-box-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px 18px;
+    gap: 5px;
+  }
+  .chart-box-val {
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+  .chart-box-sub {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 500;
+    margin-top: 4px;
+  }
+  .chart-box-target {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-top: 6px;
+    width: fit-content;
+  }
+  .chart-center-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  #pie-svg { width: 100%; height: auto; display: block; }
+  #arrows-svg {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; overflow: visible;
+  }
 
   .total-bar {
     margin: 14px 0 0;
@@ -224,6 +257,31 @@
   }
   .footer-text { font-size: 11.5px; color: var(--muted); max-width: 480px; line-height: 1.6; }
   .footer-logo { font-size: 11px; color: var(--navy); font-weight: 600; opacity: .4; white-space: nowrap; }
+
+  /* ── PIE LEGEND ── */
+  .pie-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px 14px;
+    margin-top: 10px;
+    padding: 0 4px;
+  }
+  .pie-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10.5px;
+    font-weight: 500;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .pie-legend-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
 
   @media (max-width: 640px) {
     .title-band, .header, .payment-wrap, .two-col, .price-section, .footer { padding-left: 20px; padding-right: 20px; }
@@ -326,10 +384,6 @@
           <div class="ok">Proti loňsku</div>
           <div class="ov big-g">+8 %</div>
         </div>
-        <div class="orow">
-          <div class="ok">Cena za kWh</div>
-          <div class="ov">3,02 Kč</div>
-        </div>
       </div>
     </div>
 
@@ -421,28 +475,45 @@
 
   </div><!-- /two-col -->
 
-  <!-- 5. ROZPIS CENY  2 540 + 1 800 + 532 = 4 872 -->
+  <!-- 5. ROZPIS CENY – graf -->
   <div class="price-section">
-    <div class="section-title-plain">Rozpis ceny</div>
-    <div class="price-cards">
-      <div class="price-card green">
-        <div class="card-icon">⚡</div>
-        <div class="card-label">Silová elektřina</div>
-        <div class="card-amount">2 540 Kč</div>
-        <div class="card-sub">Komodita + obchod</div>
+    <div class="chart-layout" id="chart-layout">
+
+      <!-- LEVÝ BOXÍK: Cena za kWh -->
+      <div class="col-box chart-side-box" id="box-left">
+        <div class="col-header">Cena za MWh</div>
+        <div class="chart-box-body">
+          <div class="chart-box-val">3 020 Kč</div>
+          <div class="chart-box-sub">Sazba dodavatele</div>
+          <div class="chart-box-target" style="background:rgba(48,228,153,.18);color:#1a7a4a;">Dodavatel za MWh</div>
+        </div>
       </div>
-      <div class="price-card teal">
-        <div class="card-icon">🔌</div>
-        <div class="card-label">Distribuce + služby</div>
-        <div class="card-amount">1 800 Kč</div>
-        <div class="card-sub">Síť + OTE poplatky</div>
+
+      <!-- STŘED: koláčový graf -->
+      <div class="chart-center-wrap" id="chart-center">
+        <svg id="pie-svg" viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg"></svg>
+        <div class="pie-legend" id="pie-legend"></div>
       </div>
-      <div class="price-card slate">
-        <div class="card-icon">📋</div>
-        <div class="card-label">Daně a poplatky (21 %)</div>
-        <div class="card-amount">532 Kč</div>
-        <div class="card-sub">DPH + spotřební daně</div>
+
+      <!-- PRAVÝ BOXÍK: Měsíční poplatky -->
+      <div class="col-box chart-side-box" id="box-right">
+        <div class="col-header" style="text-align:right;">Měsíční poplatky</div>
+        <div class="chart-box-body" style="align-items:flex-end;text-align:right;">
+          <div class="chart-box-val">420 Kč</div>
+          <div class="chart-box-sub">Fixní složky / měsíc</div>
+          <div class="chart-box-target" style="background:rgba(39,113,135,.15);color:#1a5570;">Distribuce měsíčně</div>
+          <div class="chart-box-target" style="background:rgba(34,196,122,.18);color:#0f6b3a;margin-top:3px;">Dodavatel měsíčně</div>
+        </div>
       </div>
+
+      <svg id="arrows-svg" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arr" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+            <polygon points="0 0,7 2.5,0 5" fill="#424B64"/>
+          </marker>
+        </defs>
+      </svg>
+
     </div>
     <div class="total-bar">
       <div class="total-part">
@@ -473,32 +544,226 @@
 </div>
 
 <script>
+  /* ── QR sizing ── */
   function sizeQR() {
     const leftCol  = document.getElementById('left-col');
     const rightCol = document.getElementById('right-col');
     const qrBox    = document.getElementById('qr-box');
     const qrSvg    = document.getElementById('qr-svg');
     const spacer   = qrBox.closest('.qr-spacer');
-
     const colH = leftCol.offsetHeight;
     rightCol.style.minHeight = colH + 'px';
-
     const colHeader = rightCol.querySelector('.col-header').offsetHeight;
     const bankList  = rightCol.querySelector('.bank-list').offsetHeight;
     const label     = rightCol.querySelector('.qr-label').offsetHeight;
     const paddings  = 18 + 14 + 16 + 20 + 8;
     const available = colH - colHeader - bankList - label - paddings;
     const side = Math.max(80, Math.min(available, spacer.offsetWidth - 32));
-
     qrBox.style.width  = side + 'px';
     qrBox.style.height = side + 'px';
     qrSvg.setAttribute('width',  side);
     qrSvg.setAttribute('height', side);
   }
 
-  window.addEventListener('load', sizeQR);
-  window.addEventListener('resize', sizeQR);
-  setTimeout(sizeQR, 300);
+  /* ── Pie chart ── */
+  const SEGS = [
+    { label: 'Dodavatel za MWh',   pct: 31, color: '#30E499', key: 'dod-mwh' },
+    { label: 'Dodavatel měsíčně',  pct: 19, color: '#22C47A', key: 'dod-mes' },
+    { label: 'Daně',               pct:  8, color: '#424B64', key: 'dane'    },
+    { label: 'Distribuce za MWh',  pct: 25, color: '#3293AD', key: 'dis-mwh' },
+    { label: 'Distribuce měsíčně', pct: 17, color: '#277187', key: 'dis-mes' },
+  ];
+
+  const TOTAL = 4872;
+  // viewBox 300×260, pie center at (150, 130)
+  const CX = 150, CY = 130, R = 96, r = 46;
+  let pieBuilt = false;
+
+  function polar(cx, cy, radius, angleDeg) {
+    const a = (angleDeg - 90) * Math.PI / 180;
+    return [cx + radius * Math.cos(a), cy + radius * Math.sin(a)];
+  }
+
+  function slicePath(startDeg, endDeg) {
+    const [x1o, y1o] = polar(CX, CY, R, startDeg);
+    const [x2o, y2o] = polar(CX, CY, R, endDeg);
+    const [x2i, y2i] = polar(CX, CY, r, endDeg);
+    const [x1i, y1i] = polar(CX, CY, r, startDeg);
+    const large = (endDeg - startDeg > 180) ? 1 : 0;
+    return `M${x1o},${y1o} A${R},${R},0,${large},1,${x2o},${y2o} L${x2i},${y2i} A${r},${r},0,${large},0,${x1i},${y1i} Z`;
+  }
+
+  function svgText(svg, x, y, txt, opts = {}) {
+    const el = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    el.setAttribute('x', x);
+    el.setAttribute('y', y);
+    el.setAttribute('text-anchor',      opts.anchor   || 'middle');
+    el.setAttribute('dominant-baseline', opts.baseline || 'middle');
+    el.setAttribute('fill',             opts.fill     || '#fff');
+    el.setAttribute('font-size',        opts.size     || '10');
+    el.setAttribute('font-weight',      opts.weight   || '700');
+    el.setAttribute('font-family',      opts.family   || 'DM Sans, sans-serif');
+    el.textContent = txt;
+    svg.appendChild(el);
+    return el;
+  }
+
+  function svgLine(svg, x1, y1, x2, y2, color, w = 1.5) {
+    const el = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    el.setAttribute('x1', x1); el.setAttribute('y1', y1);
+    el.setAttribute('x2', x2); el.setAttribute('y2', y2);
+    el.setAttribute('stroke', color); el.setAttribute('stroke-width', w);
+    svg.appendChild(el);
+    return el;
+  }
+
+  function buildPie() {
+    if (pieBuilt) return;
+    pieBuilt = true;
+    const svg = document.getElementById('pie-svg');
+
+    // Dodavatel (green) on left half, Distribuce (blue) on right, Daně at top
+    const startOffset = 180;
+    let cursor = startOffset;
+
+    SEGS.forEach(seg => {
+      const span = seg.pct / 100 * 360;
+      seg.startDeg = cursor;
+      seg.endDeg   = cursor + span;
+      seg.midDeg   = (seg.startDeg + seg.endDeg) / 2;
+      cursor = seg.endDeg;
+
+      // arc
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', slicePath(seg.startDeg, seg.endDeg));
+      path.setAttribute('fill', seg.color);
+      path.setAttribute('stroke', '#fff');
+      path.setAttribute('stroke-width', '2.5');
+      svg.appendChild(path);
+
+      const a = (seg.midDeg - 90) * Math.PI / 180;
+
+      // % label inside arc (skip if slice too small)
+      if (seg.pct >= 8) {
+        const rm = (R + r) / 2;
+        svgText(svg,
+          CX + rm * Math.cos(a),
+          CY + rm * Math.sin(a),
+          seg.pct + '%',
+          { size: seg.pct >= 15 ? '13' : '11', weight: '700', fill: '#fff' }
+        );
+      }
+
+      // tick + amount label outside
+      const rTick1 = R + 3, rTick2 = R + 12, rLabel = R + 22;
+      const [t1x, t1y] = [CX + rTick1 * Math.cos(a), CY + rTick1 * Math.sin(a)];
+      const [t2x, t2y] = [CX + rTick2 * Math.cos(a), CY + rTick2 * Math.sin(a)];
+      svgLine(svg, t1x, t1y, t2x, t2y, seg.color, 1.5);
+
+      const lx = CX + rLabel * Math.cos(a);
+      const ly = CY + rLabel * Math.sin(a);
+      const relX = rLabel * Math.cos(a);
+      const anchor = relX > 10 ? 'start' : relX < -10 ? 'end' : 'middle';
+      const amount = Math.round(TOTAL * seg.pct / 100);
+      const amtStr = amount.toLocaleString('cs-CZ') + '\u00a0Kč';
+      svgText(svg, lx, ly, amtStr, {
+        anchor,
+        fill: seg.color,
+        size: '11',
+        weight: '600',
+        family: 'DM Mono, monospace',
+        baseline: 'middle',
+      });
+    });
+
+    // center total
+    svgText(svg, CX, CY - 7, TOTAL.toLocaleString('cs-CZ'), {
+      fill: '#224571', size: '18', weight: '700', family: 'DM Sans, sans-serif', baseline: 'middle',
+    });
+    svgText(svg, CX, CY + 12, 'Kč celkem', {
+      fill: '#6B7A99', size: '9', weight: '500', family: 'DM Sans, sans-serif', baseline: 'middle',
+    });
+
+    // build legend
+    const legend = document.getElementById('pie-legend');
+    SEGS.forEach(seg => {
+      const item = document.createElement('div');
+      item.className = 'pie-legend-item';
+      item.innerHTML = `<span class="pie-legend-dot" style="background:${seg.color}"></span>${seg.label}`;
+      legend.appendChild(item);
+    });
+  }
+  function drawArrows() {
+    const layout   = document.getElementById('chart-layout');
+    const arrowSvg = document.getElementById('arrows-svg');
+    const pieSvg   = document.getElementById('pie-svg');
+    const boxLeft  = document.getElementById('box-left');
+    const boxRight = document.getElementById('box-right');
+    while (arrowSvg.children.length > 1) arrowSvg.removeChild(arrowSvg.lastChild);
+
+    const base = layout.getBoundingClientRect();
+    const pieR = pieSvg.getBoundingClientRect();
+    const pieCX = (pieR.left + pieR.right)  / 2 - base.left;
+    const pieCY = (pieR.top  + pieR.bottom) / 2 - base.top;
+    const scale = pieR.width / 220;
+
+    function slicePoint(seg, rf) {
+      const a  = (seg.midDeg - 90) * Math.PI / 180;
+      const rr = (R * rf + r * (1 - rf)) * scale;
+      return [pieCX + rr * Math.cos(a), pieCY + rr * Math.sin(a)];
+    }
+
+    function boxEdge(el, side) {
+      const br = el.getBoundingClientRect();
+      const x = side === 'right' ? br.right - base.left : br.left - base.left;
+      const y = (br.top + br.bottom) / 2 - base.top;
+      return [x, y];
+    }
+
+    function addArrow(x1, y1, x2, y2) {
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+      line.setAttribute('x2', x2); line.setAttribute('y2', y2);
+      line.setAttribute('stroke', '#424B64');
+      line.setAttribute('stroke-width', '1.5');
+      line.setAttribute('stroke-dasharray', '4 3');
+      line.setAttribute('marker-end', 'url(#arr)');
+      arrowSvg.appendChild(line);
+    }
+
+    // left box → Dodavatel za MWh
+    const [lx, ly] = boxEdge(boxLeft, 'right');
+    addArrow(lx, ly, ...slicePoint(SEGS.find(s => s.key === 'dod-mwh'), 0.65));
+
+    // right box → Distribuce měsíčně
+    const [rx, ry] = boxEdge(boxRight, 'left');
+    addArrow(rx, ry, ...slicePoint(SEGS.find(s => s.key === 'dis-mes'), 0.65));
+
+    // right box → Dodavatel měsíčně
+    addArrow(rx, ry, ...slicePoint(SEGS.find(s => s.key === 'dod-mes'), 0.65));
+  }
+
+  function adjustChartRatio() {
+    const center   = document.getElementById('chart-center');
+    const boxLeft  = document.getElementById('box-left');
+    const boxRight = document.getElementById('box-right');
+    const h = center.offsetHeight;
+    if (h > 0) {
+      boxLeft.style.height  = (h / 2) + 'px';
+      boxRight.style.height = (h / 2) + 'px';
+    }
+  }
+
+  function init() {
+    buildPie();
+    sizeQR();
+    adjustChartRatio();
+    setTimeout(() => { drawArrows(); adjustChartRatio(); }, 50);
+  }
+
+  window.addEventListener('load', init);
+  window.addEventListener('resize', () => { sizeQR(); drawArrows(); adjustChartRatio(); });
+  setTimeout(init, 300);
 </script>
 </body>
 </html>
