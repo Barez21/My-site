@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mimořádná faktura – FREE for YOU s.r.o.</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:  #224571;
+    --green: #30E499;
+    --teal:  #3293AD;
+    --slate: #424B64;
+    --red:   #FF4242;
+    --bg:    #F7F9FC;
+    --white: #FFFFFF;
+    --brd:   #E3EAF2;
+    --brd-vis: #B8C9E0;
+    --text:  #1A2740;
+    --muted: #6B7A99;
+
+    /* ── šířka viditelných rámečků – měň jen tuto hodnotu ── */
+    --border-w: 2px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 32px 16px;
+  }
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: 0 8px 48px rgba(34,69,113,.10), 0 2px 8px rgba(34,69,113,.06);
+    overflow: hidden;
+  }
+
+  /* ── 1. TITLE BAND ── */
+  .title-band {
+    background: var(--navy);
+    padding: 20px 48px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .invoice-title { font-size: 19px; font-weight: 700; color: var(--white); letter-spacing: -.2px; }
+  .invoice-num   { font-family: 'DM Mono', monospace; font-size: 12px; color: rgba(255,255,255,.5); }
+
+  /* ── 2. HEADER ── */
+  .header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    padding: 32px 48px 28px; border-bottom: 1.5px solid var(--brd); gap: 24px;
+  }
+  .logo-block { display: flex; align-items: flex-start; gap: 14px; }
+  .logo-heart {
+    width: 52px; height: 52px; flex-shrink: 0;
+    background: var(--navy); border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .logo-heart svg { width: 28px; height: 28px; }
+  .company-name   { font-size: 17px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  .company-detail { font-size: 12px; color: var(--muted); line-height: 1.75; }
+  .customer-block { text-align: right; }
+  .customer-label { font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .customer-name  { font-size: 15px; font-weight: 600; color: var(--navy); }
+  .customer-addr  { font-size: 12.5px; color: var(--muted); line-height: 1.75; margin-top: 2px; }
+
+  /* ── 3. K ÚHRADĚ ── */
+  .payment-wrap { padding: 28px 48px 0; }
+  .payment-box {
+    background: linear-gradient(135deg, #EBF5FF 0%, #F0FBF6 100%);
+    border: var(--border-w) solid var(--brd-vis); border-radius: 14px;
+    padding: 24px 32px;
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  }
+  .amount-label { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .amount-value { font-size: 52px; font-weight: 700; color: var(--navy); letter-spacing: -2px; line-height: 1; }
+  .amount-value span { font-size: 28px; margin-left: 4px; }
+  .payment-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+  .meta-row     { display: flex; flex-direction: column; align-items: flex-end; }
+  .meta-key     { font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+  .meta-val     { font-size: 15px; font-weight: 600; color: var(--text); }
+  .meta-val.due { color: var(--red); font-weight: 700; font-size: 17px; }
+
+  /* ── 4. DVA SLOUPCE ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 28px 48px 0;
+    align-items: stretch;
+  }
+
+  /* column wrapper = the rounded border box */
+  .col-box {
+    border: var(--border-w) solid var(--brd-vis);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .col-header {
+    font-size: 10.5px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--muted);
+    padding: 12px 18px 11px;
+    border-bottom: 1.5px solid var(--brd);
+    background: #F9FBFE;
+  }
+
+  /* ── Odběr table ── */
+  .odber-grid { flex: 1; }
+  .orow { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--brd); }
+  .orow:last-child { border-bottom: none; }
+  .ok {
+    padding: 10px 14px; font-size: 12.5px; color: var(--muted); font-weight: 500;
+    background: #F9FBFE; border-right: 1px solid var(--brd);
+    display: flex; align-items: center;
+  }
+  .ov { padding: 10px 14px; font-size: 14px; color: var(--text); font-weight: 500; }
+  .ov.big   { font-size: 20px; font-weight: 700; color: var(--teal); }
+  .ov.big-g { font-size: 20px; font-weight: 700; color: #1AB57A; }
+  .ov.big-r { font-size: 20px; font-weight: 700; color: var(--red); }
+  .sub { font-size: 10px; color: var(--muted); display: block; font-weight: 400; }
+
+  /* ── Payment col ── */
+  .pay-col-inner {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 18px 18px 0;
+    gap: 14px;
+  }
+
+  .bank-list { display: flex; flex-direction: column; gap: 13px; width: 100%; align-items: flex-end; }
+  .bank-row  { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
+  .bank-key  { font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .bank-val  { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; color: var(--navy); text-align: right; }
+  .bank-val.hi  { color: var(--teal); font-weight: 600; }
+
+  /* QR – centered, grows to fill remaining space */
+  .qr-spacer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 0 20px;
+    width: 100%;
+  }
+  .qr-box {
+    border: 2px solid var(--brd); border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .qr-label { font-size: 11px; color: var(--muted); text-align: center; margin-top: 8px; }
+
+  /* ── 5. ROZPIS ── */
+  .price-section { padding: 28px 48px 0; }
+  .section-title-plain {
+    font-size: 10.5px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--muted); padding-bottom: 10px; border-bottom: 1.5px solid var(--brd); margin-bottom: 14px;
+  }
+  .price-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+  .price-card {
+    border-radius: 14px; padding: 22px 20px 20px;
+    display: flex; flex-direction: column; gap: 8px;
+    position: relative; overflow: hidden;
+  }
+  .price-card::after {
+    content:''; position: absolute; bottom: -20px; right: -20px;
+    width: 80px; height: 80px; border-radius: 50%; opacity: .12; background: white;
+  }
+  .price-card.green { background: var(--green); }
+  .price-card.teal  { background: var(--teal); }
+  .price-card.slate { background: var(--slate); }
+  .card-icon   { font-size: 20px; margin-bottom: 2px; }
+  .card-label  { font-size: 11.5px; font-weight: 600; line-height: 1.4; color: rgba(0,0,0,.6); }
+  .price-card.teal  .card-label,
+  .price-card.slate .card-label { color: rgba(255,255,255,.75); }
+  .card-amount { font-size: 26px; font-weight: 700; color: #1A2740; margin-top: auto; }
+  .price-card.teal  .card-amount,
+  .price-card.slate .card-amount { color: var(--white); }
+  .card-sub { font-size: 11px; color: rgba(0,0,0,.4); }
+  .price-card.teal  .card-sub,
+  .price-card.slate .card-sub { color: rgba(255,255,255,.5); }
+
+  .total-bar {
+    margin: 14px 0 0;
+    border: var(--border-w) solid var(--brd-vis);
+    border-radius: 12px;
+    padding: 17px 28px;
+    display: flex; align-items: center; gap: 0;
+    background: transparent;
+  }
+  .total-part { display: flex; flex-direction: column; gap: 2px; }
+  .total-part-label { font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .total-part-val   { font-size: 22px; font-weight: 700; color: var(--navy); letter-spacing: -.5px; }
+  .total-part-val.neg { color: var(--teal); }
+  .total-op {
+    font-size: 26px; font-weight: 300; color: var(--muted);
+    margin: 0 20px; align-self: center; line-height: 1;
+  }
+  .total-eq {
+    font-size: 26px; font-weight: 700; color: var(--navy);
+    margin: 0 20px; align-self: center; line-height: 1;
+  }
+  .total-result {
+    display: flex; flex-direction: column; gap: 2px;
+    padding-left: 20px;
+    border-left: 2px solid var(--brd);
+  }
+  .total-result-label { font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .total-result-val   { font-size: 30px; font-weight: 700; color: var(--navy); letter-spacing: -1px; }
+
+  /* ── FOOTER ── */
+  .footer {
+    margin-top: 32px; background: #F2F6FB; padding: 14px 48px;
+    border-top: 1.5px solid var(--brd);
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .footer-text { font-size: 11.5px; color: var(--muted); max-width: 480px; line-height: 1.6; }
+  .footer-logo { font-size: 11px; color: var(--navy); font-weight: 600; opacity: .4; white-space: nowrap; }
+
+  @media (max-width: 640px) {
+    .title-band, .header, .payment-wrap, .two-col, .price-section, .footer { padding-left: 20px; padding-right: 20px; }
+    .header { flex-direction: column; }
+    .customer-block { text-align: left; }
+    .payment-box { flex-direction: column; gap: 16px; }
+    .payment-meta { align-items: flex-start; }
+    .meta-row { align-items: flex-start; }
+    .two-col { grid-template-columns: 1fr; }
+    .price-cards { grid-template-columns: 1fr; }
+    .footer { flex-direction: column; }
+    .amount-value { font-size: 38px; }
+  }
+  @media print {
+    body { background: white; padding: 0; }
+    .page { box-shadow: none; border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- 1. TITLE BAND -->
+  <div class="title-band">
+    <div class="invoice-title">MIMOŘÁDNÁ FAKTURA – dodávka elektřiny</div>
+    <div class="invoice-num">č. 2025/08/001234</div>
+  </div>
+
+  <!-- 2. HEADER -->
+  <header class="header">
+    <div class="logo-block">
+      <div class="logo-heart">
+        <svg viewBox="0 0 100 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M50 85 C50 85 5 55 5 28 C5 14 16 5 28 5 C37 5 45 10 50 18 C55 10 63 5 72 5 C84 5 95 14 95 28 C95 55 50 85 50 85Z" fill="white" opacity="0.92"/>
+        </svg>
+      </div>
+      <div>
+        <div class="company-name">FREE for YOU s.r.o.</div>
+        <div class="company-detail">
+          Československá 225/12a, 190 00 Praha 9 – Libeň<br>
+          IČ: 33396665 &nbsp;·&nbsp; DIČ: CZ33396665
+        </div>
+      </div>
+    </div>
+    <div class="customer-block">
+      <div class="customer-label">Zákazník</div>
+      <div class="customer-name">Jméno Příjmení</div>
+      <div class="customer-addr">Ulice CP/CO<br>PSČ Město</div>
+    </div>
+  </header>
+
+  <!-- 3. K ÚHRADĚ -->
+  <div class="payment-wrap">
+    <div class="payment-box">
+      <div>
+        <div class="amount-label">K úhradě</div>
+        <div class="amount-value">4 872<span>Kč</span></div>
+      </div>
+      <div class="payment-meta">
+        <div class="meta-row">
+          <span class="meta-key">Splatnost</span>
+          <span class="meta-val due">5. 9. 2025</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-key">Období</span>
+          <span class="meta-val">14. 8. 2024 – 12. 8. 2025</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. DVA SLOUPCE -->
+  <div class="two-col">
+
+    <!-- LEVÝ: Údaje o odběru -->
+    <div class="col-box" id="left-col">
+      <div class="col-header">Údaje o odběru</div>
+      <div class="odber-grid">
+        <div class="orow">
+          <div class="ok">EAN</div>
+          <div class="ov" style="font-family:'DM Mono',monospace;font-size:11px;">8591824xxxxxxxxx</div>
+        </div>
+        <div class="orow">
+          <div class="ok">Odběrné místo</div>
+          <div class="ov" style="font-size:11.5px;">Ulice Odběrného místa 123,<br>PSČ Město</div>
+        </div>
+        <div class="orow">
+          <div class="ok">Počáteční stav</div>
+          <div class="ov">12 345 kWh<span class="sub">14. 8. 2024</span></div>
+        </div>
+        <div class="orow">
+          <div class="ok">Koncový stav</div>
+          <div class="ov">13 892 kWh<span class="sub">12. 8. 2025</span></div>
+        </div>
+        <div class="orow">
+          <div class="ok">Spotřeba</div>
+          <div class="ov big">1 547 kWh</div>
+        </div>
+        <div class="orow">
+          <div class="ok">Proti loňsku</div>
+          <div class="ov big-g">+8 %</div>
+        </div>
+        <div class="orow">
+          <div class="ok">Cena za kWh</div>
+          <div class="ov">3,02 Kč</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRAVÝ: Platební údaje + QR -->
+    <div class="col-box" id="right-col">
+      <div class="col-header" style="text-align:right;">Platební údaje</div>
+      <div class="pay-col-inner">
+        <div class="bank-list">
+          <div class="bank-row">
+            <span class="bank-key">Bankovní účet</span>
+            <span class="bank-val">28012276/2010</span>
+          </div>
+          <div class="bank-row">
+            <span class="bank-key">Variabilní symbol</span>
+            <span class="bank-val hi">28012276</span>
+          </div>
+          <div class="bank-row">
+            <span class="bank-key">IBAN</span>
+            <span class="bank-val" style="font-size:11.5px;">CZ12 2010 0000 0028 0122 7601</span>
+          </div>
+        </div>
+
+        <!-- QR centered, fills remaining space -->
+        <div class="qr-spacer">
+          <div class="qr-box" id="qr-box">
+            <svg id="qr-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <rect width="100" height="100" fill="white"/>
+              <!-- corner TL -->
+              <rect x="4"  y="4"  width="28" height="28" rx="3" fill="#224571"/>
+              <rect x="8"  y="8"  width="20" height="20" rx="2" fill="white"/>
+              <rect x="12" y="12" width="12" height="12" rx="1" fill="#224571"/>
+              <!-- corner TR -->
+              <rect x="68" y="4"  width="28" height="28" rx="3" fill="#224571"/>
+              <rect x="72" y="8"  width="20" height="20" rx="2" fill="white"/>
+              <rect x="76" y="12" width="12" height="12" rx="1" fill="#224571"/>
+              <!-- corner BL -->
+              <rect x="4"  y="68" width="28" height="28" rx="3" fill="#224571"/>
+              <rect x="8"  y="72" width="20" height="20" rx="2" fill="white"/>
+              <rect x="12" y="76" width="12" height="12" rx="1" fill="#224571"/>
+              <!-- data dots -->
+              <rect x="40" y="4"  width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="50" y="4"  width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="60" y="4"  width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="40" y="14" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="60" y="14" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="40" y="24" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="50" y="24" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="4"  y="40" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="14" y="40" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="24" y="40" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="40" y="40" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="54" y="40" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="64" y="40" width="6" height="6" rx="1" fill="#30E499"/>
+              <rect x="74" y="40" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="84" y="40" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="94" y="40" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="4"  y="50" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="24" y="50" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="44" y="50" width="6" height="6" rx="1" fill="#30E499"/>
+              <rect x="54" y="50" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="74" y="50" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="84" y="50" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="4"  y="60" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="14" y="60" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="34" y="60" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="44" y="60" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="64" y="60" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="84" y="60" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="94" y="60" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="40" y="74" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="54" y="74" width="6" height="6" rx="1" fill="#30E499"/>
+              <rect x="64" y="74" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="84" y="74" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="40" y="84" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="50" y="84" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="74" y="84" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="84" y="84" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="94" y="84" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="44" y="94" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="64" y="94" width="6" height="6" rx="1" fill="#224571"/>
+              <rect x="84" y="94" width="6" height="6" rx="1" fill="#30E499"/>
+            </svg>
+          </div>
+          <div class="qr-label">Zaplatit přes QR kód</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /two-col -->
+
+  <!-- 5. ROZPIS CENY  2 540 + 1 800 + 532 = 4 872 -->
+  <div class="price-section">
+    <div class="section-title-plain">Rozpis ceny</div>
+    <div class="price-cards">
+      <div class="price-card green">
+        <div class="card-icon">⚡</div>
+        <div class="card-label">Silová elektřina</div>
+        <div class="card-amount">2 540 Kč</div>
+        <div class="card-sub">Komodita + obchod</div>
+      </div>
+      <div class="price-card teal">
+        <div class="card-icon">🔌</div>
+        <div class="card-label">Distribuce + služby</div>
+        <div class="card-amount">1 800 Kč</div>
+        <div class="card-sub">Síť + OTE poplatky</div>
+      </div>
+      <div class="price-card slate">
+        <div class="card-icon">📋</div>
+        <div class="card-label">Daně a poplatky (21 %)</div>
+        <div class="card-amount">532 Kč</div>
+        <div class="card-sub">DPH + spotřební daně</div>
+      </div>
+    </div>
+    <div class="total-bar">
+      <div class="total-part">
+        <span class="total-part-label">Celková cena</span>
+        <span class="total-part-val">4 872 Kč</span>
+      </div>
+      <span class="total-op">−</span>
+      <div class="total-part">
+        <span class="total-part-label">Zaplaceno na zálohách</span>
+        <span class="total-part-val neg">0 Kč</span>
+      </div>
+      <span class="total-eq">=</span>
+      <div class="total-result">
+        <span class="total-result-label">K úhradě</span>
+        <span class="total-result-val">4 872 Kč</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-text">
+      Děkujeme, že jste s námi. Platbu provedete nejlépe převodem s uvedeným variabilním symbolem.
+    </div>
+    <div class="footer-logo">FREE for YOU s.r.o.</div>
+  </footer>
+
+</div>
+
+<script>
+  function sizeQR() {
+    const leftCol  = document.getElementById('left-col');
+    const rightCol = document.getElementById('right-col');
+    const qrBox    = document.getElementById('qr-box');
+    const qrSvg    = document.getElementById('qr-svg');
+    const spacer   = qrBox.closest('.qr-spacer');
+
+    const colH = leftCol.offsetHeight;
+    rightCol.style.minHeight = colH + 'px';
+
+    const colHeader = rightCol.querySelector('.col-header').offsetHeight;
+    const bankList  = rightCol.querySelector('.bank-list').offsetHeight;
+    const label     = rightCol.querySelector('.qr-label').offsetHeight;
+    const paddings  = 18 + 14 + 16 + 20 + 8;
+    const available = colH - colHeader - bankList - label - paddings;
+    const side = Math.max(80, Math.min(available, spacer.offsetWidth - 32));
+
+    qrBox.style.width  = side + 'px';
+    qrBox.style.height = side + 'px';
+    qrSvg.setAttribute('width',  side);
+    qrSvg.setAttribute('height', side);
+  }
+
+  window.addEventListener('load', sizeQR);
+  window.addEventListener('resize', sizeQR);
+  setTimeout(sizeQR, 300);
+</script>
+</body>
+</html>
