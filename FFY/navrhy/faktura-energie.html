@@ -68,7 +68,7 @@
   .customer-addr  { font-size: 12.5px; color: var(--muted); line-height: 1.75; margin-top: 2px; }
 
   /* ── 3. K ÚHRADĚ ── */
-  .payment-wrap { padding: 28px 48px 0; }
+  .payment-wrap { padding: 14px 48px 0; }
   .payment-box {
     background: linear-gradient(135deg, #EBF5FF 0%, #F0FBF6 100%);
     border: var(--border-w) solid var(--brd-vis); border-radius: 14px;
@@ -181,6 +181,8 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+    text-align: center;
     padding: 20px 18px;
     gap: 5px;
   }
@@ -258,6 +260,21 @@
   .footer-text { font-size: 11.5px; color: var(--muted); max-width: 480px; line-height: 1.6; }
   .footer-logo { font-size: 11px; color: var(--navy); font-weight: 600; opacity: .4; white-space: nowrap; }
 
+  .chart-side-col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-self: center;
+  }
+
+  .chart-side-col .col-header {
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
   /* ── PIE LEGEND ── */
   .pie-legend {
     display: flex;
@@ -307,7 +324,10 @@
   <!-- 1. TITLE BAND -->
   <div class="title-band">
     <div class="invoice-title">MIMOŘÁDNÁ FAKTURA – dodávka elektřiny</div>
-    <div class="invoice-num">č. 2025/08/001234</div>
+    <div>
+      <div class="invoice-num">č. 2025/08/001234</div>
+      <div class="invoice-num" style="margin-top:3px;">Datum vystavení: 2. 8. 2026</div>
+    </div>
   </div>
 
   <!-- 2. HEADER -->
@@ -348,6 +368,10 @@
         <div class="meta-row">
           <span class="meta-key">Období</span>
           <span class="meta-val">14. 8. 2024 – 12. 8. 2025</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-key">DUZP</span>
+          <span class="meta-val">14. 8. 2026</span>
         </div>
       </div>
     </div>
@@ -479,30 +503,46 @@
   <div class="price-section">
     <div class="chart-layout" id="chart-layout">
 
-      <!-- LEVÝ BOXÍK: Cena za kWh -->
-      <div class="col-box chart-side-box" id="box-left">
-        <div class="col-header">Cena za MWh</div>
-        <div class="chart-box-body">
-          <div class="chart-box-val">3 020 Kč</div>
-          <div class="chart-box-sub">Sazba dodavatele</div>
-          <div class="chart-box-target" style="background:rgba(48,228,153,.18);color:#1a7a4a;">Dodavatel za MWh</div>
+      <!-- LEVÉ DVA BOXÍKY -->
+      <div class="chart-side-col" id="col-left">
+        <div class="col-box chart-side-box" id="box-left-top">
+          <div class="col-header">Naše cena za MWh</div>
+          <div class="chart-box-body">
+            <div class="chart-box-val">3 020 Kč</div>
+            <div class="chart-box-sub">Sazba dodavatele</div>
+          </div>
+        </div>
+        <div class="col-box chart-side-box" id="box-left-bot">
+          <div class="col-header">Cena za MWh – ČEZ</div>
+          <div class="chart-box-body">
+            <div class="chart-box-val">3 540 Kč</div>
+            <div class="chart-box-sub">Distribuce za MWh</div>
+          </div>
         </div>
       </div>
 
       <!-- STŘED: koláčový graf -->
       <div class="chart-center-wrap" id="chart-center">
-        <svg id="pie-svg" viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg"></svg>
+        <svg id="pie-svg" viewBox="-25 -20 350 300" xmlns="http://www.w3.org/2000/svg"></svg>
         <div class="pie-legend" id="pie-legend"></div>
+        <div style="font-size:10px;color:var(--muted);margin-top:6px;text-align:center;opacity:.75;">(Všechny ceny jsou uvedené včetně DPH)</div>
       </div>
 
-      <!-- PRAVÝ BOXÍK: Měsíční poplatky -->
-      <div class="col-box chart-side-box" id="box-right">
-        <div class="col-header" style="text-align:right;">Měsíční poplatky</div>
-        <div class="chart-box-body" style="align-items:flex-end;text-align:right;">
-          <div class="chart-box-val">420 Kč</div>
-          <div class="chart-box-sub">Fixní složky / měsíc</div>
-          <div class="chart-box-target" style="background:rgba(39,113,135,.15);color:#1a5570;">Distribuce měsíčně</div>
-          <div class="chart-box-target" style="background:rgba(34,196,122,.18);color:#0f6b3a;margin-top:3px;">Dodavatel měsíčně</div>
+      <!-- PRAVÉ DVA BOXÍKY -->
+      <div class="chart-side-col" id="col-right">
+        <div class="col-box chart-side-box" id="box-right-top">
+          <div class="col-header">Naše měsíční poplatky</div>
+          <div class="chart-box-body">
+            <div class="chart-box-val">420 Kč</div>
+            <div class="chart-box-sub">Fixní složky / měsíc</div>
+          </div>
+        </div>
+        <div class="col-box chart-side-box" id="box-right-bot">
+          <div class="col-header">Měsíční poplatky – ČEZ</div>
+          <div class="chart-box-body">
+            <div class="chart-box-val">510 Kč</div>
+            <div class="chart-box-sub">Distribuce měsíčně</div>
+          </div>
         </div>
       </div>
 
@@ -536,7 +576,7 @@
   <!-- FOOTER -->
   <footer class="footer">
     <div class="footer-text">
-      Děkujeme, že jste s námi. Platbu provedete nejlépe převodem s uvedeným variabilním symbolem.
+      Děkujeme, že jste s námi. 
     </div>
     <div class="footer-logo">FREE for YOU s.r.o.</div>
   </footer>
@@ -567,12 +607,14 @@
 
   /* ── Pie chart ── */
   const SEGS = [
-    { label: 'Dodavatel za MWh',   pct: 31, color: '#30E499', key: 'dod-mwh' },
     { label: 'Dodavatel měsíčně',  pct: 19, color: '#22C47A', key: 'dod-mes' },
     { label: 'Daně',               pct:  8, color: '#424B64', key: 'dane'    },
-    { label: 'Distribuce za MWh',  pct: 25, color: '#3293AD', key: 'dis-mwh' },
     { label: 'Distribuce měsíčně', pct: 17, color: '#277187', key: 'dis-mes' },
+    { label: 'Distribuce za MWh',  pct: 25, color: '#3293AD', key: 'dis-mwh' },
+    { label: 'Dodavatel za MWh',   pct: 31, color: '#30E499', key: 'dod-mwh' },
   ];
+
+  const LEGEND_ORDER = ['dod-mwh', 'dod-mes', 'dane', 'dis-mwh', 'dis-mes'];
 
   const TOTAL = 4872;
   // viewBox 300×260, pie center at (150, 130)
@@ -622,8 +664,8 @@
     pieBuilt = true;
     const svg = document.getElementById('pie-svg');
 
-    // Dodavatel (green) on left half, Distribuce (blue) on right, Daně at top
-    const startOffset = 180;
+    // dod-mes+dod-mwh meet at top, dis-mes+dis-mwh meet at bottom, daně on right
+    const startOffset = 0;
     let cursor = startOffset;
 
     SEGS.forEach(seg => {
@@ -666,7 +708,7 @@
       const anchor = relX > 10 ? 'start' : relX < -10 ? 'end' : 'middle';
       const amount = Math.round(TOTAL * seg.pct / 100);
       const amtStr = amount.toLocaleString('cs-CZ') + '\u00a0Kč';
-      svgText(svg, lx, ly, amtStr, {
+      seg.labelEl = svgText(svg, lx, ly, amtStr, {
         anchor,
         fill: seg.color,
         size: '11',
@@ -684,9 +726,9 @@
       fill: '#6B7A99', size: '9', weight: '500', family: 'DM Sans, sans-serif', baseline: 'middle',
     });
 
-    // build legend
+    // build legend in defined order
     const legend = document.getElementById('pie-legend');
-    SEGS.forEach(seg => {
+    LEGEND_ORDER.map(k => SEGS.find(s => s.key === k)).forEach(seg => {
       const item = document.createElement('div');
       item.className = 'pie-legend-item';
       item.innerHTML = `<span class="pie-legend-dot" style="background:${seg.color}"></span>${seg.label}`;
@@ -697,20 +739,22 @@
     const layout   = document.getElementById('chart-layout');
     const arrowSvg = document.getElementById('arrows-svg');
     const pieSvg   = document.getElementById('pie-svg');
-    const boxLeft  = document.getElementById('box-left');
-    const boxRight = document.getElementById('box-right');
     while (arrowSvg.children.length > 1) arrowSvg.removeChild(arrowSvg.lastChild);
 
     const base = layout.getBoundingClientRect();
     const pieR = pieSvg.getBoundingClientRect();
     const pieCX = (pieR.left + pieR.right)  / 2 - base.left;
     const pieCY = (pieR.top  + pieR.bottom) / 2 - base.top;
-    const scale = pieR.width / 220;
+    const scale = pieR.width / 350;
 
-    function slicePoint(seg, rf) {
-      const a  = (seg.midDeg - 90) * Math.PI / 180;
-      const rr = (R * rf + r * (1 - rf)) * scale;
-      return [pieCX + rr * Math.cos(a), pieCY + rr * Math.sin(a)];
+    // Target: 10px from the center of the Kč text label, coming from box direction
+    function labelPoint(seg, bx, by) {
+      const br = seg.labelEl.getBoundingClientRect();
+      const lx = (br.left + br.right)  / 2 - base.left;
+      const ly = (br.top  + br.bottom) / 2 - base.top;
+      const dx = bx - lx, dy = by - ly;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      return [lx + dx / dist * 25, ly + dy / dist * 25];
     }
 
     function boxEdge(el, side) {
@@ -731,26 +775,28 @@
       arrowSvg.appendChild(line);
     }
 
-    // left box → Dodavatel za MWh
-    const [lx, ly] = boxEdge(boxLeft, 'right');
-    addArrow(lx, ly, ...slicePoint(SEGS.find(s => s.key === 'dod-mwh'), 0.65));
+    const [ltx, lty] = boxEdge(document.getElementById('box-left-top'),  'right');
+    addArrow(ltx, lty, ...labelPoint(SEGS.find(s => s.key === 'dod-mwh'), ltx, lty));
 
-    // right box → Distribuce měsíčně
-    const [rx, ry] = boxEdge(boxRight, 'left');
-    addArrow(rx, ry, ...slicePoint(SEGS.find(s => s.key === 'dis-mes'), 0.65));
+    const [lbx, lby] = boxEdge(document.getElementById('box-left-bot'),  'right');
+    addArrow(lbx, lby, ...labelPoint(SEGS.find(s => s.key === 'dis-mwh'), lbx, lby));
 
-    // right box → Dodavatel měsíčně
-    addArrow(rx, ry, ...slicePoint(SEGS.find(s => s.key === 'dod-mes'), 0.65));
+    const [rtx, rty] = boxEdge(document.getElementById('box-right-top'), 'left');
+    addArrow(rtx, rty, ...labelPoint(SEGS.find(s => s.key === 'dod-mes'), rtx, rty));
+
+    const [rbx, rby] = boxEdge(document.getElementById('box-right-bot'), 'left');
+    addArrow(rbx, rby, ...labelPoint(SEGS.find(s => s.key === 'dis-mes'), rbx, rby));
   }
 
   function adjustChartRatio() {
-    const center   = document.getElementById('chart-center');
-    const boxLeft  = document.getElementById('box-left');
-    const boxRight = document.getElementById('box-right');
+    const center = document.getElementById('chart-center');
     const h = center.offsetHeight;
     if (h > 0) {
-      boxLeft.style.height  = (h / 2) + 'px';
-      boxRight.style.height = (h / 2) + 'px';
+      const boxH = h / 2.3;
+      ['box-left-top','box-left-bot','box-right-top','box-right-bot'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.height = boxH + 'px';
+      });
     }
   }
 
