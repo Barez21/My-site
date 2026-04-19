@@ -31,8 +31,8 @@ load_dotenv()  # Načte hodnoty z .env souboru
 INITIAL_CAPITAL    = 10_000.0   # Počáteční kapitál segmentu (v USDT)
 
 # ---- EMAIL ----
-EMAIL_RECIPIENT    = "tvuj@email.cz"          # ← ŘÁDEK 34: zadej svůj email
-EMAIL_SENDER       = "bot.gmail.ucet@gmail.com"  # ← ŘÁDEK 35: Gmail účet bota
+EMAIL_RECIPIENT    = "tomas.barez@gmail.com"          # ← ŘÁDEK 34: zadej svůj email
+EMAIL_SENDER       = "barezuvrobot@gmail.com"  # ← ŘÁDEK 35: Gmail účet bota
 EMAIL_APP_PASSWORD = os.getenv("EMAIL_PASSWORD")  # nastav v .env souboru
 
 # ---- BINANCE API ---- (nastav v .env souboru)
