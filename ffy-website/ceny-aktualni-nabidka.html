@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Aktuální nabídka — FREE for YOU energie</title>
 <meta name="description" content="FREE for YOU energie — Aktuální nabídka">
-<base href="/ffy-website/">
 <meta name="theme-color" content="#214571">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1368,6 +1367,231 @@
     margin-top: 1rem;
   }
 
+  /* ── Subpage layout ── */
+  .subpage-main {
+    min-height: 100vh;
+    background: var(--ink);
+    padding-top: 64px;
+  }
+
+  /* ── Page header ── */
+  .subpage-header {
+    background: linear-gradient(160deg, #0A141E 0%, #0E1E2F 60%, #18314E 100%);
+    padding: 60px 2rem 56px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .subpage-header-inner {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .subpage-breadcrumb {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .subpage-breadcrumb a { color: rgba(255,255,255,0.3); text-decoration: none; transition: color .15s; }
+  .subpage-breadcrumb a:hover { color: var(--accent); }
+  .subpage-breadcrumb span { opacity: 0.3; }
+  .subpage-h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    color: white;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+  }
+  .subpage-lead {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.5);
+    font-weight: 300;
+    line-height: 1.65;
+    max-width: 520px;
+  }
+
+  /* ── Tarify section ── */
+  .tarify-section {
+    padding: 56px 2rem 80px;
+    background: var(--ink);
+  }
+  .tarify-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* ── Group header ── */
+  .tarify-group-label {
+    margin-bottom: 1.5rem;
+  }
+  .tarify-group-title {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .tarify-group-desc {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.45);
+    font-weight: 300;
+    line-height: 1.65;
+    max-width: 580px;
+  }
+
+  .tarify-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  .tarify-divider {
+    height: 1px;
+    background: rgba(255,255,255,0.07);
+    margin: 3rem 0;
+    position: relative;
+  }
+  .tarify-divider::before {
+    content: '';
+    position: absolute;
+    left: 0; top: -1px;
+    width: 40px; height: 2px;
+    background: var(--accent);
+  }
+
+  /* ── Tarif card ── */
+  .tarif-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    transition: border-color .2s, background .2s;
+    overflow: hidden;
+  }
+  .tarif-card:hover {
+    border-color: rgba(69,231,163,0.2);
+    background: rgba(255,255,255,0.06);
+  }
+
+  /* Top accent line per type */
+  .tarif-elektrina { border-top: 2px solid var(--accent); }
+  .tarif-plyn      { border-top: 2px solid rgba(208,223,240,0.4); }
+
+  .tarif-card-header {
+    padding: 1.5rem 1.75rem 1.25rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .tarif-type-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  .tarif-elektrina .tarif-type-label { color: var(--accent); }
+  .tarif-plyn      .tarif-type-label { color: var(--navy-light); }
+
+  .tarif-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.25rem;
+    letter-spacing: -0.01em;
+  }
+  .tarif-subtitle {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.38);
+    font-weight: 300;
+  }
+
+  /* ── Price block ── */
+  .tarif-price-block {
+    padding: 1.5rem 1.75rem 1.25rem;
+    flex: 1;
+  }
+  .tarif-price-main {
+    display: flex;
+    align-items: baseline;
+    gap: 0.45rem;
+    margin-bottom: 0.35rem;
+  }
+  .tarif-price-num {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: white;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .tarif-elektrina .tarif-price-num { color: var(--accent); }
+  .tarif-price-unit {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.4);
+    font-weight: 300;
+  }
+  .tarif-price-sub {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.28);
+    font-weight: 300;
+    margin-top: 0.15rem;
+  }
+
+  /* SPOT note */
+  .tarif-price-spot-note {
+    margin: 0.75rem 0 0.25rem;
+    padding: 0.6rem 0.85rem;
+    background: rgba(255,255,255,0.04);
+    border-left: 2px solid rgba(255,255,255,0.12);
+    border-radius: 0 6px 6px 0;
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.38);
+    font-weight: 300;
+    line-height: 1.5;
+  }
+  .tarif-elektrina .tarif-price-spot-note { border-left-color: rgba(69,231,163,0.3); }
+  .tarif-plyn      .tarif-price-spot-note { border-left-color: rgba(208,223,240,0.25); }
+
+  /* ── Card footer ── */
+  .tarif-card-footer {
+    padding: 0 1.75rem 1.75rem;
+  }
+  .tarif-cta {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 11px 16px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: opacity .15s;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.7);
+  }
+  .tarif-elektrina .tarif-cta {
+    background: var(--accent);
+    color: var(--navy-dark);
+    border-color: transparent;
+    box-shadow: 0 4px 16px rgba(69,231,163,0.2);
+  }
+  .tarif-cta:hover { opacity: 0.85; }
+
+  @media (max-width: 640px) {
+    .tarify-cards { grid-template-columns: 1fr; }
+    .subpage-header { padding: 48px 1.5rem 40px; }
+    .tarify-section { padding: 40px 1.5rem 60px; }
+  }
+
 </style>
 </head>
 <body>
@@ -1497,15 +1721,135 @@
 <div class="mega-backdrop" id="mega-backdrop"></div>
 
 <!-- SUBPAGE CONTENT -->
-<main class="subpage-hero">
-  <div class="subpage-breadcrumb">
-    <a href="ffy-homepage.html">Domů</a><span>/</span>Naše ceny
-  </div>
-  <h3 class="subpage-h3">Aktuální nabídka</h3>
-  <div class="subpage-placeholder">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-    Obsah stránky bude doplněn
-  </div>
+<main class="subpage-main">
+
+  <!-- PAGE HEADER -->
+  <section class="subpage-header">
+    <div class="subpage-header-inner">
+      <div class="subpage-breadcrumb">
+        <a href="ffy-homepage.html">Domů</a><span>/</span>Naše ceny
+      </div>
+      <h1 class="subpage-h1">Aktuální nabídka</h1>
+      <p class="subpage-lead">Zde vidíte naše aktuálně nabízené tarify. Vyberte si, co odpovídá vašemu způsobu odběru.</p>
+    </div>
+  </section>
+
+  <!-- TARIFY -->
+  <section class="tarify-section">
+    <div class="tarify-inner">
+
+      <!-- FIX TARIFY -->
+      <div class="tarify-group">
+        <div class="tarify-group-label">
+          <div class="tarify-group-title">Fixní tarify</div>
+          <div class="tarify-group-desc">Víte přesně, za kolik platíte. Cena je dohodnutá předem a nemění se podle dění na trhu. Vhodné pro ty, kdo chtějí jistotu a klid při plánování výdajů domácnosti.</div>
+        </div>
+
+        <div class="tarify-cards">
+
+          <!-- FIX elektřina -->
+          <div class="tarif-card tarif-elektrina">
+            <div class="tarif-card-header">
+              <div class="tarif-type-label">Elektřina</div>
+              <div class="tarif-name">Tarif FIX2026</div>
+              <div class="tarif-subtitle">Fixní cena elektřiny na celý rok 2026</div>
+            </div>
+            <div class="tarif-price-block">
+              <div class="tarif-price-main">
+                <span class="tarif-price-num">X,XX</span>
+                <span class="tarif-price-unit">Kč / kWh s DPH</span>
+              </div>
+              <div class="tarif-price-sub">X,XX Kč / kWh bez DPH</div>
+            </div>
+            <div class="tarif-card-footer">
+              <a href="ffy-homepage.html#final-cta" class="tarif-cta">Chci tento tarif →</a>
+            </div>
+          </div>
+
+          <!-- FIX plyn -->
+          <div class="tarif-card tarif-plyn">
+            <div class="tarif-card-header">
+              <div class="tarif-type-label">Plyn</div>
+              <div class="tarif-name">Tarif FIX2026</div>
+              <div class="tarif-subtitle">Fixní cena plynu na celý rok 2026</div>
+            </div>
+            <div class="tarif-price-block">
+              <div class="tarif-price-main">
+                <span class="tarif-price-num">X,XX</span>
+                <span class="tarif-price-unit">Kč / kWh s DPH</span>
+              </div>
+              <div class="tarif-price-sub">X,XX Kč / kWh bez DPH</div>
+            </div>
+            <div class="tarif-card-footer">
+              <a href="ffy-homepage.html#final-cta" class="tarif-cta">Chci tento tarif →</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- DIVIDER -->
+      <div class="tarify-divider"></div>
+
+      <!-- SPOT TARIFY -->
+      <div class="tarify-group">
+        <div class="tarify-group-label">
+          <div class="tarify-group-title">SPOT tarify</div>
+          <div class="tarify-group-desc">Cena se mění každou hodinu podle toho, kolik elektřina nebo plyn stojí na burzovním trhu. Když je trh levný — platíte méně. Vhodné pro ty, kdo sledují spotřebu a dokážou ji přizpůsobit době, kdy je energie nejlevnější.</div>
+        </div>
+
+        <div class="tarify-cards">
+
+          <!-- SPOT elektřina -->
+          <div class="tarif-card tarif-elektrina tarif-spot">
+            <div class="tarif-card-header">
+              <div class="tarif-type-label">Elektřina</div>
+              <div class="tarif-name">Tarif SPOT</div>
+              <div class="tarif-subtitle">Hodinová cena podle burzovního trhu</div>
+            </div>
+            <div class="tarif-price-block">
+              <div class="tarif-price-main spot-price">
+                <span class="tarif-price-num">X,XX</span>
+                <span class="tarif-price-unit">Kč / kWh s DPH</span>
+              </div>
+              <div class="tarif-price-spot-note">
+                + tržní cena elektřiny (OTE spot, mění se každou hodinu)
+              </div>
+              <div class="tarif-price-sub">Marže X,XX Kč / kWh bez DPH</div>
+            </div>
+            <div class="tarif-card-footer">
+              <a href="ffy-homepage.html#final-cta" class="tarif-cta">Chci tento tarif →</a>
+            </div>
+          </div>
+
+          <!-- SPOT plyn -->
+          <div class="tarif-card tarif-plyn tarif-spot">
+            <div class="tarif-card-header">
+              <div class="tarif-type-label">Plyn</div>
+              <div class="tarif-name">Tarif SPOT</div>
+              <div class="tarif-subtitle">Denní cena podle burzovního trhu</div>
+            </div>
+            <div class="tarif-price-block">
+              <div class="tarif-price-main spot-price">
+                <span class="tarif-price-num">X,XX</span>
+                <span class="tarif-price-unit">Kč / kWh s DPH</span>
+              </div>
+              <div class="tarif-price-spot-note">
+                + tržní cena plynu (EEX spot, mění se každý den)
+              </div>
+              <div class="tarif-price-sub">Marže X,XX Kč / kWh bez DPH</div>
+            </div>
+            <div class="tarif-card-footer">
+              <a href="ffy-homepage.html#final-cta" class="tarif-cta">Chci tento tarif →</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
 </main>
 
 <!-- FOOTER -->
