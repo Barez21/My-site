@@ -1620,6 +1620,332 @@
     .mobile-overlay { display: block; }
   }
 
+  /* ── Subpage layout (shared) ── */
+  .subpage-main {
+    min-height: 100vh;
+    background: var(--ink);
+    padding-top: 64px;
+  }
+  .subpage-header {
+    background: linear-gradient(160deg, #0A141E 0%, #0E1E2F 60%, #18314E 100%);
+    padding: 60px 2rem 56px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .subpage-header-inner { max-width: 960px; margin: 0 auto; }
+  .subpage-breadcrumb {
+    font-size: 0.7rem; font-weight: 500; letter-spacing: 0.12em;
+    text-transform: uppercase; color: rgba(255,255,255,0.3);
+    margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem;
+  }
+  .subpage-breadcrumb a { color: rgba(255,255,255,0.3); text-decoration: none; transition: color .15s; }
+  .subpage-breadcrumb a:hover { color: var(--accent); }
+  .subpage-breadcrumb span { opacity: 0.3; }
+  .subpage-h1 {
+    font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; color: white;
+    line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 0.75rem;
+  }
+  .subpage-lead {
+    font-size: 1rem; color: rgba(255,255,255,0.5);
+    font-weight: 300; line-height: 1.65; max-width: 520px;
+  }
+
+  /* ── Ceníky section ── */
+  .ceniky-section {
+    padding: 64px 2rem 100px;
+    background: var(--ink);
+  }
+  .ceniky-inner {
+    max-width: 1060px;
+    margin: 0 auto;
+  }
+
+  /* ── Selector row — both pills side by side ── */
+  .ceniky-selectors {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .distrib-selector { }
+
+  .distrib-label {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.28);
+    margin-bottom: 0.75rem;
+  }
+
+  /* Komodita: big prominent toggle */
+  .komodita-pills {
+    display: inline-flex;
+    gap: 0;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 12px;
+    padding: 5px;
+  }
+  .komodita-tab {
+    background: none;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.97rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.38);
+    cursor: pointer;
+    transition: background .15s, color .15s;
+    letter-spacing: 0.01em;
+  }
+  .komodita-tab:hover { color: rgba(255,255,255,0.7); }
+  .komodita-tab.active {
+    background: var(--accent);
+    color: var(--navy-dark);
+  }
+
+  /* Distributor: smaller, secondary */
+  .distrib-pills {
+    display: inline-flex;
+    gap: 0;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 9px;
+    padding: 4px;
+  }
+  .distrib-tab {
+    background: none;
+    border: none;
+    padding: 8px 24px;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.84rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.35);
+    cursor: pointer;
+    transition: background .15s, color .15s;
+    white-space: nowrap;
+  }
+  .distrib-tab:hover { color: rgba(255,255,255,0.65); }
+  .distrib-tab.active {
+    background: rgba(255,255,255,0.08);
+    color: white;
+    font-weight: 600;
+  }
+
+  /* Separator between selectors */
+  .ceniky-selectors-divider {
+    width: 1px;
+    align-self: stretch;
+    background: rgba(255,255,255,0.06);
+    margin: 0 0.5rem;
+    display: none;
+  }
+
+  /* ── Panels ── */
+  .ceniky-panel { display: none; }
+  .ceniky-panel.active { display: block; }
+
+  .ceniky-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    gap: 1rem;
+  }
+  .ceniky-panel-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0;
+  }
+
+  .archive-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-family: inherit;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.38);
+    cursor: pointer;
+    transition: border-color .15s, color .15s, background .15s;
+  }
+  .archive-toggle::before {
+    content: '';
+    display: block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    transition: background .15s;
+  }
+  .archive-toggle:hover,
+  .archive-toggle.active {
+    border-color: rgba(69,231,163,0.3);
+    color: var(--accent);
+  }
+  .archive-toggle.active::before { background: var(--accent); }
+
+  /* ── Cards grid ── */
+  .ceniky-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .cenik-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px;
+    text-decoration: none;
+    overflow: hidden;
+    transition: border-color .18s, background .18s, transform .18s;
+  }
+  .cenik-card:hover {
+    border-color: rgba(69,231,163,0.22);
+    background: rgba(255,255,255,0.06);
+    transform: translateY(-2px);
+  }
+
+  .cenik-card-body {
+    padding: 1.5rem 1.75rem 1.25rem;
+    flex: 1;
+  }
+
+  .cenik-card-meta {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.22);
+    margin-bottom: 0.65rem;
+  }
+  /* Komodita accent dot */
+  .cenik-card-meta.meta-elektrina { color: rgba(69,231,163,0.5); }
+  .cenik-card-meta.meta-plyn      { color: rgba(208,223,240,0.45); }
+
+  .cenik-card-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.82);
+    line-height: 1.35;
+  }
+
+  .cenik-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.85rem 1.75rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.02);
+  }
+  .cenik-card-size {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.2);
+    font-weight: 300;
+  }
+  .cenik-card-btn {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    transition: opacity .15s;
+  }
+  .cenik-card:hover .cenik-card-btn { opacity: 1; }
+
+  /* ── Archive ── */
+  .ceniky-archive {
+    display: none;
+    padding-top: 2.5rem;
+    margin-top: 1rem;
+    border-top: 1px dashed rgba(255,255,255,0.07);
+  }
+  .ceniky-archive.is-open { display: block; }
+
+  .ceniky-archive-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .ceniky-archive-title {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 1;
+  }
+  .ceniky-archive-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255,255,255,0.06);
+  }
+
+  .year-filter {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 7px;
+    padding: 6px 32px 6px 12px;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.3)' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    transition: border-color .15s, color .15s;
+    flex-shrink: 0;
+  }
+  .year-filter:hover,
+  .year-filter:focus {
+    border-color: rgba(69,231,163,0.3);
+    color: rgba(255,255,255,0.75);
+  }
+  .year-filter option {
+    background: #0E1E2F;
+    color: white;
+  }
+
+  .ceniky-grid-archive .cenik-card {
+    opacity: 0.55;
+    border-style: dashed;
+  }
+  .ceniky-grid-archive .cenik-card:hover { opacity: 0.85; }
+
+  @media (max-width: 860px) {
+    .ceniky-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px) {
+    .ceniky-grid { grid-template-columns: 1fr; }
+    .komodita-tab { padding: 11px 20px; font-size: 0.9rem; }
+    .distrib-tab { padding: 7px 14px; font-size: 0.8rem; }
+  }
+
 </style>
 </head>
 <body>
@@ -1793,15 +2119,342 @@
 <div class="mobile-overlay" id="mobile-overlay"></div>
 
 <!-- SUBPAGE CONTENT -->
-<main class="subpage-hero">
-  <div class="subpage-breadcrumb">
-    <a href="ffy-homepage.html">Domů</a><span>/</span>Naše ceny
-  </div>
-  <h3 class="subpage-h3">Ceníky</h3>
-  <div class="subpage-placeholder">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-    Obsah stránky bude doplněn
-  </div>
+<main class="subpage-main">
+
+  <section class="subpage-header">
+    <div class="subpage-header-inner">
+      <div class="subpage-breadcrumb">
+        <a href="ffy-homepage.html">Domů</a><span>/</span>Naše ceny
+      </div>
+      <h1 class="subpage-h1">Ceníky</h1>
+      <p class="subpage-lead">Vyberte své distribuční území a zobrazte aktuální ceníky elektřiny a plynu.</p>
+    </div>
+  </section>
+
+  <section class="ceniky-section">
+    <div class="ceniky-inner">
+
+      <div class="ceniky-selectors">
+        <!-- Komodita -->
+        <div class="distrib-selector">
+          <div class="distrib-label">Komodita</div>
+          <div class="komodita-pills">
+            <button class="komodita-tab active" data-komodita="elektrina">Elektřina</button>
+            <button class="komodita-tab" data-komodita="plyn">Plyn</button>
+          </div>
+        </div>
+
+        <!-- Distributor -->
+        <div class="distrib-selector">
+          <div class="distrib-label">Distribuční území</div>
+          <div class="distrib-pills">
+            <button class="distrib-tab active" data-distrib="cez">ČEZ Distribuce</button>
+            <button class="distrib-tab" data-distrib="egd">EG.D</button>
+            <button class="distrib-tab" data-distrib="pre">PRE</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ČEZ panel -->
+      <div class="ceniky-panel active" id="panel-cez">
+        <div class="ceniky-panel-header">
+          <div class="ceniky-panel-title">ČEZ Distribuce</div>
+          <button class="archive-toggle" data-target="archive-cez">Archivní ceníky</button>
+        </div>
+
+        <div class="ceniky-grid">
+          <a href="#" class="cenik-card">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-elektrina">Elektřina · platný od 1. 1. 2026</div>
+              <div class="cenik-card-name">Ceník elektřiny FIX2026 — ČEZ</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 284 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
+          </a>
+          <a href="#" class="cenik-card">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-plyn">Plyn · platný od 1. 1. 2026</div>
+              <div class="cenik-card-name">Ceník plynu FIX2026 — ČEZ</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 196 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
+          </a>
+          <a href="#" class="cenik-card">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-elektrina">Elektřina · platný od 1. 1. 2026</div>
+              <div class="cenik-card-name">Ceník elektřiny SPOT — ČEZ</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 211 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
+          </a>
+          <a href="#" class="cenik-card">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-plyn">Plyn · platný od 1. 1. 2026</div>
+              <div class="cenik-card-name">Ceník plynu SPOT — ČEZ</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 178 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
+          </a>
+          <a href="#" class="cenik-card">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-elektrina">Elektřina · platný od 1. 7. 2025</div>
+              <div class="cenik-card-name">Ceník elektřiny FIX2025 H2 — ČEZ</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 268 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
+          </a>
+          <a href="#" class="cenik-card">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-plyn">Plyn · platný od 1. 7. 2025</div>
+              <div class="cenik-card-name">Ceník plynu FIX2025 H2 — ČEZ</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 189 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
+          </a>
+        </div>
+
+        <div class="ceniky-archive" id="archive-cez">
+          <div class="ceniky-archive-header">
+            <div class="ceniky-archive-title">Archivní ceníky — ČEZ Distribuce</div>
+            <select class="year-filter" data-archive="cez">
+              <option value="vse">Všechny roky</option>
+              <option value="2025">2025</option>
+              <option value="2024">2024</option>
+              <option value="2023">2023</option>
+              <option value="2022">2022</option>
+              <option value="2021">2021</option>
+              <option value="2020">2020</option>
+              <option value="2019">2019</option>
+            </select>
+          </div>
+          <div class="ceniky-grid ceniky-grid-archive">
+            <a href="#" class="cenik-card cenik-card-archive" data-year="2025">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-elektrina">Elektřina · 2025</div>
+              <div class="cenik-card-name">Ceník elektřiny FIX2025 — ČEZ</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 254 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
+          </a>
+            <a href="#" class="cenik-card cenik-card-archive" data-year="2025">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-plyn">Plyn · 2025</div>
+              <div class="cenik-card-name">Ceník plynu FIX2025 — ČEZ</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 181 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
+          </a>
+            <a href="#" class="cenik-card cenik-card-archive" data-year="2024">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-elektrina">Elektřina · 2024</div>
+              <div class="cenik-card-name">Ceník elektřiny FIX2024 — ČEZ</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 241 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
+          </a>
+            <a href="#" class="cenik-card cenik-card-archive" data-year="2024">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-plyn">Plyn · 2024</div>
+              <div class="cenik-card-name">Ceník plynu FIX2024 — ČEZ</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 172 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
+          </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- EG.D panel -->
+      <div class="ceniky-panel" id="panel-egd">
+        <div class="ceniky-panel-header">
+          <div class="ceniky-panel-title">EG.D</div>
+          <button class="archive-toggle" data-target="archive-egd">Archivní ceníky</button>
+        </div>
+
+        <div class="ceniky-grid">
+          <a href="#" class="cenik-card">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-elektrina">Elektřina · platný od 1. 1. 2026</div>
+              <div class="cenik-card-name">Ceník elektřiny FIX2026 — EG.D</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 276 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
+          </a>
+          <a href="#" class="cenik-card">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-plyn">Plyn · platný od 1. 1. 2026</div>
+              <div class="cenik-card-name">Ceník plynu FIX2026 — EG.D</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 192 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
+          </a>
+          <a href="#" class="cenik-card">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-elektrina">Elektřina · platný od 1. 1. 2026</div>
+              <div class="cenik-card-name">Ceník elektřiny SPOT — EG.D</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 208 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
+          </a>
+          <a href="#" class="cenik-card">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-plyn">Plyn · platný od 1. 1. 2026</div>
+              <div class="cenik-card-name">Ceník plynu SPOT — EG.D</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 175 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
+          </a>
+          <a href="#" class="cenik-card">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-elektrina">Elektřina · platný od 1. 7. 2025</div>
+              <div class="cenik-card-name">Ceník elektřiny FIX2025 H2 — EG.D</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 261 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
+          </a>
+          <a href="#" class="cenik-card">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-plyn">Plyn · platný od 1. 7. 2025</div>
+              <div class="cenik-card-name">Ceník plynu FIX2025 H2 — EG.D</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 184 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
+          </a>
+        </div>
+
+        <div class="ceniky-archive" id="archive-egd">
+          <div class="ceniky-archive-header">
+            <div class="ceniky-archive-title">Archivní ceníky — EG.D</div>
+            <select class="year-filter" data-archive="egd">
+              <option value="vse">Všechny roky</option>
+              <option value="2025">2025</option>
+              <option value="2024">2024</option>
+              <option value="2023">2023</option>
+              <option value="2022">2022</option>
+              <option value="2021">2021</option>
+              <option value="2020">2020</option>
+              <option value="2019">2019</option>
+            </select>
+          </div>
+          <div class="ceniky-grid ceniky-grid-archive">
+            <a href="#" class="cenik-card cenik-card-archive" data-year="2025">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-elektrina">Elektřina · 2025</div>
+              <div class="cenik-card-name">Ceník elektřiny FIX2025 — EG.D</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 248 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
+          </a>
+            <a href="#" class="cenik-card cenik-card-archive" data-year="2025">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-plyn">Plyn · 2025</div>
+              <div class="cenik-card-name">Ceník plynu FIX2025 — EG.D</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 178 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
+          </a>
+            <a href="#" class="cenik-card cenik-card-archive" data-year="2024">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-elektrina">Elektřina · 2024</div>
+              <div class="cenik-card-name">Ceník elektřiny FIX2024 — EG.D</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 237 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
+          </a>
+            <a href="#" class="cenik-card cenik-card-archive" data-year="2024">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-plyn">Plyn · 2024</div>
+              <div class="cenik-card-name">Ceník plynu FIX2024 — EG.D</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 169 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
+          </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRE panel -->
+      <div class="ceniky-panel" id="panel-pre">
+        <div class="ceniky-panel-header">
+          <div class="ceniky-panel-title">PRE Distribuce</div>
+          <button class="archive-toggle" data-target="archive-pre">Archivní ceníky</button>
+        </div>
+
+        <div class="ceniky-grid">
+          <a href="#" class="cenik-card">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-elektrina">Elektřina · platný od 1. 1. 2026</div>
+              <div class="cenik-card-name">Ceník elektřiny FIX2026 — PRE</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 271 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
+          </a>
+          <a href="#" class="cenik-card">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-plyn">Plyn · platný od 1. 1. 2026</div>
+              <div class="cenik-card-name">Ceník plynu FIX2026 — PRE</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 188 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
+          </a>
+          <a href="#" class="cenik-card">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-elektrina">Elektřina · platný od 1. 1. 2026</div>
+              <div class="cenik-card-name">Ceník elektřiny SPOT — PRE</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 203 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
+          </a>
+          <a href="#" class="cenik-card">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-plyn">Plyn · platný od 1. 1. 2026</div>
+              <div class="cenik-card-name">Ceník plynu SPOT — PRE</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 172 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
+          </a>
+          <a href="#" class="cenik-card">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-elektrina">Elektřina · platný od 1. 7. 2025</div>
+              <div class="cenik-card-name">Ceník elektřiny FIX2025 H2 — PRE</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 259 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
+          </a>
+          <a href="#" class="cenik-card">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-plyn">Plyn · platný od 1. 7. 2025</div>
+              <div class="cenik-card-name">Ceník plynu FIX2025 H2 — PRE</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 181 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
+          </a>
+        </div>
+
+        <div class="ceniky-archive" id="archive-pre">
+          <div class="ceniky-archive-header">
+            <div class="ceniky-archive-title">Archivní ceníky — PRE Distribuce</div>
+            <select class="year-filter" data-archive="pre">
+              <option value="vse">Všechny roky</option>
+              <option value="2025">2025</option>
+              <option value="2024">2024</option>
+              <option value="2023">2023</option>
+              <option value="2022">2022</option>
+              <option value="2021">2021</option>
+              <option value="2020">2020</option>
+              <option value="2019">2019</option>
+            </select>
+          </div>
+          <div class="ceniky-grid ceniky-grid-archive">
+            <a href="#" class="cenik-card cenik-card-archive" data-year="2025">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-elektrina">Elektřina · 2025</div>
+              <div class="cenik-card-name">Ceník elektřiny FIX2025 — PRE</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 245 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
+          </a>
+            <a href="#" class="cenik-card cenik-card-archive" data-year="2025">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-plyn">Plyn · 2025</div>
+              <div class="cenik-card-name">Ceník plynu FIX2025 — PRE</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 175 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
+          </a>
+            <a href="#" class="cenik-card cenik-card-archive" data-year="2024">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-elektrina">Elektřina · 2024</div>
+              <div class="cenik-card-name">Ceník elektřiny FIX2024 — PRE</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 234 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
+          </a>
+            <a href="#" class="cenik-card cenik-card-archive" data-year="2024">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-plyn">Plyn · 2024</div>
+              <div class="cenik-card-name">Ceník plynu FIX2024 — PRE</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 166 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
+          </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
 </main>
 
 <!-- FOOTER -->
@@ -2009,6 +2662,81 @@
     a.addEventListener('click', closeDrawer);
   });
 
+
+  // ── Ceníky: komodita + distributor ──
+  let activeKomodita = 'elektrina';
+
+  // Filtruje karty pouze v aktuálně viditelném panelu
+  function filterCards() {
+    const activePanel = document.querySelector('.ceniky-panel.active');
+    if (!activePanel) return;
+    activePanel.querySelectorAll('.cenik-card').forEach(card => {
+      const meta = card.querySelector('.cenik-card-meta').textContent.toLowerCase();
+      const match = activeKomodita === 'elektrina'
+        ? (meta.includes('elektřina') || meta.includes('elektrina'))
+        : meta.includes('plyn');
+      card.style.display = match ? '' : 'none';
+    });
+  }
+
+  // Komodita (Elektřina / Plyn)
+  document.querySelectorAll('.komodita-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      activeKomodita = tab.dataset.komodita;
+      document.querySelectorAll('.komodita-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      filterCards();
+    });
+  });
+
+  // Distributor (ČEZ / EG.D / PRE)
+  document.querySelectorAll('.distrib-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.distrib-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.ceniky-panel').forEach(p => {
+        p.classList.remove('active');
+        // Reset display na kartách při opuštění panelu
+        p.querySelectorAll('.cenik-card').forEach(c => c.style.display = '');
+      });
+      tab.classList.add('active');
+      document.getElementById('panel-' + tab.dataset.distrib).classList.add('active');
+      filterCards();
+    });
+  });
+
+  // Archivní ceníky toggle
+  document.querySelectorAll('.archive-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = document.getElementById(btn.dataset.target);
+      const isOpen = target.classList.contains('is-open');
+      target.classList.toggle('is-open', !isOpen);
+      btn.classList.toggle('active', !isOpen);
+      btn.textContent = isOpen ? 'Archivní ceníky' : 'Skrýt archiv';
+      if (!isOpen) filterCards();
+    });
+  });
+
+  // ── Year filter dropdown ──
+  function applyYearFilter(archiveId, year) {
+    const archive = document.getElementById(archiveId);
+    if (!archive) return;
+    archive.querySelectorAll('.cenik-card-archive').forEach(card => {
+      const meta = card.querySelector('.cenik-card-meta').textContent.toLowerCase();
+      const komoditaMatch = activeKomodita === 'elektrina'
+        ? (meta.includes('elektřina') || meta.includes('elektrina'))
+        : meta.includes('plyn');
+      const yearMatch = year === 'vse' || card.dataset.year === year;
+      card.style.display = (komoditaMatch && yearMatch) ? '' : 'none';
+    });
+  }
+
+  document.querySelectorAll('.year-filter').forEach(select => {
+    select.addEventListener('change', () => {
+      applyYearFilter('archive-' + select.dataset.archive, select.value);
+    });
+  });
+
+  filterCards(); // init
 </script>
 
 </body>
