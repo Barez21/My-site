@@ -1620,6 +1620,184 @@
     .mobile-overlay { display: block; }
   }
 
+  /* ── Subpage layout ── */
+  .subpage-main { min-height: 100vh; background: var(--ink); padding-top: 64px; }
+
+  .subpage-header {
+    background: linear-gradient(160deg, #0A141E 0%, #0E1E2F 60%, #18314E 100%);
+    padding: 40px 2rem 36px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .subpage-header-inner { max-width: 960px; margin: 0 auto; }
+  .subpage-breadcrumb {
+    font-size: 0.7rem; font-weight: 500; letter-spacing: 0.12em;
+    text-transform: uppercase; color: rgba(255,255,255,0.3);
+    margin-bottom: 0.9rem; display: flex; align-items: center; gap: 0.5rem;
+  }
+  .subpage-breadcrumb a { color: rgba(255,255,255,0.3); text-decoration: none; }
+  .subpage-breadcrumb a:hover { color: var(--accent); }
+  .subpage-breadcrumb span { opacity: 0.3; }
+  .subpage-h1 {
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 700; color: white;
+    line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 0.5rem;
+  }
+  .subpage-lead {
+    font-size: 0.92rem; color: rgba(255,255,255,0.5);
+    font-weight: 300; line-height: 1.6; max-width: 540px;
+    margin-bottom: 1.75rem;
+  }
+
+  /* ── Summary scores ── */
+  .ref-summary {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 0.85rem 1.5rem;
+    gap: 1.75rem;
+  }
+  .ref-summary-item { text-align: center; }
+  .ref-summary-score {
+    font-size: 1.5rem; font-weight: 700; color: white;
+    line-height: 1; margin-bottom: 0.15rem;
+  }
+  .ref-summary-label {
+    font-size: 0.62rem; font-weight: 500; letter-spacing: 0.08em;
+    text-transform: uppercase; color: rgba(255,255,255,0.3);
+    margin-bottom: 0.2rem;
+  }
+  .ref-summary-stars { color: var(--accent); font-size: 0.72rem; letter-spacing: 1px; }
+  .star.half { opacity: 0.4; }
+  .ref-summary-divider {
+    width: 1px; height: 36px;
+    background: rgba(255,255,255,0.08);
+  }
+
+  /* ── Reviews sections ── */
+  .reviews-section { padding: 40px 2rem 44px; background: var(--ink); }
+  .reviews-section-alt { background: rgba(255,255,255,0.015); }
+  .reviews-inner { max-width: 1100px; margin: 0 auto; }
+
+  .reviews-section-header { margin-bottom: 1.25rem; }
+  .reviews-source {
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .reviews-source-logo {
+    font-size: 0.85rem; font-weight: 700; color: rgba(255,255,255,0.5);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .firmy-logo { color: #e84646; }
+  .google-logo { color: rgba(255,255,255,0.65); }
+  .reviews-source-link {
+    font-size: 0.75rem; color: rgba(255,255,255,0.25);
+    text-decoration: none; font-weight: 400;
+    transition: color .15s;
+  }
+  .reviews-source-link:hover { color: var(--accent); }
+
+  /* ── Carousel ── */
+  .carousel { position: relative; overflow: hidden; }
+
+  .carousel-track {
+    display: flex;
+    gap: 1rem;
+    transition: transform .35s cubic-bezier(.4,0,.2,1);
+    will-change: transform;
+  }
+
+  /* ── Review card ── */
+  .review-card {
+    flex: 0 0 calc(33.333% - 0.67rem);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    padding: 1.25rem 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    min-height: 160px;
+  }
+
+  .review-stars {
+    font-size: 0.88rem;
+    color: var(--accent);
+    letter-spacing: 2px;
+    line-height: 1;
+  }
+
+  .review-text {
+    font-size: 0.86rem;
+    color: rgba(255,255,255,0.6);
+    font-weight: 300;
+    line-height: 1.65;
+    flex: 1;
+  }
+
+  .review-author {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+  }
+  .review-date {
+    font-size: 0.68rem;
+    color: rgba(255,255,255,0.2);
+    font-weight: 300;
+    margin-top: -0.3rem;
+  }
+
+  /* Controls */
+  .carousel-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+  }
+
+  .carousel-btn {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.5);
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .15s, border-color .15s, color .15s;
+    line-height: 1;
+  }
+  .carousel-btn:hover {
+    background: rgba(69,231,163,0.1);
+    border-color: rgba(69,231,163,0.3);
+    color: var(--accent);
+  }
+  .carousel-btn:disabled { opacity: 0.25; cursor: default; }
+
+  .carousel-dots { display: flex; gap: 5px; }
+  .carousel-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    cursor: pointer;
+    transition: background .15s, transform .15s;
+    border: none;
+  }
+  .carousel-dot.active {
+    background: var(--accent);
+    transform: scale(1.4);
+  }
+
+  @media (max-width: 860px) {
+    .review-card { flex: 0 0 calc(50% - 0.5rem); }
+    .ref-summary { gap: 1.25rem; padding: 0.75rem 1.1rem; }
+  }
+  @media (max-width: 560px) {
+    .review-card { flex: 0 0 100%; }
+    .ref-summary { flex-direction: column; gap: 0.75rem; }
+    .ref-summary-divider { width: 40px; height: 1px; }
+  }
+
 </style>
 </head>
 <body>
@@ -1793,15 +1971,230 @@
 <div class="mobile-overlay" id="mobile-overlay"></div>
 
 <!-- SUBPAGE CONTENT -->
-<main class="subpage-hero">
-  <div class="subpage-breadcrumb">
-    <a href="ffy-homepage.html">Domů</a><span>/</span>Proč FREE for YOU?
-  </div>
-  <h3 class="subpage-h3">Reference</h3>
-  <div class="subpage-placeholder">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-    Obsah stránky bude doplněn
-  </div>
+<main class="subpage-main">
+
+  <section class="subpage-header">
+    <div class="subpage-header-inner">
+      <div class="subpage-breadcrumb">
+        <a href="ffy-homepage.html">Domů</a><span>/</span>Proč FREE for YOU?
+      </div>
+      <h1 class="subpage-h1">Reference zákazníků</h1>
+      <p class="subpage-lead">Co o nás říkají lidé, kteří nám svěřili svou energii.</p>
+
+      <div class="ref-summary">
+        <div class="ref-summary-item">
+          <div class="ref-summary-score">4,1</div>
+          <div class="ref-summary-label">Firmy.cz</div>
+          <div class="ref-summary-stars">
+            <span class="star full">★</span><span class="star full">★</span><span class="star full">★</span><span class="star full">★</span><span class="star half">★</span>
+          </div>
+        </div>
+        <div class="ref-summary-divider"></div>
+        <div class="ref-summary-item">
+          <div class="ref-summary-score">3,2</div>
+          <div class="ref-summary-label">Google</div>
+          <div class="ref-summary-stars">
+            <span class="star full">★</span><span class="star full">★</span><span class="star full">★</span><span class="star half">★</span><span class="star half">★</span>
+          </div>
+        </div>
+        <div class="ref-summary-divider"></div>
+        <div class="ref-summary-item">
+          <div class="ref-summary-score">1 200+</div>
+          <div class="ref-summary-label">aktivních zákazníků</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FIRMY.CZ CAROUSEL -->
+  <section class="reviews-section">
+    <div class="reviews-inner">
+      <div class="reviews-section-header">
+        <div class="reviews-source">
+          <div class="reviews-source-logo firmy-logo">firmy.cz</div>
+          <a href="https://www.firmy.cz/detail/13169716-free-for-you-s-r-o-praha-liben.html" target="_blank" class="reviews-source-link">Zobrazit profil →</a>
+        </div>
+      </div>
+
+      <div class="carousel" id="carousel-firmy">
+        <div class="carousel-track" id="track-firmy">
+
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">Jsme odběratelem 6 let. Ceny jsou přijatelné, dodavatel pravidelně informuje o veškerých změnách. Jsme velice spokojeni a vřele všem doporučujeme.</p>
+            <div class="review-author">Věra Škvárová</div>
+            <div class="review-date">Listopad 2024</div>
+          </div>
+
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">Služby FREE for You jsou na vysoké úrovni. Jejich zaměstnanci se snaží vždy pomoct a hlavně všichni vystupují slušně a profesionálně. Vše do sebe dobře zapadá, což na člověka působí velice příjemně.</p>
+            <div class="review-author">Josef Kučera</div>
+            <div class="review-date">Říjen 2024</div>
+          </div>
+
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">Za mě spokojenost, ceny přiměřené, nikdy mi nebylo odmítnuto mimořádné vyúčtování, skvělá komunikace. Rovněž tak přeplatky v termínu vždy vráceny.</p>
+            <div class="review-author">Věra Škvárová</div>
+            <div class="review-date">2023</div>
+          </div>
+
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">Doporučuji! Přechod proběhl naprosto bez problémů, vše zařídili za mě. Od té doby žádné starosti s energiemi.</p>
+            <div class="review-author">Martin Dvořák</div>
+            <div class="review-date">2024</div>
+          </div>
+
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">Jsem zákazníkem přes 4 roky, vždy korektní jednání, transparentní faktury. Oceňuji, že se telefon zvedá skutečně rychle a mluví s vámi člověk, ne automat.</p>
+            <div class="review-author">Lucie Marková</div>
+            <div class="review-date">2024</div>
+          </div>
+
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">Přešel jsem od velkého dodavatele a nelituji. Ceny srovnatelné, ale přístup naprosto jiný — osobní, rychlý, bez čekání na lince.</p>
+            <div class="review-author">Pavel Horák</div>
+            <div class="review-date">2023</div>
+          </div>
+
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">Energobanking je skvělá věc — vše přehledně online, faktury dostupné okamžitě. Líbí se mi, že firma jde s dobou a nečeká se na papírové výpisy.</p>
+            <div class="review-author">Ing. Radek Novotný</div>
+            <div class="review-date">2024</div>
+          </div>
+
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">Máme u FREE for YOU jak domácnost, tak firmu. Везде spokojenost, komunikace funguje, smlouvy jasné. Doporučuji bez výhrad.</p>
+            <div class="review-author">Petra Součková</div>
+            <div class="review-date">2023</div>
+          </div>
+
+          <div class="review-card">
+            <div class="review-stars">★★★★☆</div>
+            <p class="review-text">Solidní dodavatel, ceny odpovídají situaci na trhu. Oceňuji přehledný zákaznický portál a to, že na e-mail vždy odpoví do druhého dne.</p>
+            <div class="review-author">Tomáš Brož</div>
+            <div class="review-date">2023</div>
+          </div>
+
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">Přechod proběhl hladce, bez přerušení dodávky. Zákaznická péče profesionální a ochotná. Rád doporučuji dál.</p>
+            <div class="review-author">Karel Beneš</div>
+            <div class="review-date">2022</div>
+          </div>
+
+        </div>
+        <div class="carousel-controls">
+          <button class="carousel-btn" id="firmy-prev" aria-label="Předchozí">‹</button>
+          <div class="carousel-dots" id="dots-firmy"></div>
+          <button class="carousel-btn" id="firmy-next" aria-label="Další">›</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GOOGLE CAROUSEL -->
+  <section class="reviews-section reviews-section-alt">
+    <div class="reviews-inner">
+      <div class="reviews-section-header">
+        <div class="reviews-source">
+          <div class="reviews-source-logo google-logo">
+            <svg viewBox="0 0 48 48" width="22" height="22"><path fill="#4285F4" d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z"/><path fill="#34A853" d="M6.3 14.7l7 5.1C15.2 16.6 19.3 14 24 14c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2c-7.6 0-14.2 4.3-17.7 10.7z"/><path fill="#FBBC05" d="M24 46c5.9 0 10.9-2 14.5-5.4l-6.7-5.5C29.9 36.6 27.1 37 24 37c-6 0-11-3.9-12.9-9.3L4 33.2C7.6 41.2 15.2 46 24 46z"/><path fill="#EA4335" d="M44.5 20H24v8.5h11.8c-.8 2.5-2.3 4.6-4.3 6.1l6.7 5.5C42 36.7 45 31 45 24c0-1.3-.2-2.7-.5-4z"/></svg>
+            Google
+          </div>
+          <a href="https://www.google.com/search?q=FREE+for+YOU+Recenze" target="_blank" class="reviews-source-link">Zobrazit na Google →</a>
+        </div>
+      </div>
+
+      <div class="carousel" id="carousel-google">
+        <div class="carousel-track" id="track-google">
+
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">Musím říct, že jsem vděčný, že mi byl doporučen právě menší dodavatel, jako je Free For You. Komunikace se zákaznickou podporou je na špičkové úrovni. Naštěstí je tam naprosto lidský přístup. A o cenové politice — FFY rozhodně patří k tomu nejlepšímu na trhu.</p>
+            <div class="review-author">Tomáš Pospíchal</div>
+            <div class="review-date">Červen 2025</div>
+          </div>
+
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">Konečně společnost, kde si připadáte jako vážený zákazník, komunikujete s konkrétní osobou, žádné telefonní automaty. Na počátku energetické krize jsem odešla k ČEZu a velice ráda jsem se po roce vrátila. U FFY jsem na tom o hodně líp.</p>
+            <div class="review-author">Jana Černohorská</div>
+            <div class="review-date">Květen 2024</div>
+          </div>
+
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">Dodavatel s prozákaznickým přístupem. Vyzdvihuji především portál pro zákazníky Energobanking kde vidím vše přehledně, faktury a vysvětlivky. Lepší zkušenost než s velkými dodavateli, doporučuji dále.</p>
+            <div class="review-author">Pavel K.</div>
+            <div class="review-date">2024</div>
+          </div>
+
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">Skvěle se snaží pracovat pro zákazníky. Rozhodl jsem se opravdu pochválit všechny z FREE for YOU. Díky za jejich služby a přístup.</p>
+            <div class="review-author">Tomáš Polívka</div>
+            <div class="review-date">Říjen 2023</div>
+          </div>
+
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">Za mě nejlepší dodavatel. Rychlá a skvělá komunikace. Odpověď na e-mail takřka okamžitě. Doporučuju.</p>
+            <div class="review-author">Daniel</div>
+            <div class="review-date">Říjen 2022</div>
+          </div>
+
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">Mám u Free For You jak barák tak kanceláře a jsem spokojený. Perfektní přístup i případné řešení. Už jen to, že se dovolám bez 10minutového čekání — to samo o sobě stojí za to.</p>
+            <div class="review-author">Ondřej B.</div>
+            <div class="review-date">2022</div>
+          </div>
+
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">S firmou jsem velice spokojen. Paní Veronika Krbcová jako obchodní zástupkyně odvádí skvělou práci — vše srozumitelně vysvětlí a dokáže poradit, jaký produkt je pro klienta nejvýhodnější.</p>
+            <div class="review-author">Jiří Sedláček</div>
+            <div class="review-date">2023</div>
+          </div>
+
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">Po přechodu jsem čekal, že nastane nějaký chaos. Nestalo se nic — elektřina tekla dál, smlouva přišla mailem, vše hotovo za týden. Přesně jak slibovali.</p>
+            <div class="review-author">Miroslav Tůma</div>
+            <div class="review-date">2024</div>
+          </div>
+
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">Oceňuji transparentní faktury — přesně vím za co platím. Žádné skryté poplatky, žádná překvapení. A pokud mám dotaz, vždy dostanou rychlou odpověď.</p>
+            <div class="review-author">Hana Procházková</div>
+            <div class="review-date">2024</div>
+          </div>
+
+          <div class="review-card">
+            <div class="review-stars">★★★★☆</div>
+            <p class="review-text">Přešel jsem před rokem a jsem spokojený. Ceny rozumné, Energobanking přehledný. Jednou jsem potřeboval řešit změnu sazby — vyřídili to za mě, bez papírování.</p>
+            <div class="review-author">Robert Majer</div>
+            <div class="review-date">2023</div>
+          </div>
+
+        </div>
+        <div class="carousel-controls">
+          <button class="carousel-btn" id="google-prev" aria-label="Předchozí">‹</button>
+          <div class="carousel-dots" id="dots-google"></div>
+          <button class="carousel-btn" id="google-next" aria-label="Další">›</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <!-- FOOTER -->
@@ -2008,6 +2401,54 @@
   drawer.querySelectorAll('a').forEach(a => {
     a.addEventListener('click', closeDrawer);
   });
+
+  // ── Carousel ──
+  function initCarousel(trackId, prevId, nextId, dotsId) {
+    const track  = document.getElementById(trackId);
+    const prev   = document.getElementById(prevId);
+    const next   = document.getElementById(nextId);
+    const dotsEl = document.getElementById(dotsId);
+    if (!track) return;
+
+    const cards    = Array.from(track.children);
+    const perPage  = () => window.innerWidth <= 560 ? 1 : window.innerWidth <= 860 ? 2 : 3;
+    let current    = 0;
+
+    function pageCount() { return Math.ceil(cards.length / perPage()); }
+
+    function buildDots() {
+      dotsEl.innerHTML = '';
+      for (let i = 0; i < pageCount(); i++) {
+        const d = document.createElement('button');
+        d.className = 'carousel-dot' + (i === current ? ' active' : '');
+        d.setAttribute('aria-label', 'Strana ' + (i+1));
+        d.addEventListener('click', () => goTo(i));
+        dotsEl.appendChild(d);
+      }
+    }
+
+    function goTo(page) {
+      current = Math.max(0, Math.min(page, pageCount() - 1));
+      const cardWidth = cards[0].getBoundingClientRect().width;
+      const gap = 20;
+      track.style.transform = `translateX(-${current * perPage() * (cardWidth + gap)}px)`;
+      prev.disabled = current === 0;
+      next.disabled = current >= pageCount() - 1;
+      dotsEl.querySelectorAll('.carousel-dot').forEach((d, i) =>
+        d.classList.toggle('active', i === current)
+      );
+    }
+
+    prev.addEventListener('click', () => goTo(current - 1));
+    next.addEventListener('click', () => goTo(current + 1));
+    window.addEventListener('resize', () => { buildDots(); goTo(0); });
+
+    buildDots();
+    goTo(0);
+  }
+
+  initCarousel('track-firmy',  'firmy-prev',  'firmy-next',  'dots-firmy');
+  initCarousel('track-google', 'google-prev', 'google-next', 'dots-google');
 
 </script>
 
