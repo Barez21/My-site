@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ceníky — FREE for YOU energie</title>
 <meta name="description" content="FREE for YOU energie — Ceníky">
-<base href="/ffy-website/">
 <meta name="theme-color" content="#214571">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -984,16 +983,176 @@
   }
 
   /* ─── FOOTER ─── */
-  footer {
-    background: var(--navy-dark);
-    color: rgba(255,255,255,0.45);
-    padding: 2rem;
-    text-align: center;
-    font-size: 0.82rem;
-    font-weight: 300;
+  .site-footer {
+    background: #060e18;
     border-top: 1px solid rgba(255,255,255,0.06);
   }
-  footer a { color: var(--accent); text-decoration: none; }
+
+  .footer-main {
+    padding: 64px 2rem 48px;
+  }
+  .footer-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  /* Brand column */
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .footer-logo { display: inline-block; }
+  .footer-logo-img {
+    height: 28px;
+    width: auto;
+    display: block;
+  }
+  .footer-tagline {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.32);
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  /* Social icons */
+  .footer-social {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 0.25rem;
+  }
+  .footer-social-link {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    transition: background .15s, color .15s, border-color .15s;
+  }
+  .footer-social-link:hover {
+    background: rgba(69,231,163,0.1);
+    border-color: rgba(69,231,163,0.25);
+    color: var(--accent);
+  }
+  .footer-social-link svg { width: 15px; height: 15px; }
+
+  /* Nav columns */
+  .footer-nav {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2rem;
+  }
+
+  .footer-col-title {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 1rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+
+  .footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .footer-links a {
+    font-size: 0.84rem;
+    color: rgba(255,255,255,0.38);
+    text-decoration: none;
+    font-weight: 300;
+    transition: color .12s;
+    line-height: 1.4;
+  }
+  .footer-links a:hover { color: white; }
+
+  /* Contact column */
+  .footer-contact-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+  .footer-contact-list li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .footer-contact-label {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+  }
+  .footer-contact-list a,
+  .footer-contact-list span {
+    font-size: 0.84rem;
+    color: rgba(255,255,255,0.5);
+    font-weight: 300;
+    text-decoration: none;
+    line-height: 1.5;
+    transition: color .12s;
+  }
+  .footer-contact-list a:hover { color: var(--accent); }
+
+  /* Bottom bar */
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding: 1.25rem 2rem;
+  }
+  .footer-bottom-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .footer-bottom-left {
+    font-size: 0.76rem;
+    color: rgba(255,255,255,0.2);
+    font-weight: 300;
+  }
+  .footer-bottom-right {
+    display: flex;
+    gap: 1.5rem;
+  }
+  .footer-bottom-right a {
+    font-size: 0.76rem;
+    color: rgba(255,255,255,0.25);
+    text-decoration: none;
+    font-weight: 300;
+    transition: color .12s;
+  }
+  .footer-bottom-right a:hover { color: rgba(255,255,255,0.6); }
+
+  @media (max-width: 1100px) {
+    .footer-nav { grid-template-columns: repeat(3, 1fr); }
+    .footer-col-contact { grid-column: span 1; }
+  }
+  @media (max-width: 860px) {
+    .footer-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .footer-nav { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 500px) {
+    .footer-nav { grid-template-columns: 1fr; }
+    .footer-bottom-inner { flex-direction: column; align-items: flex-start; }
+    .footer-bottom-right { gap: 1rem; flex-wrap: wrap; }
+  }
 
   /* Animations */
   @keyframes fadeUp {
@@ -1386,7 +1545,7 @@
         <button class="nav-tab-btn">Naše ceny <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
       </li>
       <li class="nav-tab" data-col="1">
-        <button class="nav-tab-btn">Proč Energo? <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <button class="nav-tab-btn">Proč FREE for YOU? <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
       </li>
       <li class="nav-tab" data-col="2">
         <button class="nav-tab-btn">Jak to funguje? <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
@@ -1424,9 +1583,9 @@
         </a>
       </div>
 
-      <!-- Col 1: Proč Energo? -->
+      <!-- Col 1: Proč FREE for YOU? -->
       <div class="mega-col" data-col="1">
-        <div class="mega-col-label">Proč Energo?</div>
+        <div class="mega-col-label">Proč FREE for YOU?</div>
         <a href="proc-slevy-za-doporuceni.html" class="mega-link">
           <span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
           <span class="mega-link-body"><strong>Slevy za doporučení</strong><span>Přiveďte přítele a ušetříte oba</span></span>
@@ -1509,10 +1668,112 @@
 </main>
 
 <!-- FOOTER -->
-<footer>
-  <p>© FREE for YOU s.r.o. — Regulovaný obchodník s energiemi, licence ERÚ — Zkušenosti od roku 1997 · Elektřina od roku 2016</p>
-  <p style="margin-top:0.5rem;">Českomoravská 2255/12a, 190 00 Praha 9 – Libeň · <a href="mailto:info@freeforyou.cz">info@freeforyou.cz</a> · <a href="tel:+420227072290">+420 227 072 290</a> · <a href="https://www.freeforyou.cz">www.freeforyou.cz</a></p>
-  <p style="margin-top:0.5rem;"><a href="#">Obchodní podmínky</a> · <a href="#">Ochrana osobních údajů</a> · <a href="#">Kontakt</a></p>
+<footer class="site-footer">
+
+  <div class="footer-main">
+    <div class="footer-inner">
+
+      <!-- Logo + tagline + social -->
+      <div class="footer-brand">
+        <a href="ffy-homepage.html" class="footer-logo">
+          <img src="logo-white.svg" alt="FREE for YOU energie" class="footer-logo-img">
+        </a>
+        <p class="footer-tagline">Energie, která patří lidem.<br>Budujeme vlastní zdroje, aby cena dlouhodobě klesala.</p>
+        <div class="footer-social">
+          <a href="#" class="footer-social-link" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="#" class="footer-social-link" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="#" class="footer-social-link" aria-label="YouTube">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.96-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="white"/></svg>
+          </a>
+          <a href="#" class="footer-social-link" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Nav columns -->
+      <div class="footer-nav">
+
+        <div class="footer-col">
+          <div class="footer-col-title">Pro zákazníky</div>
+          <ul class="footer-links">
+            <li><a href="ceny-aktualni-nabidka.html">Elektřina</a></li>
+            <li><a href="ceny-aktualni-nabidka.html">Plyn</a></li>
+            <li><a href="proc-slevy-za-doporuceni.html">Slevy na energie</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <div class="footer-col-title">Fotovoltaika</div>
+          <ul class="footer-links">
+            <li><a href="jak-vykup-elektriny.html">Výkup přebytků</a></li>
+            <li><a href="jak-sdileni-elektriny.html">Sdílení elektřiny</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <div class="footer-col-title">O nás</div>
+          <ul class="footer-links">
+            <li><a href="proc-nas-pribeh.html">Naše vize</a></li>
+            <li><a href="proc-nas-pribeh.html">Náš tým</a></li>
+            <li><a href="proc-reference.html">Reference zákazníků</a></li>
+            <li><a href="#">Pro média</a></li>
+            <li><a href="#">Případové studie</a></li>
+            <li><a href="#">Obchodní podmínky</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <div class="footer-col-title">Zákaznická podpora</div>
+          <ul class="footer-links">
+            <li><a href="podpora-kontakty.html">Kontakt</a></li>
+            <li><a href="podpora-faq.html">Časté dotazy</a></li>
+            <li><a href="podpora-dokumenty.html">Dokumenty ke stažení</a></li>
+            <li><a href="jak-energobanking.html">Jak funguje Energobanking</a></li>
+            <li><a href="podpora-blog.html">Blog</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col footer-col-contact">
+          <div class="footer-col-title">Kontakt</div>
+          <ul class="footer-contact-list">
+            <li>
+              <span class="footer-contact-label">E-mail</span>
+              <a href="mailto:info@freeforyou.cz">info@freeforyou.cz</a>
+            </li>
+            <li>
+              <span class="footer-contact-label">Telefon</span>
+              <a href="tel:+420227072290">+420 227 072 290</a>
+            </li>
+            <li>
+              <span class="footer-contact-label">Adresa</span>
+              <span>Českomoravská 2255/12a<br>190 00 Praha 9 – Libeň</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom bar -->
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner">
+      <div class="footer-bottom-left">
+        © FREE for YOU s.r.o. — Regulovaný obchodník s energiemi, licence ERÚ
+      </div>
+      <div class="footer-bottom-right">
+        <a href="#">Obchodní podmínky</a>
+        <a href="#">Ochrana osobních údajů</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </div>
+
 </footer>
 
 <script>
