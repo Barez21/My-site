@@ -1802,17 +1802,25 @@
     border: none; display: block;
     filter: grayscale(30%) invert(5%);
   }
-  .kontakt-map-link {
-    display: block;
-    text-align: center;
-    padding: 0.7rem;
-    background: rgba(255,255,255,0.04);
+  .kontakt-map-links {
+    display: flex;
     border-top: 1px solid rgba(255,255,255,0.07);
+  }
+  .kontakt-map-link {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 0.7rem;
     font-size: 0.78rem; font-weight: 500;
     color: rgba(255,255,255,0.4); text-decoration: none;
     transition: color .15s, background .15s;
   }
-  .kontakt-map-link:hover { color: var(--accent); background: rgba(255,255,255,0.07); }
+  .kontakt-map-link:first-child {
+    border-right: 1px solid rgba(255,255,255,0.07);
+  }
+  .kontakt-map-link:hover { color: white; background: rgba(255,255,255,0.05); }
 
   @media (max-width: 860px) {
     .kontakt-grid { grid-template-columns: 1fr; gap: 2rem; }
@@ -2127,12 +2135,16 @@
               src="https://maps.google.com/maps?q=Českomoravská+2255/12a,+Praha+9&output=embed&hl=cs&z=16"
               title="FREE for YOU — Praha 9, Libeň">
             </iframe>
-            <a
-              href="https://maps.google.com/?q=Českomoravská+2255/12a,+190+00+Praha+9"
-              target="_blank"
-              class="kontakt-map-link">
-              Otevřít v Google Maps →
-            </a>
+            <div class="kontakt-map-links">
+              <a href="https://maps.google.com/?q=Českomoravská+2255/12a,+190+00+Praha+9" target="_blank" class="kontakt-map-link">
+                <svg viewBox="0 0 48 48" width="14" height="14"><path fill="#4285F4" d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z"/><path fill="#34A853" d="M6.3 14.7l7 5.1C15.2 16.6 19.3 14 24 14c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2c-7.6 0-14.2 4.3-17.7 10.7z"/><path fill="#FBBC05" d="M24 46c5.9 0 10.9-2 14.5-5.4l-6.7-5.5C29.9 36.6 27.1 37 24 37c-6 0-11-3.9-12.9-9.3L4 33.2C7.6 41.2 15.2 46 24 46z"/><path fill="#EA4335" d="M44.5 20H24v8.5h11.8c-.8 2.5-2.3 4.6-4.3 6.1l6.7 5.5C42 36.7 45 31 45 24c0-1.3-.2-2.7-.5-4z"/></svg>
+                Google Maps
+              </a>
+              <a href="https://mapy.cz/zakladni?q=Českomoravská+2255%2F12a+Praha+9" target="_blank" class="kontakt-map-link">
+                <svg viewBox="0 0 32 32" width="14" height="14"><circle cx="16" cy="16" r="16" fill="#e4001a"/><path d="M16 6C11.6 6 8 9.6 8 14c0 6 8 14 8 14s8-8 8-14c0-4.4-3.6-8-8-8zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" fill="white"/></svg>
+                Mapy.cz
+              </a>
+            </div>
           </div>
 
         </div>
