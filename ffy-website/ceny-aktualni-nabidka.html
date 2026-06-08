@@ -1752,6 +1752,99 @@
     .tarify-section { padding: 40px 1.5rem 60px; }
   }
 
+  /* ── Mobile drawer ── */
+  .mobile-drawer {
+    display: none; /* only on mobile */
+    position: fixed;
+    top: 0; right: 0;
+    width: min(320px, 88vw);
+    height: 100dvh;
+    background: #0A141E;
+    border-left: 1px solid rgba(255,255,255,0.08);
+    z-index: 300;
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform .28s cubic-bezier(.4,0,.2,1);
+    -webkit-overflow-scrolling: touch;
+  }
+  .mobile-drawer.is-open {
+    transform: translateX(0);
+  }
+
+  .mobile-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 299;
+    opacity: 0;
+    transition: opacity .25s;
+  }
+  .mobile-overlay.is-open { opacity: 1; }
+
+  .mobile-drawer-inner {
+    padding: 80px 0 2rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mobile-section {
+    padding: 0.5rem 1.5rem 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .mobile-section:last-of-type { border-bottom: none; }
+
+  .mobile-section-title {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+    padding-top: 0.25rem;
+  }
+
+  .mobile-link {
+    display: block;
+    padding: 0.6rem 0;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: color .12s;
+  }
+  .mobile-link:last-child { border-bottom: none; }
+  .mobile-link:hover, .mobile-link:active { color: white; }
+  .mobile-link-accent { color: var(--accent); font-weight: 500; }
+
+  .mobile-cta-wrap {
+    padding: 1.5rem 1.5rem 1rem;
+    margin-top: auto;
+  }
+  .mobile-cta {
+    display: block;
+    text-align: center;
+    background: var(--accent);
+    color: var(--navy-dark);
+    padding: 13px 20px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+  }
+
+  /* Hamburger open state */
+  .nav-hamburger.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.is-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .nav-hamburger.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .nav-hamburger span { transition: transform .22s, opacity .15s; }
+
+  @media (max-width: 860px) {
+    .mobile-drawer { display: block; }
+    .mobile-overlay { display: block; }
+  }
+
 </style>
 </head>
 <body>
@@ -1879,6 +1972,50 @@
 
 <!-- Backdrop outside nav so it covers page -->
 <div class="mega-backdrop" id="mega-backdrop"></div>
+
+
+<!-- Mobile drawer -->
+<div class="mobile-drawer" id="mobile-drawer" aria-hidden="true">
+  <div class="mobile-drawer-inner">
+
+    <div class="mobile-section">
+      <div class="mobile-section-title">Naše ceny</div>
+      <a href="ceny-aktualni-nabidka.html" class="mobile-link">Aktuální nabídka</a>
+      <a href="ceny-kalkulacka.html" class="mobile-link">Kalkulačka</a>
+      <a href="ceny-ceniky.html" class="mobile-link">Ceníky</a>
+    </div>
+
+    <div class="mobile-section">
+      <div class="mobile-section-title">Proč FREE for YOU?</div>
+      <a href="proc-slevy-za-doporuceni.html" class="mobile-link">Slevy za doporučení</a>
+      <a href="proc-investice-oze.html" class="mobile-link">Investice do OZE</a>
+      <a href="proc-nas-pribeh.html" class="mobile-link">Náš příběh</a>
+      <a href="proc-reference.html" class="mobile-link">Reference</a>
+    </div>
+
+    <div class="mobile-section">
+      <div class="mobile-section-title">Jak to funguje?</div>
+      <a href="https://www.energobanking.cz/" target="_blank" class="mobile-link mobile-link-accent">Energobanking →</a>
+      <a href="jak-sdileni-elektriny.html" class="mobile-link">Sdílení elektřiny</a>
+      <a href="jak-vykup-elektriny.html" class="mobile-link">Výkup elektřiny</a>
+      <a href="jak-proudiky.html" class="mobile-link">Proudíky</a>
+    </div>
+
+    <div class="mobile-section">
+      <div class="mobile-section-title">Podpora</div>
+      <a href="podpora-faq.html" class="mobile-link">FAQ</a>
+      <a href="podpora-dokumenty.html" class="mobile-link">Dokumenty</a>
+      <a href="podpora-kontakty.html" class="mobile-link">Kontakty</a>
+      <a href="podpora-blog.html" class="mobile-link">Blog</a>
+    </div>
+
+    <div class="mobile-cta-wrap">
+      <a href="https://www.energobanking.cz/" target="_blank" class="mobile-cta">Energobanking →</a>
+    </div>
+
+  </div>
+</div>
+<div class="mobile-overlay" id="mobile-overlay"></div>
 
 <!-- SUBPAGE CONTENT -->
 <main class="subpage-main">
@@ -2185,6 +2322,37 @@
 
   backdrop.addEventListener('click', close);
   document.querySelectorAll('.nav-anchor').forEach(l => l.addEventListener('click', close));
+  // ── Mobile hamburger ──
+  const hamburger = document.getElementById('nav-hamburger');
+  const drawer    = document.getElementById('mobile-drawer');
+  const overlay   = document.getElementById('mobile-overlay');
+
+  function openDrawer() {
+    hamburger.classList.add('is-open');
+    drawer.classList.add('is-open');
+    overlay.classList.add('is-open');
+    drawer.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDrawer() {
+    hamburger.classList.remove('is-open');
+    drawer.classList.remove('is-open');
+    overlay.classList.remove('is-open');
+    drawer.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  hamburger.addEventListener('click', () => {
+    drawer.classList.contains('is-open') ? closeDrawer() : openDrawer();
+  });
+
+  overlay.addEventListener('click', closeDrawer);
+
+  // Close on any link click inside drawer
+  drawer.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', closeDrawer);
+  });
 
 </script>
 
