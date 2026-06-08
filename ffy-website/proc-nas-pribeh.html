@@ -73,7 +73,7 @@
     flex-shrink: 0;
   }
   .nav-logo-img {
-    height: 30px;
+    height: 45px;
     width: auto;
     display: block;
   }
@@ -258,8 +258,15 @@
 
   @media (max-width: 860px) {
     .nav-tabs { display: none; }
-    .nav-hamburger { display: flex; }
-    .mega-panel { display: none; }
+    .mega-panel { display: none !important; }
+    .nav-bar { justify-content: space-between; }
+    .nav-hamburger {
+      display: flex;
+      margin: 0 auto;   /* centre between logo and CTA */
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
   }
 
   /* ─── HERO ─── */
@@ -1529,7 +1536,7 @@
 
   /* ── Mobile drawer ── */
   .mobile-drawer {
-    display: none; /* only on mobile */
+    /* Always in DOM, off-screen. display:none would block transition. */
     position: fixed;
     top: 0; right: 0;
     width: min(320px, 88vw);
@@ -1541,21 +1548,26 @@
     transform: translateX(100%);
     transition: transform .28s cubic-bezier(.4,0,.2,1);
     -webkit-overflow-scrolling: touch;
+    visibility: hidden;
   }
   .mobile-drawer.is-open {
     transform: translateX(0);
+    visibility: visible;
   }
 
   .mobile-overlay {
-    display: none;
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.55);
     z-index: 299;
     opacity: 0;
+    pointer-events: none;
     transition: opacity .25s;
   }
-  .mobile-overlay.is-open { opacity: 1; }
+  .mobile-overlay.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
 
   .mobile-drawer-inner {
     padding: 80px 0 2rem;
@@ -1615,10 +1627,7 @@
   .nav-hamburger.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
   .nav-hamburger span { transition: transform .22s, opacity .15s; }
 
-  @media (max-width: 860px) {
-    .mobile-drawer { display: block; }
-    .mobile-overlay { display: block; }
-  }
+  /* drawer visible on all sizes via visibility, JS controls it */
 
 </style>
 </head>
@@ -1629,7 +1638,7 @@
 
   <!-- Top bar -->
   <div class="nav-bar">
-    <a class="nav-logo" href="ffy-homepage.html">
+    <a class="nav-logo" href="index.html">
       <img src="logo-white.svg" alt="FREE for YOU energie" class="nav-logo-img">
     </a>
 
@@ -1795,7 +1804,7 @@
 <!-- SUBPAGE CONTENT -->
 <main class="subpage-hero">
   <div class="subpage-breadcrumb">
-    <a href="ffy-homepage.html">Domů</a><span>/</span>Proč FREE for YOU?
+    <a href="index.html">Domů</a><span>/</span>Proč FREE for YOU?
   </div>
   <h3 class="subpage-h3">Náš příběh</h3>
   <div class="subpage-placeholder">
@@ -1812,7 +1821,7 @@
 
       <!-- Logo + tagline + social -->
       <div class="footer-brand">
-        <a href="ffy-homepage.html" class="footer-logo">
+        <a href="index.html" class="footer-logo">
           <img src="logo-white.svg" alt="FREE for YOU energie" class="footer-logo-img">
         </a>
         <p class="footer-tagline">Energie, která patří lidem.<br>Budujeme vlastní zdroje, aby cena dlouhodobě klesala.</p>
