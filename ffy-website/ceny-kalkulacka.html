@@ -199,436 +199,353 @@
   </section>
 
   <section class="kalk-section">
-    <div class="kalk-inner">
-
-      <div class="kalk-form-wrap">
-
-        <!-- Krok 1: Spotřeba -->
-        <div class="kalk-step">
-          <div class="kalk-step-label">Loňská roční spotřeba elektřiny</div>
-          <div class="kalk-input-row">
-            <input type="number" id="spotreba" class="kalk-input" placeholder="např. 3 500" min="0" max="100000">
-            <span class="kalk-input-unit">kWh / rok</span>
-          </div>
-          <div class="kalk-hint">Najdete ji na loňském vyúčtování.</div>
-        </div>
-
-        <!-- Krok 2: Distributor -->
-        <div class="kalk-step">
-          <div class="kalk-step-label">Vaše distribuční území</div>
-          <div class="kalk-pills" id="distrib-pills">
-            <button class="kalk-pill active" data-distrib="cez">ČEZ Distribuce</button>
-            <button class="kalk-pill" data-distrib="pre">PRE Distribuce</button>
-            <button class="kalk-pill" data-distrib="eon">E.ON (EG.D)</button>
-          </div>
-        </div>
-
-        <!-- Krok 3: Tarif -->
-        <div class="kalk-step">
-          <div class="kalk-step-label">Váš odběr odpovídá</div>
-          <div class="kalk-tarify" id="tarif-pills">
-            <button class="kalk-tarif active" data-tarif="24">
-              <div class="kalk-tarif-name">Základní odběr</div>
-              <div class="kalk-tarif-desc">Svícení, spotřebiče, bez elektrického vytápění</div>
-              <div class="kalk-tarif-code">Sazba D01d / D02d</div>
-            </button>
-            <button class="kalk-tarif" data-tarif="aku8">
-              <div class="kalk-tarif-name">S elektrickým vařením</div>
-              <div class="kalk-tarif-desc">Svícení + sporák nebo trouba na elektřinu</div>
-              <div class="kalk-tarif-code">Sazba D25d / D26d / D27d</div>
-            </button>
-            <button class="kalk-tarif" data-tarif="aku16">
-              <div class="kalk-tarif-name">S vytápěním nebo ohřevem vody</div>
-              <div class="kalk-tarif-desc">Přímotop, tepelné čerpadlo nebo el. bojler</div>
-              <div class="kalk-tarif-code">Sazba D35d–D57d</div>
-            </button>
-          </div>
-        </div>
-
-        <!-- Krok 4: Srovnání (volitelné) -->
-        <div class="kalk-step kalk-step-optional">
-          <div class="kalk-step-label">
-            Současná cena za elektřinu
-            <span class="kalk-optional-badge">volitelné — pro srovnání</span>
-          </div>
-          <div class="kalk-input-row">
-            <input type="number" id="soucasna-cena" class="kalk-input" placeholder="např. 4 200" min="0" max="20000" step="10">
-            <span class="kalk-input-unit">Kč / MWh s DPH</span>
-          </div>
-          <div class="kalk-hint">Najdete ji na faktuře jako „cena za silovou elektřinu". Pokud ji nevíte, nechte prázdné.</div>
-        </div>
-
-        <button class="kalk-submit" id="kalk-btn">Spočítat →</button>
-
-      </div>
-
-      <!-- Výsledek -->
-      <div class="kalk-result" id="kalk-result">
-
-        <div class="kalk-result-header">
-          <div class="kalk-result-title">Váš odhad u FREE for YOU</div>
-          <div class="kalk-result-note">Orientační výpočet. Přesná nabídka po kontaktu s námi.</div>
-        </div>
-
-        <div class="kalk-result-grid">
-          <div class="kalk-result-box kalk-result-main">
-            <div class="kalk-result-box-label">Roční náklad celkem</div>
-            <div class="kalk-result-big" id="r-rocni">—</div>
-            <div class="kalk-result-sub" id="r-mesicni">— Kč / měsíc</div>
-          </div>
-          <div class="kalk-result-breakdown">
-            <div class="kalk-breakdown-row">
-              <span>Silová elektřina</span>
-              <span id="r-silova">—</span>
-            </div>
-            <div class="kalk-breakdown-row">
-              <span>Stálý měsíční plat (12×)</span>
-              <span id="r-stalat">—</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="kalk-comparison" id="kalk-comparison">
-          <div class="kalk-comparison-title">Srovnání se současným dodavatelem</div>
-          <div class="kalk-comparison-grid">
-            <div class="kalk-comp-box">
-              <div class="kalk-comp-label">Nyní platíte</div>
-              <div class="kalk-comp-val" id="c-ted">—</div>
-            </div>
-            <div class="kalk-comp-arrow">→</div>
-            <div class="kalk-comp-box kalk-comp-box-ffy">
-              <div class="kalk-comp-label">U FREE for YOU</div>
-              <div class="kalk-comp-val" id="c-ffy">—</div>
-            </div>
-          </div>
-          <div class="kalk-saving" id="kalk-saving"></div>
-        </div>
-
-        <div class="kalk-disclaimer">
-          Výpočet zahrnuje cenu silové elektřiny a stálý měsíční plat FREE for YOU. Distribuce, daně a ostatní regulované poplatky jsou stejné u všech dodavatelů a nejsou součástí výpočtu — ty platíte vždy navíc stejně.
-        </div>
-
-        <a href="index.html#final-cta" class="kalk-cta">Chci tuto nabídku →</a>
-
-      </div>
-
+    <div class="kalk-tabs-nav">
+      <button class="kalk-tab-btn active" data-tab="jednoducha">Jednoduchá kalkulačka</button>
+      <button class="kalk-tab-btn" data-tab="slozita">Přesná kalkulačka</button>
     </div>
+
+    <!-- JEDNODUCHÁ -->
+    <div class="kalk-tab-panel active" id="tab-jednoducha">
+      <div class="kalk-wide-inner">
+
+        <div class="kalk-form-row">
+
+          <div class="kalk-step">
+            <div class="kalk-step-label">Loňská roční spotřeba elektřiny</div>
+            <div class="kalk-input-row">
+              <input type="number" id="spotreba" class="kalk-input" placeholder="např. 3,5" min="0" max="1000" step="0.1">
+              <span class="kalk-input-unit">MWh / rok</span>
+            </div>
+            <div class="kalk-hint">Najdete ji na loňském vyúčtování. 1 MWh = 1 000 kWh</div>
+          </div>
+
+          <div class="kalk-step">
+            <div class="kalk-step-label">Vaše distribuční území</div>
+            <div class="kalk-pills" id="distrib-pills">
+              <button class="kalk-pill active" data-distrib="cez">ČEZ Distribuce</button>
+              <button class="kalk-pill" data-distrib="pre">PRE Distribuce</button>
+              <button class="kalk-pill" data-distrib="eon">E.ON (EG.D)</button>
+            </div>
+          </div>
+
+          <div class="kalk-step">
+            <div class="kalk-step-label">Váš odběr odpovídá</div>
+            <div class="kalk-tarify" id="tarif-pills">
+              <button class="kalk-tarif active" data-tarif="24">
+                <div class="kalk-tarif-name">Základní odběr</div>
+                <div class="kalk-tarif-desc">Svícení a spotřebiče, bez el. vytápění</div>
+                <div class="kalk-tarif-code">D01d / D02d</div>
+              </button>
+              <button class="kalk-tarif" data-tarif="aku8">
+                <div class="kalk-tarif-name">S elektrickým vařením</div>
+                <div class="kalk-tarif-desc">Svícení + sporák nebo trouba na elektřinu</div>
+                <div class="kalk-tarif-code">D25d / D26d / D27d</div>
+              </button>
+              <button class="kalk-tarif" data-tarif="aku16">
+                <div class="kalk-tarif-name">S vytápěním nebo ohřevem vody</div>
+                <div class="kalk-tarif-desc">Přímotop, tepelné čerpadlo nebo el. bojler</div>
+                <div class="kalk-tarif-code">D35d / D45d / D56d / D57d</div>
+              </button>
+            </div>
+          </div>
+
+          <div class="kalk-step kalk-step-optional">
+            <div class="kalk-step-label">
+              Současná cena za elektřinu
+              <span class="kalk-optional-badge">volitelné — pro srovnání</span>
+            </div>
+            <div class="kalk-input-row">
+              <input type="number" id="soucasna-cena" class="kalk-input" placeholder="např. 4 200" min="0" max="20000" step="10">
+              <span class="kalk-input-unit">Kč / MWh s DPH</span>
+            </div>
+            <div class="kalk-hint">Najdete ji na faktuře jako „cena za silovou elektřinu".</div>
+          </div>
+
+          <button class="kalk-submit" id="kalk-btn">Spočítat →</button>
+
+        </div>
+
+        <!-- Výsledek pod formulářem -->
+        <div class="kalk-result" id="kalk-result">
+          <div class="kalk-result-header">
+            <div class="kalk-result-title">Váš odhad u FREE for YOU</div>
+            <div class="kalk-result-note">Orientační výpočet. Přesná nabídka po kontaktu s námi.</div>
+          </div>
+
+          <div class="kalk-result-main-row">
+            <div class="kalk-result-box">
+              <div class="kalk-result-box-label">Roční náklad (silová elektřina + stálý plat)</div>
+              <div class="kalk-result-big" id="r-rocni">—</div>
+              <div class="kalk-result-sub" id="r-mesicni">—</div>
+            </div>
+            <div class="kalk-result-breakdown">
+              <div class="kalk-breakdown-row">
+                <span>Silová elektřina</span>
+                <span id="r-silova">—</span>
+              </div>
+              <div class="kalk-breakdown-row">
+                <span>Stálý měsíční plat (12 ×)</span>
+                <span id="r-stalat">—</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="kalk-comparison" id="kalk-comparison">
+            <div class="kalk-comparison-title">Srovnání se současným dodavatelem</div>
+            <div class="kalk-comparison-grid">
+              <div class="kalk-comp-box">
+                <div class="kalk-comp-label">Nyní platíte (odhad)</div>
+                <div class="kalk-comp-val" id="c-ted">—</div>
+              </div>
+              <div class="kalk-comp-arrow">→</div>
+              <div class="kalk-comp-box kalk-comp-box-ffy">
+                <div class="kalk-comp-label">U FREE for YOU</div>
+                <div class="kalk-comp-val" id="c-ffy">—</div>
+              </div>
+            </div>
+            <div class="kalk-saving" id="kalk-saving"></div>
+          </div>
+
+          <div class="kalk-disclaimer">
+            Výpočet zahrnuje cenu silové elektřiny a stálý měsíční plat FREE for YOU. Distribuce, daně a ostatní regulované poplatky jsou stejné u všech dodavatelů — ty platíte vždy navíc.
+          </div>
+
+          <a href="index.html#final-cta" class="kalk-cta">Chci tuto nabídku →</a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- PŘESNÁ KALKULAČKA -->
+    <div class="kalk-tab-panel" id="tab-slozita">
+      <div class="kalk-wide-inner">
+
+        <div class="kalk-form-row kalk-form-row-slozita">
+
+          <div class="kalk-step">
+            <div class="kalk-step-label">Distribuční území</div>
+            <div class="kalk-pills">
+              <button class="kalk-pill active" data-distrib2="cez">ČEZ Distribuce</button>
+              <button class="kalk-pill" data-distrib2="pre">PRE Distribuce</button>
+              <button class="kalk-pill" data-distrib2="eon">E.ON (EG.D)</button>
+            </div>
+          </div>
+
+          <div class="kalk-step">
+            <div class="kalk-step-label">Distribuční sazba</div>
+            <div class="kalk-pills kalk-pills-wrap">
+              <button class="kalk-pill active" data-sazba="D01d">D01d</button>
+              <button class="kalk-pill" data-sazba="D02d">D02d</button>
+              <button class="kalk-pill" data-sazba="D25d">D25d</button>
+              <button class="kalk-pill" data-sazba="D26d">D26d</button>
+              <button class="kalk-pill" data-sazba="D27d">D27d</button>
+              <button class="kalk-pill" data-sazba="D35d">D35d</button>
+              <button class="kalk-pill" data-sazba="D45d">D45d</button>
+              <button class="kalk-pill" data-sazba="D56d">D56d</button>
+              <button class="kalk-pill" data-sazba="D57d">D57d</button>
+              <button class="kalk-pill" data-sazba="D61d">D61d</button>
+            </div>
+          </div>
+
+          <div class="kalk-step">
+            <div class="kalk-step-label">Hlavní jistič</div>
+            <div class="kalk-pills kalk-pills-wrap">
+              <button class="kalk-pill active" data-jistic="10">do 3×10 A</button>
+              <button class="kalk-pill" data-jistic="16">do 3×16 A</button>
+              <button class="kalk-pill" data-jistic="20">do 3×20 A</button>
+              <button class="kalk-pill" data-jistic="25">do 3×25 A</button>
+              <button class="kalk-pill" data-jistic="32">do 3×32 A</button>
+              <button class="kalk-pill" data-jistic="40">do 3×40 A</button>
+              <button class="kalk-pill" data-jistic="50">do 3×50 A</button>
+              <button class="kalk-pill" data-jistic="63">do 3×63 A</button>
+            </div>
+          </div>
+
+          <div class="kalk-form-two-col">
+            <div class="kalk-step">
+              <div class="kalk-step-label">Spotřeba VT (vysoký tarif)</div>
+              <div class="kalk-input-row">
+                <input type="number" id="spotreba-vt" class="kalk-input" placeholder="např. 2,5" min="0" step="0.1">
+                <span class="kalk-input-unit">MWh / rok</span>
+              </div>
+            </div>
+            <div class="kalk-step">
+              <div class="kalk-step-label">Spotřeba NT (nízký tarif)</div>
+              <div class="kalk-input-row">
+                <input type="number" id="spotreba-nt" class="kalk-input" placeholder="např. 1,2" min="0" step="0.1">
+                <span class="kalk-input-unit">MWh / rok</span>
+              </div>
+              <div class="kalk-hint">Vyplňte jen u dvoutarifní sazby.</div>
+            </div>
+          </div>
+
+          <div class="kalk-step kalk-step-optional">
+            <div class="kalk-step-label">
+              Současná cena VT
+              <span class="kalk-optional-badge">volitelné — pro srovnání</span>
+            </div>
+            <div class="kalk-input-row">
+              <input type="number" id="s2-cena-vt" class="kalk-input" placeholder="např. 4 200" min="0" step="10">
+              <span class="kalk-input-unit">Kč / MWh s DPH</span>
+            </div>
+          </div>
+
+          <button class="kalk-submit" id="kalk-btn2">Spočítat →</button>
+
+        </div>
+
+        <div class="kalk-result" id="kalk-result2">
+          <div class="kalk-result-header">
+            <div class="kalk-result-title">Váš odhad u FREE for YOU</div>
+            <div class="kalk-result-note">Orientační výpočet včetně distribuce dle sazby a jističe.</div>
+          </div>
+          <div class="kalk-result-main-row">
+            <div class="kalk-result-box">
+              <div class="kalk-result-box-label">Roční náklad celkem (silová + stálý plat)</div>
+              <div class="kalk-result-big" id="r2-rocni">—</div>
+              <div class="kalk-result-sub" id="r2-mesicni">—</div>
+            </div>
+            <div class="kalk-result-breakdown">
+              <div class="kalk-breakdown-row"><span>Silová elektřina VT</span><span id="r2-vt">—</span></div>
+              <div class="kalk-breakdown-row"><span>Silová elektřina NT</span><span id="r2-nt">—</span></div>
+              <div class="kalk-breakdown-row"><span>Stálý měsíční plat (12 ×)</span><span id="r2-stalat">—</span></div>
+            </div>
+          </div>
+          <div class="kalk-comparison" id="kalk-comparison2" style="display:none">
+            <div class="kalk-comparison-title">Srovnání se současným dodavatelem</div>
+            <div class="kalk-comparison-grid">
+              <div class="kalk-comp-box"><div class="kalk-comp-label">Nyní platíte (odhad)</div><div class="kalk-comp-val" id="c2-ted">—</div></div>
+              <div class="kalk-comp-arrow">→</div>
+              <div class="kalk-comp-box kalk-comp-box-ffy"><div class="kalk-comp-label">U FREE for YOU</div><div class="kalk-comp-val" id="c2-ffy">—</div></div>
+            </div>
+            <div class="kalk-saving" id="kalk-saving2"></div>
+          </div>
+          <div class="kalk-disclaimer">Výpočet zahrnuje cenu silové elektřiny a stálý měsíční plat. Distribuce se liší dle sazby a jističe a je zobrazena zvlášť.</div>
+          <a href="index.html#final-cta" class="kalk-cta">Chci tuto nabídku →</a>
+        </div>
+
+      </div>
+    </div>
+
   </section>
 
-</main>
-
-<!-- FOOTER -->
-<footer class="site-footer">
-
-  <div class="footer-main">
-    <div class="footer-inner">
-
-      <!-- Logo + tagline + social -->
-      <div class="footer-brand">
-        <a href="index.html" class="footer-logo">
-          <img src="logo-white.svg" alt="FREE for YOU energie" class="footer-logo-img">
-        </a>
-        <p class="footer-tagline">Energie, která patří lidem.<br>Budujeme vlastní zdroje, aby cena dlouhodobě klesala.</p>
-        <div class="footer-social">
-          <a href="#" class="footer-social-link" aria-label="Facebook">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-          </a>
-          <a href="#" class="footer-social-link" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-          </a>
-          <a href="#" class="footer-social-link" aria-label="YouTube">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.96-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="white"/></svg>
-          </a>
-          <a href="#" class="footer-social-link" aria-label="LinkedIn">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-          </a>
-        </div>
-      </div>
-
-      <!-- Nav columns -->
-      <div class="footer-nav">
-
-        <div class="footer-col">
-          <div class="footer-col-title">Pro zákazníky</div>
-          <ul class="footer-links">
-            <li><a href="ceny-aktualni-nabidka.html">Elektřina</a></li>
-            <li><a href="ceny-aktualni-nabidka.html">Plyn</a></li>
-            <li><a href="proc-slevy-za-doporuceni.html">Slevy na energie</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-col">
-          <div class="footer-col-title">Fotovoltaika</div>
-          <ul class="footer-links">
-            <li><a href="jak-vykup-elektriny.html">Výkup přebytků</a></li>
-            <li><a href="jak-sdileni-elektriny.html">Sdílení elektřiny</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-col">
-          <div class="footer-col-title">O nás</div>
-          <ul class="footer-links">
-            <li><a href="proc-nas-pribeh.html">Naše vize</a></li>
-            <li><a href="proc-nas-pribeh.html">Náš tým</a></li>
-            <li><a href="proc-reference.html">Reference zákazníků</a></li>
-            <li><a href="#">Pro média</a></li>
-            <li><a href="#">Případové studie</a></li>
-            <li><a href="#">Obchodní podmínky</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-col">
-          <div class="footer-col-title">Zákaznická podpora</div>
-          <ul class="footer-links">
-            <li><a href="podpora-kontakty.html">Kontakt</a></li>
-            <li><a href="podpora-faq.html">Časté dotazy</a></li>
-            <li><a href="podpora-dokumenty.html">Dokumenty ke stažení</a></li>
-            <li><a href="jak-energobanking.html">Jak funguje Energobanking</a></li>
-            <li><a href="podpora-blog.html">Blog</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-col footer-col-contact">
-          <div class="footer-col-title">Kontakt</div>
-          <ul class="footer-contact-list">
-            <li>
-              <span class="footer-contact-label">E-mail</span>
-              <a href="mailto:info@freeforyou.cz">info@freeforyou.cz</a>
-            </li>
-            <li>
-              <span class="footer-contact-label">Telefon</span>
-              <a href="tel:+420227072290">+420 227 072 290</a>
-            </li>
-            <li>
-              <span class="footer-contact-label">Adresa</span>
-              <span>Českomoravská 2255/12a<br>190 00 Praha 9 – Libeň</span>
-            </li>
-          </ul>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- Bottom bar -->
-  <div class="footer-bottom">
-    <div class="footer-bottom-inner">
-      <div class="footer-bottom-left">
-        © FREE for YOU s.r.o. — Regulovaný obchodník s energiemi, licence ERÚ
-      </div>
-      <div class="footer-bottom-right">
-        <a href="#">Obchodní podmínky</a>
-        <a href="#">Ochrana osobních údajů</a>
-        <a href="#">Cookies</a>
-      </div>
-    </div>
-  </div>
-
-</footer>
-
-<script>
-
-  function toggleFaq(btn) {
-    const item = btn.closest('.faq-item');
-    const isOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item.open').forEach(el => {
-      el.classList.remove('open');
-      const b = el.querySelector('.faq-q');
-      if (b) b.setAttribute('aria-expanded', 'false');
-    });
-    if (!isOpen) {
-      item.classList.add('open');
-      btn.setAttribute('aria-expanded', 'true');
-    }
-  }
-
-  // ── Mega menu ──
-  const backdrop = document.getElementById('mega-backdrop');
-  const panel    = document.getElementById('mega-panel');
-  const tabs     = Array.from(document.querySelectorAll('.nav-tab'));
-  const cols     = Array.from(document.querySelectorAll('.mega-col'));
-
-  let closeTimer = null;
-  let curIdx = -1;
-
-  function open(idx) {
-    clearTimeout(closeTimer);
-    closeTimer = null;
-    if (curIdx !== idx) {
-      curIdx = idx;
-      cols.forEach((c, i) => c.classList.toggle('is-active', i === idx));
-      tabs.forEach((t, i) => t.classList.toggle('is-hovered', i === idx));
-    }
-    panel.classList.add('is-open');
-    backdrop.classList.add('visible');
-  }
-
-  function scheduleClose() {
-    closeTimer = setTimeout(close, 120);
-  }
-
-  function close() {
-    curIdx = -1;
-    panel.classList.remove('is-open');
-    backdrop.classList.remove('visible');
-    tabs.forEach(t => t.classList.remove('is-hovered'));
-    cols.forEach(c => c.classList.remove('is-active'));
-  }
-
-  tabs.forEach((tab, idx) => {
-    tab.addEventListener('mouseenter', () => open(idx));
-    tab.addEventListener('mouseleave', scheduleClose);
-  });
-
-  // Najetí přímo do sloupce aktivuje jeho záložku nahoře
-  cols.forEach((col, idx) => {
-    col.addEventListener('mouseenter', () => open(idx));
-  });
-
-  panel.addEventListener('mouseenter', () => { clearTimeout(closeTimer); closeTimer = null; });
-  panel.addEventListener('mouseleave', scheduleClose);
-
-  backdrop.addEventListener('click', close);
-  document.querySelectorAll('.nav-anchor').forEach(l => l.addEventListener('click', close));
-  // ── Mobile hamburger ──
-  const hamburger = document.getElementById('nav-hamburger');
-  const drawer    = document.getElementById('mobile-drawer');
-  const overlay   = document.getElementById('mobile-overlay');
-
-  function openDrawer() {
-    hamburger.classList.add('is-open');
-    drawer.classList.add('is-open');
-    overlay.classList.add('is-open');
-    drawer.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeDrawer() {
-    hamburger.classList.remove('is-open');
-    drawer.classList.remove('is-open');
-    overlay.classList.remove('is-open');
-    drawer.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-  }
-
-  hamburger.addEventListener('click', () => {
-    drawer.classList.contains('is-open') ? closeDrawer() : openDrawer();
-  });
-
-  overlay.addEventListener('click', closeDrawer);
-
-  // Close on any link click inside drawer
-  drawer.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', closeDrawer);
-  });
-
-  // ── Theme toggle ──
-  const root = document.documentElement;
-  const themeBtn = document.getElementById('theme-toggle');
-  const saved = localStorage.getItem('ffy-theme');
-  if (saved === 'light') root.setAttribute('data-theme', 'light');
-
-  if (themeBtn) {
-    themeBtn.addEventListener('click', () => {
-      const isLight = root.getAttribute('data-theme') === 'light';
-      root.setAttribute('data-theme', isLight ? 'dark' : 'light');
-      localStorage.setItem('ffy-theme', isLight ? 'dark' : 'light');
-    });
-  }
-
+</main
   // ── Kalkulačka ──
-
-  // Ceníkové sazby (s DPH)
   const CENY = {
     silova: {
-      '24':    3386.79,  // D01d/D02d — základní odběr
-      'aku8':  3386.79,  // D25d/D26d/D27d — vaření
-      'aku16': 3471.49,  // D35d–D57d — vytápění/ohřev
+      '24':    3386.79,
+      'D01d':  3386.79, 'D02d': 3386.79, 'D61d': 3386.79,
+      'aku8':  3386.79,
+      'D25d':  3386.79, 'D26d': 3386.79, 'D27d': 3386.79,
+      'aku16': 3471.49,
+      'D35d':  3471.49, 'D45d': 3471.49, 'D56d': 3471.49, 'D57d': 3471.49,
     },
-    stalat: 163.35  // Kč/měsíc, stejný pro všechny
+    stalat: 163.35
   };
 
-  // Distribuce nerozlišujeme — silová cena je stejná pro ČEZ/PRE/EON
+  function formatKc(v) { return Math.round(v).toLocaleString('cs-CZ') + ' Kč'; }
 
-  let activeTarif  = '24';
-  let activeDistrib = 'cez';
-
-  // Tarif pills
-  document.querySelectorAll('.kalk-tarif').forEach(btn => {
+  // ── Tabs ──
+  document.querySelectorAll('.kalk-tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.kalk-tarif').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.kalk-tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.kalk-tab-panel').forEach(p => p.classList.remove('active'));
       btn.classList.add('active');
-      activeTarif = btn.dataset.tarif;
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
     });
   });
 
-  // Distributor pills
-  document.querySelectorAll('.kalk-pill').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.kalk-pill').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      activeDistrib = btn.dataset.distrib;
-    });
-  });
-
-  function formatKc(val) {
-    return Math.round(val).toLocaleString('cs-CZ') + ' Kč';
-  }
+  // ── Jednoduchá ── pill state
+  let activeTarif = '24', activeDistrib = 'cez';
+  document.querySelectorAll('[data-distrib]').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('[data-distrib]').forEach(x => x.classList.remove('active'));
+    b.classList.add('active'); activeDistrib = b.dataset.distrib;
+  }));
+  document.querySelectorAll('[data-tarif]').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('[data-tarif]').forEach(x => x.classList.remove('active'));
+    b.classList.add('active'); activeTarif = b.dataset.tarif;
+  }));
 
   document.getElementById('kalk-btn').addEventListener('click', () => {
     const spotreba = parseFloat(document.getElementById('spotreba').value);
     const soucasnaCena = parseFloat(document.getElementById('soucasna-cena').value);
+    if (!spotreba || spotreba <= 0) { document.getElementById('spotreba').focus(); return; }
 
-    if (!spotreba || spotreba <= 0) {
-      document.getElementById('spotreba').focus();
-      document.getElementById('spotreba').style.borderColor = 'rgba(231,69,69,0.5)';
-      return;
-    }
-    document.getElementById('spotreba').style.borderColor = '';
-
-    const spotrebaMWh = spotreba / 1000;
     const cenaSilova  = CENY.silova[activeTarif];
-    const nakladSilova = spotrebaMWh * cenaSilova;
+    const nakladSilova = spotreba * cenaSilova;
     const nakladStalat = CENY.stalat * 12;
-    const nakladCelkem = nakladSilova + nakladStalat;
+    const total = nakladSilova + nakladStalat;
 
-    // Zobraz výsledek
-    document.getElementById('r-rocni').textContent   = formatKc(nakladCelkem) + ' / rok';
-    document.getElementById('r-mesicni').textContent  = formatKc(nakladCelkem / 12) + ' / měsíc';
+    document.getElementById('r-rocni').textContent   = formatKc(total) + ' / rok';
+    document.getElementById('r-mesicni').textContent  = formatKc(total / 12) + ' / měsíc';
     document.getElementById('r-silova').textContent   = formatKc(nakladSilova);
     document.getElementById('r-stalat').textContent   = formatKc(nakladStalat);
 
-    // Srovnání
-    const comparison = document.getElementById('kalk-comparison');
-    const saving = document.getElementById('kalk-saving');
+    const comp = document.getElementById('kalk-comparison');
     if (soucasnaCena && soucasnaCena > 0) {
-      const nakladNyni = (spotrebaMWh * soucasnaCena) + nakladStalat;
-      const rozdil = nakladNyni - nakladCelkem;
-      document.getElementById('c-ted').textContent = formatKc(nakladNyni) + ' / rok';
-      document.getElementById('c-ffy').textContent = formatKc(nakladCelkem) + ' / rok';
-      if (rozdil > 0) {
-        saving.innerHTML = '<span class="saving-positive">Ušetříte přibližně ' + formatKc(rozdil) + ' ročně</span>';
-      } else if (rozdil < 0) {
-        saving.innerHTML = '<span class="saving-neutral">U současného dodavatele platíte přibližně o ' + formatKc(Math.abs(rozdil)) + ' méně ročně</span>';
-      } else {
-        saving.innerHTML = '<span class="saving-neutral">Ceny jsou přibližně stejné</span>';
-      }
-      comparison.style.display = 'block';
-    } else {
-      comparison.style.display = 'none';
-    }
+      const nyni = spotreba * soucasnaCena + nakladStalat;
+      const rozdil = nyni - total;
+      document.getElementById('c-ted').textContent = formatKc(nyni) + ' / rok';
+      document.getElementById('c-ffy').textContent = formatKc(total) + ' / rok';
+      document.getElementById('kalk-saving').innerHTML = rozdil > 0
+        ? '<span class="saving-positive">Ušetříte přibližně ' + formatKc(rozdil) + ' ročně</span>'
+        : '<span class="saving-neutral">U současného dodavatele platíte přibližně o ' + formatKc(Math.abs(rozdil)) + ' méně ročně</span>';
+      comp.style.display = 'block';
+    } else { comp.style.display = 'none'; }
 
-    // Scroll to result
-    document.getElementById('kalk-result').style.display = 'block';
-    document.getElementById('kalk-result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    const res = document.getElementById('kalk-result');
+    res.style.display = 'block';
+    res.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   });
+  document.getElementById('spotreba').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('kalk-btn').click(); });
 
-  // Enter key
-  document.getElementById('spotreba').addEventListener('keydown', e => {
-    if (e.key === 'Enter') document.getElementById('kalk-btn').click();
+  // ── Přesná kalkulačka ── pill state
+  let activeSazba = 'D01d', activeJistic = '10', activeDistrib2 = 'cez';
+  document.querySelectorAll('[data-distrib2]').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('[data-distrib2]').forEach(x => x.classList.remove('active'));
+    b.classList.add('active'); activeDistrib2 = b.dataset.distrib2;
+  }));
+  document.querySelectorAll('[data-sazba]').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('[data-sazba]').forEach(x => x.classList.remove('active'));
+    b.classList.add('active'); activeSazba = b.dataset.sazba;
+  }));
+  document.querySelectorAll('[data-jistic]').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('[data-jistic]').forEach(x => x.classList.remove('active'));
+    b.classList.add('active'); activeJistic = b.dataset.jistic;
+  }));
+
+  document.getElementById('kalk-btn2').addEventListener('click', () => {
+    const vt = parseFloat(document.getElementById('spotreba-vt').value) || 0;
+    const nt = parseFloat(document.getElementById('spotreba-nt').value) || 0;
+    const cenaVT = parseFloat(document.getElementById('s2-cena-vt').value);
+    if (!vt && !nt) { document.getElementById('spotreba-vt').focus(); return; }
+
+    const cenaSilova = CENY.silova[activeSazba] || 3386.79;
+    const nakladVT   = vt * cenaSilova;
+    const nakladNT   = nt * cenaSilova;
+    const nakladStalat = CENY.stalat * 12;
+    const total = nakladVT + nakladNT + nakladStalat;
+
+    document.getElementById('r2-rocni').textContent  = formatKc(total) + ' / rok';
+    document.getElementById('r2-mesicni').textContent = formatKc(total / 12) + ' / měsíc';
+    document.getElementById('r2-vt').textContent      = vt  ? formatKc(nakladVT) : '—';
+    document.getElementById('r2-nt').textContent      = nt  ? formatKc(nakladNT) : '—';
+    document.getElementById('r2-stalat').textContent  = formatKc(nakladStalat);
+
+    const comp2 = document.getElementById('kalk-comparison2');
+    if (cenaVT && cenaVT > 0) {
+      const nyni = vt * cenaVT + nt * cenaVT + nakladStalat;
+      const rozdil = nyni - total;
+      document.getElementById('c2-ted').textContent = formatKc(nyni) + ' / rok';
+      document.getElementById('c2-ffy').textContent = formatKc(total) + ' / rok';
+      document.getElementById('kalk-saving2').innerHTML = rozdil > 0
+        ? '<span class="saving-positive">Ušetříte přibližně ' + formatKc(rozdil) + ' ročně</span>'
+        : '<span class="saving-neutral">Ceny jsou srovnatelné nebo u nás o ' + formatKc(Math.abs(rozdil)) + ' vyšší</span>';
+      comp2.style.display = 'block';
+    } else { comp2.style.display = 'none'; }
+
+    const res2 = document.getElementById('kalk-result2');
+    res2.style.display = 'block';
+    res2.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   });
-
-</script>
-
-</body>
-</html>
+>
