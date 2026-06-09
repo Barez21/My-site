@@ -1629,6 +1629,156 @@
 
   /* drawer visible on all sizes via visibility, JS controls it */
 
+  /* ── Subpage shared ── */
+  .subpage-main { min-height: 100vh; background: var(--ink); padding-top: 64px; }
+  .subpage-header {
+    background: linear-gradient(160deg, #0A141E 0%, #0E1E2F 60%, #18314E 100%);
+    padding: 48px 2rem 44px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .subpage-header-inner { width: min(860px, 100%); margin: 0 auto; padding: 0; }
+  .subpage-breadcrumb {
+    font-size: 0.7rem; font-weight: 500; letter-spacing: 0.12em;
+    text-transform: uppercase; color: rgba(255,255,255,0.3);
+    margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;
+  }
+  .subpage-breadcrumb a { color: rgba(255,255,255,0.3); text-decoration: none; }
+  .subpage-breadcrumb a:hover { color: var(--accent); }
+  .subpage-breadcrumb span { opacity: 0.3; }
+  .subpage-h1 {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 700; color: white;
+    line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 0.5rem;
+  }
+  .subpage-lead {
+    font-size: 0.95rem; color: rgba(255,255,255,0.5);
+    font-weight: 300; line-height: 1.65; max-width: 560px;
+  }
+
+  /* ── OZE section ── */
+  .oze-section { padding: 52px 0 80px; }
+  .oze-inner {
+    width: min(760px, 100%);
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .oze-blocks {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .oze-block {
+    padding: 2.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .oze-block:last-child { border-bottom: none; }
+
+  .oze-block-label {
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 1.25rem;
+  }
+
+  .oze-block-content {
+    display: flex; flex-direction: column; gap: 0.75rem;
+  }
+  .oze-block-content p {
+    font-size: 0.97rem; color: rgba(255,255,255,0.7);
+    font-weight: 300; line-height: 1.75; margin: 0;
+    max-width: 620px;
+  }
+
+  /* Stat */
+  .oze-stat {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 1.75rem;
+    padding: 1.25rem 1.5rem;
+    background: rgba(69,231,163,0.06);
+    border: 1px solid rgba(69,231,163,0.15);
+    border-radius: 12px;
+    max-width: 480px;
+  }
+  .oze-stat-num {
+    font-size: 2.8rem; font-weight: 700; color: var(--accent);
+    line-height: 1; letter-spacing: -0.02em; flex-shrink: 0;
+  }
+  .oze-stat-label {
+    font-size: 0.85rem; color: rgba(255,255,255,0.45);
+    font-weight: 300; line-height: 1.55;
+  }
+
+  /* Three steps */
+  .oze-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 1.5rem;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    overflow: hidden;
+    max-width: 620px;
+  }
+  .oze-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    transition: background .15s;
+  }
+  .oze-step:last-child { border-bottom: none; }
+  .oze-step:hover { background: rgba(255,255,255,0.03); }
+
+  .oze-step-n {
+    width: 28px; height: 28px; min-width: 28px;
+    border-radius: 50%;
+    background: rgba(69,231,163,0.12);
+    border: 1px solid rgba(69,231,163,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.78rem; font-weight: 700; color: var(--accent);
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .oze-step:nth-child(2) .oze-step-n { opacity: 0.7; }
+  .oze-step:nth-child(3) .oze-step-n { opacity: 0.45; }
+
+  .oze-step-title {
+    font-size: 0.92rem; font-weight: 600; color: rgba(255,255,255,0.8);
+    margin-bottom: 0.25rem;
+  }
+  .oze-step-desc {
+    font-size: 0.84rem; color: rgba(255,255,255,0.4);
+    font-weight: 300; line-height: 1.6;
+  }
+
+  /* Status block */
+  .oze-block-status .oze-block-content p { color: rgba(255,255,255,0.55); }
+
+  .oze-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 1.25rem;
+    background: rgba(69,231,163,0.08);
+    border: 1px solid rgba(69,231,163,0.2);
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-size: 0.78rem; font-weight: 600; color: var(--accent);
+    letter-spacing: 0.04em;
+  }
+  .oze-status-dot {
+    width: 7px; height: 7px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @media (max-width: 500px) {
+    .oze-stat { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+  }
+
 </style>
 </head>
 <body>
@@ -1802,15 +1952,90 @@
 <div class="mobile-overlay" id="mobile-overlay"></div>
 
 <!-- SUBPAGE CONTENT -->
-<main class="subpage-hero">
-  <div class="subpage-breadcrumb">
-    <a href="index.html">Domů</a><span>/</span>Proč FREE for YOU?
-  </div>
-  <h3 class="subpage-h3">Investice do obnovitelných zdrojů</h3>
-  <div class="subpage-placeholder">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-    Obsah stránky bude doplněn
-  </div>
+<main class="subpage-main">
+
+  <section class="subpage-header">
+    <div class="subpage-header-inner">
+      <div class="subpage-breadcrumb">
+        <a href="index.html">Domů</a><span>/</span>Proč FREE for YOU?
+      </div>
+      <h1 class="subpage-h1">Zisk, který pracuje dál.</h1>
+      <p class="subpage-lead">Část toho, co vyděláme, jde rovnou zpátky do vlastní výroby energie. Tady je proč — a co to znamená pro vaši cenu.</p>
+    </div>
+  </section>
+
+  <section class="oze-section">
+    <div class="oze-inner">
+
+      <div class="oze-blocks">
+
+        <div class="oze-block">
+          <div class="oze-block-label">Proč zdroje</div>
+          <div class="oze-block-content">
+            <p>Věříme, že každý by měl mít ideálně vlastní zdroj energie. Ne jako luxus, ale jako samozřejmost.</p>
+            <p>Energie nakoupená na trhu závisí na tom, co trh zrovna dělá. Energie vyrobená vlastním zdrojem závisí na slunci. Když část spotřeby pokryjeme sami, trh nás ovlivňuje méně — a to se postupně projeví na ceně.</p>
+          </div>
+        </div>
+
+        <div class="oze-block">
+          <div class="oze-block-label">Jak to funguje</div>
+          <div class="oze-block-content">
+            <p>Ve stanovách FREE for YOU je zakotveno, že padesát procent zisku každý rok jde do výstavby solárních elektráren.</p>
+            <p>Není to dobrovolné gesto. Je to pravidlo, které platí bez ohledu na to, co se děje na trhu.</p>
+          </div>
+          <div class="oze-stat">
+            <div class="oze-stat-num">50 %</div>
+            <div class="oze-stat-label">zisku každý rok do vlastních zdrojů — zakotveno ve stanovách</div>
+          </div>
+        </div>
+
+        <div class="oze-block">
+          <div class="oze-block-label">Kdo má z výroby prospěch</div>
+          <div class="oze-block-content">
+            <p>Energie z vlastních zdrojů se rozděluje ve třech krocích.</p>
+          </div>
+          <div class="oze-steps">
+            <div class="oze-step">
+              <div class="oze-step-n">1</div>
+              <div class="oze-step-body">
+                <div class="oze-step-title">Ten, u koho zdroj stojí</div>
+                <div class="oze-step-desc">Za zvýhodněnou cenu dostane energii zákazník, u kterého zdroj stojí — jako poděkování za to, že svůj prostor sdílí.</div>
+              </div>
+            </div>
+            <div class="oze-step">
+              <div class="oze-step-n">2</div>
+              <div class="oze-step-body">
+                <div class="oze-step-title">Podle Proudíků</div>
+                <div class="oze-step-desc">Zbytek se rozdělí podle věrnostního systému, který odráží délku a objem odběru. Čím déle jste s námi, tím víc.</div>
+              </div>
+            </div>
+            <div class="oze-step">
+              <div class="oze-step-n">3</div>
+              <div class="oze-step-body">
+                <div class="oze-step-title">Rovným dílem všem</div>
+                <div class="oze-step-desc">Pokud ještě něco zbyde, dostane stejný díl každý zákazník FREE for YOU. Žádné výjimky.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="oze-block oze-block-status">
+          <div class="oze-block-label">Kde jsme teď</div>
+          <div class="oze-block-content">
+            <p>První vlastní zdroj se aktuálně realizuje. Jsou rozjednané tři lokality — na jedné z nich brzy vyroste první solární elektrárna FREE for YOU.</p>
+            <p>Jakmile bude místo potvrzené, dáme vědět.</p>
+          </div>
+          <div class="oze-status-badge">
+            <div class="oze-status-dot"></div>
+            V realizaci
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
 </main>
 
 <!-- FOOTER -->
