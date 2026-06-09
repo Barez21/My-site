@@ -1629,6 +1629,260 @@
 
   /* drawer visible on all sizes via visibility, JS controls it */
 
+  /* ── Subpage shared ── */
+  .subpage-main { min-height: 100vh; background: var(--ink); padding-top: 64px; }
+  .subpage-header {
+    background: linear-gradient(160deg, #0A141E 0%, #0E1E2F 60%, #18314E 100%);
+    padding: 48px 2rem 44px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .subpage-header-inner { max-width: 1060px; margin: 0 auto; }
+  .subpage-breadcrumb {
+    font-size: 0.7rem; font-weight: 500; letter-spacing: 0.12em;
+    text-transform: uppercase; color: rgba(255,255,255,0.3);
+    margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;
+  }
+  .subpage-breadcrumb a { color: rgba(255,255,255,0.3); text-decoration: none; }
+  .subpage-breadcrumb a:hover { color: var(--accent); }
+  .subpage-breadcrumb span { opacity: 0.3; }
+  .subpage-h1 {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 700; color: white;
+    line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 0.5rem;
+  }
+  .subpage-lead {
+    font-size: 0.95rem; color: rgba(255,255,255,0.5);
+    font-weight: 300; line-height: 1.65; max-width: 580px;
+  }
+
+  /* ── Slevy section ── */
+  .slevy-section { padding: 52px 2rem 80px; }
+  .slevy-inner { max-width: 1060px; margin: 0 auto; }
+
+  /* How it works steps */
+  .slevy-how {
+    margin-bottom: 3.5rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px;
+    padding: 2rem 2.5rem;
+  }
+  .slevy-how-title {
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem;
+  }
+  .slevy-steps {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    align-items: start;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+  .slevy-step {
+    display: flex; align-items: flex-start; gap: 0.85rem;
+  }
+  .slevy-step-num {
+    width: 32px; height: 32px; min-width: 32px;
+    background: var(--accent); color: var(--navy-dark);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem; font-weight: 700; flex-shrink: 0; margin-top: 1px;
+  }
+  .slevy-step-title {
+    font-size: 0.9rem; font-weight: 600; color: white; margin-bottom: 0.25rem;
+  }
+  .slevy-step-desc {
+    font-size: 0.82rem; color: rgba(255,255,255,0.45); font-weight: 300; line-height: 1.55;
+  }
+  .slevy-step-arrow {
+    font-size: 1.1rem; color: rgba(255,255,255,0.15); flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    padding-top: 6px;
+  }
+  .slevy-note {
+    font-size: 0.82rem; color: rgba(255,255,255,0.3); font-weight: 300;
+    border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1rem; margin: 0;
+  }
+
+  /* Accrual explanation */
+  .slevy-accrual {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .slevy-accrual-title {
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: rgba(255,255,255,0.3);
+    margin-bottom: 0.6rem;
+  }
+  .slevy-accrual-text {
+    font-size: 0.85rem; color: rgba(255,255,255,0.5);
+    font-weight: 300; line-height: 1.65; margin-bottom: 1rem;
+  }
+  .slevy-accrual-example {
+    display: flex; align-items: center; gap: 1rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px; padding: 0.9rem 1.25rem;
+    margin-bottom: 0.85rem; flex-wrap: wrap;
+  }
+  .sae-item { display: flex; flex-direction: column; gap: 0.15rem; }
+  .sae-label {
+    font-size: 0.68rem; color: rgba(255,255,255,0.25);
+    font-weight: 400; text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .sae-val { font-size: 1rem; font-weight: 700; color: white; }
+  .sae-val.accent { color: var(--accent); }
+  .sae-divider {
+    font-size: 0.78rem; color: rgba(255,255,255,0.2);
+    font-weight: 300; white-space: nowrap;
+  }
+  .slevy-accrual-note {
+    font-size: 0.78rem; color: rgba(255,255,255,0.28);
+    font-weight: 300; line-height: 1.55; margin: 0;
+  }
+  .slevy-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin-bottom: 2.5rem;
+  }
+
+  .slevy-col-title {
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 0.65rem;
+  }
+  .slevy-col-desc {
+    font-size: 0.85rem; color: rgba(255,255,255,0.4); font-weight: 300;
+    line-height: 1.6; margin-bottom: 1.25rem;
+  }
+
+  /* Table */
+  .slevy-table { border-radius: 12px; overflow: hidden; }
+  .slevy-table-row {
+    display: grid; grid-template-columns: 60px 1fr 90px;
+    align-items: center; padding: 0.7rem 1rem; gap: 0.5rem;
+  }
+  .slevy-table-head {
+    font-size: 0.62rem; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .slevy-table-row:not(.slevy-table-head) {
+    font-size: 0.88rem; color: rgba(255,255,255,0.65); font-weight: 300;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    background: rgba(255,255,255,0.02);
+    transition: background .12s;
+  }
+  .slevy-table-row:not(.slevy-table-head):hover { background: rgba(255,255,255,0.05); }
+  .slevy-table-row:last-child { border-bottom: none; }
+
+  .st-badge {
+    font-size: 0.72rem; font-weight: 700; color: rgba(255,255,255,0.3);
+  }
+  .st-1 .st-badge { color: var(--accent); }
+  .st-2 .st-badge { color: rgba(69,231,163,0.7); }
+  .st-3 .st-badge { color: rgba(69,231,163,0.5); }
+  .st-4 .st-badge { color: rgba(69,231,163,0.35); }
+  .st-5 .st-badge { color: rgba(69,231,163,0.25); }
+
+  .st-amount { font-weight: 600; color: white; text-align: right; }
+  .st-1 .st-amount { color: var(--accent); }
+
+  /* Infographic */
+  .slevy-infographic {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+  .slevy-svg { width: 100%; height: auto; display: block; padding: 1rem 0.5rem 0; }
+
+  /* Legend */
+  .slevy-legend {
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .slevy-legend-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.82rem;
+  }
+  .slevy-legend-dot {
+    width: 10px; height: 10px; min-width: 10px;
+    border-radius: 50%; flex-shrink: 0;
+  }
+  .dot-you { background: #44e6a3; }
+  .dot-1   { background: rgba(69,231,163,0.5); border: 1.5px solid #44e6a3; }
+  .dot-2   { background: rgba(69,231,163,0.08); border: 1.5px solid rgba(69,231,163,0.35); }
+  .slevy-legend-label { color: rgba(255,255,255,0.5); font-weight: 300; flex: 1; }
+  .slevy-legend-sep { color: rgba(255,255,255,0.2); font-size: 0.75rem; }
+  .slevy-legend-val { color: rgba(255,255,255,0.45); font-weight: 400; white-space: nowrap; }
+  .slevy-legend-val.accent { color: var(--accent); font-weight: 600; }
+  .slevy-legend-val.accent-dim { color: rgba(69,231,163,0.65); font-weight: 600; }
+  .slevy-legend-total {
+    margin-top: 0.4rem;
+    padding-top: 0.65rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    font-size: 0.82rem; color: rgba(255,255,255,0.4); font-weight: 300;
+  }
+  .slevy-legend-total strong { color: var(--accent); font-weight: 700; }
+
+  /* Rules */
+  .slevy-rules {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px; padding: 1.25rem 1.5rem;
+  }
+  .slevy-rules-title {
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: rgba(255,255,255,0.3);
+    margin-bottom: 0.9rem;
+  }
+  .slevy-rules-list {
+    list-style: none; display: flex; flex-direction: column; gap: 0.55rem;
+  }
+  .slevy-rules-list li {
+    font-size: 0.84rem; color: rgba(255,255,255,0.5);
+    font-weight: 300; line-height: 1.5;
+    padding-left: 1rem; position: relative;
+  }
+  .slevy-rules-list li::before {
+    content: '–';
+    position: absolute; left: 0;
+    color: rgba(69,231,163,0.4);
+  }
+
+  /* CTA */
+  .slevy-cta-wrap {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 2rem; flex-wrap: wrap;
+    background: linear-gradient(135deg, rgba(69,231,163,0.07), rgba(33,68,112,0.15));
+    border: 1px solid rgba(69,231,163,0.15);
+    border-radius: 16px; padding: 1.75rem 2rem;
+  }
+  .slevy-cta-title {
+    font-size: 1.05rem; font-weight: 700; color: white; margin-bottom: 0.3rem;
+  }
+  .slevy-cta-desc {
+    font-size: 0.85rem; color: rgba(255,255,255,0.45); font-weight: 300;
+  }
+  .slevy-cta-btn {
+    background: var(--accent); color: var(--navy-dark);
+    padding: 11px 22px; border-radius: 8px;
+    font-size: 0.9rem; font-weight: 700; text-decoration: none;
+    white-space: nowrap; transition: opacity .15s;
+    flex-shrink: 0;
+  }
+  .slevy-cta-btn:hover { opacity: 0.85; }
+
+  @media (max-width: 860px) {
+    .slevy-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .slevy-steps { grid-template-columns: 1fr; }
+    .slevy-step-arrow { display: none; }
+    .slevy-cta-wrap { flex-direction: column; align-items: flex-start; }
+  }
+
 </style>
 </head>
 <body>
@@ -1802,15 +2056,260 @@
 <div class="mobile-overlay" id="mobile-overlay"></div>
 
 <!-- SUBPAGE CONTENT -->
-<main class="subpage-hero">
-  <div class="subpage-breadcrumb">
-    <a href="index.html">Domů</a><span>/</span>Proč FREE for YOU?
-  </div>
-  <h3 class="subpage-h3">Slevy za doporučení</h3>
-  <div class="subpage-placeholder">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-    Obsah stránky bude doplněn
-  </div>
+<main class="subpage-main">
+
+  <section class="subpage-header">
+    <div class="subpage-header-inner">
+      <div class="subpage-breadcrumb">
+        <a href="index.html">Domů</a><span>/</span>Proč FREE for YOU?
+      </div>
+      <h1 class="subpage-h1">Slevy za doporučení</h1>
+      <p class="subpage-lead">Když přivedete přítele, ušetříte oba. A když ten přítel přivede dalšího — ušetříte ještě víc. Systém je jednoduchý a průhledný.</p>
+    </div>
+  </section>
+
+  <!-- JAK TO FUNGUJE -->
+  <section class="slevy-section">
+    <div class="slevy-inner">
+
+      <div class="slevy-how">
+        <div class="slevy-how-title">Jak to funguje</div>
+        <div class="slevy-steps">
+          <div class="slevy-step">
+            <div class="slevy-step-num">1</div>
+            <div class="slevy-step-body">
+              <div class="slevy-step-title">Zaregistrujete se</div>
+              <div class="slevy-step-desc">Vytvoříte si přezdívku v Energobankingu. Ta slouží jako váš doporučovací kód.</div>
+            </div>
+          </div>
+          <div class="slevy-step-arrow">→</div>
+          <div class="slevy-step">
+            <div class="slevy-step-num">2</div>
+            <div class="slevy-step-body">
+              <div class="slevy-step-title">Doporučíte přítele</div>
+              <div class="slevy-step-desc">Přítel při registraci zadá vaši přezdívku. Tím se zařadí do vaší sítě.</div>
+            </div>
+          </div>
+          <div class="slevy-step-arrow">→</div>
+          <div class="slevy-step">
+            <div class="slevy-step-num">3</div>
+            <div class="slevy-step-body">
+              <div class="slevy-step-title">Sleva se načítá</div>
+              <div class="slevy-step-desc">Od 11. dne jeho odběru se vám začíná automaticky načítat sleva na vaší faktuře.</div>
+            </div>
+          </div>
+        </div>
+        <p class="slevy-note">Sleva se odečítá automaticky. Nemusíte o nic žádat. Vše vidíte v Energobankingu.</p>
+
+        <div class="slevy-accrual">
+          <div class="slevy-accrual-title">Jak se sleva načítá</div>
+          <p class="slevy-accrual-text">Sleva se nenačítá najednou — načítá se postupně, každý den, po dobu jednoho roku. Za každý den odběru vašeho přítele vám přibude 1/365 z roční předpokládané slevy.</p>
+          <div class="slevy-accrual-example">
+            <div class="sae-item">
+              <span class="sae-label">Roční sleva za přímého přítele</span>
+              <span class="sae-val">500 Kč</span>
+            </div>
+            <div class="sae-divider">÷ 365 dní</div>
+            <div class="sae-item">
+              <span class="sae-label">Načítá se každý den</span>
+              <span class="sae-val accent">≈ 1,37 Kč / den</span>
+            </div>
+          </div>
+          <p class="slevy-accrual-note">Sleva začíná nabíhat od 11. dne odběru. Na fakturu se odečítá průběžně — jakmile dosáhne minimálně 100 Kč.</p>
+        </div>
+      </div>
+
+      <!-- DVA SLOUPCE: slevy tabulka + vizuál sítě -->
+      <div class="slevy-grid">
+
+        <div class="slevy-col">
+          <div class="slevy-col-title">Sleva za každou novou smlouvu</div>
+          <p class="slevy-col-desc">Za každého přítele — a každého přítele vašeho přítele — získáváte slevu za uzavřenou smlouvu. Funguje to až do 5 stupňů doporučení.</p>
+
+          <div class="slevy-table">
+            <div class="slevy-table-row slevy-table-head">
+              <span>Stupeň</span>
+              <span>Kdo to je</span>
+              <span>Sleva / smlouva</span>
+            </div>
+            <div class="slevy-table-row st-1">
+              <span class="st-badge">1.</span>
+              <span>Váš přímý přítel</span>
+              <span class="st-amount">500 Kč</span>
+            </div>
+            <div class="slevy-table-row st-2">
+              <span class="st-badge">2.</span>
+              <span>Přítel vašeho přítele</span>
+              <span class="st-amount">250 Kč</span>
+            </div>
+            <div class="slevy-table-row st-3">
+              <span class="st-badge">3.</span>
+              <span>3. úroveň sítě</span>
+              <span class="st-amount">200 Kč</span>
+            </div>
+            <div class="slevy-table-row st-4">
+              <span class="st-badge">4.</span>
+              <span>4. úroveň sítě</span>
+              <span class="st-amount">150 Kč</span>
+            </div>
+            <div class="slevy-table-row st-5">
+              <span class="st-badge">5.</span>
+              <span>5. úroveň sítě</span>
+              <span class="st-amount">100 Kč</span>
+            </div>
+          </div>
+
+          <div class="slevy-col-title" style="margin-top:2rem;">Sleva ze spotřeby</div>
+          <p class="slevy-col-desc">Vedle jednorázové slevy za smlouvu získáváte průběžnou slevu z každé nasmlouvané MWh.</p>
+
+          <div class="slevy-table">
+            <div class="slevy-table-row slevy-table-head">
+              <span>Stupeň</span>
+              <span>Kdo to je</span>
+              <span>Sleva / MWh</span>
+            </div>
+            <div class="slevy-table-row st-1">
+              <span class="st-badge">1.</span>
+              <span>Přímý přítel</span>
+              <span class="st-amount">20 Kč</span>
+            </div>
+            <div class="slevy-table-row st-2">
+              <span class="st-badge">2.</span>
+              <span>2. úroveň</span>
+              <span class="st-amount">10 Kč</span>
+            </div>
+            <div class="slevy-table-row st-3">
+              <span class="st-badge">3.</span>
+              <span>3. úroveň</span>
+              <span class="st-amount">5 Kč</span>
+            </div>
+            <div class="slevy-table-row st-4">
+              <span class="st-badge">4.</span>
+              <span>4. úroveň</span>
+              <span class="st-amount">5 Kč</span>
+            </div>
+            <div class="slevy-table-row st-5">
+              <span class="st-badge">5.</span>
+              <span>5. úroveň</span>
+              <span class="st-amount">5 Kč</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="slevy-col">
+          <div class="slevy-col-title">Modelový příklad</div>
+          <p class="slevy-col-desc">Jak vaše síť roste a co to znamená pro vaši slevu.</p>
+
+          <div class="slevy-infographic">
+            <svg width="100%" viewBox="0 0 680 300" role="img" xmlns="http://www.w3.org/2000/svg">
+              <title>Síť doporučení FREE for YOU</title>
+              <desc>Hierarchická síť tří stupňů doporučení</desc>
+              <defs>
+                <style>
+                  .sn-line { stroke: rgba(255,255,255,0.15); stroke-width: 0.5; stroke-dasharray: 4 3; fill: none; }
+                  .sn-line-2 { stroke: rgba(255,255,255,0.1); stroke-width: 0.5; stroke-dasharray: 3 3; fill: none; }
+                  .sn-you-c { fill: #44e6a3; stroke: rgba(69,231,163,0.6); stroke-width: 0.5; }
+                  .sn-you-t { font-family: Ubuntu,sans-serif; font-size: 13px; font-weight: 700; fill: #122d4f; text-anchor: middle; dominant-baseline: central; }
+                  .sn-l1-c { fill: rgba(69,231,163,0.12); stroke: #44e6a3; stroke-width: 1; }
+                  .sn-l1-t { font-family: Ubuntu,sans-serif; font-size: 12px; font-weight: 600; fill: #44e6a3; text-anchor: middle; dominant-baseline: central; }
+                  .sn-l2-c { fill: rgba(255,255,255,0.04); stroke: rgba(255,255,255,0.18); stroke-width: 0.5; }
+                  .sn-l2-t { font-family: Ubuntu,sans-serif; font-size: 11px; font-weight: 400; fill: rgba(255,255,255,0.35); text-anchor: middle; dominant-baseline: central; }
+                  .sn-lbl  { font-family: Ubuntu,sans-serif; font-size: 12px; fill: rgba(255,255,255,0.35); dominant-baseline: central; }
+                  .sn-lead { stroke: rgba(255,255,255,0.12); stroke-width: 0.5; fill: none; }
+                </style>
+              </defs>
+
+              <!-- Lines Vy → 1. stupeň -->
+              <line class="sn-line" x1="329" y1="72" x2="199" y2="130"/>
+              <line class="sn-line" x1="340" y1="74" x2="340" y2="130"/>
+              <line class="sn-line" x1="351" y1="72" x2="481" y2="130"/>
+
+              <!-- Lines 1. → 2. stupeň -->
+              <line class="sn-line-2" x1="182" y1="165" x2="115" y2="223"/>
+              <line class="sn-line-2" x1="190" y1="166" x2="190" y2="223"/>
+              <line class="sn-line-2" x1="332" y1="165" x2="276" y2="223"/>
+              <line class="sn-line-2" x1="340" y1="166" x2="340" y2="223"/>
+              <line class="sn-line-2" x1="482" y1="165" x2="426" y2="223"/>
+              <line class="sn-line-2" x1="490" y1="166" x2="490" y2="223"/>
+
+              <!-- VY -->
+              <circle class="sn-you-c" cx="340" cy="52" r="22"/>
+              <text class="sn-you-t" x="340" y="52">Vy</text>
+
+              <!-- 1. stupeň -->
+              <circle class="sn-l1-c" cx="190" cy="148" r="18"/><text class="sn-l1-t" x="190" y="148">A</text>
+              <circle class="sn-l1-c" cx="340" cy="148" r="18"/><text class="sn-l1-t" x="340" y="148">B</text>
+              <circle class="sn-l1-c" cx="490" cy="148" r="18"/><text class="sn-l1-t" x="490" y="148">C</text>
+
+              <!-- 2. stupeň -->
+              <circle class="sn-l2-c" cx="110" cy="236" r="13"/><text class="sn-l2-t" x="110" y="236">D</text>
+              <circle class="sn-l2-c" cx="190" cy="236" r="13"/><text class="sn-l2-t" x="190" y="236">E</text>
+              <circle class="sn-l2-c" cx="270" cy="236" r="13"/><text class="sn-l2-t" x="270" y="236">F</text>
+              <circle class="sn-l2-c" cx="340" cy="236" r="13"/><text class="sn-l2-t" x="340" y="236">G</text>
+              <circle class="sn-l2-c" cx="420" cy="236" r="13"/><text class="sn-l2-t" x="420" y="236">H</text>
+              <circle class="sn-l2-c" cx="490" cy="236" r="13"/><text class="sn-l2-t" x="490" y="236">I</text>
+
+              <!-- Labels right -->
+              <line class="sn-lead" x1="540" y1="52"  x2="568" y2="52"/>
+              <text class="sn-lbl" x="574" y="52">Vy</text>
+              <line class="sn-lead" x1="510" y1="148" x2="568" y2="148"/>
+              <text class="sn-lbl" x="574" y="148">1. stupeň</text>
+              <line class="sn-lead" x1="504" y1="236" x2="568" y2="236"/>
+              <text class="sn-lbl" x="574" y="236">2. stupeň</text>
+            </svg>
+
+            <!-- Legend below SVG -->
+            <div class="slevy-legend">
+              <div class="slevy-legend-row">
+                <div class="slevy-legend-dot dot-you"></div>
+                <div class="slevy-legend-label">Vy</div>
+                <div class="slevy-legend-sep">→</div>
+                <div class="slevy-legend-val">musíte sami aktivně odebírat</div>
+              </div>
+              <div class="slevy-legend-row">
+                <div class="slevy-legend-dot dot-1"></div>
+                <div class="slevy-legend-label">1. stupeň — 3 přátelé</div>
+                <div class="slevy-legend-sep">=</div>
+                <div class="slevy-legend-val accent">3 × 500 Kč = 1 500 Kč / rok</div>
+              </div>
+              <div class="slevy-legend-row">
+                <div class="slevy-legend-dot dot-2"></div>
+                <div class="slevy-legend-label">2. stupeň — 6 přátel přátel</div>
+                <div class="slevy-legend-sep">=</div>
+                <div class="slevy-legend-val accent-dim">6 × 250 Kč = 1 500 Kč / rok</div>
+              </div>
+              <div class="slevy-legend-total">
+                Celkem ze dvou úrovní: <strong>3 000 Kč / rok</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="slevy-rules">
+            <div class="slevy-rules-title">Co je potřeba vědět</div>
+            <ul class="slevy-rules-list">
+              <li>Musíte sami aktivně odebírat energii od FREE for YOU</li>
+              <li>Sleva se načítá od 11. dne odběru doporučeného zákazníka</li>
+              <li>Minimum pro vyplacení slevy na faktuře je 100 Kč</li>
+              <li>Platnost nárokovatelné slevy je 14 měsíců od vzniku</li>
+              <li>Slevu lze převést do Energobankingu jiného zákazníka (poplatek 4 %)</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- CTA -->
+      <div class="slevy-cta-wrap">
+        <div class="slevy-cta-text">
+          <div class="slevy-cta-title">Chcete začít doporučovat?</div>
+          <div class="slevy-cta-desc">Svou přezdívku najdete po přihlášení v Energobankingu. Stačí ji sdílet.</div>
+        </div>
+        <a href="https://www.energobanking.cz/" target="_blank" class="slevy-cta-btn">Přihlásit se do Energobankingu →</a>
+      </div>
+
+    </div>
+  </section>
+
 </main>
 
 <!-- FOOTER -->

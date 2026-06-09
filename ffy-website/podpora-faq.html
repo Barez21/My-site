@@ -1629,6 +1629,109 @@
 
   /* drawer visible on all sizes via visibility, JS controls it */
 
+  /* ── Subpage shared ── */
+  .subpage-main { min-height: 100vh; background: var(--ink); padding-top: 64px; }
+  .subpage-header {
+    background: linear-gradient(160deg, #0A141E 0%, #0E1E2F 60%, #18314E 100%);
+    padding: 48px 2rem 44px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .subpage-header-inner { max-width: 860px; margin: 0 auto; }
+  .subpage-breadcrumb {
+    font-size: 0.7rem; font-weight: 500; letter-spacing: 0.12em;
+    text-transform: uppercase; color: rgba(255,255,255,0.3);
+    margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;
+  }
+  .subpage-breadcrumb a { color: rgba(255,255,255,0.3); text-decoration: none; }
+  .subpage-breadcrumb a:hover { color: var(--accent); }
+  .subpage-breadcrumb span { opacity: 0.3; }
+  .subpage-h1 {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 700; color: white;
+    line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 0.5rem;
+  }
+  .subpage-lead {
+    font-size: 0.95rem; color: rgba(255,255,255,0.45);
+    font-weight: 300; line-height: 1.6;
+  }
+  .faq-lead-link {
+    color: var(--accent); text-decoration: none; font-weight: 500;
+  }
+  .faq-lead-link:hover { text-decoration: underline; }
+
+  /* ── FAQ section ── */
+  .faq-section { padding: 52px 2rem 80px; }
+  .faq-inner { max-width: 860px; margin: 0 auto; }
+
+  /* Group */
+  .faq-group { margin-bottom: 3rem; }
+  .faq-group-title {
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 1rem; padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(69,231,163,0.15);
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .faq-group-title::after {
+    content: ''; flex: 1; height: 1px;
+    background: rgba(69,231,163,0.1);
+  }
+
+  /* FAQ items */
+  .faq-item {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+    margin-bottom: 0.5rem;
+    overflow: hidden;
+    transition: border-color .15s;
+  }
+  .faq-item:hover { border-color: rgba(255,255,255,0.12); }
+  .faq-item.open { border-color: rgba(69,231,163,0.2); }
+
+  .faq-q {
+    width: 100%; background: none; border: none;
+    padding: 1.1rem 1.25rem;
+    text-align: left; font-family: inherit;
+    font-size: 0.95rem; font-weight: 500;
+    color: rgba(255,255,255,0.75);
+    cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+    transition: color .15s;
+  }
+  .faq-q:hover { color: white; }
+  .faq-item.open .faq-q { color: white; }
+
+  .faq-arrow {
+    width: 22px; height: 22px; min-width: 22px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; color: rgba(255,255,255,0.35);
+    transition: transform .22s, background .15s, color .15s;
+    flex-shrink: 0;
+  }
+  .faq-item.open .faq-arrow {
+    transform: rotate(180deg);
+    background: var(--accent);
+    color: var(--navy-dark);
+  }
+
+  .faq-a {
+    max-height: 0; overflow: hidden;
+    transition: max-height .3s ease, padding .2s;
+    padding: 0 1.25rem;
+    font-size: 0.9rem; color: rgba(255,255,255,0.5);
+    font-weight: 300; line-height: 1.7;
+  }
+  .faq-item.open .faq-a {
+    max-height: 400px;
+    padding: 0 1.25rem 1.25rem;
+  }
+  .faq-link {
+    color: var(--accent); text-decoration: none; font-weight: 400;
+  }
+  .faq-link:hover { text-decoration: underline; }
+
 </style>
 </head>
 <body>
@@ -1802,15 +1905,134 @@
 <div class="mobile-overlay" id="mobile-overlay"></div>
 
 <!-- SUBPAGE CONTENT -->
-<main class="subpage-hero">
-  <div class="subpage-breadcrumb">
-    <a href="index.html">Domů</a><span>/</span>Podpora
-  </div>
-  <h3 class="subpage-h3">Často kladené otázky</h3>
-  <div class="subpage-placeholder">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-    Obsah stránky bude doplněn
-  </div>
+<main class="subpage-main">
+
+  <section class="subpage-header">
+    <div class="subpage-header-inner">
+      <div class="subpage-breadcrumb">
+        <a href="index.html">Domů</a><span>/</span>Podpora
+      </div>
+      <h1 class="subpage-h1">Časté dotazy</h1>
+      <p class="subpage-lead">Nenašli jste odpověď? <a href="podpora-kontakty.html" class="faq-lead-link">Napište nebo zavolejte</a> — odpovídá člověk.</p>
+    </div>
+  </section>
+
+  <section class="faq-section">
+    <div class="faq-inner">
+
+      <div class="faq-group">
+        <div class="faq-group-title">Přechod k FREE for YOU</div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Přijdu při přechodu o dodávku elektřiny nebo plynu?<span class="faq-arrow">▾</span></button>
+          <div class="faq-a">Ne. Přechod mezi dodavateli probíhá čistě administrativně — fyzická dodávka se nepřerušuje ani na minutu. Elektřina nebo plyn teče dál stejnou sítí, mění se jen to, kdo vám posílá fakturu.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Jak dlouho přechod trvá?<span class="faq-arrow">▾</span></button>
+          <div class="faq-a">Standardně 6 až 8 týdnů od podpisu smlouvy. Většinu té doby běží lhůty na straně distribuce — my mezitím zařizujeme vše potřebné. Vy čekáte, my pracujeme.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Co musím udělat já a co zařídíte vy?<span class="faq-arrow">▾</span></button>
+          <div class="faq-a">Vy vyplníte krátký formulář a podepíšete smlouvu a plnou moc. Zbytek — výpověď stávající smlouvy, komunikace s distributorem, přihlášení odběrného místa — zařídíme za vás.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Jaké dokumenty potřebuji k přechodu?<span class="faq-arrow">▾</span></button>
+          <div class="faq-a">Stačí poslední vyúčtování od současného dodavatele a podepsaná plná moc. To je vše, co od vás potřebujeme, abychom mohli začít.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Mohu přejít, i když mám smlouvu s výpovědní lhůtou?<span class="faq-arrow">▾</span></button>
+          <div class="faq-a">Ano. Smlouvu za vás vypovíme a přechod naplánujeme tak, aby navazoval přesně na konec výpovědní lhůty. Nic neplatíte dvakrát.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Mohu přejít jen s elektřinou, nebo musím i s plynem?<span class="faq-arrow">▾</span></button>
+          <div class="faq-a">Přejít můžete s elektřinou, s plynem, nebo s obojím — záleží jen na vás. Každá komodita se řeší samostatně.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Co když budu chtít odejít?<span class="faq-arrow">▾</span></button>
+          <div class="faq-a">Podmínky ukončení smlouvy jsou jasně popsané ve smlouvě. Žádné skryté pokuty. Když se rozhodnete odejít, řeknete nám to a projdeme postup společně.</div>
+        </div>
+
+      </div>
+
+      <div class="faq-group">
+        <div class="faq-group-title">Ceny a produkty</div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Jaký je rozdíl mezi fixním a SPOT tarifem?<span class="faq-arrow">▾</span></button>
+          <div class="faq-a">U fixního tarifu víte předem přesně, za kolik platíte — cena je dohodnutá na celé smluvní období. U SPOT tarifu se cena mění každou hodinu podle burzovního trhu. Když je trh levný, platíte méně. Když je drahý, platíte více. SPOT se vyplatí těm, kdo sledují spotřebu a dokážou ji přizpůsobit době, kdy je energie nejlevnější.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Jak se tvoří cena energie u FREE for YOU?<span class="faq-arrow">▾</span></button>
+          <div class="faq-a">Cena se skládá ze dvou částí — regulované složky (distribuce, daně, poplatky — stejné u všech dodavatelů) a obchodní složky, kterou stanovuje FREE for YOU. Část zisku z obchodní složky reinvestujeme do vlastních zdrojů. Když vlastní výroba roste, klesá naše závislost na tržní ceně — a to se časem projeví i na ceně pro vás.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Co je Energobanking a musím ho používat?<span class="faq-arrow">▾</span></button>
+          <div class="faq-a">Energobanking je váš zákaznický účet, kde vidíte faktury, spotřebu, historii plateb a dopad výroby komunity. Není povinný, ale doporučujeme ho — přehled o vlastní energii se hodí. Přístup dostanete automaticky po přechodu.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Jak funguje systém slev za doporučení?<span class="faq-arrow">▾</span></button>
+          <div class="faq-a">Když doporučíte FREE for YOU někomu dalšímu a ten přejde, získávají obě strany slevu na energii. Systém je nastaven tak, aby měl smysl jak pro toho, kdo doporučuje, tak pro toho, kdo přichází. Konkrétní podmínky a modelový příklad najdete na stránce <a href="proc-slevy-za-doporuceni.html" class="faq-link">Slevy za doporučení</a>.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Mění se cena v průběhu smlouvy?<span class="faq-arrow">▾</span></button>
+          <div class="faq-a">U fixního tarifu ne — cena je garantovaná po celou dobu smluvního období. U SPOT tarifu se mění každou hodinu podle trhu. O jakékoli změně ceníku vás vždy informujeme předem.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Jsou v ceně zahrnuty i poplatky za distribuci?<span class="faq-arrow">▾</span></button>
+          <div class="faq-a">Poplatky za distribuci jsou součástí vaší faktury, ale nejde o naši marži — jde o regulované platby, které odvádíme distributorovi ve vaší oblasti. Jsou stejné u každého dodavatele. Na faktuře je vždy vidíte odděleně.</div>
+        </div>
+
+      </div>
+
+      <div class="faq-group">
+        <div class="faq-group-title">Pro stávající zákazníky</div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Kdy probíhají odečty?<span class="faq-arrow">▾</span></button>
+          <div class="faq-a">Odečty provádí váš distributor podle distribučního území — ne FREE for YOU. Při přechodu k nám se termíny odečtů nemění, stejně jako se nemění distributor. Ten závisí na tom, kde bydlíte, a nelze ho zvolit.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Proč mohu mít dvě zálohy splatné ve stejném měsíci?<span class="faq-arrow">▾</span></button>
+          <div class="faq-a">Zálohy FREE for YOU platíte vždy na následující kalendářní měsíc. Při přechodu proto může nastat situace, kdy vám přijdou dvě zálohy ve stejném měsíci — jedna za aktuální měsíc u původního dodavatele, jedna za následující u nás. Pokud si nejste jisti, jak váš rozpis záloh vypadá, projdeme ho s vámi.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Vracíte přeplatky automaticky?<span class="faq-arrow">▾</span></button>
+          <div class="faq-a">Ano, vždy automaticky. Přeplatek vám vrátíme do data splatnosti faktury na účet, ze kterého platíte zálohy. Nic nepožadujeme, nic nemusíte žádat.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Kde najdu svoje smlouvy a faktury?<span class="faq-arrow">▾</span></button>
+          <div class="faq-a">Všechny dokumenty — smlouvy, faktury, vyúčtování — najdete ve svém <a href="https://www.energobanking.cz/" target="_blank" class="faq-link">Energobankingu</a>. Obecné dokumenty a ceníky jsou k dispozici na stránce <a href="podpora-dokumenty.html" class="faq-link">Dokumenty</a>.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Jak probíhá přepis odběrného místa?<span class="faq-arrow">▾</span></button>
+          <div class="faq-a">Přepis řešíte při prodeji nebo pronájmu nemovitosti, kdy se mění odběratel. Kontaktujte nás — projdeme s vámi, co budete potřebovat od původního i nového odběratele, a celý proces zorganizujeme.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Co dělat, když se stěhuji?<span class="faq-arrow">▾</span></button>
+          <div class="faq-a">Napište nebo zavolejte co nejdříve — ideálně pár týdnů před stěhováním. Podle situace buď převedeme smlouvu na novou adresu, nebo zajistíme ukončení a případně nové připojení. Každé stěhování je trochu jiné, proto je nejjednodušší to probrat přímo.</div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
 </main>
 
 <!-- FOOTER -->
