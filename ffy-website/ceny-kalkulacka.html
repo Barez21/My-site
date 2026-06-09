@@ -210,58 +210,66 @@
 
         <div class="kalk-form-row">
 
-          <div class="kalk-step">
-            <div class="kalk-step-label">Loňská roční spotřeba elektřiny</div>
-            <div class="kalk-input-row">
-              <input type="number" id="spotreba" class="kalk-input" placeholder="např. 3,5" min="0" max="1000" step="0.1">
-              <span class="kalk-input-unit">MWh / rok</span>
+          <!-- Levý sloupec: spotřeba + distributor + srovnání -->
+          <div class="kalk-form-col">
+
+            <div class="kalk-step">
+              <div class="kalk-step-label">Loňská roční spotřeba elektřiny</div>
+              <div class="kalk-input-row">
+                <input type="number" id="spotreba" class="kalk-input" placeholder="např. 3,5" min="0" max="1000" step="0.1">
+                <span class="kalk-input-unit">MWh / rok</span>
+              </div>
+              <div class="kalk-hint">Najdete ji na loňském vyúčtování. 1 MWh = 1 000 kWh</div>
             </div>
-            <div class="kalk-hint">Najdete ji na loňském vyúčtování. 1 MWh = 1 000 kWh</div>
+
+            <div class="kalk-step">
+              <div class="kalk-step-label">Vaše distribuční území</div>
+              <div class="kalk-distrib-grid">
+                <button class="kalk-distrib-btn active" data-distrib="cez">ČEZ<br>Distribuce</button>
+                <button class="kalk-distrib-btn" data-distrib="pre">PRE<br>Distribuce</button>
+                <button class="kalk-distrib-btn" data-distrib="eon">E.ON<br>(EG.D)</button>
+              </div>
+            </div>
+
+            <div class="kalk-step kalk-step-optional">
+              <div class="kalk-step-label">
+                Současná cena za elektřinu
+                <span class="kalk-optional-badge">volitelné — pro srovnání</span>
+              </div>
+              <div class="kalk-input-row">
+                <input type="number" id="soucasna-cena" class="kalk-input" placeholder="např. 4 200" min="0" max="20000" step="10">
+                <span class="kalk-input-unit">Kč / MWh s DPH</span>
+              </div>
+              <div class="kalk-hint">Najdete ji na faktuře jako „cena za silovou elektřinu".</div>
+            </div>
+
+            <button class="kalk-submit" id="kalk-btn">Spočítat →</button>
+
           </div>
 
-          <div class="kalk-step">
-            <div class="kalk-step-label">Vaše distribuční území</div>
-            <div class="kalk-pills" id="distrib-pills">
-              <button class="kalk-pill active" data-distrib="cez">ČEZ Distribuce</button>
-              <button class="kalk-pill" data-distrib="pre">PRE Distribuce</button>
-              <button class="kalk-pill" data-distrib="eon">E.ON (EG.D)</button>
+          <!-- Pravý sloupec: výběr tarifu -->
+          <div class="kalk-form-col">
+            <div class="kalk-step">
+              <div class="kalk-step-label">Váš odběr odpovídá</div>
+              <div class="kalk-tarify" id="tarif-pills">
+                <button class="kalk-tarif active" data-tarif="24">
+                  <div class="kalk-tarif-name">Základní odběr</div>
+                  <div class="kalk-tarif-desc">Svícení a spotřebiče, bez el. vytápění</div>
+                  <div class="kalk-tarif-code">D01d / D02d</div>
+                </button>
+                <button class="kalk-tarif" data-tarif="aku8">
+                  <div class="kalk-tarif-name">S elektrickým vařením</div>
+                  <div class="kalk-tarif-desc">Svícení + sporák nebo trouba na elektřinu</div>
+                  <div class="kalk-tarif-code">D25d / D26d / D27d</div>
+                </button>
+                <button class="kalk-tarif" data-tarif="aku16">
+                  <div class="kalk-tarif-name">S vytápěním nebo ohřevem vody</div>
+                  <div class="kalk-tarif-desc">Přímotop, tepelné čerpadlo nebo el. bojler</div>
+                  <div class="kalk-tarif-code">D35d / D45d / D56d / D57d</div>
+                </button>
+              </div>
             </div>
           </div>
-
-          <div class="kalk-step">
-            <div class="kalk-step-label">Váš odběr odpovídá</div>
-            <div class="kalk-tarify" id="tarif-pills">
-              <button class="kalk-tarif active" data-tarif="24">
-                <div class="kalk-tarif-name">Základní odběr</div>
-                <div class="kalk-tarif-desc">Svícení a spotřebiče, bez el. vytápění</div>
-                <div class="kalk-tarif-code">D01d / D02d</div>
-              </button>
-              <button class="kalk-tarif" data-tarif="aku8">
-                <div class="kalk-tarif-name">S elektrickým vařením</div>
-                <div class="kalk-tarif-desc">Svícení + sporák nebo trouba na elektřinu</div>
-                <div class="kalk-tarif-code">D25d / D26d / D27d</div>
-              </button>
-              <button class="kalk-tarif" data-tarif="aku16">
-                <div class="kalk-tarif-name">S vytápěním nebo ohřevem vody</div>
-                <div class="kalk-tarif-desc">Přímotop, tepelné čerpadlo nebo el. bojler</div>
-                <div class="kalk-tarif-code">D35d / D45d / D56d / D57d</div>
-              </button>
-            </div>
-          </div>
-
-          <div class="kalk-step kalk-step-optional">
-            <div class="kalk-step-label">
-              Současná cena za elektřinu
-              <span class="kalk-optional-badge">volitelné — pro srovnání</span>
-            </div>
-            <div class="kalk-input-row">
-              <input type="number" id="soucasna-cena" class="kalk-input" placeholder="např. 4 200" min="0" max="20000" step="10">
-              <span class="kalk-input-unit">Kč / MWh s DPH</span>
-            </div>
-            <div class="kalk-hint">Najdete ji na faktuře jako „cena za silovou elektřinu".</div>
-          </div>
-
-          <button class="kalk-submit" id="kalk-btn">Spočítat →</button>
 
         </div>
 
@@ -674,8 +682,8 @@
   });
 
   let activeTarif = '24', activeDistrib = 'cez';
-  document.querySelectorAll('[data-distrib]').forEach(b => b.addEventListener('click', () => {
-    document.querySelectorAll('[data-distrib]').forEach(x => x.classList.remove('active'));
+  document.querySelectorAll('.kalk-distrib-btn[data-distrib]').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('.kalk-distrib-btn[data-distrib]').forEach(x => x.classList.remove('active'));
     b.classList.add('active'); activeDistrib = b.dataset.distrib;
   }));
   document.querySelectorAll('[data-tarif]').forEach(b => b.addEventListener('click', () => {
