@@ -108,6 +108,10 @@
     color: white;
     border-bottom-color: var(--accent);
   }
+  [data-theme="light"] .nav-tab.is-hovered .nav-tab-btn {
+    color: #0E1E2F;
+    border-bottom-color: var(--accent);
+  }
 
   .nav-chevron {
     width: 13px; height: 13px;
@@ -205,6 +209,8 @@
     text-decoration: none;
   }
   .mega-link:hover { background-color: rgba(255,255,255,0.07); }
+  [data-theme="light"] .mega-link:hover { background-color: rgba(33,69,113,0.05); }
+  [data-theme="light"] .mega-link:hover .mega-icon svg { stroke: #0E1E2F; }
 
   .mega-link-highlight {
     border: 1px solid rgba(69,231,163,0.18);
@@ -232,6 +238,9 @@
   .mega-link-body strong { font-size: 0.85rem; font-weight: 600; color: rgba(255,255,255,0.85); }
   .mega-link-body span { font-size: 0.72rem; color: rgba(255,255,255,0.35); font-weight: 300; }
   .mega-link-highlight .mega-link-body strong { color: var(--accent); }
+  [data-theme="light"] .mega-link-body strong { color: #0E1E2F; }
+  [data-theme="light"] .mega-link-body span   { color: #3A6298; }
+  [data-theme="light"] .mega-link-highlight .mega-link-body strong { color: var(--green-dark); }
 
   .mega-ext-icon { width: 12px; height: 12px; flex-shrink: 0; opacity: 0.3; }
   .mega-ext-icon svg { width: 12px; height: 12px; stroke: white; }
@@ -1782,7 +1791,39 @@
   [data-theme="light"] .oze-step-title { color: #0E1E2F; }
   [data-theme="light"] .oze-step-desc  { color: #3A6298; }
 
-  /* ── Footer — light ── */
+  /* ── Hero a dark sekce v light mode — zesvětlení ── */
+  [data-theme="light"] #hero {
+    background: linear-gradient(145deg, #1a3560 0%, #214571 45%, #2f4f7a 100%);
+  }
+  [data-theme="light"] .subpage-header {
+    background: linear-gradient(160deg, #1a3560 0%, #214571 60%, #2a4a72 100%);
+  }
+  [data-theme="light"] #how {
+    background: linear-gradient(135deg, #214571 0%, #2f4f7a 100%);
+  }
+  [data-theme="light"] #final-cta {
+    background: linear-gradient(145deg, #1a3560 0%, #214571 55%, #2a4a72 100%);
+  }
+  [data-theme="light"] #kontakt {
+    background: linear-gradient(145deg, #1a3560 0%, #1e3d6a 55%, #214571 100%);
+  }
+  [data-theme="light"] .reviews-section-alt {
+    background: rgba(33,69,113,0.04);
+  }
+  /* Model section */
+  [data-theme="light"] #model {
+    background: var(--bg);
+  }
+  [data-theme="light"] .model-note {
+    background: linear-gradient(135deg, #c8fee8 0%, #e3eafe 100%);
+  }
+  [data-theme="light"] .model-note blockquote { color: var(--navy-dark); }
+  [data-theme="light"] .model-note-head { color: var(--green-dark); }
+  /* How steps */
+  [data-theme="light"] .step-card {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.18);
+  }
   [data-theme="light"] .site-footer { background: var(--footer-bg); border-top-color: rgba(33,69,113,0.12); }
   [data-theme="light"] .footer-tagline { color: rgba(14,30,47,0.45); }
   [data-theme="light"] .footer-social-link { background: rgba(33,69,113,0.05); border-color: rgba(33,69,113,0.12); color: #214571; }
