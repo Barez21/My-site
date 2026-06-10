@@ -69,6 +69,12 @@
     display: block;
   }
 
+  /* Logo switching */
+  .logo-light-mode { display: none; }
+  .logo-dark-mode  { display: block; }
+  [data-theme="light"] .logo-light-mode { display: block; }
+  [data-theme="light"] .logo-dark-mode  { display: none; }
+
   /* Menu tabs — evenly fill the middle space */
   .nav-tabs {
     display: flex;
