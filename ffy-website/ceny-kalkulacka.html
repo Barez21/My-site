@@ -270,7 +270,7 @@
 
           <div class="kalk-result-main-row">
             <div class="kalk-result-box">
-              <div class="kalk-result-box-label">Roční náklad (silová elektřina + stálý plat)</div>
+              <div class="kalk-result-box-label">Celkový roční náklad (odhad)</div>
               <div class="kalk-result-big" id="r-rocni">—</div>
               <div class="kalk-result-sub" id="r-mesicni">—</div>
             </div>
@@ -282,6 +282,10 @@
               <div class="kalk-breakdown-row">
                 <span>Stálý měsíční plat (12 ×)</span>
                 <span id="r-stalat">—</span>
+              </div>
+              <div class="kalk-breakdown-row">
+                <span>Distribuce, poplatky, daně</span>
+                <span id="r-distribuce">—</span>
               </div>
             </div>
           </div>
@@ -303,7 +307,7 @@
           </div>
 
           <div class="kalk-disclaimer">
-            Výpočet zahrnuje cenu silové elektřiny a stálý měsíční plat FREE for YOU. Distribuce, daně a ostatní regulované poplatky jsou stejné u všech dodavatelů — ty platíte vždy navíc.
+            Výpočet je orientační a zahrnuje silovou elektřinu, stálý plat FREE for YOU a odhadované poplatky za distribuci dle vaší sazby. Skutečná výše se může lišit.
           </div>
 
           <a href="index.html#final-cta" class="kalk-cta">Chci tuto nabídku →</a>
@@ -347,13 +351,13 @@
                   </div>
                   <div class="rozklad-row">
                     <div class="rozklad-dot" style="background:#122d4f"></div>
-                    <span class="rozklad-lbl">Distribuce měsíčně</span>
+                    <span class="rozklad-lbl">Jistič (měsíčně)</span>
                     <span class="rozklad-val" id="rozklad-j-p-distmes">—</span>
                     <span class="rozklad-pct" id="rozklad-j-p-distmes-pct">—</span>
                   </div>
                   <div class="rozklad-row">
                     <div class="rozklad-dot" style="background:#c2d4ee"></div>
-                    <span class="rozklad-lbl">Daně a ostatní</span>
+                    <span class="rozklad-lbl">Daně, NI a POZE</span>
                     <span class="rozklad-val" id="rozklad-j-p-dane">—</span>
                     <span class="rozklad-pct" id="rozklad-j-p-dane-pct">—</span>
                   </div>
@@ -450,7 +454,7 @@
           </div>
           <div class="kalk-result-main-row">
             <div class="kalk-result-box">
-              <div class="kalk-result-box-label">Roční náklad celkem (silová + stálý plat)</div>
+              <div class="kalk-result-box-label">Celkový roční náklad (odhad)</div>
               <div class="kalk-result-big" id="r2-rocni">—</div>
               <div class="kalk-result-sub" id="r2-mesicni">—</div>
             </div>
@@ -504,13 +508,13 @@
                   </div>
                   <div class="rozklad-row">
                     <div class="rozklad-dot" style="background:#122d4f"></div>
-                    <span class="rozklad-lbl">Distribuce měsíčně</span>
+                    <span class="rozklad-lbl">Jistič (měsíčně)</span>
                     <span class="rozklad-val" id="rozklad-s-p-distmes">—</span>
                     <span class="rozklad-pct" id="rozklad-s-p-distmes-pct">—</span>
                   </div>
                   <div class="rozklad-row">
                     <div class="rozklad-dot" style="background:#c2d4ee"></div>
-                    <span class="rozklad-lbl">Daně a ostatní</span>
+                    <span class="rozklad-lbl">Daně, NI a POZE</span>
                     <span class="rozklad-val" id="rozklad-s-p-dane">—</span>
                     <span class="rozklad-pct" id="rozklad-s-p-dane-pct">—</span>
                   </div>
@@ -923,14 +927,20 @@
     const nakladSilova = spotreba * silovaConf.vt;
     const nakladStalat = STALAT * 12;
 
-    // Distribuce (bez DPH → přidáme DPH)
-    const distVT   = (DIST_VT[dist][sazba] || 0) * spotreba;
-    const distNT   = 0; // jednoducha nezná NT
-    const sys      = SYS * spotreba;
-    const dan      = DAN * spotreba;
-    const ni       = NI * 12;
-    const jistikVal = (JISTIC[dist][sazba] ? (JISTIC[dist][sazba][10] || 0) : 0) * 12; // default 3x10A
-    const distribuce = withDph(distVT + distNT + sys + dan + ni + jistikVal);
+    // Distribuce — podléhají DPH (21%)
+    const distVT_raw   = (DIST_VT[dist][sazba] || 0) * spotreba;
+    const sys_raw      = SYS * spotreba;
+    const ni_raw       = NI * 12;
+    const jistic_raw   = (JISTIC[dist][sazba] ? (JISTIC[dist][sazba][10] || 0) : 0) * 12;
+
+    const distMwh_raw  = distVT_raw + sys_raw;   // za spotřebu, s DPH
+    const distMes_raw  = jistic_raw;              // jistič, s DPH
+
+    // Bez DPH — spotřební daň, NI, POZE (odvádí se státu)
+    const dan_raw      = DAN * spotreba;          // spotřební daň 28,30 Kč/MWh
+    const poze_raw     = POZE * spotreba;         // aktuálně 0
+
+    const distribuce   = withDph(distMwh_raw + distMes_raw) + ni_raw + dan_raw + poze_raw;
 
     const total = nakladSilova + nakladStalat + distribuce;
 
@@ -949,9 +959,9 @@
     showRozklad('rozklad-j', {
       silova:  nakladSilova,
       stalat:  nakladStalat,
-      distMwh: withDph(distVT + distNT + sys + dan),
-      distMes: withDph(ni + jistikVal * 12),
-      dane:    0,
+      distMwh: withDph(distMwh_raw),
+      distMes: withDph(distMes_raw),
+      dane:    ni_raw + dan_raw + poze_raw,
       spotreba: spotreba,
     });
   });
@@ -995,15 +1005,21 @@
     const nakladNT    = nt * (silovaConf.nt || 0);
     const nakladStalat = STALAT * 12;
 
-    // Distribuce (bez DPH)
-    const distVT  = (DIST_VT[dist][activeSazba] || 0) * vt;
-    const distNT  = nt > 0 ? ((DIST_NT[dist] && DIST_NT[dist][activeSazba]) || 0) * nt : 0;
-    const sys     = SYS * celkem;
-    const dan     = DAN * celkem;
-    const ni      = NI * 12;
-    const jistikVal = (JISTIC[dist][activeSazba] && JISTIC[dist][activeSazba][activeJistic]) || 0;
-    const jistikRoc  = jistikVal * 12;
-    const distribuce = withDph(distVT + distNT + sys + dan + ni + jistikRoc);
+    // Distribuce — podléhají DPH (21%)
+    const distVT_raw  = (DIST_VT[dist][activeSazba] || 0) * vt;
+    const distNT_raw  = nt > 0 ? ((DIST_NT[dist] && DIST_NT[dist][activeSazba]) || 0) * nt : 0;
+    const sys_raw     = SYS * celkem;
+    const ni_raw      = NI * 12;
+    const jistic_raw  = ((JISTIC[dist][activeSazba] && JISTIC[dist][activeSazba][activeJistic]) || 0) * 12;
+
+    const distMwh_raw = distVT_raw + distNT_raw + sys_raw;  // za spotřebu, s DPH
+    const distMes_raw = jistic_raw;                         // jistič, s DPH
+
+    // Bez DPH — spotřební daň, NI, POZE (odvádí se státu)
+    const dan_raw     = DAN * celkem;    // spotřební daň 28,30 Kč/MWh
+    const poze_raw    = POZE * celkem;   // aktuálně 0
+
+    const distribuce  = withDph(distMwh_raw + distMes_raw) + ni_raw + dan_raw + poze_raw;
 
     const dodavatel = nakladVT + nakladNT + nakladStalat;
     const total = dodavatel + distribuce;
@@ -1024,9 +1040,9 @@
     showRozklad('rozklad-s', {
       silova:  nakladVT + nakladNT,
       stalat:  nakladStalat,
-      distMwh: withDph(distVT + distNT + sys + dan),
-      distMes: withDph(ni + jistikRoc),
-      dane:    0,
+      distMwh: withDph(distMwh_raw),
+      distMes: withDph(distMes_raw),
+      dane:    ni_raw + dan_raw + poze_raw,
       spotreba: celkem,
     });
   });
