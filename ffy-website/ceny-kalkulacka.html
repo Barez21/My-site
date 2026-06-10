@@ -708,7 +708,7 @@
       const text = await r.text();
       pscData = {};
       text.split('\n').slice(1).forEach(line => {
-        const [psc, obec, okres, dist_e, dist_p] = line.split('\t').map(s => s && s.trim());
+        const [psc, obec, okres, dist_e, dist_p] = line.replace(/\r/g,'').split(',').map(s => s && s.trim());
         if (psc) pscData[psc.replace(/\s/g,'')] = { obec, okres, dist_e, dist_p };
       });
     } catch(e) { pscData = {}; }
