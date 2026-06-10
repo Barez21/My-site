@@ -180,10 +180,14 @@
     display: flex;
     flex-direction: column;
     gap: 0.1rem;
-    transition: opacity .12s;
+    transition: opacity .12s, background .12s;
   }
   .mega-col:last-child { border-right: none; }
   .mega-col.is-active { opacity: 1; }
+
+  /* Light mode: all cols fully visible, active gets bg highlight */
+  [data-theme="light"] .mega-col            { opacity: 1 !important; background: transparent; }
+  [data-theme="light"] .mega-col.is-active  { background: rgba(33,69,113,0.04); border-radius: 0; }
 
   .mega-col-label {
     font-size: 0.62rem;
@@ -1588,6 +1592,7 @@
     --mega-icon:        #214571;
     --mega-icon-hover:  #0E1E2F;
     --mega-col-border:  rgba(33,69,113,0.08);
+    --mega-col-opacity: 1;
   }
 
   /* ── Body & page ── */
@@ -1605,19 +1610,23 @@
 
   /* ── Mega menu ── */
   [data-theme="light"] .mega-panel { background: var(--mega-bg); border-bottom: 1px solid rgba(33,69,113,0.1); box-shadow: 0 8px 24px rgba(33,69,113,0.08); }
-  [data-theme="light"] .mega-col { opacity: 1; }
-  [data-theme="light"] nav.mega-open .mega-col { opacity: 0.4; }
   [data-theme="light"] nav.mega-open .mega-col.is-active { opacity: 1; }
-  [data-theme="light"] .mega-col-label { color: var(--primary); border-bottom-color: rgba(33,69,113,0.12); }
-  [data-theme="light"] .mega-link-body strong { color: #0E1E2F; }
-  [data-theme="light"] .mega-link-body span   { color: #3A6298; }
-  [data-theme="light"] .mega-link:hover { background-color: rgba(33,69,113,0.05); }
-  [data-theme="light"] .mega-link:hover .mega-icon svg { stroke: #0E1E2F; }
-  [data-theme="light"] .mega-link-highlight { background-color: rgba(69,231,163,0.08); border-color: rgba(69,231,163,0.3); }
-  [data-theme="light"] .mega-link-highlight .mega-link-body strong { color: var(--green-dark); }
-  [data-theme="light"] .mega-icon { background: rgba(33,69,113,0.06); }
-  [data-theme="light"] .mega-icon svg { stroke: #214571; }
-  [data-theme="light"] .mega-backdrop { background: rgba(14,30,47,0.3); }
+
+  /* ── Mega menu light mode — full contrast ── */
+  [data-theme="light"] .mega-panel { background: #ffffff; border-bottom: 1px solid rgba(33,69,113,0.12); box-shadow: 0 8px 32px rgba(33,69,113,0.1); }
+  [data-theme="light"] .mega-col-label { color: var(--primary) !important; border-bottom-color: rgba(33,69,113,0.15) !important; }
+  [data-theme="light"] .mega-link-body strong { color: #0E1E2F !important; font-weight: 600; }
+  [data-theme="light"] .mega-link-body span   { color: #3A6298 !important; }
+  [data-theme="light"] .mega-icon { background: rgba(33,69,113,0.07) !important; }
+  [data-theme="light"] .mega-icon svg { stroke: #214571 !important; }
+  [data-theme="light"] .mega-link:hover { background: rgba(33,69,113,0.06) !important; }
+  [data-theme="light"] .mega-link:hover .mega-link-body strong { color: #0E1E2F !important; }
+  [data-theme="light"] .mega-link:hover .mega-icon svg { stroke: #0E1E2F !important; }
+  [data-theme="light"] .mega-link-highlight { background: rgba(69,231,163,0.1) !important; border-color: rgba(69,231,163,0.3) !important; }
+  [data-theme="light"] .mega-link-highlight .mega-link-body strong { color: var(--green-dark) !important; }
+  [data-theme="light"] .mega-link-highlight .mega-icon svg { stroke: var(--green-dark) !important; }
+  [data-theme="light"] .mega-ext-icon svg { stroke: #3A6298 !important; }
+  [data-theme="light"] .mega-col { border-right-color: rgba(33,69,113,0.08) !important; }
 
   /* ── Mobile drawer ── */
   [data-theme="light"] .mobile-drawer { background: #ffffff; border-left: 1px solid rgba(33,69,113,0.12); }
@@ -2157,14 +2166,52 @@
 
   /* ── Group header ── */
 
-
-
   /* ── Tarif card ── */
 
   /* Top accent line per type */
   .tarif-elektrina .tarif-type-label { color: var(--accent); }
   .tarif-plyn      .tarif-type-label { color: var(--navy-light); }
 
+  /* ── Price block ── */
+  .tarif-elektrina .tarif-price-num { color: var(--accent); }
+
+  /* SPOT note */
+  .tarif-elektrina .tarif-price-spot-note { border-left-color: rgba(69,231,163,0.3); }
+  .tarif-plyn      .tarif-price-spot-note { border-left-color: rgba(208,223,240,0.25); }
+
+  /* ── Card footer ── */
+  .tarif-cta:hover { opacity: 0.85; }
+
+  @media (max-width: 640px) {
+    .tarify-cards { grid-template-columns: 1fr; }
+  
+    .tarify-section { padding: 40px 1.5rem 60px; }
+  }
+
+  /* Hamburger open state */
+  .nav-hamburger.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.is-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .nav-hamburger.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .nav-hamburger span { transition: transform .22s, opacity .15s; }
+
+  /* drawer visible on all sizes via visibility, JS controls it */
+
+/* ═══════════════════════════════════════ */
+/* PAGE-SPECIFIC STYLES                    */
+/* ═══════════════════════════════════════ */
+
+/* ── ceny-aktualni-nabidka ── */
+
+  /* ── Page header ── */
+
+  /* ── Tarify section ── */
+
+  /* ── Group header ── */
+
+  /* ── Tarif card ── */
+
+  .tarif-elektrina .tarif-type-label { color: var(--accent); }
+  .tarif-plyn      .tarif-type-label { color: var(--navy-light); }
 
   /* ── Price block ── */
   .tarif-elektrina .tarif-price-num { color: var(--accent); }
@@ -2202,59 +2249,10 @@
 
   /* ── Group header ── */
 
-
-
   /* ── Tarif card ── */
-
 
   .tarif-elektrina .tarif-type-label { color: var(--accent); }
   .tarif-plyn      .tarif-type-label { color: var(--navy-light); }
-
-
-  /* ── Price block ── */
-  .tarif-elektrina .tarif-price-num { color: var(--accent); }
-
-  /* SPOT note */
-  .tarif-elektrina .tarif-price-spot-note { border-left-color: rgba(69,231,163,0.3); }
-  .tarif-plyn      .tarif-price-spot-note { border-left-color: rgba(208,223,240,0.25); }
-
-  /* ── Card footer ── */
-  .tarif-cta:hover { opacity: 0.85; }
-
-  @media (max-width: 640px) {
-    .tarify-cards { grid-template-columns: 1fr; }
-  
-    .tarify-section { padding: 40px 1.5rem 60px; }
-  }
-
-  /* Hamburger open state */
-  .nav-hamburger.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-  .nav-hamburger.is-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-  .nav-hamburger.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-  .nav-hamburger span { transition: transform .22s, opacity .15s; }
-
-  /* drawer visible on all sizes via visibility, JS controls it */
-
-/* ═══════════════════════════════════════ */
-/* PAGE-SPECIFIC STYLES                    */
-/* ═══════════════════════════════════════ */
-
-/* ── ceny-aktualni-nabidka ── */
-
-  /* ── Page header ── */
-
-  /* ── Tarify section ── */
-
-  /* ── Group header ── */
-
-
-
-  /* ── Tarif card ── */
-
-
-  .tarif-elektrina .tarif-type-label { color: var(--accent); }
-  .tarif-plyn      .tarif-type-label { color: var(--navy-light); }
-
 
   /* ── Price block ── */
   .tarif-elektrina .tarif-price-num { color: var(--accent); }
@@ -2282,44 +2280,9 @@
 
   /* ── Light / dark theme ── */
 
-
   /* Nav light mode */
-  [data-theme="light"] nav { background: var(--nav-bg); border-bottom: 1px solid rgba(33,69,113,0.12); }
-  [data-theme="light"] .nav-tab-btn { color: rgba(14,30,47,0.6); }
-  [data-theme="light"] .nav-tab.is-hovered .nav-tab-btn { color: #0E1E2F; }
-  [data-theme="light"] .mega-panel { background: var(--mega-bg); border-bottom-color: rgba(33,69,113,0.1); }
-  [data-theme="light"] .mega-col { opacity: 0.25; }
-  [data-theme="light"] nav.mega-open .mega-col { opacity: 0.28; }
-  [data-theme="light"] nav.mega-open .mega-col.is-active { opacity: 1; }
-  [data-theme="light"] .mega-col-label { color: var(--primary); border-bottom-color: rgba(33,69,113,0.12); }
-  [data-theme="light"] .mega-link:hover { background-color: rgba(33,69,113,0.05); }
-  [data-theme="light"] .mega-link-body strong { color: #0E1E2F; }
-  [data-theme="light"] .mega-link-body span { color: #548BC9; }
-  [data-theme="light"] .mega-icon { background: rgba(33,69,113,0.06); }
-  [data-theme="light"] .mega-icon svg { stroke: #214571; }
-  [data-theme="light"] .mega-backdrop { background: rgba(14,30,47,0.35); }
-  [data-theme="light"] .mobile-drawer { background: #ffffff; border-left-color: rgba(33,69,113,0.12); }
-  [data-theme="light"] .mobile-section { border-bottom-color: rgba(33,69,113,0.08); }
-  [data-theme="light"] .mobile-section-title { color: var(--primary); }
-  [data-theme="light"] .mobile-link { color: rgba(14,30,47,0.7); }
-  [data-theme="light"] .mobile-link:hover { color: #0E1E2F; }
-  [data-theme="light"] .nav-hamburger span { background: #0E1E2F; }
-  [data-theme="light"] .nav-chevron { stroke: rgba(14,30,47,0.5); }
 
   /* Footer light mode */
-  [data-theme="light"] .site-footer { background: var(--footer-bg); border-top-color: rgba(33,69,113,0.12); }
-  [data-theme="light"] .footer-tagline { color: rgba(14,30,47,0.45); }
-  [data-theme="light"] .footer-social-link { background: rgba(33,69,113,0.05); border-color: rgba(33,69,113,0.12); color: #214571; }
-  [data-theme="light"] .footer-col-title { color: rgba(14,30,47,0.6); border-bottom-color: rgba(33,69,113,0.1); }
-  [data-theme="light"] .footer-links a { color: rgba(14,30,47,0.5); }
-  [data-theme="light"] .footer-links a:hover { color: #0E1E2F; }
-  [data-theme="light"] .footer-contact-label { color: rgba(14,30,47,0.3); }
-  [data-theme="light"] .footer-contact-list a,
-  [data-theme="light"] .footer-contact-list span { color: rgba(14,30,47,0.6); }
-  [data-theme="light"] .footer-contact-list a:hover { color: var(--accent); }
-  [data-theme="light"] .footer-bottom { border-top-color: rgba(33,69,113,0.1); }
-  [data-theme="light"] .footer-bottom-left { color: rgba(14,30,47,0.3); }
-  [data-theme="light"] .footer-bottom-right a { color: rgba(14,30,47,0.35); }
 
   /* Theme toggle button */
 
@@ -2622,44 +2585,9 @@
 
   /* ── Light / dark theme ── */
 
-
   /* Nav light mode */
-  [data-theme="light"] nav { background: var(--nav-bg); border-bottom: 1px solid rgba(33,69,113,0.12); }
-  [data-theme="light"] .nav-tab-btn { color: rgba(14,30,47,0.6); }
-  [data-theme="light"] .nav-tab.is-hovered .nav-tab-btn { color: #0E1E2F; }
-  [data-theme="light"] .mega-panel { background: var(--mega-bg); border-bottom-color: rgba(33,69,113,0.1); }
-  [data-theme="light"] .mega-col { opacity: 0.25; }
-  [data-theme="light"] nav.mega-open .mega-col { opacity: 0.28; }
-  [data-theme="light"] nav.mega-open .mega-col.is-active { opacity: 1; }
-  [data-theme="light"] .mega-col-label { color: var(--primary); border-bottom-color: rgba(33,69,113,0.12); }
-  [data-theme="light"] .mega-link:hover { background-color: rgba(33,69,113,0.05); }
-  [data-theme="light"] .mega-link-body strong { color: #0E1E2F; }
-  [data-theme="light"] .mega-link-body span { color: #548BC9; }
-  [data-theme="light"] .mega-icon { background: rgba(33,69,113,0.06); }
-  [data-theme="light"] .mega-icon svg { stroke: #214571; }
-  [data-theme="light"] .mega-backdrop { background: rgba(14,30,47,0.35); }
-  [data-theme="light"] .mobile-drawer { background: #ffffff; border-left-color: rgba(33,69,113,0.12); }
-  [data-theme="light"] .mobile-section { border-bottom-color: rgba(33,69,113,0.08); }
-  [data-theme="light"] .mobile-section-title { color: var(--primary); }
-  [data-theme="light"] .mobile-link { color: rgba(14,30,47,0.7); }
-  [data-theme="light"] .mobile-link:hover { color: #0E1E2F; }
-  [data-theme="light"] .nav-hamburger span { background: #0E1E2F; }
-  [data-theme="light"] .nav-chevron { stroke: rgba(14,30,47,0.5); }
 
   /* Footer light mode */
-  [data-theme="light"] .site-footer { background: var(--footer-bg); border-top-color: rgba(33,69,113,0.12); }
-  [data-theme="light"] .footer-tagline { color: rgba(14,30,47,0.45); }
-  [data-theme="light"] .footer-social-link { background: rgba(33,69,113,0.05); border-color: rgba(33,69,113,0.12); color: #214571; }
-  [data-theme="light"] .footer-col-title { color: rgba(14,30,47,0.6); border-bottom-color: rgba(33,69,113,0.1); }
-  [data-theme="light"] .footer-links a { color: rgba(14,30,47,0.5); }
-  [data-theme="light"] .footer-links a:hover { color: #0E1E2F; }
-  [data-theme="light"] .footer-contact-label { color: rgba(14,30,47,0.3); }
-  [data-theme="light"] .footer-contact-list a,
-  [data-theme="light"] .footer-contact-list span { color: rgba(14,30,47,0.6); }
-  [data-theme="light"] .footer-contact-list a:hover { color: var(--accent); }
-  [data-theme="light"] .footer-bottom { border-top-color: rgba(33,69,113,0.1); }
-  [data-theme="light"] .footer-bottom-left { color: rgba(14,30,47,0.3); }
-  [data-theme="light"] .footer-bottom-right a { color: rgba(14,30,47,0.35); }
 
   /* Theme toggle button */
 
@@ -2696,7 +2624,6 @@
   .faq-q:hover { color: white; }
   .faq-item.open .faq-q { color: white; }
 
-
   .faq-link {
     color: var(--accent); text-decoration: none; font-weight: 400;
   }
@@ -2704,44 +2631,9 @@
 
   /* ── Light / dark theme ── */
 
-
   /* Nav light mode */
-  [data-theme="light"] nav { background: var(--nav-bg); border-bottom: 1px solid rgba(33,69,113,0.12); }
-  [data-theme="light"] .nav-tab-btn { color: rgba(14,30,47,0.6); }
-  [data-theme="light"] .nav-tab.is-hovered .nav-tab-btn { color: #0E1E2F; }
-  [data-theme="light"] .mega-panel { background: var(--mega-bg); border-bottom-color: rgba(33,69,113,0.1); }
-  [data-theme="light"] .mega-col { opacity: 0.25; }
-  [data-theme="light"] nav.mega-open .mega-col { opacity: 0.28; }
-  [data-theme="light"] nav.mega-open .mega-col.is-active { opacity: 1; }
-  [data-theme="light"] .mega-col-label { color: var(--primary); border-bottom-color: rgba(33,69,113,0.12); }
-  [data-theme="light"] .mega-link:hover { background-color: rgba(33,69,113,0.05); }
-  [data-theme="light"] .mega-link-body strong { color: #0E1E2F; }
-  [data-theme="light"] .mega-link-body span { color: #548BC9; }
-  [data-theme="light"] .mega-icon { background: rgba(33,69,113,0.06); }
-  [data-theme="light"] .mega-icon svg { stroke: #214571; }
-  [data-theme="light"] .mega-backdrop { background: rgba(14,30,47,0.35); }
-  [data-theme="light"] .mobile-drawer { background: #ffffff; border-left-color: rgba(33,69,113,0.12); }
-  [data-theme="light"] .mobile-section { border-bottom-color: rgba(33,69,113,0.08); }
-  [data-theme="light"] .mobile-section-title { color: var(--primary); }
-  [data-theme="light"] .mobile-link { color: rgba(14,30,47,0.7); }
-  [data-theme="light"] .mobile-link:hover { color: #0E1E2F; }
-  [data-theme="light"] .nav-hamburger span { background: #0E1E2F; }
-  [data-theme="light"] .nav-chevron { stroke: rgba(14,30,47,0.5); }
 
   /* Footer light mode */
-  [data-theme="light"] .site-footer { background: var(--footer-bg); border-top-color: rgba(33,69,113,0.12); }
-  [data-theme="light"] .footer-tagline { color: rgba(14,30,47,0.45); }
-  [data-theme="light"] .footer-social-link { background: rgba(33,69,113,0.05); border-color: rgba(33,69,113,0.12); color: #214571; }
-  [data-theme="light"] .footer-col-title { color: rgba(14,30,47,0.6); border-bottom-color: rgba(33,69,113,0.1); }
-  [data-theme="light"] .footer-links a { color: rgba(14,30,47,0.5); }
-  [data-theme="light"] .footer-links a:hover { color: #0E1E2F; }
-  [data-theme="light"] .footer-contact-label { color: rgba(14,30,47,0.3); }
-  [data-theme="light"] .footer-contact-list a,
-  [data-theme="light"] .footer-contact-list span { color: rgba(14,30,47,0.6); }
-  [data-theme="light"] .footer-contact-list a:hover { color: var(--accent); }
-  [data-theme="light"] .footer-bottom { border-top-color: rgba(33,69,113,0.1); }
-  [data-theme="light"] .footer-bottom-left { color: rgba(14,30,47,0.3); }
-  [data-theme="light"] .footer-bottom-right a { color: rgba(14,30,47,0.35); }
 
   /* Theme toggle button */
 
@@ -2923,44 +2815,9 @@
 
   /* ── Light / dark theme ── */
 
-
   /* Nav light mode */
-  [data-theme="light"] nav { background: var(--nav-bg); border-bottom: 1px solid rgba(33,69,113,0.12); }
-  [data-theme="light"] .nav-tab-btn { color: rgba(14,30,47,0.6); }
-  [data-theme="light"] .nav-tab.is-hovered .nav-tab-btn { color: #0E1E2F; }
-  [data-theme="light"] .mega-panel { background: var(--mega-bg); border-bottom-color: rgba(33,69,113,0.1); }
-  [data-theme="light"] .mega-col { opacity: 0.25; }
-  [data-theme="light"] nav.mega-open .mega-col { opacity: 0.28; }
-  [data-theme="light"] nav.mega-open .mega-col.is-active { opacity: 1; }
-  [data-theme="light"] .mega-col-label { color: var(--primary); border-bottom-color: rgba(33,69,113,0.12); }
-  [data-theme="light"] .mega-link:hover { background-color: rgba(33,69,113,0.05); }
-  [data-theme="light"] .mega-link-body strong { color: #0E1E2F; }
-  [data-theme="light"] .mega-link-body span { color: #548BC9; }
-  [data-theme="light"] .mega-icon { background: rgba(33,69,113,0.06); }
-  [data-theme="light"] .mega-icon svg { stroke: #214571; }
-  [data-theme="light"] .mega-backdrop { background: rgba(14,30,47,0.35); }
-  [data-theme="light"] .mobile-drawer { background: #ffffff; border-left-color: rgba(33,69,113,0.12); }
-  [data-theme="light"] .mobile-section { border-bottom-color: rgba(33,69,113,0.08); }
-  [data-theme="light"] .mobile-section-title { color: var(--primary); }
-  [data-theme="light"] .mobile-link { color: rgba(14,30,47,0.7); }
-  [data-theme="light"] .mobile-link:hover { color: #0E1E2F; }
-  [data-theme="light"] .nav-hamburger span { background: #0E1E2F; }
-  [data-theme="light"] .nav-chevron { stroke: rgba(14,30,47,0.5); }
 
   /* Footer light mode */
-  [data-theme="light"] .site-footer { background: var(--footer-bg); border-top-color: rgba(33,69,113,0.12); }
-  [data-theme="light"] .footer-tagline { color: rgba(14,30,47,0.45); }
-  [data-theme="light"] .footer-social-link { background: rgba(33,69,113,0.05); border-color: rgba(33,69,113,0.12); color: #214571; }
-  [data-theme="light"] .footer-col-title { color: rgba(14,30,47,0.6); border-bottom-color: rgba(33,69,113,0.1); }
-  [data-theme="light"] .footer-links a { color: rgba(14,30,47,0.5); }
-  [data-theme="light"] .footer-links a:hover { color: #0E1E2F; }
-  [data-theme="light"] .footer-contact-label { color: rgba(14,30,47,0.3); }
-  [data-theme="light"] .footer-contact-list a,
-  [data-theme="light"] .footer-contact-list span { color: rgba(14,30,47,0.6); }
-  [data-theme="light"] .footer-contact-list a:hover { color: var(--accent); }
-  [data-theme="light"] .footer-bottom { border-top-color: rgba(33,69,113,0.1); }
-  [data-theme="light"] .footer-bottom-left { color: rgba(14,30,47,0.3); }
-  [data-theme="light"] .footer-bottom-right a { color: rgba(14,30,47,0.35); }
 
   /* Theme toggle button */
 
@@ -3094,44 +2951,9 @@
 
   /* ── Light / dark theme ── */
 
-
   /* Nav light mode */
-  [data-theme="light"] nav { background: var(--nav-bg); border-bottom: 1px solid rgba(33,69,113,0.12); }
-  [data-theme="light"] .nav-tab-btn { color: rgba(14,30,47,0.6); }
-  [data-theme="light"] .nav-tab.is-hovered .nav-tab-btn { color: #0E1E2F; }
-  [data-theme="light"] .mega-panel { background: var(--mega-bg); border-bottom-color: rgba(33,69,113,0.1); }
-  [data-theme="light"] .mega-col { opacity: 0.25; }
-  [data-theme="light"] nav.mega-open .mega-col { opacity: 0.28; }
-  [data-theme="light"] nav.mega-open .mega-col.is-active { opacity: 1; }
-  [data-theme="light"] .mega-col-label { color: var(--primary); border-bottom-color: rgba(33,69,113,0.12); }
-  [data-theme="light"] .mega-link:hover { background-color: rgba(33,69,113,0.05); }
-  [data-theme="light"] .mega-link-body strong { color: #0E1E2F; }
-  [data-theme="light"] .mega-link-body span { color: #548BC9; }
-  [data-theme="light"] .mega-icon { background: rgba(33,69,113,0.06); }
-  [data-theme="light"] .mega-icon svg { stroke: #214571; }
-  [data-theme="light"] .mega-backdrop { background: rgba(14,30,47,0.35); }
-  [data-theme="light"] .mobile-drawer { background: #ffffff; border-left-color: rgba(33,69,113,0.12); }
-  [data-theme="light"] .mobile-section { border-bottom-color: rgba(33,69,113,0.08); }
-  [data-theme="light"] .mobile-section-title { color: var(--primary); }
-  [data-theme="light"] .mobile-link { color: rgba(14,30,47,0.7); }
-  [data-theme="light"] .mobile-link:hover { color: #0E1E2F; }
-  [data-theme="light"] .nav-hamburger span { background: #0E1E2F; }
-  [data-theme="light"] .nav-chevron { stroke: rgba(14,30,47,0.5); }
 
   /* Footer light mode */
-  [data-theme="light"] .site-footer { background: var(--footer-bg); border-top-color: rgba(33,69,113,0.12); }
-  [data-theme="light"] .footer-tagline { color: rgba(14,30,47,0.45); }
-  [data-theme="light"] .footer-social-link { background: rgba(33,69,113,0.05); border-color: rgba(33,69,113,0.12); color: #214571; }
-  [data-theme="light"] .footer-col-title { color: rgba(14,30,47,0.6); border-bottom-color: rgba(33,69,113,0.1); }
-  [data-theme="light"] .footer-links a { color: rgba(14,30,47,0.5); }
-  [data-theme="light"] .footer-links a:hover { color: #0E1E2F; }
-  [data-theme="light"] .footer-contact-label { color: rgba(14,30,47,0.3); }
-  [data-theme="light"] .footer-contact-list a,
-  [data-theme="light"] .footer-contact-list span { color: rgba(14,30,47,0.6); }
-  [data-theme="light"] .footer-contact-list a:hover { color: var(--accent); }
-  [data-theme="light"] .footer-bottom { border-top-color: rgba(33,69,113,0.1); }
-  [data-theme="light"] .footer-bottom-left { color: rgba(14,30,47,0.3); }
-  [data-theme="light"] .footer-bottom-right a { color: rgba(14,30,47,0.35); }
 
   /* Theme toggle button */
 
@@ -3291,44 +3113,9 @@
 
   /* ── Light / dark theme ── */
 
-
   /* Nav light mode */
-  [data-theme="light"] nav { background: var(--nav-bg); border-bottom: 1px solid rgba(33,69,113,0.12); }
-  [data-theme="light"] .nav-tab-btn { color: rgba(14,30,47,0.6); }
-  [data-theme="light"] .nav-tab.is-hovered .nav-tab-btn { color: #0E1E2F; }
-  [data-theme="light"] .mega-panel { background: var(--mega-bg); border-bottom-color: rgba(33,69,113,0.1); }
-  [data-theme="light"] .mega-col { opacity: 0.25; }
-  [data-theme="light"] nav.mega-open .mega-col { opacity: 0.28; }
-  [data-theme="light"] nav.mega-open .mega-col.is-active { opacity: 1; }
-  [data-theme="light"] .mega-col-label { color: var(--primary); border-bottom-color: rgba(33,69,113,0.12); }
-  [data-theme="light"] .mega-link:hover { background-color: rgba(33,69,113,0.05); }
-  [data-theme="light"] .mega-link-body strong { color: #0E1E2F; }
-  [data-theme="light"] .mega-link-body span { color: #548BC9; }
-  [data-theme="light"] .mega-icon { background: rgba(33,69,113,0.06); }
-  [data-theme="light"] .mega-icon svg { stroke: #214571; }
-  [data-theme="light"] .mega-backdrop { background: rgba(14,30,47,0.35); }
-  [data-theme="light"] .mobile-drawer { background: #ffffff; border-left-color: rgba(33,69,113,0.12); }
-  [data-theme="light"] .mobile-section { border-bottom-color: rgba(33,69,113,0.08); }
-  [data-theme="light"] .mobile-section-title { color: var(--primary); }
-  [data-theme="light"] .mobile-link { color: rgba(14,30,47,0.7); }
-  [data-theme="light"] .mobile-link:hover { color: #0E1E2F; }
-  [data-theme="light"] .nav-hamburger span { background: #0E1E2F; }
-  [data-theme="light"] .nav-chevron { stroke: rgba(14,30,47,0.5); }
 
   /* Footer light mode */
-  [data-theme="light"] .site-footer { background: var(--footer-bg); border-top-color: rgba(33,69,113,0.12); }
-  [data-theme="light"] .footer-tagline { color: rgba(14,30,47,0.45); }
-  [data-theme="light"] .footer-social-link { background: rgba(33,69,113,0.05); border-color: rgba(33,69,113,0.12); color: #214571; }
-  [data-theme="light"] .footer-col-title { color: rgba(14,30,47,0.6); border-bottom-color: rgba(33,69,113,0.1); }
-  [data-theme="light"] .footer-links a { color: rgba(14,30,47,0.5); }
-  [data-theme="light"] .footer-links a:hover { color: #0E1E2F; }
-  [data-theme="light"] .footer-contact-label { color: rgba(14,30,47,0.3); }
-  [data-theme="light"] .footer-contact-list a,
-  [data-theme="light"] .footer-contact-list span { color: rgba(14,30,47,0.6); }
-  [data-theme="light"] .footer-contact-list a:hover { color: var(--accent); }
-  [data-theme="light"] .footer-bottom { border-top-color: rgba(33,69,113,0.1); }
-  [data-theme="light"] .footer-bottom-left { color: rgba(14,30,47,0.3); }
-  [data-theme="light"] .footer-bottom-right a { color: rgba(14,30,47,0.35); }
 
   /* Theme toggle button */
 
@@ -3566,44 +3353,9 @@
 
   /* ── Light / dark theme ── */
 
-
   /* Nav light mode */
-  [data-theme="light"] nav { background: var(--nav-bg); border-bottom: 1px solid rgba(33,69,113,0.12); }
-  [data-theme="light"] .nav-tab-btn { color: rgba(14,30,47,0.6); }
-  [data-theme="light"] .nav-tab.is-hovered .nav-tab-btn { color: #0E1E2F; }
-  [data-theme="light"] .mega-panel { background: var(--mega-bg); border-bottom-color: rgba(33,69,113,0.1); }
-  [data-theme="light"] .mega-col { opacity: 0.25; }
-  [data-theme="light"] nav.mega-open .mega-col { opacity: 0.28; }
-  [data-theme="light"] nav.mega-open .mega-col.is-active { opacity: 1; }
-  [data-theme="light"] .mega-col-label { color: var(--primary); border-bottom-color: rgba(33,69,113,0.12); }
-  [data-theme="light"] .mega-link:hover { background-color: rgba(33,69,113,0.05); }
-  [data-theme="light"] .mega-link-body strong { color: #0E1E2F; }
-  [data-theme="light"] .mega-link-body span { color: #548BC9; }
-  [data-theme="light"] .mega-icon { background: rgba(33,69,113,0.06); }
-  [data-theme="light"] .mega-icon svg { stroke: #214571; }
-  [data-theme="light"] .mega-backdrop { background: rgba(14,30,47,0.35); }
-  [data-theme="light"] .mobile-drawer { background: #ffffff; border-left-color: rgba(33,69,113,0.12); }
-  [data-theme="light"] .mobile-section { border-bottom-color: rgba(33,69,113,0.08); }
-  [data-theme="light"] .mobile-section-title { color: var(--primary); }
-  [data-theme="light"] .mobile-link { color: rgba(14,30,47,0.7); }
-  [data-theme="light"] .mobile-link:hover { color: #0E1E2F; }
-  [data-theme="light"] .nav-hamburger span { background: #0E1E2F; }
-  [data-theme="light"] .nav-chevron { stroke: rgba(14,30,47,0.5); }
 
   /* Footer light mode */
-  [data-theme="light"] .site-footer { background: var(--footer-bg); border-top-color: rgba(33,69,113,0.12); }
-  [data-theme="light"] .footer-tagline { color: rgba(14,30,47,0.45); }
-  [data-theme="light"] .footer-social-link { background: rgba(33,69,113,0.05); border-color: rgba(33,69,113,0.12); color: #214571; }
-  [data-theme="light"] .footer-col-title { color: rgba(14,30,47,0.6); border-bottom-color: rgba(33,69,113,0.1); }
-  [data-theme="light"] .footer-links a { color: rgba(14,30,47,0.5); }
-  [data-theme="light"] .footer-links a:hover { color: #0E1E2F; }
-  [data-theme="light"] .footer-contact-label { color: rgba(14,30,47,0.3); }
-  [data-theme="light"] .footer-contact-list a,
-  [data-theme="light"] .footer-contact-list span { color: rgba(14,30,47,0.6); }
-  [data-theme="light"] .footer-contact-list a:hover { color: var(--accent); }
-  [data-theme="light"] .footer-bottom { border-top-color: rgba(33,69,113,0.1); }
-  [data-theme="light"] .footer-bottom-left { color: rgba(14,30,47,0.3); }
-  [data-theme="light"] .footer-bottom-right a { color: rgba(14,30,47,0.35); }
 
   /* Theme toggle button */
 
@@ -4339,7 +4091,6 @@
   padding: 12px 14px;
 }
 
-
 /* Input */
 .kalk-input-row { display: flex; align-items: center; gap: 0.6rem; }
 .kalk-input::-webkit-outer-spin-button,
@@ -4442,7 +4193,6 @@
 .kalk-tab-btn.active { color: white; border-bottom-color: var(--accent); }
 .kalk-tab-panel { display: none; }
 .kalk-tab-panel.active { display: block; }
-
 
 /* ── Jednoduchá — 2 sloupce ── */
 .kalk-form-col { display: flex; flex-direction: column; gap: 1.75rem; }
@@ -4824,6 +4574,10 @@
 [data-theme="light"] .sdileni-step:hover { background: rgba(33,69,113,0.02); }
 [data-theme="light"] .sdileni-step-title { color: #0E1E2F; }
 [data-theme="light"] .sdileni-step-desc  { color: #3A6298; }
+[data-theme="light"] .sdileni-step-n { background: rgba(69,231,163,0.12); border-color: rgba(69,231,163,0.3); color: var(--green-dark); }
+[data-theme="light"] .sdileni-cta-wrap { background: linear-gradient(135deg, rgba(69,231,163,0.08), rgba(33,69,113,0.06)); border-color: rgba(69,231,163,0.25); }
+[data-theme="light"] .sdileni-cta-title { color: #0E1E2F; }
+[data-theme="light"] .sdileni-cta-desc  { color: #3A6298; }
 [data-theme="light"] .sdileni-btn-secondary { background: rgba(33,69,113,0.06); border-color: rgba(33,69,113,0.15); color: #3A5A7A; }
 [data-theme="light"] .sdileni-btn-secondary:hover { background: rgba(33,69,113,0.1); color: #0E1E2F; }
 
@@ -4837,12 +4591,14 @@
 .vykup-stat-row {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  justify-content: center;
+  gap: 3rem;
   margin-top: 1.5rem;
-  padding: 1.25rem 1.5rem;
+  padding: 1.5rem 2.5rem;
   background: rgba(69,231,163,0.06);
   border: 1px solid rgba(69,231,163,0.15);
   border-radius: 12px;
+  width: 100%;
 }
 .vykup-stat { text-align: center; }
 .vykup-stat-num {
@@ -4862,3 +4618,48 @@
 [data-theme="light"] .vykup-stat-num { color: var(--green-dark); }
 [data-theme="light"] .vykup-stat-label { color: #3A5A7A; }
 [data-theme="light"] .vykup-stat-divider { background: rgba(69,231,163,0.3); }
+
+/* ── Missing light mode overrides ── */
+
+/* Hero — stays dark, white text is fine on dark gradient bg */
+/* .hero-headline, .hero-sub, .hero-trust — intentionally white on dark hero bg */
+/* .final-headline, .final-sub, .final-cta-note — intentionally white on dark cta bg */
+/* .step-title, .step-desc — on dark #how section bg */
+/* .how-note-text — on dark bg */
+
+/* Sections that ARE light in light mode — need text fixes */
+[data-theme="light"] .tarif-cta { color: var(--primary); }
+[data-theme="light"] .tarify-group-desc { color: #3A6298; }
+[data-theme="light"] .distrib-label { color: rgba(14,30,47,0.5); }
+
+/* Slevy page — light sections */
+[data-theme="light"] .slevy-cta-title { color: #0E1E2F; }
+[data-theme="light"] .slevy-cta-desc  { color: #3A6298; }
+[data-theme="light"] .slevy-accrual-title { color: rgba(14,30,47,0.5); }
+[data-theme="light"] .slevy-accrual-note  { color: rgba(14,30,47,0.4); }
+[data-theme="light"] .slevy-rules-title   { color: rgba(14,30,47,0.5); }
+[data-theme="light"] .slevy-legend-sep    { color: rgba(14,30,47,0.15); }
+[data-theme="light"] .st-badge            { color: rgba(14,30,47,0.35); }
+
+/* Kontakt / channels */
+[data-theme="light"] .channel-label  { color: rgba(14,30,47,0.4); }
+[data-theme="light"] .channel-value  { color: #0E1E2F; }
+[data-theme="light"] .channel-note   { color: #3A6298; }
+[data-theme="light"] .contact-form-head { color: #3A6298; }
+[data-theme="light"] .form-label     { color: rgba(14,30,47,0.5); }
+[data-theme="light"] .form-input     { color: #0E1E2F; background: #f4f7fd; border-color: rgba(33,69,113,0.15); }
+
+/* Buttons on light bg */
+[data-theme="light"] .btn-outline { color: #0E1E2F; border-color: rgba(14,30,47,0.25); }
+[data-theme="light"] .btn-outline:hover { background: rgba(14,30,47,0.05); }
+
+/* Reviews */
+[data-theme="light"] .reviews-source-logo { color: rgba(14,30,47,0.35); }
+[data-theme="light"] .google-logo         { color: rgba(14,30,47,0.5); }
+
+/* Promise items */
+[data-theme="light"] .promise-item { color: #3A5A7A; }
+
+/* Video label */
+[data-theme="light"] .video-label { color: rgba(14,30,47,0.45); }
+
