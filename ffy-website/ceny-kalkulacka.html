@@ -351,13 +351,13 @@
                   </div>
                   <div class="rozklad-row">
                     <div class="rozklad-dot" style="background:#122d4f"></div>
-                    <span class="rozklad-lbl">Jistič (měsíčně)</span>
+                    <span class="rozklad-lbl">Distribuce měsíčně</span>
                     <span class="rozklad-val" id="rozklad-j-p-distmes">—</span>
                     <span class="rozklad-pct" id="rozklad-j-p-distmes-pct">—</span>
                   </div>
                   <div class="rozklad-row">
                     <div class="rozklad-dot" style="background:#c2d4ee"></div>
-                    <span class="rozklad-lbl">Daně, NI a POZE</span>
+                    <span class="rozklad-lbl">Daně a POZE</span>
                     <span class="rozklad-val" id="rozklad-j-p-dane">—</span>
                     <span class="rozklad-pct" id="rozklad-j-p-dane-pct">—</span>
                   </div>
@@ -508,13 +508,13 @@
                   </div>
                   <div class="rozklad-row">
                     <div class="rozklad-dot" style="background:#122d4f"></div>
-                    <span class="rozklad-lbl">Jistič (měsíčně)</span>
+                    <span class="rozklad-lbl">Distribuce měsíčně</span>
                     <span class="rozklad-val" id="rozklad-s-p-distmes">—</span>
                     <span class="rozklad-pct" id="rozklad-s-p-distmes-pct">—</span>
                   </div>
                   <div class="rozklad-row">
                     <div class="rozklad-dot" style="background:#c2d4ee"></div>
-                    <span class="rozklad-lbl">Daně, NI a POZE</span>
+                    <span class="rozklad-lbl">Daně a POZE</span>
                     <span class="rozklad-val" id="rozklad-s-p-dane">—</span>
                     <span class="rozklad-pct" id="rozklad-s-p-dane-pct">—</span>
                   </div>
@@ -933,14 +933,12 @@
     const ni_raw       = NI * 12;
     const jistic_raw   = (JISTIC[dist][sazba] ? (JISTIC[dist][sazba][10] || 0) : 0) * 12;
 
-    const distMwh_raw  = distVT_raw + sys_raw;   // za spotřebu, s DPH
-    const distMes_raw  = jistic_raw;              // jistič, s DPH
+    const distMwh_raw  = distVT_raw + sys_raw;
+    const distMes_raw  = ni_raw + jistic_raw;
+    const dan_raw      = DAN * spotreba;
+    const poze_raw     = POZE * spotreba;
 
-    // Bez DPH — spotřební daň, NI, POZE (odvádí se státu)
-    const dan_raw      = DAN * spotreba;          // spotřební daň 28,30 Kč/MWh
-    const poze_raw     = POZE * spotreba;         // aktuálně 0
-
-    const distribuce   = withDph(distMwh_raw + distMes_raw) + ni_raw + dan_raw + poze_raw;
+    const distribuce   = withDph(distMwh_raw + distMes_raw + dan_raw + poze_raw);
 
     const total = nakladSilova + nakladStalat + distribuce;
 
@@ -961,7 +959,7 @@
       stalat:  nakladStalat,
       distMwh: withDph(distMwh_raw),
       distMes: withDph(distMes_raw),
-      dane:    ni_raw + dan_raw + poze_raw,
+      dane:    withDph(dan_raw + poze_raw + ni_raw),
       spotreba: spotreba,
     });
   });
@@ -1012,14 +1010,12 @@
     const ni_raw      = NI * 12;
     const jistic_raw  = ((JISTIC[dist][activeSazba] && JISTIC[dist][activeSazba][activeJistic]) || 0) * 12;
 
-    const distMwh_raw = distVT_raw + distNT_raw + sys_raw;  // za spotřebu, s DPH
-    const distMes_raw = jistic_raw;                         // jistič, s DPH
+    const distMwh_raw = distVT_raw + distNT_raw + sys_raw;
+    const distMes_raw = ni_raw + jistic_raw;
+    const dan_raw     = DAN * celkem;
+    const poze_raw    = POZE * celkem;
 
-    // Bez DPH — spotřební daň, NI, POZE (odvádí se státu)
-    const dan_raw     = DAN * celkem;    // spotřební daň 28,30 Kč/MWh
-    const poze_raw    = POZE * celkem;   // aktuálně 0
-
-    const distribuce  = withDph(distMwh_raw + distMes_raw) + ni_raw + dan_raw + poze_raw;
+    const distribuce  = withDph(distMwh_raw + distMes_raw + dan_raw + poze_raw);
 
     const dodavatel = nakladVT + nakladNT + nakladStalat;
     const total = dodavatel + distribuce;
@@ -1042,7 +1038,7 @@
       stalat:  nakladStalat,
       distMwh: withDph(distMwh_raw),
       distMes: withDph(distMes_raw),
-      dane:    ni_raw + dan_raw + poze_raw,
+      dane:    withDph(dan_raw + poze_raw + ni_raw),
       spotreba: celkem,
     });
   });
