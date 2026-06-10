@@ -6380,6 +6380,40 @@
 
 /* Print styles */
 @media print {
-  .rozklad-print-btn { display: none; }
-  .rozklad { border: 1px solid #c2d4ee; }
+  /* Skryj vše */
+  body > *,
+  nav, footer, .kalk-tabs-nav, .kalk-tab-panel,
+  .kalk-result, .subpage-header, .subpage-main > *:not(.kalk-section),
+  .rozklad-print-btn { display: none !important; }
+
+  /* Zobraz jen označený rozklad */
+  .rozklad.print-target {
+    display: block !important;
+    border: none !important;
+    background: white !important;
+    color: #122d4f !important;
+    margin: 0 !important;
+  }
+  .rozklad.print-target * { color: #122d4f !important; }
+  .rozklad.print-target .rozklad-title { color: #214470 !important; }
+  .rozklad.print-target .rozklad-lbl { color: #5a7090 !important; }
+  .rozklad.print-target .rozklad-note { color: #8a9aaa !important; }
+  .rozklad.print-target .rozklad-header { border-bottom: 1px solid #c2d4ee !important; }
+  .rozklad.print-target .rozklad-col-title { border-bottom: 1px solid #c2d4ee !important; color: #8a9aaa !important; }
+  .rozklad.print-target .rozklad-row { border-bottom: 1px solid #eaf0f8 !important; }
+  .rozklad.print-target .rozklad-total { border-top: 1px solid #c2d4ee !important; color: #5a7090 !important; }
+  .rozklad.print-target .rozklad-total strong { color: #122d4f !important; }
+
+  /* Print header nad rozkladem */
+  .rozklad.print-target::before {
+    content: 'FREE for YOU energie  ·  Orientační rozklad ceny';
+    display: block;
+    font-family: Ubuntu, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #214470;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+    border-bottom: 2px solid #214470;
+  }
 }

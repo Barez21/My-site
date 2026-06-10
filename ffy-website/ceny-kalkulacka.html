@@ -1099,30 +1099,13 @@
   }
 
   function printRozklad(rid) {
+    // Mark which rozklad to print, then print
+    document.querySelectorAll('.rozklad').forEach(el => el.classList.remove('print-target'));
     const el = document.getElementById(rid);
     if (!el) return;
-    const win = window.open('', '_blank');
-    win.document.write(`<!DOCTYPE html><html><head>
-      <meta charset="UTF-8">
-      <title>Rozklad ceny — FREE for YOU</title>
-      <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
-      <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: Ubuntu, sans-serif; background: #f4f7fd; color: #122d4f; padding: 32px; }
-        .print-header { background: linear-gradient(135deg,#214470,#2f364a); color: white; border-radius: 12px; padding: 18px 24px; margin-bottom: 24px; display:flex; align-items:center; justify-content:space-between; }
-        .print-logo { font-size: 16px; font-weight: 700; }
-        .print-sub { font-size: 11px; opacity: 0.55; margin-top: 2px; }
-        .print-title { font-size: 13px; opacity: 0.8; }
-      </style>
-    </head><body>
-    <div class="print-header">
-      <div><div class="print-logo">FREE for YOU energie</div><div class="print-sub">S námi jste volní</div></div>
-      <div class="print-title">Orientační rozklad ceny energie</div>
-    </div>
-    ${el.outerHTML}
-    <script>window.onload=()=>{window.print();window.close();}<\/script>
-    </body></html>`);
-    win.document.close();
+    el.classList.add('print-target');
+    window.print();
+    el.classList.remove('print-target');
   }
 
 </script>
