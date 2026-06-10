@@ -223,12 +223,12 @@
             </div>
 
             <div class="kalk-step">
-              <div class="kalk-step-label">Vaše distribuční území</div>
-              <div class="kalk-distrib-grid">
-                <button class="kalk-distrib-btn active" data-distrib="cez">ČEZ<br>Distribuce</button>
-                <button class="kalk-distrib-btn" data-distrib="pre">PRE<br>Distribuce</button>
-                <button class="kalk-distrib-btn" data-distrib="eon">E.ON<br>(EG.D)</button>
+              <div class="kalk-step-label">PSČ odběrného místa</div>
+              <div class="kalk-psc-row">
+                <input type="text" id="psc-j" class="kalk-input kalk-input-psc" placeholder="např. 12000" maxlength="5" inputmode="numeric" pattern="[0-9]{5}">
+                <div class="kalk-psc-result" id="psc-j-result"></div>
               </div>
+              <div class="kalk-hint">Podle PSČ automaticky zjistíme vaše distribuční území.</div>
             </div>
 
             <div class="kalk-step kalk-step-optional">
@@ -328,20 +328,22 @@
     <div class="kalk-tab-panel" id="tab-slozita">
       <div class="kalk-wide-inner">
 
-        <div class="kalk-form-row kalk-form-row-slozita">
+        <div class="kalk-form-row-slozita">
 
-          <div class="kalk-step">
-            <div class="kalk-step-label">Distribuční území</div>
-            <div class="kalk-pills">
-              <button class="kalk-pill active" data-distrib2="cez">ČEZ Distribuce</button>
-              <button class="kalk-pill" data-distrib2="pre">PRE Distribuce</button>
-              <button class="kalk-pill" data-distrib2="eon">E.ON (EG.D)</button>
+          <!-- PSC -->
+          <div class="kalk-step kalk-step-centered">
+            <div class="kalk-step-label">PSČ odběrného místa</div>
+            <div class="kalk-psc-row">
+              <input type="text" id="psc-s" class="kalk-input kalk-input-psc" placeholder="např. 12000" maxlength="5" inputmode="numeric" pattern="[0-9]{5}">
+              <div class="kalk-psc-result" id="psc-s-result"></div>
             </div>
+            <div class="kalk-hint">Podle PSČ zjistíme vaše distribuční území.</div>
           </div>
 
-          <div class="kalk-step">
+          <!-- Sazba -->
+          <div class="kalk-step kalk-step-centered">
             <div class="kalk-step-label">Distribuční sazba</div>
-            <div class="kalk-pills kalk-pills-wrap">
+            <div class="kalk-pills kalk-pills-center">
               <button class="kalk-pill active" data-sazba="D01d">D01d</button>
               <button class="kalk-pill" data-sazba="D02d">D02d</button>
               <button class="kalk-pill" data-sazba="D25d">D25d</button>
@@ -355,9 +357,10 @@
             </div>
           </div>
 
-          <div class="kalk-step">
+          <!-- Jistič -->
+          <div class="kalk-step kalk-step-centered">
             <div class="kalk-step-label">Hlavní jistič</div>
-            <div class="kalk-pills kalk-pills-wrap">
+            <div class="kalk-pills kalk-pills-center">
               <button class="kalk-pill active" data-jistic="10">do 3×10 A</button>
               <button class="kalk-pill" data-jistic="16">do 3×16 A</button>
               <button class="kalk-pill" data-jistic="20">do 3×20 A</button>
@@ -369,36 +372,45 @@
             </div>
           </div>
 
-          <div class="kalk-form-two-col">
-            <div class="kalk-step">
-              <div class="kalk-step-label">Spotřeba VT (vysoký tarif)</div>
+          <!-- Spotřeby — dynamic VT/NT -->
+          <div class="kalk-form-two-col kalk-step-centered" id="spotreby-wrap">
+            <div class="kalk-step" id="vt-wrap">
+              <div class="kalk-step-label">Spotřeba VT <span class="kalk-tarif-tag" id="vt-tag">(vysoký tarif)</span></div>
               <div class="kalk-input-row">
-                <input type="number" id="spotreba-vt" class="kalk-input" placeholder="např. 2,5" min="0" step="0.1">
+                <input type="number" id="spotreba-vt" class="kalk-input kalk-input-big" placeholder="např. 2,5" min="0" step="0.1">
                 <span class="kalk-input-unit">MWh / rok</span>
               </div>
             </div>
-            <div class="kalk-step">
-              <div class="kalk-step-label">Spotřeba NT (nízký tarif)</div>
+            <div class="kalk-step" id="nt-wrap">
+              <div class="kalk-step-label">Spotřeba NT <span class="kalk-tarif-tag">(nízký tarif)</span></div>
               <div class="kalk-input-row">
-                <input type="number" id="spotreba-nt" class="kalk-input" placeholder="např. 1,2" min="0" step="0.1">
+                <input type="number" id="spotreba-nt" class="kalk-input kalk-input-big" placeholder="např. 1,2" min="0" step="0.1">
                 <span class="kalk-input-unit">MWh / rok</span>
               </div>
-              <div class="kalk-hint">Vyplňte jen u dvoutarifní sazby.</div>
             </div>
           </div>
 
-          <div class="kalk-step kalk-step-optional">
-            <div class="kalk-step-label">
-              Současná cena VT
-              <span class="kalk-optional-badge">volitelné — pro srovnání</span>
+          <!-- Srovnání -->
+          <div class="kalk-form-two-col kalk-step-centered" id="srovnani-wrap">
+            <div class="kalk-step kalk-step-optional" id="srovnani-vt-wrap">
+              <div class="kalk-step-label">Současná cena VT <span class="kalk-optional-badge">pro srovnání</span></div>
+              <div class="kalk-input-row">
+                <input type="number" id="s2-cena-vt" class="kalk-input" placeholder="např. 4 200" min="0" step="10">
+                <span class="kalk-input-unit">Kč / MWh s DPH</span>
+              </div>
             </div>
-            <div class="kalk-input-row">
-              <input type="number" id="s2-cena-vt" class="kalk-input" placeholder="např. 4 200" min="0" step="10">
-              <span class="kalk-input-unit">Kč / MWh s DPH</span>
+            <div class="kalk-step kalk-step-optional" id="srovnani-nt-wrap">
+              <div class="kalk-step-label">Současná cena NT <span class="kalk-optional-badge">pro srovnání</span></div>
+              <div class="kalk-input-row">
+                <input type="number" id="s2-cena-nt" class="kalk-input" placeholder="např. 3 800" min="0" step="10">
+                <span class="kalk-input-unit">Kč / MWh s DPH</span>
+              </div>
             </div>
           </div>
 
-          <button class="kalk-submit" id="kalk-btn2">Spočítat →</button>
+          <div class="kalk-step-centered">
+            <button class="kalk-submit kalk-submit-centered" id="kalk-btn2">Spočítat →</button>
+          </div>
 
         </div>
 
@@ -663,15 +675,78 @@
   // ── Kalkulačka ──
   const CENY = {
     silova: {
-      '24':    3386.79, 'aku8': 3386.79, 'aku16': 3471.49,
-      'D01d':  3386.79, 'D02d': 3386.79, 'D61d':  3386.79,
-      'D25d':  3386.79, 'D26d': 3386.79, 'D27d':  3386.79,
-      'D35d':  3471.49, 'D45d': 3471.49, 'D56d':  3471.49, 'D57d': 3471.49,
+      '24': 3386.79, 'aku8': 3386.79, 'aku16': 3471.49,
+      'D01d': 3386.79, 'D02d': 3386.79, 'D61d': 3386.79,
+      'D25d': 3386.79, 'D26d': 3386.79, 'D27d': 3386.79,
+      'D35d': 3471.49, 'D45d': 3471.49, 'D56d': 3471.49, 'D57d': 3471.49,
     },
     stalat: 163.35
   };
+
+  // Tarify: VT only = true, NT only = false, both = null
+  const TARIF_CONFIG = {
+    'D01d': { vt: true,  nt: false },
+    'D02d': { vt: true,  nt: false },
+    'D25d': { vt: true,  nt: true  },
+    'D26d': { vt: true,  nt: true  },
+    'D27d': { vt: true,  nt: true  },
+    'D35d': { vt: true,  nt: true  },
+    'D45d': { vt: true,  nt: true  },
+    'D56d': { vt: true,  nt: true  },
+    'D57d': { vt: true,  nt: true  },
+    'D61d': { vt: true,  nt: true  },
+  };
+
   function formatKc(v) { return Math.round(v).toLocaleString('cs-CZ') + ' Kč'; }
 
+  // ── PSC lookup ──
+  let pscData = null;
+  async function loadPsc() {
+    if (pscData) return pscData;
+    try {
+      const r = await fetch('psc-distributori.csv');
+      const text = await r.text();
+      pscData = {};
+      text.split('
+').slice(1).forEach(line => {
+        const [psc, obec, okres, dist_e, dist_p] = line.split('	').map(s => s && s.trim());
+        if (psc) pscData[psc.replace(/\s/g,'')] = { obec, okres, dist_e, dist_p };
+      });
+    } catch(e) { pscData = {}; }
+    return pscData;
+  }
+
+  function showPscResult(inputId, resultId) {
+    const val = document.getElementById(inputId).value.replace(/\s/g,'');
+    const el  = document.getElementById(resultId);
+    if (!pscData || val.length < 5) { el.textContent = ''; el.className = 'kalk-psc-result'; return null; }
+    const row = pscData[val];
+    if (row) {
+      el.textContent = row.obec + ' — ' + row.dist_e;
+      el.className = 'kalk-psc-result psc-ok';
+      return row.dist_e;
+    } else {
+      el.textContent = 'PSČ nenalezeno';
+      el.className = 'kalk-psc-result psc-err';
+      return null;
+    }
+  }
+
+  // Load PSC on page load
+  loadPsc();
+
+  // PSC live feedback
+  ['psc-j','psc-s'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('input', async () => {
+      await loadPsc();
+      const resultId = id === 'psc-j' ? 'psc-j-result' : 'psc-s-result';
+      showPscResult(id, resultId);
+    });
+  });
+
+  // ── Tabs ──
   document.querySelectorAll('.kalk-tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.kalk-tab-btn').forEach(b => b.classList.remove('active'));
@@ -681,27 +756,30 @@
     });
   });
 
-  let activeTarif = '24', activeDistrib = 'cez';
-  document.querySelectorAll('.kalk-distrib-btn[data-distrib]').forEach(b => b.addEventListener('click', () => {
-    document.querySelectorAll('.kalk-distrib-btn[data-distrib]').forEach(x => x.classList.remove('active'));
-    b.classList.add('active'); activeDistrib = b.dataset.distrib;
-  }));
+  // ── Jednoduchá ──
+  let activeTarif = '24';
   document.querySelectorAll('[data-tarif]').forEach(b => b.addEventListener('click', () => {
     document.querySelectorAll('[data-tarif]').forEach(x => x.classList.remove('active'));
     b.classList.add('active'); activeTarif = b.dataset.tarif;
   }));
 
-  document.getElementById('kalk-btn').addEventListener('click', () => {
-    const spotreba = parseFloat(document.getElementById('spotreba').value);
+  document.getElementById('kalk-btn').addEventListener('click', async () => {
+    await loadPsc();
+    const spotreba    = parseFloat(document.getElementById('spotreba').value);
     const soucasnaCena = parseFloat(document.getElementById('soucasna-cena').value);
     if (!spotreba || spotreba <= 0) { document.getElementById('spotreba').focus(); return; }
+
+    showPscResult('psc-j', 'psc-j-result');
+
     const nakladSilova = spotreba * CENY.silova[activeTarif];
     const nakladStalat = CENY.stalat * 12;
     const total = nakladSilova + nakladStalat;
-    document.getElementById('r-rocni').textContent  = formatKc(total) + ' / rok';
-    document.getElementById('r-mesicni').textContent = formatKc(total / 12) + ' / měsíc';
-    document.getElementById('r-silova').textContent  = formatKc(nakladSilova);
-    document.getElementById('r-stalat').textContent  = formatKc(nakladStalat);
+
+    document.getElementById('r-rocni').textContent   = formatKc(total) + ' / rok';
+    document.getElementById('r-mesicni').textContent  = formatKc(total / 12) + ' / měsíc';
+    document.getElementById('r-silova').textContent   = formatKc(nakladSilova);
+    document.getElementById('r-stalat').textContent   = formatKc(nakladStalat);
+
     const comp = document.getElementById('kalk-comparison');
     if (soucasnaCena > 0) {
       const nyni = spotreba * soucasnaCena + nakladStalat;
@@ -713,43 +791,74 @@
         : '<span class="saving-neutral">U současného dodavatele platíte o ' + formatKc(Math.abs(rozdil)) + ' méně ročně</span>';
       comp.style.display = 'block';
     } else { comp.style.display = 'none'; }
+
     const res = document.getElementById('kalk-result');
     res.style.display = 'block';
     res.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   });
-  document.getElementById('spotreba').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('kalk-btn').click(); });
+  document.getElementById('spotreba').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('kalk-btn').click();
+  });
 
-  let activeSazba = 'D01d', activeJistic = '10', activeDistrib2 = 'cez';
-  document.querySelectorAll('[data-distrib2]').forEach(b => b.addEventListener('click', () => {
-    document.querySelectorAll('[data-distrib2]').forEach(x => x.classList.remove('active'));
-    b.classList.add('active'); activeDistrib2 = b.dataset.distrib2;
-  }));
+  // ── Přesná kalkulačka ──
+  let activeSazba = 'D01d', activeJistic = '10';
+
+  function updateTarifFields() {
+    const cfg = TARIF_CONFIG[activeSazba] || { vt: true, nt: true };
+    const vtWrap = document.getElementById('vt-wrap');
+    const ntWrap = document.getElementById('nt-wrap');
+    const srovVt = document.getElementById('srovnani-vt-wrap');
+    const srovNt = document.getElementById('srovnani-nt-wrap');
+
+    vtWrap.style.display = cfg.vt ? '' : 'none';
+    ntWrap.style.display = cfg.nt ? '' : 'none';
+    if (srovVt) srovVt.style.display = cfg.vt ? '' : 'none';
+    if (srovNt) srovNt.style.display = cfg.nt ? '' : 'none';
+
+    // Clear hidden fields
+    if (!cfg.vt) document.getElementById('spotreba-vt').value = '';
+    if (!cfg.nt) document.getElementById('spotreba-nt').value = '';
+  }
+
   document.querySelectorAll('[data-sazba]').forEach(b => b.addEventListener('click', () => {
     document.querySelectorAll('[data-sazba]').forEach(x => x.classList.remove('active'));
     b.classList.add('active'); activeSazba = b.dataset.sazba;
+    updateTarifFields();
   }));
+
   document.querySelectorAll('[data-jistic]').forEach(b => b.addEventListener('click', () => {
     document.querySelectorAll('[data-jistic]').forEach(x => x.classList.remove('active'));
     b.classList.add('active'); activeJistic = b.dataset.jistic;
   }));
 
-  document.getElementById('kalk-btn2').addEventListener('click', () => {
-    const vt = parseFloat(document.getElementById('spotreba-vt').value) || 0;
-    const nt = parseFloat(document.getElementById('spotreba-nt').value) || 0;
-    const cenaVT = parseFloat(document.getElementById('s2-cena-vt').value);
+  // Init VT/NT fields
+  updateTarifFields();
+
+  document.getElementById('kalk-btn2').addEventListener('click', async () => {
+    await loadPsc();
+    showPscResult('psc-s', 'psc-s-result');
+
+    const vt     = parseFloat(document.getElementById('spotreba-vt').value) || 0;
+    const nt     = parseFloat(document.getElementById('spotreba-nt').value) || 0;
+    const cenaVT = parseFloat(document.getElementById('s2-cena-vt').value) || 0;
+    const cenaNT = parseFloat(document.getElementById('s2-cena-nt').value) || 0;
     if (!vt && !nt) { document.getElementById('spotreba-vt').focus(); return; }
-    const cenaSilova = CENY.silova[activeSazba] || 3386.79;
-    const nakladVT = vt * cenaSilova, nakladNT = nt * cenaSilova;
+
+    const cenaSilova   = CENY.silova[activeSazba] || 3386.79;
+    const nakladVT     = vt * cenaSilova;
+    const nakladNT     = nt * cenaSilova;
     const nakladStalat = CENY.stalat * 12;
-    const total = nakladVT + nakladNT + nakladStalat;
-    document.getElementById('r2-rocni').textContent  = formatKc(total) + ' / rok';
-    document.getElementById('r2-mesicni').textContent = formatKc(total / 12) + ' / měsíc';
-    document.getElementById('r2-vt').textContent     = vt ? formatKc(nakladVT) : '—';
-    document.getElementById('r2-nt').textContent     = nt ? formatKc(nakladNT) : '—';
-    document.getElementById('r2-stalat').textContent = formatKc(nakladStalat);
+    const total        = nakladVT + nakladNT + nakladStalat;
+
+    document.getElementById('r2-rocni').textContent   = formatKc(total) + ' / rok';
+    document.getElementById('r2-mesicni').textContent  = formatKc(total / 12) + ' / měsíc';
+    document.getElementById('r2-vt').textContent       = vt ? formatKc(nakladVT)  : '—';
+    document.getElementById('r2-nt').textContent       = nt ? formatKc(nakladNT)  : '—';
+    document.getElementById('r2-stalat').textContent   = formatKc(nakladStalat);
+
     const comp2 = document.getElementById('kalk-comparison2');
-    if (cenaVT > 0) {
-      const nyni = (vt + nt) * cenaVT + nakladStalat;
+    if (cenaVT > 0 || cenaNT > 0) {
+      const nyni   = vt * (cenaVT || cenaSilova) + nt * (cenaNT || cenaSilova) + nakladStalat;
       const rozdil = nyni - total;
       document.getElementById('c2-ted').textContent = formatKc(nyni) + ' / rok';
       document.getElementById('c2-ffy').textContent = formatKc(total) + ' / rok';
@@ -758,6 +867,7 @@
         : '<span class="saving-neutral">Ceny jsou srovnatelné nebo u nás o ' + formatKc(Math.abs(rozdil)) + ' vyšší</span>';
       comp2.style.display = 'block';
     } else { comp2.style.display = 'none'; }
+
     const res2 = document.getElementById('kalk-result2');
     res2.style.display = 'block';
     res2.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
