@@ -1,0 +1,2672 @@
+psc,obec,okres,distributor_elektrina,distributor_plyn,overit
+10000,Praha 10,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+10100,Praha 101,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+10200,Praha 102,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+10300,Praha 113,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+10400,Praha 114,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+10600,Praha 106,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+10700,Praha 112,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+10800,Praha 108,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+10900,Praha 111,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+11000,Praha 1,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+11800,Praha 011,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+11900,Praha 012,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+12000,Praha 2,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+12800,Praha 28,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+13000,Praha 3,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+14000,Praha 4,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+14100,Praha 41,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+14200,Praha 411,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+14300,Praha 412,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+14700,Praha 47,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+14800,Praha 414,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+14900,Praha 415,Hlavní město Praha;Praha-západ,PREdistribuce,Pražská plynárenská Distribuce,ano
+15000,Praha 5,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+15200,Praha 52,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+15300,Praha 512,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+15400,Praha 514,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+15500,Praha 515,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+15521,Praha 517,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+15531,Praha 511,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+15600,Praha 516,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+15800,Praha 58,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+15900,Praha 59,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+16000,Praha 6,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+16100,Praha 614,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+16200,Praha 616,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+16300,Praha 618,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+16400,Praha 619,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+16500,Praha 620,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+16900,Praha 69,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+17000,Praha 7,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+17100,Praha 71,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+18000,Praha 8,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+18100,Praha 81,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+18200,Praha 82,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+18400,Praha 84,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+18600,Praha 86,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+19000,Praha 9,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+19011,Praha 911,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+19012,Praha 912,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+19014,Praha 914,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+19015,Praha 915,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+19016,Praha 916,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+19017,Praha 917,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+19300,Praha 913,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+19600,Praha 96,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+19700,Praha 97,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+19800,Praha 98,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+19900,Praha 99,Hlavní město Praha,PREdistribuce,Pražská plynárenská Distribuce,ne
+25001,Brandýs nad Labem-Stará Boleslav 1,Mělník;Praha-východ,ČEZ Distribuce,GasNet,ne
+25063,Mratín,Mělník;Praha-východ,ČEZ Distribuce,GasNet,ne
+25064,Měšice u Prahy,Praha-východ,ČEZ Distribuce,GasNet,ne
+25065,Líbeznice,Praha-východ,ČEZ Distribuce,GasNet,ne
+25066,Zdiby,Praha-východ,ČEZ Distribuce,GasNet,ne
+25067,Klecany,Praha-východ,ČEZ Distribuce,GasNet,ne
+25068,Řež,Praha-východ,ČEZ Distribuce,GasNet,ne
+25069,Vodochody,Praha-východ,ČEZ Distribuce,GasNet,ne
+25070,Odolena Voda,Mělník;Praha-východ,ČEZ Distribuce,GasNet,ne
+25072,Kojetice u Prahy,Mělník;Praha-východ,ČEZ Distribuce,GasNet,ne
+25073,Jenštejn,Praha-východ,ČEZ Distribuce,GasNet,ne
+25074,Výdejní místo Radonice,Praha-východ,ČEZ Distribuce,GasNet,ne
+25075,Káraný,Praha-východ,ČEZ Distribuce,GasNet,ne
+25081,Nehvizdy,Praha-východ,ČEZ Distribuce,GasNet,ne
+25082,Úvaly,Kolín;Praha-východ,ČEZ Distribuce,GasNet,ne
+25083,Škvorec,Praha-východ,ČEZ Distribuce,GasNet,ne
+25084,Sibřina,Praha-východ,ČEZ Distribuce,GasNet,ne
+25087,Mochov,Praha-východ,ČEZ Distribuce,GasNet,ne
+25088,Čelákovice,Praha-východ,ČEZ Distribuce,GasNet,ne
+25089,Lázně Toušeň,Praha-východ,ČEZ Distribuce,GasNet,ne
+25090,Jirny,Praha-východ,ČEZ Distribuce,GasNet,ne
+25091,Zeleneč v Čechách,Praha-východ,ČEZ Distribuce,GasNet,ne
+25092,Šestajovice,Praha-východ,ČEZ Distribuce,GasNet,ne
+25101,Říčany u Prahy,Praha-východ,ČEZ Distribuce,GasNet,ne
+25162,Mukařov,Praha-východ,ČEZ Distribuce,GasNet,ne
+25163,Strančice,Praha-východ,ČEZ Distribuce,GasNet,ne
+25164,Mnichovice,Praha-východ,ČEZ Distribuce,GasNet,ne
+25165,Ondřejov,Praha-východ,ČEZ Distribuce,GasNet,ne
+25166,Senohraby,Praha-východ,ČEZ Distribuce,GasNet,ne
+25167,Pyšely,Benešov;Praha-východ,ČEZ Distribuce,GasNet,ne
+25168,Kamenice,Benešov;Praha-východ,ČEZ Distribuce,GasNet,ne
+25169,Velké Popovice,Praha-východ,ČEZ Distribuce,GasNet,ne
+25202,Jíloviště,Praha-západ,ČEZ Distribuce,GasNet,ne
+25203,Řitka,Praha-západ,ČEZ Distribuce,GasNet,ne
+25204,Čisovice,Praha-západ,ČEZ Distribuce,GasNet,ne
+25205,Hvozdnice,Praha-západ,ČEZ Distribuce,GasNet,ne
+25206,Davle,Praha-západ,ČEZ Distribuce,GasNet,ne
+25207,Štěchovice,Praha-západ,ČEZ Distribuce,GasNet,ne
+25208,Slapy nad Vltavou,Benešov;Praha-západ,ČEZ Distribuce,GasNet,ne
+25209,Hradištko,Praha-západ,ČEZ Distribuce,GasNet,ne
+25210,Mníšek pod Brdy,Praha-západ;Příbram,ČEZ Distribuce,GasNet,ne
+25216,Nučice,Praha-západ,ČEZ Distribuce,GasNet,ne
+25217,Tachlovice,Praha-západ,ČEZ Distribuce,GasNet,ne
+25218,Úhonice,Praha-západ,ČEZ Distribuce,GasNet,ne
+25219,Rudná u Prahy,Praha-západ,ČEZ Distribuce,GasNet,ne
+25225,Jinočany,Praha-západ,ČEZ Distribuce,GasNet,ne
+25226,Třebotov,Hlavní město Praha;Praha-západ,PREdistribuce,Pražská plynárenská Distribuce,ano
+25228,Černošice,Hlavní město Praha;Praha-západ,PREdistribuce,Pražská plynárenská Distribuce,ano
+25229,Dobřichovice,Praha-západ,ČEZ Distribuce,GasNet,ne
+25230,Řevnice,Beroun;Praha-západ,ČEZ Distribuce,GasNet,ne
+25231,Všenory,Praha-západ,ČEZ Distribuce,GasNet,ne
+25241,Dolní Břežany,Praha-západ,ČEZ Distribuce,GasNet,ne
+25242,Jesenice u Prahy,Praha-západ,ČEZ Distribuce,GasNet,ne
+25243,Průhonice,Praha-západ,ČEZ Distribuce,GasNet,ne
+25244,Psáry,Praha-západ,ČEZ Distribuce,GasNet,ne
+25245,Zvole u Prahy,Praha-západ,ČEZ Distribuce,GasNet,ne
+25246,Vrané nad Vltavou,Praha-západ,ČEZ Distribuce,GasNet,ne
+25261,Jeneč,Praha-západ,ČEZ Distribuce,GasNet,ne
+25262,Horoměřice,Praha-západ,ČEZ Distribuce,GasNet,ne
+25263,Roztoky u Prahy,Praha-západ,ČEZ Distribuce,GasNet,ne
+25264,Velké Přílepy,Praha-západ,ČEZ Distribuce,GasNet,ne
+25265,Tursko,Praha-západ,ČEZ Distribuce,GasNet,ne
+25266,Libčice nad Vltavou,Praha-východ;Praha-západ,ČEZ Distribuce,GasNet,ne
+25267,Tuchoměřice,Praha-západ,ČEZ Distribuce,GasNet,ne
+25268,Středokluky,Praha-západ,ČEZ Distribuce,GasNet,ne
+25281,Petrov u Prahy,Praha-západ,ČEZ Distribuce,GasNet,ne
+25282,Kamenný Přívoz,Praha-západ,ČEZ Distribuce,GasNet,ne
+25301,Hostivice,Praha-západ,ČEZ Distribuce,GasNet,ne
+25401,Jílové u Prahy,Praha-západ,ČEZ Distribuce,GasNet,ne
+25601,Benešov u Prahy,Benešov,ČEZ Distribuce,GasNet,ne
+25701,Postupice,Benešov,ČEZ Distribuce,GasNet,ne
+25703,Jankov,Benešov,ČEZ Distribuce,GasNet,ne
+25705,Zvěstov,Benešov,ČEZ Distribuce,GasNet,ne
+25706,Louňovice pod Blaníkem,Benešov,ČEZ Distribuce,GasNet,ne
+25708,Načeradec,Benešov,ČEZ Distribuce,GasNet,ne
+25709,Pravonín,Benešov,ČEZ Distribuce,GasNet,ne
+25721,Poříčí nad Sázavou,Benešov,ČEZ Distribuce,GasNet,ne
+25722,Čerčany,Benešov,ČEZ Distribuce,GasNet,ne
+25723,Přestavlky u Čerčan,Benešov,ČEZ Distribuce,GasNet,ne
+25724,Chocerady,Benešov,ČEZ Distribuce,GasNet,ne
+25726,Divišov,Benešov,ČEZ Distribuce,GasNet,ne
+25728,Chotýšany,Benešov,ČEZ Distribuce,GasNet,ne
+25741,Týnec nad Sázavou,Benešov;Praha-západ,ČEZ Distribuce,GasNet,ne
+25742,Krhanice,Benešov,ČEZ Distribuce,GasNet,ne
+25744,Netvořice,Benešov,ČEZ Distribuce,GasNet,ne
+25751,Bystřice u Benešova,Benešov,ČEZ Distribuce,GasNet,ne
+25753,Vrchotovy Janovice,Benešov,ČEZ Distribuce,GasNet,ne
+25755,Maršovice,Benešov,ČEZ Distribuce,GasNet,ne
+25756,Neveklov,Benešov,ČEZ Distribuce,GasNet,ne
+25763,Trhový Štěpánov,Benešov,ČEZ Distribuce,GasNet,ne
+25764,Zdislavice,Benešov,ČEZ Distribuce,GasNet,ne
+25765,Čechtice,Benešov,ČEZ Distribuce,GasNet,ne
+25766,Křivsoudov,Benešov,ČEZ Distribuce,GasNet,ne
+25768,Dolní Kralovice,Benešov;Kutná Hora,ČEZ Distribuce,GasNet,ne
+25771,Soutice,Benešov,ČEZ Distribuce,GasNet,ne
+25786,Miličín,Benešov,ČEZ Distribuce,GasNet,ne
+25787,Střezimíř,Benešov,ČEZ Distribuce,GasNet,ne
+25788,Červený Újezd u Votic,Benešov;Příbram,ČEZ Distribuce,GasNet,ne
+25789,Heřmaničky,Benešov;Příbram,ČEZ Distribuce,GasNet,ne
+25791,Sedlec-Prčice 1,Benešov;Příbram,ČEZ Distribuce,GasNet,ne
+25792,Sedlec-Prčice 2,Příbram,ČEZ Distribuce,GasNet,ne
+25801,Vlašim,Benešov,ČEZ Distribuce,GasNet,ne
+25901,Votice,Benešov,ČEZ Distribuce,GasNet,ne
+26101,Příbram 1,Příbram,ČEZ Distribuce,GasNet,ne
+26202,Stará Huť u Dobříše,Příbram,ČEZ Distribuce,GasNet,ne
+26203,Nový Knín,Praha-západ;Příbram,ČEZ Distribuce,GasNet,ne
+26204,Nová Ves pod Pleší,Příbram,ČEZ Distribuce,GasNet,ne
+26205,Velká Lečice,Praha-západ;Příbram,ČEZ Distribuce,GasNet,ne
+26206,Korkyně,Příbram,ČEZ Distribuce,GasNet,ne
+26211,Rosovice,Příbram,ČEZ Distribuce,GasNet,ne
+26212,Obořiště,Příbram,ČEZ Distribuce,GasNet,ne
+26213,Nečín,Příbram,ČEZ Distribuce,GasNet,ne
+26214,Hřiměždice,Příbram,ČEZ Distribuce,GasNet,ne
+26215,Borotice,Příbram,ČEZ Distribuce,GasNet,ne
+26221,Obecnice,Příbram,ČEZ Distribuce,GasNet,ne
+26222,Hluboš,Příbram,ČEZ Distribuce,GasNet,ne
+26223,Jince,Příbram,ČEZ Distribuce,GasNet,ne
+26225,Pičín,Příbram,ČEZ Distribuce,GasNet,ne
+26231,Milín,Příbram,ČEZ Distribuce,GasNet,ne
+26232,Pečice,Příbram,ČEZ Distribuce,GasNet,ne
+26241,Bohutín,Příbram,ČEZ Distribuce,GasNet,ne
+26242,Rožmitál pod Třemšínem,Příbram;Strakonice,ČEZ Distribuce,GasNet,ano
+26243,Věšín,Příbram,ČEZ Distribuce,GasNet,ne
+26244,Hvožďany,Příbram,ČEZ Distribuce,GasNet,ne
+26251,Dublovice,Příbram,ČEZ Distribuce,GasNet,ne
+26252,Vysoký Chlumec,Příbram,ČEZ Distribuce,GasNet,ne
+26255,Petrovice u Sedlčan,Příbram,ČEZ Distribuce,GasNet,ne
+26256,Krásná Hora nad Vltavou,Příbram,ČEZ Distribuce,GasNet,ne
+26261,Višňová u Příbramě,Příbram,ČEZ Distribuce,GasNet,ne
+26262,Dolní Hbity,Příbram,ČEZ Distribuce,GasNet,ne
+26263,Kamýk nad Vltavou,Příbram,ČEZ Distribuce,GasNet,ne
+26272,Březnice,Příbram,ČEZ Distribuce,GasNet,ne
+26281,Tochovice,Příbram,ČEZ Distribuce,GasNet,ne
+26284,Zalužany,Příbram,ČEZ Distribuce,GasNet,ne
+26285,Drahenice,Příbram,ČEZ Distribuce,GasNet,ne
+26291,Kosova Hora,Příbram,ČEZ Distribuce,GasNet,ne
+26293,Nalžovice,Příbram,ČEZ Distribuce,GasNet,ne
+26301,Dobříš,Příbram,ČEZ Distribuce,GasNet,ne
+26401,Sedlčany,Příbram,ČEZ Distribuce,GasNet,ne
+26601,Beroun 1,Beroun,ČEZ Distribuce,GasNet,ne
+26701,Králův Dvůr u Berouna,Beroun,ČEZ Distribuce,GasNet,ne
+26703,Hudlice,Beroun,ČEZ Distribuce,GasNet,ne
+26705,Nižbor,Beroun,ČEZ Distribuce,GasNet,ne
+26706,Hýskov,Beroun,ČEZ Distribuce,GasNet,ne
+26707,Chyňava,Beroun;Kladno,ČEZ Distribuce,GasNet,ne
+26711,Vráž u Berouna,Beroun,ČEZ Distribuce,GasNet,ne
+26712,Loděnice u Berouna,Beroun,ČEZ Distribuce,GasNet,ne
+26716,Vysoký Újezd u Berouna,Beroun,ČEZ Distribuce,GasNet,ne
+26717,Mořina,Beroun,ČEZ Distribuce,GasNet,ne
+26718,Karlštejn,Beroun,ČEZ Distribuce,GasNet,ne
+26721,Tmaň,Beroun,ČEZ Distribuce,GasNet,ne
+26722,Suchomasty,Beroun,ČEZ Distribuce,GasNet,ne
+26723,Lochovice,Beroun,ČEZ Distribuce,GasNet,ne
+26724,Hostomice pod Brdy,Beroun,ČEZ Distribuce,GasNet,ne
+26725,Osov,Beroun,ČEZ Distribuce,GasNet,ne
+26726,Všeradice,Beroun,ČEZ Distribuce,GasNet,ne
+26727,Liteň,Beroun,ČEZ Distribuce,GasNet,ne
+26728,Svinaře,Beroun,ČEZ Distribuce,GasNet,ne
+26729,Zadní Třebaň,Beroun,ČEZ Distribuce,GasNet,ne
+26741,Kublov,Beroun,ČEZ Distribuce,GasNet,ne
+26742,Broumy,Beroun,ČEZ Distribuce,GasNet,ne
+26743,Bzová u Hořovic,Beroun,ČEZ Distribuce,GasNet,ne
+26751,Zdice,Beroun,ČEZ Distribuce,GasNet,ne
+26753,Žebrák,Beroun,ČEZ Distribuce,GasNet,ne
+26754,Praskolesy,Beroun,ČEZ Distribuce,GasNet,ne
+26761,Cerhovice,Beroun,ČEZ Distribuce,GasNet,ne
+26762,Komárov u Hořovic,Beroun,ČEZ Distribuce,GasNet,ne
+26763,Zaječov,Beroun,ČEZ Distribuce,GasNet,ne
+26764,Olešná u Hořovic,Beroun,ČEZ Distribuce,GasNet,ne
+26801,Hořovice,Beroun,ČEZ Distribuce,GasNet,ne
+26901,Rakovník 1,Rakovník,ČEZ Distribuce,GasNet,ne
+27001,Kněževes u Rakovníka,Rakovník,ČEZ Distribuce,GasNet,ne
+27002,Kolešovice,Rakovník,ČEZ Distribuce,GasNet,ne
+27004,Hořesedly,Rakovník,ČEZ Distribuce,GasNet,ne
+27006,Kounov u Rakovníka,Rakovník,ČEZ Distribuce,GasNet,ne
+27007,Mutějovice,Rakovník,ČEZ Distribuce,GasNet,ne
+27008,Hředle,Rakovník,ČEZ Distribuce,GasNet,ne
+27009,Krupá,Rakovník,ČEZ Distribuce,GasNet,ne
+27021,Pavlíkov,Rakovník,ČEZ Distribuce,GasNet,ne
+27023,Křivoklát,Rakovník,ČEZ Distribuce,GasNet,ne
+27024,Zbečno,Rakovník,ČEZ Distribuce,GasNet,ne
+27031,Senomaty,Rakovník,ČEZ Distribuce,GasNet,ne
+27032,Oráčov,Rakovník,ČEZ Distribuce,GasNet,ne
+27033,Jesenice u Rakovníka,Rakovník,ČEZ Distribuce,GasNet,ne
+27034,Čistá u Rakovníka,Rakovník,ČEZ Distribuce,GasNet,ne
+27035,Petrovice u Rakovníka,Rakovník,ČEZ Distribuce,GasNet,ne
+27036,Lubná u Rakovníka,Rakovník,ČEZ Distribuce,GasNet,ne
+27041,Slabce,Rakovník,ČEZ Distribuce,GasNet,ne
+27042,Skryje u Rakovníka,Rakovník,ČEZ Distribuce,GasNet,ne
+27051,Lužná v Čechách,Rakovník,ČEZ Distribuce,GasNet,ne
+27052,Lišany u Rakovníka,Rakovník,ČEZ Distribuce,GasNet,ne
+27053,Krušovice,Rakovník,ČEZ Distribuce,GasNet,ne
+27054,Řevničov,Rakovník,ČEZ Distribuce,GasNet,ne
+27055,Pochvalov,Rakovník,ČEZ Distribuce,GasNet,ne
+27061,Lány,Kladno,ČEZ Distribuce,GasNet,ne
+27062,Rynholec,Rakovník,ČEZ Distribuce,GasNet,ne
+27064,Mšec,Rakovník,ČEZ Distribuce,GasNet,ne
+27065,Srbeč,Rakovník,ČEZ Distribuce,GasNet,ne
+27101,Nové Strašecí,Kladno;Rakovník,ČEZ Distribuce,GasNet,ne
+27201,Kladno 1,Kladno,ČEZ Distribuce,GasNet,ne
+27203,Kladno 3,Kladno,ČEZ Distribuce,GasNet,ne
+27204,Kladno 4,Kladno,ČEZ Distribuce,GasNet,ne
+27301,Kamenné Žehrovice,Kladno,ČEZ Distribuce,GasNet,ne
+27302,Tuchlovice,Kladno,ČEZ Distribuce,GasNet,ne
+27303,Stochov,Kladno,ČEZ Distribuce,GasNet,ne
+27304,Kačice,Kladno,ČEZ Distribuce,GasNet,ne
+27305,Smečno,Kladno,ČEZ Distribuce,GasNet,ne
+27306,Libušín,Kladno,ČEZ Distribuce,GasNet,ne
+27307,Vinařice u Kladna,Kladno,ČEZ Distribuce,GasNet,ne
+27308,Pchery,Kladno,ČEZ Distribuce,GasNet,ne
+27309,Kladno 7,Kladno,ČEZ Distribuce,GasNet,ne
+27321,Hobšovice,Kladno,ČEZ Distribuce,GasNet,ne
+27322,Hospozín,Kladno,ČEZ Distribuce,GasNet,ne
+27323,Černuc,Kladno,ČEZ Distribuce,GasNet,ne
+27324,Velvary,Kladno,ČEZ Distribuce,GasNet,ne
+27325,Zvoleněves,Kladno;Mělník,ČEZ Distribuce,GasNet,ne
+27326,Olovnice,Kladno;Mělník,ČEZ Distribuce,GasNet,ne
+27327,Otvovice,Kladno,ČEZ Distribuce,GasNet,ne
+27328,Zákolany,Kladno,ČEZ Distribuce,GasNet,ne
+27329,Koleč,Kladno,ČEZ Distribuce,GasNet,ne
+27341,Brandýsek,Kladno,ČEZ Distribuce,GasNet,ne
+27342,Stehelčeves,Kladno,ČEZ Distribuce,GasNet,ne
+27343,Buštěhrad,Kladno,ČEZ Distribuce,GasNet,ne
+27345,Hřebeč,Kladno,ČEZ Distribuce,GasNet,ne
+27351,Unhošť,Kladno;Praha-západ,ČEZ Distribuce,GasNet,ne
+27353,Hostouň u Prahy,Kladno,ČEZ Distribuce,GasNet,ne
+27354,Lidice,Kladno,ČEZ Distribuce,GasNet,ne
+27361,Velká Dobrá,Kladno,ČEZ Distribuce,GasNet,ne
+27362,Družec,Kladno,ČEZ Distribuce,GasNet,ne
+27363,Bratronice,Kladno,ČEZ Distribuce,GasNet,ne
+27364,Doksy u Kladna,Kladno,ČEZ Distribuce,GasNet,ne
+27371,Zlonice,Kladno,ČEZ Distribuce,GasNet,ne
+27372,Šlapanice,Kladno,ČEZ Distribuce,GasNet,ne
+27373,Vraný u Slaného,Kladno,ČEZ Distribuce,GasNet,ne
+27374,Klobuky v Čechách,Kladno,ČEZ Distribuce,GasNet,ne
+27375,Třebíz,Kladno,ČEZ Distribuce,GasNet,ne
+27376,Pozdeň,Kladno,ČEZ Distribuce,GasNet,ne
+27377,Malíkovice,Kladno,ČEZ Distribuce,GasNet,ne
+27378,Řisuty,Kladno,ČEZ Distribuce,GasNet,ne
+27379,Tuřany u Slaného,Kladno,ČEZ Distribuce,GasNet,ne
+27401,Slaný 1,Kladno,ČEZ Distribuce,GasNet,ne
+27601,Mělník 1,Mělník,ČEZ Distribuce,GasNet,ne
+27701,Dolní Beřkovice,Mělník,ČEZ Distribuce,GasNet,ne
+27703,Horní Počaply,Mělník,ČEZ Distribuce,GasNet,ne
+27704,Cítov,Mělník,ČEZ Distribuce,GasNet,ne
+27705,Spomyšl,Mělník,ČEZ Distribuce,GasNet,ne
+27706,Lužec nad Vltavou,Mělník,ČEZ Distribuce,GasNet,ne
+27707,Vraňany,Mělník,ČEZ Distribuce,GasNet,ne
+27708,Ledčice,Mělník,ČEZ Distribuce,GasNet,ne
+27711,Neratovice,Mělník,ČEZ Distribuce,GasNet,ne
+27713,Kostelec nad Labem,Mělník;Praha-východ,ČEZ Distribuce,GasNet,ne
+27714,Dřísy,Mělník;Praha-východ,ČEZ Distribuce,GasNet,ne
+27715,Tišice,Mělník,ČEZ Distribuce,GasNet,ne
+27716,Všetaty,Mělník,ČEZ Distribuce,GasNet,ne
+27721,Liběchov,Mělník,ČEZ Distribuce,GasNet,ne
+27723,Kokořín,Mělník,ČEZ Distribuce,GasNet,ne
+27724,Vysoká u Mělníka,Mělník,ČEZ Distribuce,GasNet,ne
+27731,Velký Borek,Mělník,ČEZ Distribuce,GasNet,ne
+27732,Byšice,Mělník,ČEZ Distribuce,GasNet,ne
+27733,Řepín,Mělník,ČEZ Distribuce,GasNet,ne
+27734,Nebužely,Mělník,ČEZ Distribuce,GasNet,ne
+27735,Mšeno u Mělníka,Mělník,ČEZ Distribuce,GasNet,ne
+27736,Lobeč,Mělník,ČEZ Distribuce,GasNet,ne
+27737,Chorušice,Mělník,ČEZ Distribuce,GasNet,ne
+27738,Mělnické Vtelno,Mělník,ČEZ Distribuce,GasNet,ne
+27741,Kly,Mělník,ČEZ Distribuce,GasNet,ne
+27742,Obříství,Mělník,ČEZ Distribuce,GasNet,ne
+27743,Chlumín,Mělník,ČEZ Distribuce,GasNet,ne
+27744,Vojkovice u Kralup nad Vltavou,Mělník,ČEZ Distribuce,GasNet,ne
+27745,Úžice u Kralup nad Vltavou,Mělník,ČEZ Distribuce,GasNet,ne
+27746,Veltrusy,Mělník,ČEZ Distribuce,GasNet,ne
+27751,Nelahozeves,Mělník,ČEZ Distribuce,GasNet,ne
+27752,Nová Ves u Mělníka,Mělník,ČEZ Distribuce,GasNet,ne
+27801,Kralupy nad Vltavou 1,Mělník,ČEZ Distribuce,GasNet,ne
+28002,Kolín 2,Kolín,ČEZ Distribuce,GasNet,ne
+28101,Velim,Kolín,ČEZ Distribuce,GasNet,ne
+28102,Cerhenice,Kolín,ČEZ Distribuce,GasNet,ne
+28103,Radim u Kolína,Kolín,ČEZ Distribuce,GasNet,ne
+28104,Plaňany,Kolín,ČEZ Distribuce,GasNet,ne
+28106,Vitice,Kolín,ČEZ Distribuce,GasNet,ne
+28107,Svojšice u Kolína,Kolín,ČEZ Distribuce,GasNet,ne
+28121,Červené Pečky,Kolín,ČEZ Distribuce,GasNet,ne
+28123,Starý Kolín,Kolín,ČEZ Distribuce,GasNet,ne
+28125,Konárovice,Kolín,ČEZ Distribuce,GasNet,ne
+28126,Týnec nad Labem,Kolín;Pardubice,ČEZ Distribuce,GasNet,ne
+28127,Krakovany v Čechách,Kolín,ČEZ Distribuce,GasNet,ne
+28128,Radovesnice,Kolín,ČEZ Distribuce,GasNet,ne
+28129,Žiželice nad Cidlinou,Kolín,ČEZ Distribuce,GasNet,ne
+28130,Ohaře,Kolín,ČEZ Distribuce,GasNet,ne
+28141,Ratboř,Kolín,ČEZ Distribuce,GasNet,ne
+28143,Bečváry,Kolín,ČEZ Distribuce,GasNet,ne
+28144,Zásmuky,Kolín,ČEZ Distribuce,GasNet,ne
+28146,Horní Kruty,Kolín,ČEZ Distribuce,GasNet,ne
+28151,Velký Osek,Kolín,ČEZ Distribuce,GasNet,ne
+28161,Kouřim,Kolín,ČEZ Distribuce,GasNet,ne
+28162,Oleška u Českého Brodu,Praha-východ,ČEZ Distribuce,GasNet,ne
+28163,Kostelec nad Černými Lesy,Kolín;Praha-východ,ČEZ Distribuce,GasNet,ne
+28166,Jevany,Praha-východ,ČEZ Distribuce,GasNet,ne
+28167,Stříbrná Skalice,Praha-východ,ČEZ Distribuce,GasNet,ne
+28171,Rostoklaty,Kolín,ČEZ Distribuce,GasNet,ne
+28201,Český Brod,Kolín,ČEZ Distribuce,GasNet,ne
+28401,Kutná Hora 1,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28403,Kutná Hora 3,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28404,Kutná Hora 4,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28501,Miskovice u Kutné Hory,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28502,Suchdol u Kutné Hory,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28504,Uhlířské Janovice,Kolín;Kutná Hora,ČEZ Distribuce,GasNet,ne
+28506,Sázava,Benešov;Kutná Hora,ČEZ Distribuce,GasNet,ne
+28507,Rataje nad Sázavou,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28509,Kácov,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28510,Čestín,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28511,Nepoměřice,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28521,Zbraslavice,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28522,Zruč nad Sázavou 1,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28523,Vlastějovice,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28525,Bohdaneč u Zbraslavic,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28531,Nové Dvory u Kutné Hory,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28532,Hlízov,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28533,Církvice u Kutné Hory,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28541,Malešov,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28542,Červené Janovice,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28543,Paběnice,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28545,Kluky u Kutné Hory,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28546,Úmonín,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28547,Křesetice,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28561,Žleby,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28562,Hostovlice u Čáslavě,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28563,Tupadly,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28564,Vlkaneč,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28565,Zbýšov v Čechách,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28571,Vrdy,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28572,Bílé Podolí,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28573,Horušice,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28574,Záboří nad Labem,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28575,Žehušice,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28576,Chotusice,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28601,Čáslav,Kutná Hora,ČEZ Distribuce,GasNet,ne
+28802,Nymburk 2,Nymburk,ČEZ Distribuce,GasNet,ne
+28901,Dymokury,Nymburk,ČEZ Distribuce,GasNet,ne
+28902,Kněžice u Městce Králové,Nymburk,ČEZ Distribuce,GasNet,ne
+28903,Městec Králové,Nymburk,ČEZ Distribuce,GasNet,ne
+28904,Opočnice,Nymburk,ČEZ Distribuce,GasNet,ne
+28905,Žehuň,Kolín;Nymburk,ČEZ Distribuce,GasNet,ne
+28906,Sány,Nymburk,ČEZ Distribuce,GasNet,ne
+28907,Libice nad Cidlinou,Nymburk,ČEZ Distribuce,GasNet,ne
+28908,Běrunice,Nymburk,ČEZ Distribuce,GasNet,ne
+28911,Pečky,Kolín;Nymburk,ČEZ Distribuce,GasNet,ne
+28912,Sadská,Nymburk,ČEZ Distribuce,GasNet,ne
+28913,Zvěřínek,Nymburk,ČEZ Distribuce,GasNet,ne
+28914,Poříčany,Kolín;Nymburk,ČEZ Distribuce,GasNet,ne
+28915,Kounice,Nymburk,ČEZ Distribuce,GasNet,ne
+28916,Přerov nad Labem,Nymburk,ČEZ Distribuce,GasNet,ne
+28917,Semice,Nymburk,ČEZ Distribuce,GasNet,ne
+28921,Kostomlaty nad Labem,Nymburk,ČEZ Distribuce,GasNet,ne
+28922,Lysá nad Labem,Nymburk,ČEZ Distribuce,GasNet,ne
+28923,Milovice nad Labem 1,Nymburk,ČEZ Distribuce,GasNet,ne
+28924,Milovice nad Labem 3,Nymburk,ČEZ Distribuce,GasNet,ne
+28925,Straky,Nymburk,ČEZ Distribuce,GasNet,ne
+28926,Stará Lysá,Nymburk,ČEZ Distribuce,GasNet,ne
+28931,Bobnice,Nymburk,ČEZ Distribuce,GasNet,ne
+28932,Oskořínek,Nymburk,ČEZ Distribuce,GasNet,ne
+28933,Křinec,Nymburk,ČEZ Distribuce,GasNet,ne
+28934,Rožďalovice,Nymburk,ČEZ Distribuce,GasNet,ne
+28935,Košík,Nymburk,ČEZ Distribuce,GasNet,ne
+28936,Mcely,Nymburk,ČEZ Distribuce,GasNet,ne
+28937,Loučeň,Nymburk,ČEZ Distribuce,GasNet,ne
+28941,Pňov,Kolín;Nymburk,ČEZ Distribuce,GasNet,ne
+29001,Poděbrady 1,Nymburk,ČEZ Distribuce,GasNet,ne
+29301,Mladá Boleslav 1,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29306,Kosmonosy,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29307,Josefův Důl u Mladé Boleslavě,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29401,Bakov nad Jizerou,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29402,Kněžmost,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29403,Obruby,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29404,Dolní Bousov,Jičín;Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29405,Dlouhá Lhota u Mladé Boleslavě,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29406,Březno u Mladé Boleslavě,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29411,Loukov u Mnichova Hradiště,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29412,Žďár u Mnichova Hradiště,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29413,Mohelnice nad Jizerou,Liberec;Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29414,Jivina u Mnichova Hradiště,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29415,Klášter Hradiště nad Jizerou,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29421,Bělá pod Bezdězem,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29423,Čistá u Mladé Boleslavě,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29424,Březovice u Mladé Boleslavě,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29425,Katusice,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29426,Skalsko,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29427,Velké Všelisy,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29428,Chotětov,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29429,Bezno,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29430,Dolní Cetno,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29431,Krnsko,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29441,Dobrovice,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29442,Luštěnice,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29443,Čachovice u Mladé Boleslavě,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29445,Jabkenice,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29446,Semčice,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29447,Ledce u Mladé Boleslavi,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29448,Domousnice,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29471,Benátky nad Jizerou 1,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29473,Brodce nad Jizerou,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29474,Předměřice nad Jizerou,Mladá Boleslav;Praha-východ,ČEZ Distribuce,GasNet,ne
+29475,Sojovice,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29476,Kostelní Hlavno,Praha-východ,ČEZ Distribuce,GasNet,ne
+29477,Mečeříž,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29478,Dolní Slivno,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29479,Kropáčova Vrutice,Mladá Boleslav,ČEZ Distribuce,GasNet,ne
+29501,Mnichovo Hradiště,Mladá Boleslav;Česká Lípa,ČEZ Distribuce,GasNet,ne
+30100,Plzeň 1,Plzeň-město,ČEZ Distribuce,GasNet,ne
+31200,Plzeň 12,Plzeň-město,ČEZ Distribuce,GasNet,ne
+31600,Plzeň 16,Plzeň-město,ČEZ Distribuce,GasNet,ne
+31800,Plzeň 18,Plzeň-město,ČEZ Distribuce,GasNet,ne
+32100,Plzeň 21,Plzeň-jih;Plzeň-město,ČEZ Distribuce,GasNet,ne
+32200,Plzeň 22,Plzeň-město,ČEZ Distribuce,GasNet,ne
+32300,Plzeň 23,Plzeň-město,ČEZ Distribuce,GasNet,ne
+32600,Plzeň 26,Plzeň-město,ČEZ Distribuce,GasNet,ne
+33001,Kyšice,Plzeň-město,ČEZ Distribuce,GasNet,ne
+33002,Dýšina,Plzeň-město,ČEZ Distribuce,GasNet,ne
+33003,Chrást u Plzně,Plzeň-město,ČEZ Distribuce,GasNet,ne
+33005,Dobříč,Plzeň-sever,ČEZ Distribuce,GasNet,ne
+33007,Druztová,Plzeň-sever,ČEZ Distribuce,GasNet,ne
+33008,Zruč-Senec,Plzeň-sever,ČEZ Distribuce,GasNet,ne
+33011,Třemošná,Plzeň-sever,ČEZ Distribuce,GasNet,ne
+33012,Horní Bříza,Plzeň-sever,ČEZ Distribuce,GasNet,ne
+33013,Trnová u Plzně,Plzeň-sever,ČEZ Distribuce,GasNet,ne
+33014,Ledce u Plzně,Plzeň-sever,ČEZ Distribuce,GasNet,ne
+33016,Všeruby u Plzně,Plzeň-sever,ČEZ Distribuce,GasNet,ne
+33017,Chotíkov,Plzeň-sever,ČEZ Distribuce,GasNet,ne
+33021,Líně,Plzeň-sever,ČEZ Distribuce,GasNet,ne
+33022,Zbůch,Plzeň-sever,ČEZ Distribuce,GasNet,ne
+33023,Nýřany,Plzeň-sever;Tachov,ČEZ Distribuce,GasNet,ne
+33024,Heřmanova Huť,Plzeň-sever,ČEZ Distribuce,GasNet,ne
+33025,Blatnice u Plzně,Plzeň-sever,ČEZ Distribuce,GasNet,ne
+33026,Tlučná,Plzeň-sever,ČEZ Distribuce,GasNet,ne
+33027,Vejprnice,Plzeň-město;Plzeň-sever,ČEZ Distribuce,GasNet,ne
+33032,Kozolupy,Plzeň-sever,ČEZ Distribuce,GasNet,ne
+33033,Město Touškov,Plzeň-sever,ČEZ Distribuce,GasNet,ne
+33035,Líšťany,Plzeň-sever,ČEZ Distribuce,GasNet,ne
+33036,Pernarec,Plzeň-sever,ČEZ Distribuce,GasNet,ne
+33038,Úněšov,Plzeň-sever,ČEZ Distribuce,GasNet,ne
+33040,Úterý,Plzeň-sever,ČEZ Distribuce,GasNet,ne
+33041,Bezvěrov,Plzeň-sever,ČEZ Distribuce,GasNet,ne
+33101,Plasy,Plzeň-sever,ČEZ Distribuce,GasNet,ne
+33141,Kralovice,Plzeň-sever;Rokycany,ČEZ Distribuce,GasNet,ne
+33144,Kožlany,Plzeň-sever,ČEZ Distribuce,GasNet,ne
+33151,Kaznějov,Plzeň-sever,ČEZ Distribuce,GasNet,ne
+33152,Dolní Bělá,Plzeň-sever,ČEZ Distribuce,GasNet,ne
+33162,Manětín,Plzeň-sever,ČEZ Distribuce,GasNet,ne
+33165,Žihle,Plzeň-sever,ČEZ Distribuce,GasNet,ne
+33201,Tymákov,Plzeň-město,ČEZ Distribuce,GasNet,ne
+33202,Starý Plzenec,Plzeň-město,ČEZ Distribuce,GasNet,ne
+33203,Šťáhlavy,Plzeň-město,ČEZ Distribuce,GasNet,ne
+33204,Nezvěstice,Plzeň-jih;Plzeň-město,ČEZ Distribuce,GasNet,ne
+33205,Chválenice,Plzeň-město,ČEZ Distribuce,GasNet,ne
+33207,Výdejní místo Střížovice,Plzeň-jih,ČEZ Distribuce,GasNet,ne
+33209,Štěnovice,Plzeň-jih;Plzeň-město,ČEZ Distribuce,GasNet,ne
+33211,Hradec u Stoda,Plzeň-jih,ČEZ Distribuce,GasNet,ne
+33214,Chotěšov,Plzeň-jih,ČEZ Distribuce,GasNet,ne
+33301,Stod,Plzeň-jih,ČEZ Distribuce,GasNet,ne
+33401,Přeštice,Klatovy;Plzeň-jih,ČEZ Distribuce,GasNet,ne
+33441,Dobřany,Plzeň-jih,ČEZ Distribuce,GasNet,ne
+33442,Chlumčany u Přeštic,Plzeň-jih,ČEZ Distribuce,GasNet,ne
+33443,Dnešice,Plzeň-jih,ČEZ Distribuce,GasNet,ne
+33444,Dolní Lukavice,Plzeň-jih,ČEZ Distribuce,GasNet,ne
+33452,Merklín u Přeštic,Domažlice;Plzeň-jih,ČEZ Distribuce,GasNet,ne
+33453,Roupov,Plzeň-jih,ČEZ Distribuce,GasNet,ne
+33454,Výdejní místo Lužany u Přeštic,Plzeň-jih,ČEZ Distribuce,GasNet,ne
+33455,Horšice,Plzeň-jih,ČEZ Distribuce,GasNet,ne
+33501,Nepomuk 1,Klatovy;Plzeň-jih,ČEZ Distribuce,GasNet,ne
+33503,Nepomuk 3,Plzeň-jih,ČEZ Distribuce,GasNet,ne
+33541,Vrčeň,Plzeň-jih,ČEZ Distribuce,GasNet,ne
+33543,Dožice,Plzeň-jih,ČEZ Distribuce,GasNet,ne
+33544,Kasejovice,Plzeň-jih,ČEZ Distribuce,GasNet,ne
+33546,Oselce,Plzeň-jih,ČEZ Distribuce,GasNet,ne
+33547,Nekvasovy,Plzeň-jih,ČEZ Distribuce,GasNet,ne
+33551,Měcholupy u Blovic,Plzeň-jih,ČEZ Distribuce,GasNet,ne
+33554,Žinkovy,Plzeň-jih,ČEZ Distribuce,GasNet,ne
+33555,Neurazy,Plzeň-jih,ČEZ Distribuce,GasNet,ne
+33561,Spálené Poříčí,Plzeň-jih,ČEZ Distribuce,GasNet,ne
+33563,Nové Mitrovice,Plzeň-jih,ČEZ Distribuce,GasNet,ne
+33564,Čížkov u Blovic,Plzeň-jih,ČEZ Distribuce,GasNet,ne
+33601,Blovice,Plzeň-jih,ČEZ Distribuce,GasNet,ne
+33701,Rokycany 1,Rokycany,ČEZ Distribuce,GasNet,ne
+33801,Holoubkov,Rokycany,ČEZ Distribuce,GasNet,ne
+33805,Mýto v Čechách,Rokycany,ČEZ Distribuce,GasNet,ne
+33806,Cheznovice,Rokycany,ČEZ Distribuce,GasNet,ne
+33808,Zbiroh,Rokycany,ČEZ Distribuce,GasNet,ne
+33821,Osek u Rokycan,Rokycany,ČEZ Distribuce,GasNet,ne
+33822,Volduchy,Rokycany,ČEZ Distribuce,GasNet,ne
+33824,Břasy 1,Rokycany,ČEZ Distribuce,GasNet,ne
+33828,Radnice u Rokycan,Rokycany,ČEZ Distribuce,GasNet,ne
+33841,Klabava,Rokycany,ČEZ Distribuce,GasNet,ne
+33842,Hrádek u Rokycan,Rokycany,ČEZ Distribuce,GasNet,ne
+33843,Mirošov 1,Plzeň-jih;Rokycany,ČEZ Distribuce,GasNet,ne
+33844,Dobřív,Rokycany,ČEZ Distribuce,GasNet,ne
+33845,Strašice,Rokycany,ČEZ Distribuce,GasNet,ne
+33901,Klatovy 1,Klatovy,ČEZ Distribuce,GasNet,ne
+34004,Železná Ruda,Klatovy,ČEZ Distribuce,GasNet,ne
+34012,Švihov,Klatovy;Plzeň-jih,ČEZ Distribuce,GasNet,ne
+34021,Janovice nad Úhlavou,Klatovy,ČEZ Distribuce,GasNet,ne
+34022,Nýrsko,Klatovy,ČEZ Distribuce,GasNet,ne
+34034,Plánice,Klatovy,ČEZ Distribuce,GasNet,ne
+34101,Horažďovice,Klatovy,ČEZ Distribuce,GasNet,ne
+34142,Kolinec,Klatovy,ČEZ Distribuce,GasNet,ne
+34192,Kašperské Hory,Klatovy,ČEZ Distribuce,GasNet,ne
+34201,Sušice 1,Klatovy;Strakonice,ČEZ Distribuce,GasNet,ano
+34401,Domažlice 1,Domažlice,ČEZ Distribuce,GasNet,ne
+34501,Mrákov,Domažlice,ČEZ Distribuce,GasNet,ne
+34502,Kout na Šumavě,Domažlice,ČEZ Distribuce,GasNet,ne
+34506,Kdyně,Domažlice;Klatovy,ČEZ Distribuce,GasNet,ne
+34507,Všeruby u Kdyně,Domažlice,ČEZ Distribuce,GasNet,ne
+34509,Pocinovice,Domažlice,ČEZ Distribuce,GasNet,ne
+34521,Meclov,Domažlice,ČEZ Distribuce,GasNet,ne
+34522,Poběžovice,Domažlice,ČEZ Distribuce,GasNet,ne
+34525,Hostouň u Horšovského Týna,Domažlice,ČEZ Distribuce,GasNet,ne
+34526,Bělá nad Radbuzou,Domažlice,ČEZ Distribuce,GasNet,ne
+34532,Česká Kubice,Domažlice,ČEZ Distribuce,GasNet,ne
+34533,Trhanov,Domažlice,ČEZ Distribuce,GasNet,ne
+34534,Klenčí pod Čerchovem,Domažlice,ČEZ Distribuce,GasNet,ne
+34535,Postřekov,Domažlice,ČEZ Distribuce,GasNet,ne
+34543,Koloveč,Domažlice,ČEZ Distribuce,GasNet,ne
+34545,Blížejov,Domažlice,ČEZ Distribuce,GasNet,ne
+34561,Staňkov,Domažlice,ČEZ Distribuce,GasNet,ne
+34562,Holýšov,Domažlice,ČEZ Distribuce,GasNet,ne
+34601,Horšovský Týn,Domažlice,ČEZ Distribuce,GasNet,ne
+34701,Tachov 1,Tachov,ČEZ Distribuce,GasNet,ne
+34801,Staré Sedliště,Tachov,ČEZ Distribuce,GasNet,ne
+34802,Bor u Tachova,Tachov,ČEZ Distribuce,GasNet,ne
+34806,Přimda,Tachov,ČEZ Distribuce,GasNet,ne
+34813,Chodová Planá,Tachov,ČEZ Distribuce,GasNet,ne
+34815,Planá u Mariánských Lázní,Tachov,ČEZ Distribuce,GasNet,ne
+34901,Stříbro,Plzeň-sever;Tachov,ČEZ Distribuce,GasNet,ne
+34952,Konstantinovy Lázně,Plzeň-sever;Tachov,ČEZ Distribuce,GasNet,ne
+34953,Bezdružice,Tachov,ČEZ Distribuce,GasNet,ne
+34958,Černošín,Tachov,ČEZ Distribuce,GasNet,ne
+34961,Kladruby u Stříbra,Tachov,ČEZ Distribuce,GasNet,ne
+34972,Trpísty,Tachov,ČEZ Distribuce,GasNet,ne
+35002,Cheb 2,Cheb,ČEZ Distribuce,GasNet,ne
+35101,Františkovy Lázně,Cheb,ČEZ Distribuce,GasNet,ne
+35124,Hranice u Aše,Cheb,ČEZ Distribuce,GasNet,ne
+35131,Libá,Cheb,ČEZ Distribuce,GasNet,ne
+35132,Hazlov,Cheb,ČEZ Distribuce,GasNet,ne
+35134,Skalná,Cheb,ČEZ Distribuce,GasNet,ne
+35135,Plesná u Chebu,Cheb,ČEZ Distribuce,GasNet,ne
+35137,Luby u Chebu,Cheb,ČEZ Distribuce,GasNet,ne
+35201,Aš 1,Cheb,ČEZ Distribuce,GasNet,ne
+35301,Mariánské Lázně 1,Cheb;Sokolov,ČEZ Distribuce,GasNet,ne
+35491,Lázně Kynžvart,Cheb,ČEZ Distribuce,GasNet,ne
+35493,Dolní Žandov,Cheb,ČEZ Distribuce,GasNet,ne
+35601,Sokolov 1,Sokolov,ČEZ Distribuce,GasNet,ne
+35604,Dolní Rychnov,Sokolov,ČEZ Distribuce,GasNet,ne
+35701,Rotava 1,Sokolov,ČEZ Distribuce,GasNet,ne
+35703,Svatava,Sokolov,ČEZ Distribuce,GasNet,ne
+35707,Oloví,Sokolov,ČEZ Distribuce,GasNet,ne
+35708,Krajková,Sokolov,ČEZ Distribuce,GasNet,ne
+35709,Habartov,Sokolov,ČEZ Distribuce,GasNet,ne
+35731,Horní Slavkov,Sokolov,ČEZ Distribuce,GasNet,ne
+35733,Loket,Sokolov,ČEZ Distribuce,GasNet,ne
+35734,Nové Sedlo u Lokte,Sokolov,ČEZ Distribuce,GasNet,ne
+35735,Chodov u Karlových Var 1,Karlovy Vary;Sokolov,ČEZ Distribuce,GasNet,ne
+35751,Kynšperk nad Ohří,Sokolov,ČEZ Distribuce,GasNet,ne
+35755,Bukovany u Sokolova,Sokolov,ČEZ Distribuce,GasNet,ne
+35801,Kraslice,Sokolov,ČEZ Distribuce,GasNet,ne
+36001,Karlovy Vary 1,Karlovy Vary,ČEZ Distribuce,GasNet,ne
+36004,Karlovy Vary 4,Karlovy Vary,ČEZ Distribuce,GasNet,ne
+36005,Karlovy Vary 5,Karlovy Vary,ČEZ Distribuce,GasNet,ne
+36006,Karlovy Vary 6,Karlovy Vary,ČEZ Distribuce,GasNet,ne
+36007,Karlovy Vary 7,Karlovy Vary,ČEZ Distribuce,GasNet,ne
+36010,Karlovy Vary 10,Karlovy Vary,ČEZ Distribuce,GasNet,ne
+36017,Karlovy Vary 17,Karlovy Vary,ČEZ Distribuce,GasNet,ne
+36018,Karlovy Vary 18,Karlovy Vary,ČEZ Distribuce,GasNet,ne
+36221,Nejdek 1,Karlovy Vary,ČEZ Distribuce,GasNet,ne
+36222,Nejdek 2,Karlovy Vary,ČEZ Distribuce,GasNet,ne
+36225,Nová Role,Karlovy Vary,ČEZ Distribuce,GasNet,ne
+36233,Hroznětín,Karlovy Vary,ČEZ Distribuce,GasNet,ne
+36234,Merklín u Karlových Var,Karlovy Vary,ČEZ Distribuce,GasNet,ne
+36235,Abertamy,Karlovy Vary,ČEZ Distribuce,GasNet,ne
+36236,Pernink,Karlovy Vary,ČEZ Distribuce,GasNet,ne
+36251,Jáchymov,Karlovy Vary,ČEZ Distribuce,GasNet,ne
+36262,Boží Dar,Karlovy Vary,ČEZ Distribuce,GasNet,ne
+36263,Dalovice,Karlovy Vary,ČEZ Distribuce,GasNet,ne
+36272,Kyselka,Karlovy Vary,ČEZ Distribuce,GasNet,ne
+36273,Vojkovice nad Ohří,Karlovy Vary,ČEZ Distribuce,GasNet,ne
+36301,Ostrov nad Ohří,Karlovy Vary,ČEZ Distribuce,GasNet,ne
+36401,Toužim,Karlovy Vary,ČEZ Distribuce,GasNet,ne
+36452,Žlutice,Karlovy Vary,ČEZ Distribuce,GasNet,ne
+36453,Chyše,Karlovy Vary,ČEZ Distribuce,GasNet,ne
+36461,Teplá u Toužimě,Cheb,ČEZ Distribuce,GasNet,ne
+36464,Bečov nad Teplou,Karlovy Vary;Sokolov,ČEZ Distribuce,GasNet,ne
+36471,Bochov,Karlovy Vary,ČEZ Distribuce,GasNet,ne
+37001,České Budějovice 1,České Budějovice,EG.D,EG.D,ne
+37004,České Budějovice 4,České Budějovice,EG.D,EG.D,ne
+37005,České Budějovice 5,České Budějovice,EG.D,EG.D,ne
+37006,České Budějovice 6,České Budějovice,EG.D,EG.D,ne
+37007,České Budějovice 7,České Budějovice,EG.D,EG.D,ne
+37008,České Budějovice 8,České Budějovice,EG.D,EG.D,ne
+37010,České Budějovice 10,České Budějovice,EG.D,EG.D,ne
+37011,České Budějovice 11,České Budějovice,EG.D,EG.D,ne
+37301,Temelín,České Budějovice,EG.D,EG.D,ne
+37302,Neznašov,České Budějovice,EG.D,EG.D,ne
+37304,Chrášťany u Týna nad Vltavou,České Budějovice,EG.D,EG.D,ne
+37305,Temelín-elektrárna,České Budějovice,EG.D,EG.D,ne
+37311,Ledenice,České Budějovice,EG.D,EG.D,ne
+37312,Borovany,České Budějovice,EG.D,EG.D,ne
+37314,Komařice,České Budějovice,EG.D,EG.D,ne
+37315,Nová Ves u Českých Budějovic,České Budějovice,EG.D,EG.D,ne
+37316,Dobrá Voda u Českých Budějovic,České Budějovice,EG.D,EG.D,ne
+37321,Slavče,České Budějovice,EG.D,EG.D,ne
+37322,Ločenice,České Budějovice,EG.D,EG.D,ne
+37323,Svatý Jan nad Malší,České Budějovice,EG.D,EG.D,ne
+37324,Římov,České Budějovice,EG.D,EG.D,ne
+37331,Olešnice u Českých Budějovic,České Budějovice,EG.D,EG.D,ne
+37332,Jílovice u Trhových Svin,České Budějovice,EG.D,EG.D,ne
+37333,Nové Hrady v jižních Čechách,České Budějovice,EG.D,EG.D,ne
+37335,Horní Stropnice,České Budějovice,EG.D,EG.D,ne
+37336,Rychnov u Nových Hradů,České Budějovice,EG.D,EG.D,ne
+37341,Hluboká nad Vltavou,České Budějovice,EG.D,EG.D,ne
+37343,Výdejní místo Purkarec,České Budějovice,EG.D,EG.D,ne
+37344,Zliv,České Budějovice,EG.D,EG.D,ne
+37346,Pištín,České Budějovice,EG.D,EG.D,ne
+37347,Sedlec u Českých Budějovic,České Budějovice,EG.D,EG.D,ne
+37348,Dívčice,České Budějovice,EG.D,EG.D,ne
+37349,Mydlovary,České Budějovice,EG.D,EG.D,ne
+37350,Olešník,České Budějovice,EG.D,EG.D,ne
+37351,Dříteň,České Budějovice,EG.D,EG.D,ne
+37361,Hrdějovice,České Budějovice,EG.D,EG.D,ne
+37362,Chotýčany u Českých Budějovic,České Budějovice,EG.D,EG.D,ne
+37363,Ševětín,České Budějovice,EG.D,EG.D,ne
+37364,Dynín,České Budějovice,EG.D,EG.D,ne
+37365,Dolní Bukovsko,České Budějovice,EG.D,EG.D,ne
+37366,Žimutice,České Budějovice,EG.D,EG.D,ne
+37367,Borek,České Budějovice,EG.D,EG.D,ne
+37371,Rudolfov,České Budějovice,EG.D,EG.D,ne
+37372,Lišov u Českých Budějovic,České Budějovice,EG.D,EG.D,ne
+37373,Štěpánovice u Českých Budějovic,České Budějovice,EG.D,EG.D,ne
+37381,Kamenný Újezd,České Budějovice,EG.D,EG.D,ne
+37382,Boršov nad Vltavou,České Budějovice,EG.D,EG.D,ne
+37384,Dubné,České Budějovice,EG.D,EG.D,ne
+37401,Trhové Sviny,České Budějovice,EG.D,EG.D,ne
+37501,Týn nad Vltavou 1,Písek;Tábor;České Budějovice,EG.D,EG.D,ne
+37701,Jindřichův Hradec 1,Jindřichův Hradec,EG.D,EG.D,ne
+37801,Lásenice,Jindřichův Hradec,EG.D,EG.D,ne
+37802,Stráž nad Nežárkou,Jindřichův Hradec,EG.D,EG.D,ne
+37803,Majdalena,Jindřichův Hradec,EG.D,EG.D,ne
+37804,Chlum u Třeboně,Jindřichův Hradec,EG.D,EG.D,ne
+37806,Suchdol nad Lužnicí,Jindřichův Hradec,EG.D,EG.D,ne
+37807,Rapšach,Jindřichův Hradec,EG.D,EG.D,ne
+37808,Dvory nad Lužnicí,Jindřichův Hradec,EG.D,EG.D,ne
+37809,Nová Ves nad Lužnicí,Jindřichův Hradec,EG.D,EG.D,ne
+37810,České Velenice,Jindřichův Hradec,EG.D,EG.D,ne
+37816,Lomnice nad Lužnicí,Jindřichův Hradec,EG.D,EG.D,ne
+37817,Novosedly nad Nežárkou,Jindřichův Hradec,EG.D,EG.D,ne
+37818,Výdejní místo Stříbřec,Jindřichův Hradec,EG.D,EG.D,ne
+37821,Kardašova Řečice,Jindřichův Hradec;Tábor,EG.D,EG.D,ne
+37824,Výdejní místo Pluhův Žďár,Jindřichův Hradec,EG.D,EG.D,ne
+37825,Deštná u Jindřichova Hradce,Jindřichův Hradec,EG.D,EG.D,ne
+37826,Lodhéřov,Jindřichův Hradec,EG.D,EG.D,ne
+37831,Horní Pěna,Jindřichův Hradec,EG.D,EG.D,ne
+37832,Číměř,Jindřichův Hradec,EG.D,EG.D,ne
+37833,Nová Bystřice,Jindřichův Hradec,EG.D,EG.D,ne
+37841,Jarošov nad Nežárkou,Jindřichův Hradec,EG.D,EG.D,ne
+37842,Nová Včelnice,Jindřichův Hradec,EG.D,EG.D,ne
+37843,Výdejní místo Horní Radouň,Jindřichův Hradec,EG.D,EG.D,ne
+37846,Roseč,Jindřichův Hradec,EG.D,EG.D,ne
+37852,Blažejov,Jindřichův Hradec,EG.D,EG.D,ne
+37853,Strmilov,Jihlava;Jindřichův Hradec,EG.D,GasNet,ano
+37855,Výdejní místo Popelín,Jindřichův Hradec,EG.D,EG.D,ne
+37856,Studená,Jindřichův Hradec,EG.D,EG.D,ne
+37861,Člunek,Jindřichův Hradec,EG.D,EG.D,ne
+37862,Kunžak,Jindřichův Hradec,EG.D,EG.D,ne
+37871,Staré Hobzí,Jindřichův Hradec,EG.D,EG.D,ne
+37872,Písečné nad Dyjí,Jindřichův Hradec,EG.D,EG.D,ne
+37873,Dešná u Dačic,Jindřichův Hradec,EG.D,EG.D,ne
+37881,Slavonice,Jindřichův Hradec,EG.D,EG.D,ne
+37882,Staré Město pod Landštejnem,Jindřichův Hradec,EG.D,EG.D,ne
+37883,Český Rudolec,Jindřichův Hradec,EG.D,EG.D,ne
+37891,Budíškovice,Jindřichův Hradec,EG.D,EG.D,ne
+37892,Budeč,Jindřichův Hradec,EG.D,EG.D,ne
+37901,Třeboň,Jindřichův Hradec;České Budějovice,EG.D,EG.D,ne
+38001,Dačice,Jindřichův Hradec;Třebíč,EG.D,EG.D,ano
+38101,Český Krumlov 1,Český Krumlov,EG.D,EG.D,ne
+38201,Dolní Třebonín,Český Krumlov,EG.D,EG.D,ne
+38202,Zlatá Koruna,Český Krumlov,EG.D,EG.D,ne
+38203,Křemže,Český Krumlov,EG.D,EG.D,ne
+38206,Brloh,Český Krumlov,EG.D,EG.D,ne
+38208,Chvalšiny,Český Krumlov,EG.D,EG.D,ne
+38211,Větřní,Český Krumlov,EG.D,EG.D,ne
+38216,Světlík,Český Krumlov,EG.D,EG.D,ne
+38218,Rožmberk nad Vltavou,Český Krumlov,EG.D,EG.D,ne
+38221,Kájov,Český Krumlov,EG.D,EG.D,ne
+38222,Hořice na Šumavě,Český Krumlov,EG.D,EG.D,ne
+38223,Černá v Pošumaví,Český Krumlov,EG.D,EG.D,ne
+38226,Horní Planá,Český Krumlov,EG.D,EG.D,ne
+38229,Polná na Šumavě,Český Krumlov,EG.D,EG.D,ne
+38232,Velešín,Český Krumlov,EG.D,EG.D,ne
+38241,Kaplice 1,Český Krumlov,EG.D,EG.D,ne
+38242,Kaplice 2,Český Krumlov,EG.D,EG.D,ne
+38272,Dolní Dvořiště,Český Krumlov,EG.D,EG.D,ne
+38273,Vyšší Brod,Český Krumlov,EG.D,EG.D,ne
+38276,Loučovice,Český Krumlov,EG.D,EG.D,ne
+38278,Lipno nad Vltavou,Český Krumlov,EG.D,EG.D,ne
+38279,Frymburk,Český Krumlov,EG.D,EG.D,ne
+38281,Besednice,Český Krumlov,EG.D,EG.D,ne
+38282,Benešov nad Černou,Český Krumlov,EG.D,EG.D,ne
+38283,Pohorská Ves,Český Krumlov,EG.D,EG.D,ne
+38291,Malonty,Český Krumlov,EG.D,EG.D,ne
+38292,Rožmitál na Šumavě,Český Krumlov,EG.D,EG.D,ne
+38293,Horní Dvořiště,Český Krumlov,EG.D,EG.D,ne
+38301,Prachatice,Prachatice,EG.D,EG.D,ne
+38401,Nebahovy,Prachatice,EG.D,EG.D,ne
+38402,Lhenice,Prachatice,EG.D,EG.D,ne
+38403,Ktiš,Prachatice,EG.D,EG.D,ne
+38404,Chroboly,Prachatice,EG.D,EG.D,ne
+38411,Netolice,Prachatice;Strakonice,EG.D,EG.D,ne
+38421,Husinec,Prachatice,EG.D,EG.D,ne
+38422,Vlachovo Březí,Prachatice,EG.D,EG.D,ne
+38425,Dub u Prachatic,Prachatice,EG.D,EG.D,ne
+38426,Strunkovice nad Blanicí,Prachatice,EG.D,EG.D,ne
+38427,Vitějovice,Prachatice,EG.D,EG.D,ne
+38432,Lažiště,Prachatice,EG.D,EG.D,ne
+38433,Záblatí u Prachatic,Prachatice,EG.D,EG.D,ne
+38441,Zbytiny,Prachatice,EG.D,EG.D,ne
+38442,Lenora,Prachatice,EG.D,EG.D,ne
+38443,Strážný,Prachatice,EG.D,EG.D,ne
+38444,Stožec,Prachatice,EG.D,EG.D,ne
+38451,Volary,Prachatice;Český Krumlov,EG.D,EG.D,ne
+38462,Nová Pec,Prachatice,EG.D,EG.D,ne
+38471,Šumavské Hoštice,Prachatice,EG.D,EG.D,ne
+38472,Zdíkov,Prachatice,EG.D,EG.D,ne
+38473,Stachy,Prachatice;Strakonice,EG.D,EG.D,ne
+38481,Čkyně,Prachatice,EG.D,EG.D,ne
+38486,Vacov,Prachatice,EG.D,EG.D,ne
+38491,Horní Vltavice,Prachatice,EG.D,EG.D,ne
+38492,Borová Lada,Prachatice,EG.D,EG.D,ne
+38493,Kvilda,Prachatice,EG.D,EG.D,ne
+38501,Vimperk,Klatovy;Prachatice,ČEZ Distribuce,GasNet,ano
+38601,Strakonice 1,Strakonice,EG.D,EG.D,ne
+38701,Volyně,Strakonice,EG.D,EG.D,ne
+38706,Malenice nad Volyňkou,Strakonice,EG.D,EG.D,ne
+38711,Katovice,Strakonice,EG.D,EG.D,ne
+38715,Střelské Hoštice,Strakonice,EG.D,EG.D,ne
+38716,Volenice,Strakonice,EG.D,EG.D,ne
+38719,Čestice,Strakonice,EG.D,EG.D,ne
+38731,Radomyšl,Strakonice,EG.D,EG.D,ne
+38732,Sedlice u Blatné,Strakonice,EG.D,EG.D,ne
+38733,Kadov u Blatné,Strakonice,EG.D,EG.D,ne
+38734,Záboří u Blatné,Strakonice,EG.D,EG.D,ne
+38735,Doubravice u Strakonic,Strakonice,EG.D,EG.D,ne
+38736,Mečichov,Strakonice,EG.D,EG.D,ne
+38737,Třebohostice,Strakonice,EG.D,EG.D,ne
+38742,Lnáře,Strakonice,EG.D,EG.D,ne
+38743,Bělčice,Strakonice,EG.D,EG.D,ne
+38751,Štěkeň,Strakonice,EG.D,EG.D,ne
+38752,Cehnice,Strakonice,EG.D,EG.D,ne
+38756,Čepřovice,Strakonice,EG.D,EG.D,ne
+38771,Číčenice,Strakonice,EG.D,EG.D,ne
+38772,Libějovice,Strakonice,EG.D,EG.D,ne
+38773,Bavorov,Strakonice,EG.D,EG.D,ne
+38775,Skočice,Strakonice,EG.D,EG.D,ne
+38801,Blatná,Strakonice,EG.D,EG.D,ne
+38901,Vodňany,Strakonice,EG.D,EG.D,ne
+39001,Tábor 1,Tábor,EG.D,EG.D,ne
+39002,Tábor 2,Tábor,EG.D,EG.D,ne
+39003,Tábor 3,Tábor,EG.D,EG.D,ne
+39005,Tábor 5,Tábor,EG.D,EG.D,ne
+39101,Sezimovo Ústí 1,Tábor,EG.D,EG.D,ne
+39102,Sezimovo Ústí 2,Tábor,EG.D,EG.D,ne
+39111,Planá nad Lužnicí,Tábor,EG.D,EG.D,ne
+39116,Myslkovice,Tábor,EG.D,EG.D,ne
+39117,Košice u Soběslavě,Tábor,EG.D,EG.D,ne
+39118,Choustník,Tábor,EG.D,EG.D,ne
+39120,Radenín,Tábor,EG.D,EG.D,ne
+39121,Turovec,Tábor,EG.D,EG.D,ne
+39126,Tučapy u Soběslavě,Tábor,EG.D,EG.D,ne
+39127,Dírná,Tábor,EG.D,EG.D,ne
+39131,Dražice,Tábor,EG.D,EG.D,ne
+39132,Výdejní místo Božejovice,Tábor,EG.D,EG.D,ne
+39133,Jistebnice,Tábor,EG.D,EG.D,ne
+39135,Borotín u Tábora,Tábor,EG.D,EG.D,ne
+39136,Sudoměřice u Tábora,Tábor,EG.D,EG.D,ne
+39137,Chotoviny,Tábor,EG.D,EG.D,ne
+39142,Ratibořské Hory,Tábor,EG.D,EG.D,ne
+39143,Mladá Vožice,Tábor,EG.D,EG.D,ne
+39152,Smilovy Hory,Tábor,EG.D,EG.D,ne
+39153,Vodice u Tábora,Tábor,EG.D,EG.D,ne
+39155,Chýnov,Tábor,EG.D,EG.D,ne
+39156,Tábor 4,Tábor,EG.D,EG.D,ne
+39161,Opařany,Tábor,EG.D,EG.D,ne
+39162,Stádlec,Tábor,EG.D,EG.D,ne
+39165,Bechyně,Tábor;České Budějovice,EG.D,EG.D,ne
+39171,Březnice u Bechyně,Tábor,EG.D,EG.D,ne
+39172,Sudoměřice u Bechyně,Tábor,EG.D,EG.D,ne
+39173,Hlavatce,Tábor,EG.D,EG.D,ne
+39174,Želeč u Tábora,Tábor,EG.D,EG.D,ne
+39175,Malšice,Tábor,EG.D,EG.D,ne
+39176,Slapy u Tábora,Tábor,EG.D,EG.D,ne
+39181,Veselí nad Lužnicí 1,Tábor,EG.D,EG.D,ne
+39201,Soběslav,Tábor,EG.D,EG.D,ne
+39301,Pelhřimov,Pelhřimov,EG.D,EG.D,ne
+39401,Rynárec,Pelhřimov,EG.D,EG.D,ne
+39403,Horní Cerekev,Pelhřimov,EG.D,EG.D,ne
+39404,Nový Rychnov,Pelhřimov,EG.D,EG.D,ne
+39405,Vyskytná u Pelhřimova,Pelhřimov,EG.D,EG.D,ne
+39409,Kojčice,Pelhřimov,EG.D,EG.D,ne
+39411,Cetoraz,Pelhřimov,EG.D,EG.D,ne
+39412,Obrataň,Pelhřimov,EG.D,EG.D,ne
+39413,Kámen u Pacova,Pelhřimov,EG.D,EG.D,ne
+39414,Leskovice,Pelhřimov,EG.D,EG.D,ne
+39415,Nová Cerekev,Pelhřimov,EG.D,EG.D,ne
+39421,Hořepník,Pelhřimov,EG.D,EG.D,ne
+39422,Košetice,Pelhřimov,EG.D,EG.D,ne
+39424,Křešín u Pacova,Pelhřimov,EG.D,EG.D,ne
+39426,Lukavec u Pacova,Pelhřimov,EG.D,EG.D,ne
+39427,Vyklantice,Pelhřimov,EG.D,EG.D,ne
+39428,Velká Chyška,Pelhřimov,EG.D,EG.D,ne
+39443,Mladé Bříště,Pelhřimov,EG.D,EG.D,ne
+39444,Želiv,Pelhřimov,EG.D,EG.D,ne
+39445,Křelovice u Pelhřimova,Pelhřimov,EG.D,EG.D,ne
+39446,Červená Řečice,Pelhřimov,EG.D,EG.D,ne
+39451,Kaliště,Pelhřimov,EG.D,EG.D,ne
+39452,Kejžlice,Pelhřimov,EG.D,EG.D,ne
+39456,Senožaty,Pelhřimov,EG.D,EG.D,ne
+39459,Koberovice,Pelhřimov,EG.D,EG.D,ne
+39461,Božejov,Pelhřimov,EG.D,EG.D,ne
+39462,Libkova Voda,Pelhřimov,EG.D,EG.D,ne
+39463,Častrov,Pelhřimov,EG.D,EG.D,ne
+39464,Počátky,Pelhřimov,EG.D,EG.D,ne
+39468,Žirovnice,Pelhřimov,EG.D,EG.D,ne
+39470,Kamenice nad Lipou,Pelhřimov,EG.D,EG.D,ne
+39491,Bohdalín,Pelhřimov,EG.D,EG.D,ne
+39492,Mnich,Pelhřimov,EG.D,EG.D,ne
+39493,Chválkov u Kamenice nad Lipou,Pelhřimov,EG.D,EG.D,ne
+39494,Černovice u Tábora,Pelhřimov,EG.D,EG.D,ne
+39495,Křeč,Pelhřimov,EG.D,EG.D,ne
+39496,Těmice u Kamenice nad Lipou,Pelhřimov,EG.D,EG.D,ne
+39501,Pacov,Pelhřimov;Tábor,EG.D,EG.D,ne
+39601,Humpolec,Pelhřimov,EG.D,EG.D,ne
+39701,Písek 1,Písek,EG.D,EG.D,ne
+39801,Mirotice,Písek,EG.D,EG.D,ne
+39804,Čimelice,Písek,EG.D,EG.D,ne
+39806,Mirovice,Písek,EG.D,EG.D,ne
+39807,Orlík nad Vltavou,Písek,EG.D,EG.D,ne
+39811,Protivín,Písek,EG.D,EG.D,ne
+39815,Tálín,Písek,EG.D,EG.D,ne
+39816,Albrechtice nad Vltavou,Písek,EG.D,EG.D,ne
+39817,Chřešťovice,Písek,EG.D,EG.D,ne
+39818,Záhoří u Písku,Písek,EG.D,EG.D,ne
+39819,Kluky u Písku,Písek,EG.D,EG.D,ne
+39821,Kestřany,Písek,EG.D,EG.D,ne
+39822,Ražice,Písek,EG.D,EG.D,ne
+39831,Čížová,Písek,EG.D,EG.D,ne
+39832,Vráž u Písku,Písek,EG.D,EG.D,ne
+39833,Ostrovec,Písek,EG.D,EG.D,ne
+39834,Kučeř,Písek,EG.D,EG.D,ne
+39835,Oslov,Písek,EG.D,EG.D,ne
+39842,Veselíčko u Milevska,Písek,EG.D,EG.D,ne
+39843,Bernartice u Milevska,Písek,EG.D,EG.D,ne
+39847,Slabčice,Písek,EG.D,EG.D,ne
+39848,Jetětice,Písek,EG.D,EG.D,ne
+39851,Sepekov,Písek,EG.D,EG.D,ne
+39852,Nadějkov,Tábor,EG.D,EG.D,ne
+39853,Chyšky,Písek,EG.D,EG.D,ne
+39855,Kovářov,Písek,EG.D,EG.D,ne
+39858,Kostelec nad Vltavou,Písek,EG.D,EG.D,ne
+39859,Hrejkovice,Písek,EG.D,EG.D,ne
+39901,Milevsko 1,Písek;Příbram;Tábor,EG.D,EG.D,ano
+40001,Ústí nad Labem 1,Ústí nad Labem,ČEZ Distribuce,GasNet,ne
+40002,Ústí nad Labem 2,Ústí nad Labem,ČEZ Distribuce,GasNet,ne
+40003,Ústí nad Labem 3,Ústí nad Labem,ČEZ Distribuce,GasNet,ne
+40004,Trmice,Ústí nad Labem,ČEZ Distribuce,GasNet,ne
+40007,Ústí nad Labem 7,Ústí nad Labem,ČEZ Distribuce,GasNet,ne
+40010,Ústí nad Labem 10,Ústí nad Labem,ČEZ Distribuce,GasNet,ne
+40011,Ústí nad Labem 11,Ústí nad Labem,ČEZ Distribuce,GasNet,ne
+40301,Dolní Zálezly,Ústí nad Labem,ČEZ Distribuce,GasNet,ne
+40302,Výdejní místo Sebuzín,Ústí nad Labem,ČEZ Distribuce,GasNet,ne
+40313,Řehlovice,Ústí nad Labem,ČEZ Distribuce,GasNet,ne
+40317,Chabařovice,Teplice;Ústí nad Labem,ČEZ Distribuce,GasNet,ne
+40321,Ústí nad Labem 17,Ústí nad Labem,ČEZ Distribuce,GasNet,ne
+40322,Ústí nad Labem 20,Ústí nad Labem,ČEZ Distribuce,GasNet,ne
+40323,Velké Březno,Ústí nad Labem,ČEZ Distribuce,GasNet,ne
+40327,Malečov,Ústí nad Labem,ČEZ Distribuce,GasNet,ne
+40331,Ústí nad Labem 16,Ústí nad Labem,ČEZ Distribuce,GasNet,ne
+40332,Povrly,Ústí nad Labem,ČEZ Distribuce,GasNet,ne
+40334,Velké Chvojno,Ústí nad Labem,ČEZ Distribuce,GasNet,ne
+40335,Libouchec,Ústí nad Labem,ČEZ Distribuce,GasNet,ne
+40336,Tisá,Ústí nad Labem,ČEZ Distribuce,GasNet,ne
+40337,Petrovice u Ústí nad Labem,Ústí nad Labem,ČEZ Distribuce,GasNet,ne
+40338,Telnice,Ústí nad Labem,ČEZ Distribuce,GasNet,ne
+40339,Chlumec u Ústí nad Labem,Ústí nad Labem,ČEZ Distribuce,GasNet,ne
+40340,Ústí nad Labem 19,Ústí nad Labem,ČEZ Distribuce,GasNet,ne
+40502,Děčín 2,Děčín,ČEZ Distribuce,GasNet,ne
+40505,Děčín 5,Děčín,ČEZ Distribuce,GasNet,ne
+40701,Jílové u Děčína,Děčín,ČEZ Distribuce,GasNet,ne
+40702,Modrá u Děčína,Děčín,ČEZ Distribuce,GasNet,ne
+40703,Dobkovice u Děčína,Děčín,ČEZ Distribuce,GasNet,ne
+40711,Děčín 9,Děčín,ČEZ Distribuce,GasNet,ne
+40713,Ludvíkovice,Děčín,ČEZ Distribuce,GasNet,ne
+40714,Arnoltice u Děčína,Děčín,ČEZ Distribuce,GasNet,ne
+40715,Srbská Kamenice,Děčín,ČEZ Distribuce,GasNet,ne
+40716,Jetřichovice u Děčína,Děčín,ČEZ Distribuce,GasNet,ne
+40717,Hřensko,Děčín,ČEZ Distribuce,GasNet,ne
+40721,Česká Kamenice,Děčín,ČEZ Distribuce,GasNet,ne
+40722,Benešov nad Ploučnicí,Děčín,ČEZ Distribuce,GasNet,ne
+40723,Františkov nad Ploučnicí,Děčín,ČEZ Distribuce,GasNet,ne
+40724,Valkeřice,Děčín,ČEZ Distribuce,GasNet,ne
+40725,Verneřice,Děčín,ČEZ Distribuce,GasNet,ne
+40729,Velká Bukovina u Děčína,Děčín,ČEZ Distribuce,GasNet,ne
+40741,Dobrná,Děčín,ČEZ Distribuce,GasNet,ne
+40742,Markvartice u Děčína,Děčín,ČEZ Distribuce,GasNet,ne
+40744,Chřibská,Děčín,ČEZ Distribuce,GasNet,ne
+40745,Kytlice,Děčín,ČEZ Distribuce,GasNet,ne
+40746,Krásná Lípa u Rumburka,Děčín,ČEZ Distribuce,GasNet,ne
+40747,Varnsdorf 1,Děčín,ČEZ Distribuce,GasNet,ne
+40751,Rybniště,Děčín,ČEZ Distribuce,GasNet,ne
+40752,Varnsdorf 3,Děčín,ČEZ Distribuce,GasNet,ne
+40753,Jiříkov,Děčín,ČEZ Distribuce,GasNet,ne
+40755,Dolní Podluží,Děčín,ČEZ Distribuce,GasNet,ne
+40756,Jiřetín pod Jedlovou,Děčín,ČEZ Distribuce,GasNet,ne
+40757,Horní Podluží,Děčín,ČEZ Distribuce,GasNet,ne
+40760,Výdejní místo Brtníky,Děčín,ČEZ Distribuce,GasNet,ne
+40761,Staré Křečany,Děčín,ČEZ Distribuce,GasNet,ne
+40777,Šluknov,Děčín,ČEZ Distribuce,GasNet,ne
+40778,Velký Šenov,Děčín,ČEZ Distribuce,GasNet,ne
+40779,Mikulášovice,Děčín,ČEZ Distribuce,GasNet,ne
+40780,Vilémov u Šluknova,Děčín,ČEZ Distribuce,GasNet,ne
+40781,Lipová u Šluknova,Děčín,ČEZ Distribuce,GasNet,ne
+40782,Dolní Poustevna,Děčín,ČEZ Distribuce,GasNet,ne
+40784,Lobendava,Děčín,ČEZ Distribuce,GasNet,ne
+40801,Rumburk,Děčín,ČEZ Distribuce,GasNet,ne
+41002,Lovosice 2,Litoměřice,ČEZ Distribuce,GasNet,ne
+41101,Žalhostice,Litoměřice,ČEZ Distribuce,GasNet,ne
+41103,Libochovany,Litoměřice,ČEZ Distribuce,GasNet,ne
+41108,Štětí,Litoměřice,ČEZ Distribuce,GasNet,ne
+41111,Sulejovice,Litoměřice,ČEZ Distribuce,GasNet,ne
+41112,Čížkovice,Litoměřice,ČEZ Distribuce,GasNet,ne
+41113,Třebenice,Litoměřice,ČEZ Distribuce,GasNet,ne
+41114,Výdejní místo Vlastislav,Litoměřice,ČEZ Distribuce,GasNet,ne
+41115,Třebívlice,Litoměřice,ČEZ Distribuce,GasNet,ne
+41116,Klapý,Litoměřice,ČEZ Distribuce,GasNet,ne
+41117,Libochovice,Litoměřice,ČEZ Distribuce,GasNet,ne
+41118,Budyně nad Ohří,Litoměřice,ČEZ Distribuce,GasNet,ne
+41119,Mšené-lázně,Litoměřice,ČEZ Distribuce,GasNet,ne
+41120,Ředhošť,Litoměřice,ČEZ Distribuce,GasNet,ne
+41121,Vrbičany,Litoměřice,ČEZ Distribuce,GasNet,ne
+41131,Velemín,Litoměřice,ČEZ Distribuce,GasNet,ne
+41132,Milešov u Lovosic,Litoměřice,ČEZ Distribuce,GasNet,ne
+41133,Prackovice nad Labem,Litoměřice,ČEZ Distribuce,GasNet,ne
+41141,Žitenice,Litoměřice,ČEZ Distribuce,GasNet,ne
+41142,Ploskovice,Litoměřice,ČEZ Distribuce,GasNet,ne
+41145,Úštěk,Litoměřice,ČEZ Distribuce,GasNet,ne
+41146,Liběšice u Litoměřic,Litoměřice,ČEZ Distribuce,GasNet,ne
+41147,Polepy,Litoměřice,ČEZ Distribuce,GasNet,ne
+41148,Křešice,Litoměřice,ČEZ Distribuce,GasNet,ne
+41155,Terezín,Litoměřice,ČEZ Distribuce,GasNet,ne
+41156,Bohušovice nad Ohří,Litoměřice,ČEZ Distribuce,GasNet,ne
+41162,Sukorady,Litoměřice,ČEZ Distribuce,GasNet,ne
+41164,Vrbice u Roudnice nad Labem,Litoměřice,ČEZ Distribuce,GasNet,ne
+41171,Chodouny,Litoměřice,ČEZ Distribuce,GasNet,ne
+41172,Hoštka u Roudnice nad Labem,Litoměřice,ČEZ Distribuce,GasNet,ne
+41173,Chcebuz,Litoměřice,ČEZ Distribuce,GasNet,ne
+41174,Snědovice,Litoměřice,ČEZ Distribuce,GasNet,ne
+41181,Brozany nad Ohří,Litoměřice,ČEZ Distribuce,GasNet,ne
+41182,Doksany,Litoměřice,ČEZ Distribuce,GasNet,ne
+41183,Hrobce,Litoměřice,ČEZ Distribuce,GasNet,ne
+41184,Straškov-Vodochody,Litoměřice,ČEZ Distribuce,GasNet,ne
+41185,Horní Beřkovice,Litoměřice,ČEZ Distribuce,GasNet,ne
+41186,Bechlín,Litoměřice,ČEZ Distribuce,GasNet,ne
+41187,Krabčice u Roudnice nad Labem,Litoměřice,ČEZ Distribuce,GasNet,ne
+41201,Litoměřice 1,Litoměřice,ČEZ Distribuce,GasNet,ne
+41301,Roudnice nad Labem,Litoměřice,ČEZ Distribuce,GasNet,ne
+41501,Teplice 1,Teplice,ČEZ Distribuce,GasNet,ne
+41503,Teplice 3,Teplice,ČEZ Distribuce,GasNet,ne
+41510,Teplice 10,Teplice,ČEZ Distribuce,GasNet,ne
+41701,Dubí u Teplic 1,Teplice,ČEZ Distribuce,GasNet,ne
+41702,Dubí,Teplice,ČEZ Distribuce,GasNet,ne
+41703,Pozorka,Teplice,ČEZ Distribuce,GasNet,ne
+41704,Hrob,Teplice,ČEZ Distribuce,GasNet,ne
+41705,Osek u Duchcova,Teplice,ČEZ Distribuce,GasNet,ne
+41712,Proboštov u Teplic,Teplice,ČEZ Distribuce,GasNet,ne
+41713,Modlany,Teplice,ČEZ Distribuce,GasNet,ne
+41722,Háj u Duchcova,Teplice,ČEZ Distribuce,GasNet,ne
+41723,Košťany u Teplic,Teplice,ČEZ Distribuce,GasNet,ne
+41724,Oldřichov,Teplice,ČEZ Distribuce,GasNet,ne
+41725,Výdejní místo Lahošť,Teplice,ČEZ Distribuce,GasNet,ne
+41731,Novosedlice,Teplice,ČEZ Distribuce,GasNet,ne
+41741,Krupka 3,Teplice,ČEZ Distribuce,GasNet,ne
+41742,Krupka 1,Teplice,ČEZ Distribuce,GasNet,ne
+41752,Hostomice nad Bílinou,Teplice,ČEZ Distribuce,GasNet,ne
+41753,Světec,Teplice,ČEZ Distribuce,GasNet,ne
+41754,Kostomlaty pod Milešovkou,Teplice,ČEZ Distribuce,GasNet,ne
+41757,Hrobčice,Teplice,ČEZ Distribuce,GasNet,ne
+41761,Bystřany,Teplice,ČEZ Distribuce,GasNet,ne
+41762,Rtyně nad Bílinou,Teplice,ČEZ Distribuce,GasNet,ne
+41763,Žalany,Teplice,ČEZ Distribuce,GasNet,ne
+41765,Ohníč,Teplice,ČEZ Distribuce,GasNet,ne
+41771,Zabrušany,Teplice,ČEZ Distribuce,GasNet,ne
+41772,Ledvice,Teplice,ČEZ Distribuce,GasNet,ne
+41781,Moldava,Teplice,ČEZ Distribuce,GasNet,ne
+41801,Bílina 1,Teplice,ČEZ Distribuce,GasNet,ne
+41804,Bílina 4,Teplice,ČEZ Distribuce,GasNet,ne
+41901,Duchcov,Teplice,ČEZ Distribuce,GasNet,ne
+43001,Chomutov 1,Chomutov,ČEZ Distribuce,GasNet,ne
+43003,Chomutov 3,Chomutov,ČEZ Distribuce,GasNet,ne
+43004,Chomutov 4,Chomutov,ČEZ Distribuce,GasNet,ne
+43101,Spořice,Chomutov,ČEZ Distribuce,GasNet,ne
+43102,Zelená,Chomutov,ČEZ Distribuce,GasNet,ne
+43111,Jirkov 1,Chomutov,ČEZ Distribuce,GasNet,ne
+43114,Strupčice,Chomutov,ČEZ Distribuce,GasNet,ne
+43115,Výdejní místo Vrskmaň,Chomutov,ČEZ Distribuce,GasNet,ne
+43121,Boleboř,Chomutov,ČEZ Distribuce,GasNet,ne
+43132,Výdejní místo Kalek,Chomutov,ČEZ Distribuce,GasNet,ne
+43141,Údlice,Chomutov,ČEZ Distribuce,GasNet,ne
+43143,Hrušovany u Chomutova,Chomutov,ČEZ Distribuce,GasNet,ne
+43144,Droužkovice,Chomutov,ČEZ Distribuce,GasNet,ne
+43145,Březno u Chomutova,Chomutov,ČEZ Distribuce,GasNet,ne
+43151,Klášterec nad Ohří 1,Chomutov;Karlovy Vary,ČEZ Distribuce,GasNet,ne
+43153,Pětipsy,Chomutov,ČEZ Distribuce,GasNet,ne
+43154,Vilémov u Kadaně,Chomutov,ČEZ Distribuce,GasNet,ne
+43155,Radonice u Kadaně,Chomutov,ČEZ Distribuce,GasNet,ne
+43156,Mašťov,Chomutov,ČEZ Distribuce,GasNet,ne
+43157,Chbany,Chomutov,ČEZ Distribuce,GasNet,ne
+43158,Místo,Chomutov,ČEZ Distribuce,GasNet,ne
+43159,Vysoká Pec,Chomutov,ČEZ Distribuce,GasNet,ne
+43163,Perštejn,Chomutov,ČEZ Distribuce,GasNet,ne
+43182,Hora Svatého Šebestiána,Chomutov,ČEZ Distribuce,GasNet,ne
+43183,Výdejní místo Výsluní,Chomutov,ČEZ Distribuce,GasNet,ne
+43184,Výdejní místo Měděnec,Chomutov,ČEZ Distribuce,GasNet,ne
+43186,Kovářská,Chomutov,ČEZ Distribuce,GasNet,ne
+43191,Vejprty,Chomutov,ČEZ Distribuce,GasNet,ne
+43201,Kadaň 1,Chomutov,ČEZ Distribuce,GasNet,ne
+43401,Most 1,Most,ČEZ Distribuce,GasNet,ne
+43501,Havraň,Most,ČEZ Distribuce,GasNet,ne
+43502,Most 9,Most,ČEZ Distribuce,GasNet,ne
+43511,Lom u Mostu 1,Most,ČEZ Distribuce,GasNet,ne
+43513,Meziboří u Litvínova,Most,ČEZ Distribuce,GasNet,ne
+43521,Obrnice,Most,ČEZ Distribuce,GasNet,ne
+43522,Braňany,Most,ČEZ Distribuce,GasNet,ne
+43524,Lužice u Mostu,Most,ČEZ Distribuce,GasNet,ne
+43526,Bečov u Mostu,Most,ČEZ Distribuce,GasNet,ne
+43532,Mariánské Radčice,Most,ČEZ Distribuce,GasNet,ne
+43533,Louka u Litvínova,Most,ČEZ Distribuce,GasNet,ne
+43542,Litvínov 8,Most,ČEZ Distribuce,GasNet,ne
+43543,Horní Jiřetín,Most,ČEZ Distribuce,GasNet,ne
+43545,Nová Ves v Horách,Most,ČEZ Distribuce,GasNet,ne
+43546,Hora Svaté Kateřiny,Most,ČEZ Distribuce,GasNet,ne
+43547,Brandov,Most,ČEZ Distribuce,GasNet,ne
+43601,Litvínov 1,Most,ČEZ Distribuce,GasNet,ne
+43603,Litvínov 3,Most,ČEZ Distribuce,GasNet,ne
+43801,Žatec 1,Chomutov;Louny,ČEZ Distribuce,GasNet,ne
+43901,Černčice,Louny,ČEZ Distribuce,GasNet,ne
+43902,Cítoliby,Louny,ČEZ Distribuce,GasNet,ne
+43903,Chlumčany u Loun,Louny,ČEZ Distribuce,GasNet,ne
+43904,Hříškov,Louny,ČEZ Distribuce,GasNet,ne
+43905,Panenský Týnec,Louny,ČEZ Distribuce,GasNet,ne
+43906,Vrbno nad Lesy,Louny,ČEZ Distribuce,GasNet,ne
+43907,Peruc,Louny,ČEZ Distribuce,GasNet,ne
+43908,Pátek u Loun,Louny,ČEZ Distribuce,GasNet,ne
+43909,Slavětín nad Ohří,Louny,ČEZ Distribuce,GasNet,ne
+43914,Smolnice,Louny,ČEZ Distribuce,GasNet,ne
+43915,Vinařice u Loun,Louny,ČEZ Distribuce,GasNet,ne
+43921,Koštice nad Ohří,Louny,ČEZ Distribuce,GasNet,ne
+43922,Chožov,Louny,ČEZ Distribuce,GasNet,ne
+43923,Lenešice,Louny,ČEZ Distribuce,GasNet,ne
+43924,Raná u Loun,Louny,ČEZ Distribuce,GasNet,ne
+43926,Libčeves,Louny,ČEZ Distribuce,GasNet,ne
+43931,Měcholupy u Žatce,Louny,ČEZ Distribuce,GasNet,ne
+43942,Postoloprty,Louny,ČEZ Distribuce,GasNet,ne
+43949,Staňkovice u Žatce,Louny,ČEZ Distribuce,GasNet,ne
+43963,Liběšice u Žatce,Louny,ČEZ Distribuce,GasNet,ne
+43965,Hřivice,Louny,ČEZ Distribuce,GasNet,ne
+43967,Ročov,Louny,ČEZ Distribuce,GasNet,ne
+43968,Domoušice,Louny,ČEZ Distribuce,GasNet,ne
+43969,Tuchořice,Louny,ČEZ Distribuce,GasNet,ne
+43971,Nepomyšl,Louny,ČEZ Distribuce,GasNet,ne
+43972,Krásný Dvůr,Louny,ČEZ Distribuce,GasNet,ne
+43975,Libočany,Louny,ČEZ Distribuce,GasNet,ne
+43981,Kryry,Louny,ČEZ Distribuce,GasNet,ne
+43982,Vroutek,Louny,ČEZ Distribuce,GasNet,ne
+43983,Lubenec,Louny,ČEZ Distribuce,GasNet,ne
+43984,Blatno u Podbořan,Louny,ČEZ Distribuce,GasNet,ne
+43985,Petrohrad,Louny,ČEZ Distribuce,GasNet,ne
+43986,Strojetice,Louny,ČEZ Distribuce,GasNet,ne
+43987,Očihov,Louny,ČEZ Distribuce,GasNet,ne
+43988,Blšany,Louny,ČEZ Distribuce,GasNet,ne
+44001,Louny 1,Louny,ČEZ Distribuce,GasNet,ne
+44101,Podbořany,Chomutov;Karlovy Vary;Louny,ČEZ Distribuce,GasNet,ne
+46001,Liberec 1,Liberec,ČEZ Distribuce,GasNet,ne
+46005,Liberec 5,Liberec,ČEZ Distribuce,GasNet,ne
+46006,Liberec 6,Liberec,ČEZ Distribuce,GasNet,ne
+46007,Liberec 7,Liberec,ČEZ Distribuce,GasNet,ne
+46008,Liberec 8,Liberec,ČEZ Distribuce,GasNet,ne
+46010,Liberec 10,Liberec,ČEZ Distribuce,GasNet,ne
+46014,Liberec 14,Liberec,ČEZ Distribuce,GasNet,ne
+46015,Liberec 15,Liberec,ČEZ Distribuce,GasNet,ne
+46303,Stráž nad Nisou,Liberec,ČEZ Distribuce,GasNet,ne
+46311,Liberec 30,Liberec,ČEZ Distribuce,GasNet,ne
+46312,Liberec 25,Liberec,ČEZ Distribuce,GasNet,ne
+46331,Chrastava,Liberec,ČEZ Distribuce,GasNet,ne
+46334,Hrádek nad Nisou,Liberec,ČEZ Distribuce,GasNet,ne
+46342,Hodkovice nad Mohelkou,Jablonec nad Nisou;Liberec,ČEZ Distribuce,GasNet,ne
+46343,Český Dub,Liberec,ČEZ Distribuce,GasNet,ne
+46344,Sychrov,Liberec,ČEZ Distribuce,GasNet,ne
+46345,Pěnčín u Liberce,Liberec,ČEZ Distribuce,GasNet,ne
+46346,Příšovice,Liberec,ČEZ Distribuce,GasNet,ne
+46348,Všelibice,Liberec,ČEZ Distribuce,GasNet,ne
+46352,Osečná,Liberec;Česká Lípa,ČEZ Distribuce,GasNet,ne
+46353,Křižany,Liberec,ČEZ Distribuce,GasNet,ne
+46362,Hejnice,Liberec,ČEZ Distribuce,GasNet,ne
+46365,Nové Město pod Smrkem,Liberec,ČEZ Distribuce,GasNet,ne
+46373,Habartice u Frýdlantu,Liberec,ČEZ Distribuce,GasNet,ne
+46401,Frýdlant v Čechách,Liberec,ČEZ Distribuce,GasNet,ne
+46601,Jablonec nad Nisou 1,Jablonec nad Nisou,ČEZ Distribuce,GasNet,ne
+46602,Jablonec nad Nisou 2,Jablonec nad Nisou,ČEZ Distribuce,GasNet,ne
+46604,Jablonec nad Nisou 4,Jablonec nad Nisou,ČEZ Distribuce,GasNet,ne
+46605,Jablonec nad Nisou 5,Jablonec nad Nisou,ČEZ Distribuce,GasNet,ne
+46606,Jablonec nad Nisou 6,Jablonec nad Nisou,ČEZ Distribuce,GasNet,ne
+46801,Jablonec nad Nisou 8,Jablonec nad Nisou,ČEZ Distribuce,GasNet,ne
+46802,Rychnov u Jablonce nad Nisou,Jablonec nad Nisou,ČEZ Distribuce,GasNet,ne
+46803,Rádlo,Jablonec nad Nisou,ČEZ Distribuce,GasNet,ne
+46804,Jablonec nad Nisou 7,Jablonec nad Nisou,ČEZ Distribuce,GasNet,ne
+46811,Janov nad Nisou,Jablonec nad Nisou,ČEZ Distribuce,GasNet,ne
+46812,Bedřichov,Jablonec nad Nisou,ČEZ Distribuce,GasNet,ne
+46821,Bratříkov,Jablonec nad Nisou,ČEZ Distribuce,GasNet,ne
+46822,Železný Brod,Jablonec nad Nisou,ČEZ Distribuce,GasNet,ne
+46824,Držkov,Jablonec nad Nisou,ČEZ Distribuce,GasNet,ne
+46825,Zásada,Jablonec nad Nisou,ČEZ Distribuce,GasNet,ne
+46826,Huť,Jablonec nad Nisou,ČEZ Distribuce,GasNet,ne
+46827,Nová Ves nad Nisou,Jablonec nad Nisou,ČEZ Distribuce,GasNet,ne
+46833,Jenišovice u Jablonce nad Nisou,Jablonec nad Nisou,ČEZ Distribuce,GasNet,ne
+46841,Tanvald,Jablonec nad Nisou,ČEZ Distribuce,GasNet,ne
+46843,Albrechtice v Jizerských horách,Jablonec nad Nisou,ČEZ Distribuce,GasNet,ne
+46844,Josefův Důl u Jablonce nad Nisou,Jablonec nad Nisou,ČEZ Distribuce,GasNet,ne
+46845,Velké Hamry,Jablonec nad Nisou,ČEZ Distribuce,GasNet,ne
+46846,Plavy,Jablonec nad Nisou,ČEZ Distribuce,GasNet,ne
+46847,Zlatá Olešnice,Jablonec nad Nisou,ČEZ Distribuce,GasNet,ne
+46848,Výdejní místo Příchovice,Jablonec nad Nisou,ČEZ Distribuce,GasNet,ne
+46849,Kořenov,Jablonec nad Nisou,ČEZ Distribuce,GasNet,ne
+46850,Výdejní místo Polubný,Jablonec nad Nisou,ČEZ Distribuce,GasNet,ne
+46851,Smržovka,Jablonec nad Nisou,ČEZ Distribuce,GasNet,ne
+46861,Desná v Jizerských horách,Jablonec nad Nisou,ČEZ Distribuce,GasNet,ne
+46871,Lučany nad Nisou,Jablonec nad Nisou,ČEZ Distribuce,GasNet,ne
+47001,Česká Lípa 1,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47002,Česká Lípa 2,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47006,Česká Lípa 6,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47101,Zahrádky u České Lípy,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47102,Výdejní místo Stvolínky,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47103,Kravaře u České Lípy,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47104,Blíževedly,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47105,Valteřice,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47106,Horní Police,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47107,Žandov u České Lípy,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47108,Jezvé,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47111,Horní Libchava u České Lípy,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47112,Volfartice,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47113,Nový Oldřichov,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47114,Kamenický Šenov,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47115,Prysk,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47116,Polevsko,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47117,Skalice u České Lípy,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47118,Pihel,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47121,Dobranov,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47123,Zákupy,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47124,Mimoň,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47125,Jablonné v Podještědí,Liberec;Česká Lípa,ČEZ Distribuce,GasNet,ne
+47126,Dubnice pod Ralskem,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47127,Stráž pod Ralskem,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47128,Hamr u České Lípy,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47129,Brniště,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47141,Dubá,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47151,Svor,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47152,Sloup v Čechách,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47153,Svojkov,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47154,Cvikov,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47155,Kunratice u Cvikova,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47156,Mařenice,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47157,Krompach v Čechách,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47158,Lindava,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47161,Jestřebí,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47162,Okna,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47163,Staré Splavy,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47167,Provodín,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47201,Doksy,Česká Lípa,ČEZ Distribuce,GasNet,ne
+47301,Nový Bor,Česká Lípa,ČEZ Distribuce,GasNet,ne
+50002,Hradec Králové 2,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50003,Hradec Králové 3,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50004,Hradec Králové 4,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50006,Hradec Králové 6,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50008,Hradec Králové 8,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50009,Hradec Králové 9,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50011,Hradec Králové 11,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50012,Hradec Králové 12,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50301,Hradec Králové 16,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50302,Předměřice nad Labem,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50303,Smiřice,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50304,Černožice nad Labem,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50305,Výdejní místo Lužany,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50306,Hořiněves,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50311,Hradec Králové 15,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50312,Všestary,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50313,Dohalice,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50314,Stračov,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50315,Nechanice,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50316,Dolní Přím,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50321,Stěžery,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50322,Libčany,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50323,Výdejní místo Boharyně,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50324,Kratonohy,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50325,Dobřenice,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50326,Osice,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50327,Lhota pod Libčany,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50331,Vysoká nad Labem,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50332,Hradec Králové 22,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50333,Praskačka,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50341,Hradec Králové 7,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50343,Černilov,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50344,Libřice,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50346,Třebechovice pod Orebem,Hradec Králové;Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+50351,Chlumec nad Cidlinou,Hradec Králové;Nymburk,ČEZ Distribuce,GasNet,ne
+50352,Skřivany u Nového Bydžova,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50353,Smidary,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50354,Ohnišťany,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50355,Petrovice u Nového Bydžova,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50356,Hlušice,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50357,Starý Bydžov,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50361,Lovčice u Nového Bydžova,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50362,Lužec nad Cidlinou,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50363,Nepolisy,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50364,Měník,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50365,Kosičky,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50366,Káranice,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50401,Nový Bydžov,Hradec Králové,ČEZ Distribuce,GasNet,ne
+50601,Jičín 1,Jičín;Semily,ČEZ Distribuce,GasNet,ne
+50702,Žeretice,Jičín,ČEZ Distribuce,GasNet,ne
+50703,Vysoké Veselí,Hradec Králové;Jičín,ČEZ Distribuce,GasNet,ne
+50704,Třtěnice,Jičín,ČEZ Distribuce,GasNet,ne
+50705,Konecchlumí,Jičín,ČEZ Distribuce,GasNet,ne
+50706,Lužany u Jičína,Jičín,ČEZ Distribuce,GasNet,ne
+50707,Úlibice,Jičín,ČEZ Distribuce,GasNet,ne
+50711,Valdice,Jičín,ČEZ Distribuce,GasNet,ne
+50712,Radim u Jičína,Jičín,ČEZ Distribuce,GasNet,ne
+50713,Železnice,Jičín;Semily,ČEZ Distribuce,GasNet,ne
+50715,Libuň,Jičín,ČEZ Distribuce,GasNet,ne
+50721,Veliš u Jičína,Jičín,ČEZ Distribuce,GasNet,ne
+50722,Střevač,Jičín,ČEZ Distribuce,GasNet,ne
+50723,Libáň,Jičín,ČEZ Distribuce,GasNet,ne
+50724,Dětenice,Jičín,ČEZ Distribuce,GasNet,ne
+50731,Jičíněves,Jičín,ČEZ Distribuce,GasNet,ne
+50732,Kopidlno,Jičín,ČEZ Distribuce,GasNet,ne
+50733,Vršce,Jičín,ČEZ Distribuce,GasNet,ne
+50734,Žlunice,Jičín,ČEZ Distribuce,GasNet,ne
+50742,Markvartice u Sobotky,Jičín,ČEZ Distribuce,GasNet,ne
+50743,Sobotka,Jičín,ČEZ Distribuce,GasNet,ne
+50744,Libošovice,Jičín,ČEZ Distribuce,GasNet,ne
+50745,Mladějov v Čechách,Jičín,ČEZ Distribuce,GasNet,ne
+50752,Ostroměř,Jičín,ČEZ Distribuce,GasNet,ne
+50753,Chomutice u Hořic v Podkrkonoší,Jičín,ČEZ Distribuce,GasNet,ne
+50754,Podhorní Újezd,Jičín,ČEZ Distribuce,GasNet,ne
+50758,Mlázovice,Jičín,ČEZ Distribuce,GasNet,ne
+50759,Výdejní místo Šárovcova Lhota,Jičín,ČEZ Distribuce,GasNet,ne
+50771,Miletín,Jičín,ČEZ Distribuce,GasNet,ne
+50773,Dobrá Voda u Hořic,Jičín,ČEZ Distribuce,GasNet,ne
+50777,Cerekvice nad Bystřicí,Jičín,ČEZ Distribuce,GasNet,ne
+50781,Lázně Bělohrad,Jičín,ČEZ Distribuce,GasNet,ne
+50782,Pecka,Jičín,ČEZ Distribuce,GasNet,ne
+50791,Stará Paka,Jičín;Semily,ČEZ Distribuce,GasNet,ne
+50792,Úbislavice,Jičín,ČEZ Distribuce,GasNet,ne
+50801,Hořice v Podkrkonoší,Hradec Králové;Jičín,ČEZ Distribuce,GasNet,ne
+50901,Nová Paka,Jičín,ČEZ Distribuce,GasNet,ne
+51101,Turnov 1,Semily,ČEZ Distribuce,GasNet,ne
+51201,Slaná u Semil,Semily,ČEZ Distribuce,GasNet,ne
+51202,Košťálov,Semily,ČEZ Distribuce,GasNet,ne
+51203,Libštát,Semily,ČEZ Distribuce,GasNet,ne
+51204,Mříčná,Semily,ČEZ Distribuce,GasNet,ne
+51206,Benešov u Semil,Semily,ČEZ Distribuce,GasNet,ne
+51211,Vysoké nad Jizerou,Semily,ČEZ Distribuce,GasNet,ne
+51212,Jesenný,Semily,ČEZ Distribuce,GasNet,ne
+51213,Bozkov,Semily,ČEZ Distribuce,GasNet,ne
+51231,Roztoky u Jilemnice,Semily,ČEZ Distribuce,GasNet,ne
+51232,Martinice v Krkonoších,Semily,ČEZ Distribuce,GasNet,ne
+51233,Studenec u Horek,Semily,ČEZ Distribuce,GasNet,ne
+51234,Horka u Staré Paky,Semily,ČEZ Distribuce,GasNet,ne
+51235,Čistá u Horek,Semily,ČEZ Distribuce,GasNet,ne
+51236,Horní Branná,Semily,ČEZ Distribuce,GasNet,ne
+51237,Benecko,Semily,ČEZ Distribuce,GasNet,ne
+51238,Vítkovice v Krkonoších,Semily,ČEZ Distribuce,GasNet,ne
+51241,Víchová nad Jizerou,Semily,ČEZ Distribuce,GasNet,ne
+51242,Poniklá,Semily,ČEZ Distribuce,GasNet,ne
+51243,Jablonec nad Jizerou,Semily,ČEZ Distribuce,GasNet,ne
+51244,Rokytnice nad Jizerou 1,Semily,ČEZ Distribuce,GasNet,ne
+51245,Rokytnice nad Jizerou 3,Semily,ČEZ Distribuce,GasNet,ne
+51246,Harrachov v Krkonoších,Semily,ČEZ Distribuce,GasNet,ne
+51247,Paseky nad Jizerou,Semily,ČEZ Distribuce,GasNet,ne
+51251,Lomnice nad Popelkou,Semily,ČEZ Distribuce,GasNet,ne
+51252,Veselá u Semil,Semily,ČEZ Distribuce,GasNet,ne
+51253,Tatobity,Semily,ČEZ Distribuce,GasNet,ne
+51261,Přepeře,Semily,ČEZ Distribuce,GasNet,ne
+51263,Rovensko pod Troskami,Jičín;Semily,ČEZ Distribuce,GasNet,ne
+51264,Vyskeř,Semily,ČEZ Distribuce,GasNet,ne
+51265,Všeň,Semily,ČEZ Distribuce,GasNet,ne
+51271,Nová Ves nad Popelkou,Semily,ČEZ Distribuce,GasNet,ne
+51301,Semily,Semily,ČEZ Distribuce,GasNet,ne
+51401,Jilemnice,Semily,ČEZ Distribuce,GasNet,ne
+51601,Rychnov nad Kněžnou,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51603,Lukavice,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51701,Solnice,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51702,Kvasiny,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51703,Skuhrov nad Bělou,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51704,Černíkovice,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51711,Javornice,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51712,Liberk,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51721,Týniště nad Orlicí,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51722,Albrechtice nad Orlicí,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51723,Žďár nad Orlicí,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51724,Borohrádek,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51725,Čermná nad Orlicí,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51731,Bolehošť,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51732,Přepychy,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51733,Trnov u Dobrušky,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51734,Voděrady u Rychnova nad Kněžnou,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51735,Lično,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51736,Olešnice u Rychnova nad Kněžnou,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51741,Kostelec nad Orlicí,Rychnov nad Kněžnou;Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+51742,Doudleby nad Orlicí,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51743,Potštejn,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51745,Chleny,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51750,Častolovice,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51754,Vamberk,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51755,Rybná nad Zdobnicí,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51756,Slatina nad Zdobnicí,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51757,Pěčín u Rychnova nad Kněžnou,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51761,Rokytnice v Orlických horách,Rychnov nad Kněžnou;Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+51764,Orlické Záhoří,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51771,České Meziříčí,Hradec Králové;Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51772,Jílovice u Dobrušky,Hradec Králové,ČEZ Distribuce,GasNet,ne
+51773,Opočno,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51783,Olešnice v Orlických horách,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51784,Ohnišov,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51791,Deštné v Orlických horách,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51792,Kounov u Dobrušky,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51793,Dobré,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51801,Dobruška,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+51803,Podbřezí,Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+53002,Pardubice 2,Hradec Králové;Pardubice,ČEZ Distribuce,GasNet,ne
+53003,Pardubice 3,Pardubice,ČEZ Distribuce,GasNet,ne
+53006,Pardubice 6,Pardubice,ČEZ Distribuce,GasNet,ne
+53009,Pardubice 9,Pardubice,ČEZ Distribuce,GasNet,ne
+53012,Pardubice 12,Pardubice,ČEZ Distribuce,GasNet,ne
+53301,Pardubice 21,Pardubice,ČEZ Distribuce,GasNet,ne
+53303,Dašice v Čechách,Pardubice,ČEZ Distribuce,GasNet,ne
+53304,Sezemice,Pardubice,ČEZ Distribuce,GasNet,ne
+53305,Dříteč,Pardubice,ČEZ Distribuce,GasNet,ne
+53311,Zdechovice,Pardubice,ČEZ Distribuce,GasNet,ne
+53312,Chvaletice,Pardubice,ČEZ Distribuce,GasNet,ne
+53313,Řečany nad Labem,Pardubice,ČEZ Distribuce,GasNet,ne
+53314,Kladruby nad Labem,Pardubice,ČEZ Distribuce,GasNet,ne
+53315,Hlavečník,Pardubice,ČEZ Distribuce,GasNet,ne
+53316,Vápno u Přelouče,Pardubice,ČEZ Distribuce,GasNet,ne
+53321,Vysoké Chvojno,Pardubice,ČEZ Distribuce,GasNet,ne
+53322,Býšť,Pardubice,ČEZ Distribuce,GasNet,ne
+53332,Čepí,Pardubice,ČEZ Distribuce,GasNet,ne
+53333,Pardubice 23,Pardubice,ČEZ Distribuce,GasNet,ne
+53341,Lázně Bohdaneč,Pardubice,ČEZ Distribuce,GasNet,ne
+53342,Živanice,Pardubice,ČEZ Distribuce,GasNet,ne
+53343,Rohovládova Bělá,Pardubice,ČEZ Distribuce,GasNet,ne
+53344,Staré Ždánice,Pardubice,ČEZ Distribuce,GasNet,ne
+53345,Opatovice nad Labem,Pardubice,ČEZ Distribuce,GasNet,ne
+53351,Pardubice 17,Pardubice,ČEZ Distribuce,GasNet,ne
+53352,Staré Hradiště u Pardubic,Pardubice,ČEZ Distribuce,GasNet,ne
+53353,Pardubice 19,Pardubice,ČEZ Distribuce,GasNet,ne
+53354,Rybitví,Pardubice,ČEZ Distribuce,GasNet,ne
+53361,Choltice,Pardubice,ČEZ Distribuce,GasNet,ne
+53362,Svojšice u Přelouče,Pardubice,ČEZ Distribuce,GasNet,ne
+53363,Turkovice u Přelouče,Pardubice,ČEZ Distribuce,GasNet,ne
+53364,Lipoltice,Pardubice,ČEZ Distribuce,GasNet,ne
+53371,Dolní Roveň,Pardubice,ČEZ Distribuce,GasNet,ne
+53372,Moravany u Holic,Pardubice,ČEZ Distribuce,GasNet,ne
+53373,Uhersko,Pardubice,ČEZ Distribuce,GasNet,ne
+53374,Horní Jelení,Pardubice,ČEZ Distribuce,GasNet,ne
+53375,Dolní Ředice,Pardubice,ČEZ Distribuce,GasNet,ne
+53401,Holice v Čechách,Pardubice;Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+53501,Přelouč,Pardubice,ČEZ Distribuce,GasNet,ne
+53701,Chrudim 1,Chrudim,ČEZ Distribuce,GasNet,ne
+53703,Chrudim 3,Chrudim,ČEZ Distribuce,GasNet,ne
+53705,Chrudim 5,Chrudim,ČEZ Distribuce,GasNet,ne
+53801,Bylany,Chrudim,ČEZ Distribuce,GasNet,ne
+53802,Morašice u Chrudimě,Chrudim,ČEZ Distribuce,GasNet,ne
+53803,Heřmanův Městec,Chrudim,ČEZ Distribuce,GasNet,ne
+53804,Prachovice,Chrudim,ČEZ Distribuce,GasNet,ne
+53805,Seč 3,Chrudim,ČEZ Distribuce,GasNet,ne
+53807,Seč 1,Chrudim,ČEZ Distribuce,GasNet,ne
+53821,Slatiňany,Chrudim,ČEZ Distribuce,GasNet,ne
+53823,Licibořice,Chrudim,ČEZ Distribuce,GasNet,ne
+53824,Svídnice u Chrudimě,Chrudim,ČEZ Distribuce,GasNet,ne
+53825,Nasavrky,Chrudim,ČEZ Distribuce,GasNet,ne
+53826,Bojanov,Chrudim,ČEZ Distribuce,GasNet,ne
+53831,Medlešice,Chrudim,ČEZ Distribuce,GasNet,ne
+53832,Úhřetice,Chrudim,ČEZ Distribuce,GasNet,ne
+53833,Trojovice,Chrudim,ČEZ Distribuce,GasNet,ne
+53834,Rosice u Chrasti,Chrudim,ČEZ Distribuce,GasNet,ne
+53835,Zaječice,Chrudim,ČEZ Distribuce,GasNet,ne
+53836,Žumberk,Chrudim,ČEZ Distribuce,GasNet,ne
+53841,Podhořany u Ronova nad Doubravou,Chrudim,ČEZ Distribuce,GasNet,ne
+53842,Ronov nad Doubravou,Chrudim,ČEZ Distribuce,GasNet,ne
+53843,Třemošnice,Chrudim,ČEZ Distribuce,GasNet,ne
+53845,Běstvina,Chrudim,ČEZ Distribuce,GasNet,ne
+53851,Chrast u Chrudimě,Chrudim,ČEZ Distribuce,GasNet,ne
+53854,Luže,Chrudim;Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+53861,Kočí,Chrudim,ČEZ Distribuce,GasNet,ne
+53862,Hrochův Týnec,Chrudim,ČEZ Distribuce,GasNet,ne
+53863,Chroustovice,Chrudim;Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+53864,Jenišovice u Chrudimě,Chrudim,ČEZ Distribuce,GasNet,ne
+53865,Řepníky,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+53901,Hlinsko v Čechách 1,Chrudim;Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+53941,Kameničky,Chrudim,ČEZ Distribuce,GasNet,ne
+53942,Svratouch,Chrudim,ČEZ Distribuce,GasNet,ne
+53943,Krouna,Chrudim,ČEZ Distribuce,GasNet,ne
+53944,Proseč u Skutče,Chrudim;Svitavy;Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+53945,Nové Hrady u Skutče,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+53952,Trhová Kamenice,Chrudim,ČEZ Distribuce,GasNet,ne
+53953,Horní Bradlo,Chrudim,ČEZ Distribuce,GasNet,ne
+53955,Miřetice u Hlinska,Chrudim,ČEZ Distribuce,GasNet,ne
+53956,Vrbatův Kostelec,Chrudim,ČEZ Distribuce,GasNet,ne
+53957,Včelákov,Chrudim,ČEZ Distribuce,GasNet,ne
+53961,Vortová,Chrudim,ČEZ Distribuce,GasNet,ne
+53962,Hlinsko v Čechách 3,Chrudim,ČEZ Distribuce,GasNet,ne
+53971,Holetín,Chrudim,ČEZ Distribuce,GasNet,ne
+53972,Raná u Hlinska,Chrudim,ČEZ Distribuce,GasNet,ne
+53973,Skuteč,Chrudim,ČEZ Distribuce,GasNet,ne
+53974,Předhradí,Chrudim,ČEZ Distribuce,GasNet,ne
+53976,Prosetín u Hlinska,Chrudim,ČEZ Distribuce,GasNet,ne
+54101,Trutnov 1,Trutnov,ČEZ Distribuce,GasNet,ne
+54102,Trutnov 4,Trutnov,ČEZ Distribuce,GasNet,ne
+54103,Trutnov 3,Trutnov,ČEZ Distribuce,GasNet,ne
+54201,Žacléř,Trutnov,ČEZ Distribuce,GasNet,ne
+54203,Královec,Trutnov,ČEZ Distribuce,GasNet,ne
+54204,Bernartice u Trutnova,Trutnov,ČEZ Distribuce,GasNet,ne
+54211,Chvaleč,Trutnov,ČEZ Distribuce,GasNet,ne
+54212,Radvanice v Čechách,Trutnov,ČEZ Distribuce,GasNet,ne
+54213,Jívka,Trutnov,ČEZ Distribuce,GasNet,ne
+54221,Pec pod Sněžkou,Trutnov,ČEZ Distribuce,GasNet,ne
+54223,Mladé Buky,Trutnov,ČEZ Distribuce,GasNet,ne
+54224,Svoboda nad Úpou,Trutnov,ČEZ Distribuce,GasNet,ne
+54225,Janské Lázně,Trutnov,ČEZ Distribuce,GasNet,ne
+54226,Horní Maršov,Trutnov,ČEZ Distribuce,GasNet,ne
+54227,Výdejní místo Malá Úpa,Trutnov,ČEZ Distribuce,GasNet,ne
+54232,Úpice,Náchod;Trutnov,ČEZ Distribuce,GasNet,ne
+54233,Rtyně v Podkrkonoší,Trutnov,ČEZ Distribuce,GasNet,ne
+54234,Malé Svatoňovice,Trutnov,ČEZ Distribuce,GasNet,ne
+54235,Velké Svatoňovice,Trutnov,ČEZ Distribuce,GasNet,ne
+54236,Libňatov,Trutnov,ČEZ Distribuce,GasNet,ne
+54237,Batňovice,Trutnov,ČEZ Distribuce,GasNet,ne
+54242,Pilníkov,Trutnov,ČEZ Distribuce,GasNet,ne
+54301,Vrchlabí 1,Trutnov,ČEZ Distribuce,GasNet,ne
+54302,Vrchlabí 4,Trutnov,ČEZ Distribuce,GasNet,ne
+54303,Vrchlabí 3,Trutnov,ČEZ Distribuce,GasNet,ne
+54341,Lánov,Trutnov,ČEZ Distribuce,GasNet,ne
+54342,Dolní Dvůr,Trutnov,ČEZ Distribuce,GasNet,ne
+54344,Černý Důl,Trutnov,ČEZ Distribuce,GasNet,ne
+54351,Špindlerův Mlýn,Trutnov,ČEZ Distribuce,GasNet,ne
+54352,Strážné,Trutnov,ČEZ Distribuce,GasNet,ne
+54361,Kunčice nad Labem,Trutnov,ČEZ Distribuce,GasNet,ne
+54362,Dolní Branná,Trutnov,ČEZ Distribuce,GasNet,ne
+54371,Hostinné,Trutnov,ČEZ Distribuce,GasNet,ne
+54372,Rudník u Vrchlabí,Trutnov,ČEZ Distribuce,GasNet,ne
+54373,Výdejní místo Prosečné,Trutnov,ČEZ Distribuce,GasNet,ne
+54374,Dolní Kalná,Trutnov,ČEZ Distribuce,GasNet,ne
+54375,Dolní Olešnice,Trutnov,ČEZ Distribuce,GasNet,ne
+54376,Chotěvice,Trutnov,ČEZ Distribuce,GasNet,ne
+54377,Čermná u Vrchlabí,Trutnov,ČEZ Distribuce,GasNet,ne
+54401,Dvůr Králové nad Labem,Náchod;Trutnov,ČEZ Distribuce,GasNet,ne
+54404,Výdejní místo Žireč,Trutnov,ČEZ Distribuce,GasNet,ne
+54442,Choustníkovo Hradiště,Trutnov,ČEZ Distribuce,GasNet,ne
+54443,Kuks,Náchod;Trutnov,ČEZ Distribuce,GasNet,ne
+54451,Doubravice u Dvora Králové n/Labem,Trutnov,ČEZ Distribuce,GasNet,ne
+54452,Výdejní místo Bílé Poličany,Trutnov,ČEZ Distribuce,GasNet,ne
+54454,Velký Vřešťov,Trutnov,ČEZ Distribuce,GasNet,ne
+54455,Dubenec u Dvora Králové nad Labem,Trutnov,ČEZ Distribuce,GasNet,ne
+54461,Nemojov,Trutnov,ČEZ Distribuce,GasNet,ne
+54462,Vítězná,Trutnov,ČEZ Distribuce,GasNet,ne
+54464,Kocbeře,Trutnov,ČEZ Distribuce,GasNet,ne
+54466,Hajnice,Trutnov,ČEZ Distribuce,GasNet,ne
+54472,Bílá Třemešná,Trutnov,ČEZ Distribuce,GasNet,ne
+54474,Horní Brusnice,Trutnov,ČEZ Distribuce,GasNet,ne
+54475,Mostek,Trutnov,ČEZ Distribuce,GasNet,ne
+54477,Borovnice,Trutnov,ČEZ Distribuce,GasNet,ne
+54701,Náchod 1,Náchod,ČEZ Distribuce,GasNet,ne
+54901,Nové Město nad Metují 1,Náchod;Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+54906,Bohuslavice nad Metují,Náchod,ČEZ Distribuce,GasNet,ne
+54907,Nahořany nad Metují,Náchod,ČEZ Distribuce,GasNet,ne
+54908,Provodov-Šonov,Náchod,ČEZ Distribuce,GasNet,ne
+54911,Dolní Radechová,Náchod,ČEZ Distribuce,GasNet,ne
+54912,Výdejní místo Vysokov,Náchod,ČEZ Distribuce,GasNet,ne
+54921,Česká Čermná,Náchod,ČEZ Distribuce,GasNet,ne
+54922,Nový Hrádek,Náchod;Rychnov nad Kněžnou,ČEZ Distribuce,GasNet,ne
+54923,Výdejní místo Mezilesí,Náchod,ČEZ Distribuce,GasNet,ne
+54931,Hronov 1,Náchod,ČEZ Distribuce,GasNet,ne
+54932,Velké Poříčí,Náchod,ČEZ Distribuce,GasNet,ne
+54934,Hronov 4,Náchod,ČEZ Distribuce,GasNet,ne
+54936,Stárkov,Náchod,ČEZ Distribuce,GasNet,ne
+54937,Žďárky,Náchod,ČEZ Distribuce,GasNet,ne
+54941,Červený Kostelec,Náchod;Trutnov,ČEZ Distribuce,GasNet,ne
+54946,Horní Radechová,Náchod,ČEZ Distribuce,GasNet,ne
+54947,Výdejní místo Slatina nad Úpou,Náchod,ČEZ Distribuce,GasNet,ne
+54948,Studnice u Náchoda,Náchod,ČEZ Distribuce,GasNet,ne
+54952,Horní Adršpach,Náchod,ČEZ Distribuce,GasNet,ne
+54954,Police nad Metují,Náchod,ČEZ Distribuce,GasNet,ne
+54955,Žďár nad Metují,Náchod,ČEZ Distribuce,GasNet,ne
+54956,Česká Metuje,Náchod,ČEZ Distribuce,GasNet,ne
+54957,Teplice nad Metují,Náchod,ČEZ Distribuce,GasNet,ne
+54962,Suchý Důl,Náchod,ČEZ Distribuce,GasNet,ne
+54963,Machov,Náchod,ČEZ Distribuce,GasNet,ne
+54964,Bezděkov nad Metují,Náchod,ČEZ Distribuce,GasNet,ne
+54971,Šonov u Broumova,Náchod,ČEZ Distribuce,GasNet,ne
+54972,Otovice u Broumova,Náchod,ČEZ Distribuce,GasNet,ne
+54973,Martínkovice,Náchod,ČEZ Distribuce,GasNet,ne
+54974,Božanov,Náchod,ČEZ Distribuce,GasNet,ne
+54981,Meziměstí u Broumova 1,Náchod,ČEZ Distribuce,GasNet,ne
+54982,Vernéřovice,Náchod,ČEZ Distribuce,GasNet,ne
+54983,Meziměstí u Broumova 3,Náchod,ČEZ Distribuce,GasNet,ne
+54984,Heřmánkovice,Náchod,ČEZ Distribuce,GasNet,ne
+55001,Broumov 1,Náchod,ČEZ Distribuce,GasNet,ne
+55101,Jaroměř 1,Náchod,ČEZ Distribuce,GasNet,ne
+55102,Jaroměř 3,Náchod,ČEZ Distribuce,GasNet,ne
+55203,Česká Skalice,Náchod,ČEZ Distribuce,GasNet,ne
+55204,Chvalkovice v Čechách,Náchod,ČEZ Distribuce,GasNet,ne
+55205,Hořičky,Náchod,ČEZ Distribuce,GasNet,ne
+55211,Velichovky,Náchod,ČEZ Distribuce,GasNet,ne
+55212,Heřmanice nad Labem,Náchod,ČEZ Distribuce,GasNet,ne
+55221,Rasošky,Náchod,ČEZ Distribuce,GasNet,ne
+55222,Jasenná,Náchod,ČEZ Distribuce,GasNet,ne
+55224,Velká Jesenice,Náchod,ČEZ Distribuce,GasNet,ne
+55225,Rychnovek,Náchod,ČEZ Distribuce,GasNet,ne
+56002,Česká Třebová 2,Svitavy;Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56101,Hnátnice,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56102,Dolní Dobrouč,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56112,Brandýs nad Orlicí,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56113,Sudslava,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56114,Výdejní místo České Libchavy,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56115,Sopotnice,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56116,Libchavy,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56117,Dlouhá Třebová,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56118,Němčice,Svitavy,ČEZ Distribuce,GasNet,ne
+56122,Ostrov u Lanškrouna,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56123,Damníkov,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56124,Třebovice,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56125,Rudoltice,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56131,Tatenice,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56132,Cotkytle,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56133,Horní Heřmanice v Čechách,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56134,Výprachtice,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56141,Řetová,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56151,Letohrad,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56152,Verměřovice,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56153,Dolní Čermná,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56154,Bystřec,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56155,Orličky,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56156,Horní Čermná,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56161,Červená Voda 1,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56162,Výdejní místo Červená Voda,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56163,Nekoř,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56164,Jablonné nad Orlicí,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56165,Jamné nad Orlicí,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56166,Těchonín,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56167,Mladkov,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56168,Výdejní místo Lichkov,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56169,Králíky,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56170,Výdejní místo Písečná,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56181,Kunvald,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56182,Klášterec nad Orlicí,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56184,Líšnice,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56185,Česká Rybná u Žamberka,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56186,Záchlumí,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56201,Ústí nad Orlicí 1,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56203,Ústí nad Orlicí 3,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56204,Ústí nad Orlicí 4,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56206,Ústí nad Orlicí 6,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56301,Lanškroun,Svitavy;Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56401,Žamberk,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56501,Choceň 1,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56542,Vraclav,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56543,Zámrsk,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56544,Sruby,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56552,České Heřmanice,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56553,Sloupnice,Svitavy,ČEZ Distribuce,GasNet,ne
+56555,Hrušová,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56601,Vysoké Mýto,Ústí nad Orlicí,ČEZ Distribuce,GasNet,ne
+56802,Svitavy 2,Svitavy,ČEZ Distribuce,GasNet,ne
+56901,Hradec nad Svitavou,Svitavy,ČEZ Distribuce,GasNet,ne
+56902,Březová nad Svitavou,Svitavy,ČEZ Distribuce,GasNet,ne
+56903,Rozhraní,Svitavy,ČEZ Distribuce,GasNet,ne
+56904,Brněnec,Svitavy,ČEZ Distribuce,GasNet,ne
+56905,Bělá nad Svitavou,Svitavy,ČEZ Distribuce,GasNet,ne
+56906,Vítějeves,Svitavy,ČEZ Distribuce,GasNet,ne
+56907,Radiměř,Svitavy,ČEZ Distribuce,GasNet,ne
+56911,Koclířov u Svitav,Svitavy,ČEZ Distribuce,GasNet,ne
+56912,Opatov v Čechách,Svitavy,ČEZ Distribuce,GasNet,ne
+56914,Vendolí,Svitavy,ČEZ Distribuce,GasNet,ne
+56921,Moravská Třebová 3,Svitavy,ČEZ Distribuce,GasNet,ne
+56922,Křenov,Svitavy,ČEZ Distribuce,GasNet,ne
+56923,Březina u Moravské Třebové,Svitavy,ČEZ Distribuce,GasNet,ne
+56924,Kunčina,Svitavy,ČEZ Distribuce,GasNet,ne
+56932,Staré Město u Moravské Třebové,Svitavy,ČEZ Distribuce,GasNet,ne
+56933,Třebařov,Svitavy,ČEZ Distribuce,GasNet,ne
+56934,Rychnov na Moravě,Svitavy,ČEZ Distribuce,GasNet,ne
+56935,Mladějov na Moravě,Svitavy,ČEZ Distribuce,GasNet,ne
+56941,Městečko Trnávka,Svitavy,ČEZ Distribuce,GasNet,ne
+56942,Chornice,Svitavy,ČEZ Distribuce,GasNet,ne
+56943,Jevíčko,Svitavy,ČEZ Distribuce,GasNet,ne
+56944,Jaroměřice u Jevíčka,Svitavy,ČEZ Distribuce,GasNet,ne
+56951,Morašice u Litomyšle,Svitavy,ČEZ Distribuce,GasNet,ne
+56953,Cerekvice nad Loučnou,Svitavy,ČEZ Distribuce,GasNet,ne
+56955,Janov u Litomyšle,Svitavy,ČEZ Distribuce,GasNet,ne
+56956,Čistá u Litomyšle,Svitavy,ČEZ Distribuce,GasNet,ne
+56957,Trstěnice u Litomyšle,Svitavy,ČEZ Distribuce,GasNet,ne
+56961,Dolní Újezd u Litomyšle,Svitavy,ČEZ Distribuce,GasNet,ne
+56962,Sebranice u Litomyšle,Svitavy,ČEZ Distribuce,GasNet,ne
+56963,Lubná u Poličky,Svitavy,ČEZ Distribuce,GasNet,ne
+56965,Budislav u Litomyšle,Svitavy,ČEZ Distribuce,GasNet,ne
+56966,Jarošov u Litomyšle,Svitavy,ČEZ Distribuce,GasNet,ne
+56967,Osík u Litomyšle,Svitavy,ČEZ Distribuce,GasNet,ne
+56971,Pomezí,Svitavy,ČEZ Distribuce,GasNet,ne
+56972,Rohozná u Poličky,Svitavy,ČEZ Distribuce,GasNet,ne
+56973,Svojanov,Svitavy,ČEZ Distribuce,GasNet,ne
+56974,Trpín,Svitavy,ČEZ Distribuce,GasNet,ne
+56982,Borová u Poličky,Chrudim;Svitavy,ČEZ Distribuce,GasNet,ne
+56991,Jedlová u Poličky,Svitavy,ČEZ Distribuce,GasNet,ne
+56992,Bystré u Poličky,Svitavy,ČEZ Distribuce,GasNet,ne
+56993,Korouhev,Svitavy,ČEZ Distribuce,GasNet,ne
+56994,Telecí,Svitavy,ČEZ Distribuce,GasNet,ne
+57001,Litomyšl,Svitavy,ČEZ Distribuce,GasNet,ne
+57101,Moravská Třebová 1,Svitavy,ČEZ Distribuce,GasNet,ne
+57201,Polička,Svitavy,ČEZ Distribuce,GasNet,ne
+58001,Havlíčkův Brod 1,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58221,Pohled,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58222,Přibyslav,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58223,Havlíčkova Borová,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58224,Oudoleň,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58231,Okrouhlice,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58232,Lipnice nad Sázavou,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58233,Dolní Město,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58234,Krásná Hora u Havlíčkova Brodu,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58235,Lučice,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58241,Skuhrov u Havlíčkova Brodu,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58242,Kámen u Habrů,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58243,Tis u Chotěboře,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58244,Sázavka,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58245,Uhelná Příbram,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58251,Šlapanov,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58252,Věžnice u Havlíčkova Brodu,Havlíčkův Brod;Jihlava,ČEZ Distribuce,GasNet,ano
+58253,Štoky,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58254,Úsobí,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58255,Herálec u Havlíčkova Brodu,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58256,Věž,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58257,Lípa u Havlíčkova Brodu,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58261,Česká Bělá,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58262,Sobíňov,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58263,Ždírec nad Doubravou,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58264,Výdejní místo Horní Studenec,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58265,Slavíkov,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58266,Krucemburk,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58271,Dolní Krupá u Havlíčkova Brodu,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58272,Rozsochatec,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58273,Nová Ves u Chotěboře,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58274,Jeřišno,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58276,Maleč,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58277,Libice nad Doubravou,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58281,Habry,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58282,Golčův Jeníkov,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58283,Vilémov u Golčova Jeníkova,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58286,Leština u Světlé nad Sázavou,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58287,Číhošť,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58291,Světlá nad Sázavou,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58292,Kamenná Lhota,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58293,Kožlí,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58294,Hněvkovice u Ledče nad Sázavou,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58301,Chotěboř,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58401,Ledeč nad Sázavou,Havlíčkův Brod,ČEZ Distribuce,GasNet,ne
+58601,Jihlava 1,Jihlava,EG.D,GasNet,ne
+58603,Jihlava 3,Jihlava,EG.D,GasNet,ne
+58801,Smrčná,Jihlava,EG.D,GasNet,ne
+58805,Dušejov,Jihlava,EG.D,GasNet,ne
+58811,Střítež u Jihlavy,Jihlava,EG.D,GasNet,ne
+58812,Dobronín,Jihlava,EG.D,GasNet,ne
+58813,Polná,Jihlava,EG.D,GasNet,ne
+58821,Velký Beranov,Jihlava,EG.D,GasNet,ne
+58822,Luka nad Jihlavou,Jihlava,EG.D,GasNet,ne
+58823,Kamenice u Jihlavy,Jihlava,EG.D,GasNet,ne
+58824,Řehořov,Jihlava,EG.D,GasNet,ne
+58825,Jersín,Jihlava,EG.D,GasNet,ne
+58826,Zhoř u Jihlavy,Jihlava,EG.D,GasNet,ne
+58827,Jamné u Jihlavy,Jihlava;Žďár nad Sázavou,EG.D,GasNet,ne
+58831,Puklice,Jihlava,EG.D,GasNet,ne
+58832,Brtnice,Jihlava,EG.D,GasNet,ne
+58833,Stonařov,Jihlava,EG.D,GasNet,ne
+58834,Výdejní místo Dlouhá Brtnice,Jihlava,EG.D,GasNet,ne
+58835,Vílanec,Jihlava,EG.D,GasNet,ne
+58841,Vyskytná nad Jihlavou,Jihlava,EG.D,GasNet,ne
+58842,Větrný Jeníkov,Jihlava,EG.D,GasNet,ne
+58844,Rohozná u Jihlavy,Jihlava,EG.D,GasNet,ne
+58845,Dolní Cerekev,Jihlava,EG.D,GasNet,ne
+58851,Batelov,Jihlava,EG.D,GasNet,ne
+58852,Horní Dubenky,Jihlava,EG.D,GasNet,ne
+58854,Mrákotín,Jihlava,EG.D,GasNet,ne
+58856,Telč,Jihlava,EG.D,GasNet,ne
+58861,Kostelec u Jihlavy,Jihlava,EG.D,GasNet,ne
+58862,Urbanov,Jihlava,EG.D,GasNet,ne
+58864,Krasonice,Jihlava,EG.D,GasNet,ne
+58865,Nová Říše,Jihlava,EG.D,GasNet,ne
+58866,Rozseč,Jihlava,EG.D,GasNet,ne
+58867,Stará Říše,Jihlava,EG.D,GasNet,ne
+58901,Třešť,Jihlava,EG.D,GasNet,ne
+59101,Žďár nad Sázavou 1,Žďár nad Sázavou,EG.D,GasNet,ne
+59102,Žďár nad Sázavou 2,Žďár nad Sázavou,EG.D,GasNet,ne
+59201,Herálec pod Žákovou horou,Žďár nad Sázavou,EG.D,GasNet,ne
+59202,Svratka,Žďár nad Sázavou,EG.D,GasNet,ne
+59203,Sněžné,Žďár nad Sázavou,EG.D,GasNet,ne
+59204,Fryšava pod Žákovou horou,Žďár nad Sázavou,EG.D,GasNet,ne
+59211,Velká Losenice,Žďár nad Sázavou,EG.D,GasNet,ne
+59212,Nížkov,Žďár nad Sázavou,EG.D,GasNet,ne
+59213,Bohdalov,Žďár nad Sázavou,EG.D,GasNet,ne
+59214,Nové Veselí,Žďár nad Sázavou,EG.D,GasNet,ne
+59221,Škrdlovice,Žďár nad Sázavou,EG.D,GasNet,ne
+59231,Nové Město na Moravě,Žďár nad Sázavou,EG.D,GasNet,ne
+59232,Jámy,Žďár nad Sázavou,EG.D,GasNet,ne
+59233,Radešínská Svratka,Žďár nad Sázavou,EG.D,GasNet,ne
+59241,Dalečín,Žďár nad Sázavou,EG.D,GasNet,ne
+59242,Jimramov,Žďár nad Sázavou,EG.D,GasNet,ne
+59244,Věcov,Žďár nad Sázavou,EG.D,GasNet,ne
+59245,Lísek,Žďár nad Sázavou,EG.D,GasNet,ne
+59251,Dolní Rožínka,Žďár nad Sázavou,EG.D,GasNet,ne
+59252,Rožná,Žďár nad Sázavou,EG.D,GasNet,ne
+59253,Strážek,Žďár nad Sázavou,EG.D,GasNet,ne
+59254,Moravec,Žďár nad Sázavou,EG.D,GasNet,ne
+59255,Bobrová,Žďár nad Sázavou,EG.D,GasNet,ne
+59256,Zvole nad Pernštejnem,Žďár nad Sázavou,EG.D,GasNet,ne
+59257,Rozsochy,Žďár nad Sázavou,EG.D,GasNet,ne
+59261,Doubravník,Brno-venkov,EG.D,GasNet,ne
+59262,Nedvědice,Brno-venkov;Žďár nad Sázavou,EG.D,GasNet,ne
+59263,Štěpánov nad Svratkou,Žďár nad Sázavou,EG.D,GasNet,ne
+59264,Prosetín u Bystřice nad Pernštejnem,Žďár nad Sázavou,EG.D,GasNet,ne
+59265,Rovečné,Žďár nad Sázavou,EG.D,GasNet,ne
+59266,Vír,Žďár nad Sázavou,EG.D,GasNet,ne
+59301,Bystřice nad Pernštejnem,Blansko;Žďár nad Sázavou,EG.D,GasNet,ne
+59401,Velké Meziříčí,Žďár nad Sázavou,EG.D,GasNet,ne
+59441,Uhřínov,Žďár nad Sázavou,EG.D,GasNet,ne
+59442,Měřín,Žďár nad Sázavou,EG.D,GasNet,ne
+59444,Radostín nad Oslavou,Žďár nad Sázavou,EG.D,GasNet,ne
+59445,Ostrov nad Oslavou,Žďár nad Sázavou,EG.D,GasNet,ne
+59451,Křižanov,Brno-venkov;Žďár nad Sázavou,EG.D,GasNet,ne
+59452,Ořechov u Velkého Meziříčí,Žďár nad Sázavou,EG.D,GasNet,ne
+59453,Osová Bítýška,Brno-venkov;Žďár nad Sázavou,EG.D,GasNet,ne
+59454,Křoví,Žďár nad Sázavou,EG.D,GasNet,ne
+59455,Dolní Loučky,Brno-venkov,EG.D,GasNet,ne
+59456,Žďárec,Brno-venkov,EG.D,GasNet,ne
+59457,Vidonín,Žďár nad Sázavou,EG.D,GasNet,ne
+59461,Bory,Žďár nad Sázavou,EG.D,GasNet,ne
+59501,Velká Bíteš,Žďár nad Sázavou,EG.D,GasNet,ne
+60200,Brno 2,Brno-město,EG.D,GasNet,ne
+60300,Brno 3,Brno-město,EG.D,GasNet,ne
+61200,Brno 12,Brno-město,EG.D,GasNet,ne
+61300,Brno 13,Brno-město,EG.D,GasNet,ne
+61400,Brno 14,Brno-město,EG.D,GasNet,ne
+61500,Brno 15,Brno-město,EG.D,GasNet,ne
+61600,Brno 16,Brno-město,EG.D,GasNet,ne
+61700,Brno 17,Brno-město,EG.D,GasNet,ne
+61800,Brno 18,Brno-město,EG.D,GasNet,ne
+61900,Brno 19,Brno-město,EG.D,GasNet,ne
+62000,Brno 20,Brno-město,EG.D,GasNet,ne
+62100,Brno 21,Brno-město,EG.D,GasNet,ne
+62300,Brno 23,Brno-město,EG.D,GasNet,ne
+62400,Brno 24,Brno-město,EG.D,GasNet,ne
+62500,Brno 25,Brno-město,EG.D,GasNet,ne
+62700,Brno 27,Brno-město;Brno-venkov,EG.D,GasNet,ne
+62800,Brno 28,Brno-město,EG.D,GasNet,ne
+63400,Brno 34,Brno-město,EG.D,GasNet,ne
+63500,Brno 35,Brno-město,EG.D,GasNet,ne
+63600,Brno 36,Brno-město,EG.D,GasNet,ne
+63700,Brno 37,Brno-město,EG.D,GasNet,ne
+63800,Brno 38,Brno-město,EG.D,GasNet,ne
+63900,Brno 39,Brno-město,EG.D,GasNet,ne
+64100,Brno 41,Brno-město,EG.D,GasNet,ne
+64200,Brno 42,Brno-město,EG.D,GasNet,ne
+64300,Brno 43,Brno-město,EG.D,GasNet,ne
+64400,Brno 44,Brno-město,EG.D,GasNet,ne
+66401,Bílovice nad Svitavou,Brno-venkov,EG.D,GasNet,ne
+66402,Ochoz u Brna,Brno-venkov,EG.D,GasNet,ne
+66403,Podolí u Brna,Brno-venkov,EG.D,GasNet,ne
+66404,Mokrá,Brno-venkov,EG.D,GasNet,ne
+66405,Tvarožná,Brno-venkov,EG.D,GasNet,ne
+66406,Viničné Šumice,Brno-venkov,EG.D,GasNet,ne
+66407,Pozořice,Brno-venkov,EG.D,GasNet,ne
+66408,Blažovice,Brno-venkov,EG.D,GasNet,ne
+66411,Zbýšov u Brna,Brno-venkov,EG.D,GasNet,ne
+66412,Oslavany,Brno-venkov,EG.D,GasNet,ne
+66417,Tetčice,Brno-venkov,EG.D,GasNet,ne
+66423,Čebín,Brno-venkov,EG.D,GasNet,ne
+66424,Drásov,Brno-venkov,EG.D,GasNet,ne
+66431,Lelekovice,Brno-venkov,EG.D,GasNet,ne
+66432,Vranov u Brna,Brno-venkov,EG.D,GasNet,ne
+66434,Kuřim,Brno-město;Brno-venkov,EG.D,GasNet,ne
+66441,Troubsko,Brno-venkov,EG.D,GasNet,ne
+66442,Modřice,Brno-město;Brno-venkov,EG.D,GasNet,ne
+66443,Želešice,Brno-venkov,EG.D,GasNet,ne
+66444,Ořechov u Brna,Brno-venkov,EG.D,GasNet,ne
+66446,Prštice,Brno-venkov,EG.D,GasNet,ne
+66447,Střelice u Brna,Brno-venkov,EG.D,GasNet,ne
+66448,Moravany u Brna,Brno-venkov,EG.D,GasNet,ne
+66449,Ostopovice,Brno-venkov,EG.D,GasNet,ne
+66451,Šlapanice u Brna,Brno-venkov,EG.D,GasNet,ne
+66452,Sokolnice,Brno-venkov,EG.D,GasNet,ne
+66453,Újezd u Brna,Brno-venkov,EG.D,GasNet,ne
+66454,Těšany,Brno-venkov,EG.D,GasNet,ne
+66455,Moutnice,Brno-venkov,EG.D,GasNet,ne
+66456,Blučina,Brno-venkov,EG.D,GasNet,ne
+66457,Měnín,Brno-venkov,EG.D,GasNet,ne
+66458,Prace,Brno-venkov,EG.D,GasNet,ne
+66459,Telnice u Brna,Brno-venkov,EG.D,GasNet,ne
+66461,Rajhrad,Brno-venkov,EG.D,GasNet,ne
+66462,Hrušovany u Brna,Brno-venkov,EG.D,GasNet,ne
+66463,Žabčice,Brno-venkov,EG.D,GasNet,ne
+66464,Dolní Kounice,Brno-venkov,EG.D,GasNet,ne
+66465,Malešovice,Brno-venkov,EG.D,GasNet,ne
+66466,Němčičky u Židlochovic,Brno-venkov,EG.D,GasNet,ne
+66467,Syrovice,Brno-venkov,EG.D,GasNet,ne
+66471,Veverská Bítýška,Brno-město;Brno-venkov,EG.D,GasNet,ne
+66475,Deblín,Brno-venkov,EG.D,GasNet,ne
+66481,Ostrovačice,Brno-město;Brno-venkov,EG.D,GasNet,ne
+66482,Říčany u Brna,Brno-venkov,EG.D,GasNet,ne
+66483,Domašov u Brna,Brno-venkov,EG.D,GasNet,ne
+66484,Zastávka u Brna,Brno-venkov,EG.D,GasNet,ne
+66488,Zbraslav u Brna,Brno-venkov,EG.D,GasNet,ne
+66491,Ivančice,Brno-venkov,EG.D,GasNet,ne
+66501,Rosice u Brna,Brno-venkov,EG.D,GasNet,ne
+66601,Tišnov 1,Brno-venkov,EG.D,GasNet,ne
+66602,Předklášteří,Brno-venkov,EG.D,GasNet,ne
+66603,Tišnov 3,Brno-venkov,EG.D,GasNet,ne
+66701,Židlochovice,Brno-venkov,EG.D,GasNet,ne
+66902,Znojmo 2,Znojmo,EG.D,GasNet,ne
+66904,Znojmo 4,Znojmo,EG.D,GasNet,ne
+67101,Citonice,Znojmo,EG.D,GasNet,ne
+67102,Šumná,Znojmo,EG.D,GasNet,ne
+67103,Vranov nad Dyjí,Znojmo,EG.D,GasNet,ne
+67106,Šafov,Znojmo,EG.D,GasNet,ne
+67107,Uherčice u Znojma,Znojmo,EG.D,GasNet,ne
+67110,Výdejní místo Bítov,Znojmo,EG.D,GasNet,ne
+67122,Šatov,Znojmo,EG.D,GasNet,ne
+67124,Vrbovec,Znojmo,EG.D,GasNet,ne
+67125,Hodonice,Znojmo,EG.D,GasNet,ne
+67126,Dyjákovice,Znojmo,EG.D,GasNet,ne
+67127,Hrádek u Znojma,Znojmo,EG.D,GasNet,ne
+67128,Jaroslavice,Znojmo,EG.D,GasNet,ne
+67129,Strachotice,Znojmo,EG.D,GasNet,ne
+67131,Únanov,Znojmo,EG.D,GasNet,ne
+67132,Plaveč u Znojma,Znojmo,EG.D,GasNet,ne
+67133,Mikulovice u Znojma,Znojmo,EG.D,GasNet,ne
+67134,Horní Dunajovice,Znojmo,EG.D,GasNet,ne
+67138,Višňové u Znojma,Znojmo,EG.D,GasNet,ne
+67139,Výdejní místo Běhařovice,Znojmo,EG.D,GasNet,ne
+67140,Tavíkovice,Znojmo,EG.D,GasNet,ne
+67142,Vémyslice,Znojmo,EG.D,GasNet,ne
+67151,Kravsko,Znojmo,EG.D,GasNet,ne
+67152,Hluboké Mašůvky,Znojmo,EG.D,GasNet,ne
+67153,Jevišovice,Znojmo,EG.D,GasNet,ne
+67154,Hostim,Znojmo,EG.D,GasNet,ne
+67155,Blížkovice,Znojmo,EG.D,GasNet,ne
+67156,Grešlové Mýto,Znojmo,EG.D,GasNet,ne
+67161,Prosiměřice,Znojmo,EG.D,GasNet,ne
+67162,Oleksovice,Znojmo,EG.D,GasNet,ne
+67163,Lechovice,Znojmo,EG.D,GasNet,ne
+67164,Božice,Znojmo,EG.D,GasNet,ne
+67165,Břežany u Znojma,Znojmo,EG.D,GasNet,ne
+67167,Hrušovany nad Jevišovkou,Znojmo,EG.D,GasNet,ne
+67168,Hrabětice,Znojmo,EG.D,GasNet,ne
+67169,Hevlín,Znojmo,EG.D,GasNet,ne
+67171,Hostěradice,Znojmo,EG.D,GasNet,ne
+67172,Miroslav,Znojmo,EG.D,GasNet,ne
+67173,Tulešice,Znojmo,EG.D,GasNet,ne
+67175,Loděnice u Moravského Krumlova,Brno-venkov;Znojmo,EG.D,GasNet,ne
+67176,Olbramovice u Moravského Krumlova,Znojmo,EG.D,GasNet,ne
+67177,Branišovice,Brno-venkov,EG.D,GasNet,ne
+67178,Jiřice u Miroslavi,Brno-venkov;Znojmo,EG.D,GasNet,ne
+67181,Znojmo 5,Znojmo,EG.D,GasNet,ne
+67182,Dobšice,Znojmo,EG.D,GasNet,ne
+67201,Moravský Krumlov,Znojmo,EG.D,GasNet,ne
+67401,Třebíč 1,Třebíč,EG.D,GasNet,ne
+67501,Vladislav,Třebíč,EG.D,GasNet,ne
+67502,Koněšín,Třebíč,EG.D,GasNet,ne
+67503,Budišov u Třebíče,Jihlava;Třebíč,EG.D,GasNet,ne
+67504,Hodov,Třebíč,EG.D,GasNet,ne
+67505,Rudíkov,Třebíč;Žďár nad Sázavou,EG.D,GasNet,ne
+67506,Výdejní místo Benetice,Třebíč,EG.D,GasNet,ne
+67507,Čechtín,Třebíč,EG.D,GasNet,ne
+67508,Kouty u Třebíče,Třebíč,EG.D,GasNet,ne
+67521,Okříšky,Jihlava;Třebíč,EG.D,GasNet,ne
+67522,Stařeč,Třebíč,EG.D,GasNet,ne
+67523,Kojetice na Moravě,Třebíč,EG.D,GasNet,ne
+67524,Čáslavice,Třebíč,EG.D,GasNet,ne
+67525,Rokytnice nad Rokytnou,Třebíč,EG.D,GasNet,ne
+67526,Želetava,Jihlava;Třebíč,EG.D,GasNet,ne
+67527,Předín,Jihlava;Třebíč,EG.D,GasNet,ne
+67528,Opatov na Moravě,Třebíč,EG.D,GasNet,ne
+67529,Kněžice u Třebíče,Jihlava,EG.D,GasNet,ne
+67531,Jemnice,Třebíč,EG.D,GasNet,ne
+67532,Třebelovice,Třebíč,EG.D,GasNet,ne
+67533,Dešov,Třebíč,EG.D,GasNet,ne
+67534,Police u Jemnice,Třebíč,EG.D,GasNet,ne
+67541,Nové Syrovice,Třebíč,EG.D,GasNet,ne
+67542,Budkov,Třebíč,EG.D,GasNet,ne
+67543,Domamil,Třebíč,EG.D,GasNet,ne
+67544,Lesonice,Třebíč,EG.D,GasNet,ne
+67545,Šebkovice,Třebíč,EG.D,GasNet,ne
+67550,Dukovany-elektrárna,Třebíč,EG.D,GasNet,ne
+67551,Jaroměřice nad Rokytnou,Třebíč,EG.D,GasNet,ne
+67552,Lipník u Hrotovic,Třebíč,EG.D,GasNet,ne
+67553,Valeč u Hrotovic,Třebíč,EG.D,GasNet,ne
+67554,Dalešice,Třebíč,EG.D,GasNet,ne
+67555,Hrotovice,Třebíč,EG.D,GasNet,ne
+67556,Dukovany,Třebíč,EG.D,GasNet,ne
+67557,Rouchovany,Třebíč,EG.D,GasNet,ne
+67559,Radkovice u Hrotovic,Třebíč,EG.D,GasNet,ne
+67560,Myslibořice,Třebíč,EG.D,GasNet,ne
+67571,Náměšť nad Oslavou,Třebíč,EG.D,GasNet,ne
+67573,Rapotice,Třebíč,EG.D,GasNet,ne
+67574,Březník,Třebíč,EG.D,GasNet,ne
+67575,Mohelno,Brno-venkov;Třebíč,EG.D,GasNet,ne
+67576,Hartvíkovice,Třebíč,EG.D,GasNet,ne
+67577,Kramolín-vodní dílo,Třebíč,EG.D,GasNet,ne
+67578,Čikov,Třebíč,EG.D,GasNet,ne
+67579,Tasov,Žďár nad Sázavou,EG.D,GasNet,ne
+67602,Moravské Budějovice 2,Třebíč,EG.D,GasNet,ne
+67801,Blansko 1,Blansko,EG.D,GasNet,ne
+67901,Skalice nad Svitavou,Blansko,EG.D,GasNet,ne
+67902,Rájec-Jestřebí,Blansko,EG.D,GasNet,ne
+67903,Olomučany,Blansko,EG.D,GasNet,ne
+67904,Adamov 1,Blansko,EG.D,GasNet,ne
+67905,Křtiny,Blansko;Brno-venkov,EG.D,GasNet,ne
+67906,Jedovnice,Blansko,EG.D,GasNet,ne
+67907,Kotvrdovice,Blansko,EG.D,GasNet,ne
+67911,Doubravice nad Svitavou,Blansko,EG.D,GasNet,ne
+67913,Sloup v Moravském Krasu,Blansko,EG.D,GasNet,ne
+67914,Ostrov u Macochy,Blansko,EG.D,GasNet,ne
+67915,Lipovec u Blanska,Blansko,EG.D,GasNet,ne
+67921,Černá Hora,Blansko,EG.D,GasNet,ne
+67922,Lipůvka,Blansko,EG.D,GasNet,ne
+67923,Lomnice u Tišnova,Brno-venkov,EG.D,GasNet,ne
+67924,Výdejní místo Unín,Brno-venkov,EG.D,GasNet,ne
+67931,Sebranice u Boskovic,Blansko,EG.D,GasNet,ne
+67932,Svitávka,Blansko,EG.D,GasNet,ne
+67933,Vísky u Letovic,Blansko,EG.D,GasNet,ne
+67934,Knínice,Blansko,EG.D,GasNet,ne
+67935,Šebetov,Blansko,EG.D,GasNet,ne
+67936,Vanovice,Blansko,EG.D,GasNet,ne
+67937,Borotín u Boskovic,Blansko,EG.D,GasNet,ne
+67938,Cetkovice,Blansko,EG.D,GasNet,ne
+67939,Úsobrno,Blansko,EG.D,GasNet,ne
+67951,Němčice u Boskovic,Blansko,EG.D,GasNet,ne
+67952,Žďárná,Blansko,EG.D,GasNet,ne
+67953,Benešov u Boskovic,Blansko,EG.D,GasNet,ne
+67961,Letovice,Blansko,EG.D,GasNet,ne
+67962,Křetín,Blansko,EG.D,GasNet,ne
+67963,Velké Opatovice,Blansko,EG.D,GasNet,ne
+67971,Lysice,Blansko,EG.D,GasNet,ne
+67972,Kunštát na Moravě,Blansko,EG.D,GasNet,ne
+67973,Rozseč nad Kunštátem,Blansko,EG.D,GasNet,ne
+67974,Olešnice na Moravě,Blansko,EG.D,GasNet,ne
+67975,Výdejní místo Černovice,Blansko,EG.D,GasNet,ne
+67976,Drnovice u Lysic,Blansko,EG.D,GasNet,ne
+68001,Boskovice,Blansko,EG.D,GasNet,ne
+68201,Vyškov 1,Vyškov,EG.D,GasNet,ne
+68301,Rousínov u Vyškova,Brno-venkov;Vyškov,EG.D,GasNet,ne
+68303,Luleč,Vyškov,EG.D,GasNet,ne
+68304,Drnovice,Vyškov,EG.D,GasNet,ne
+68305,Račice-Pístovice,Vyškov,EG.D,GasNet,ne
+68308,Studnice u Vyškova,Vyškov,EG.D,GasNet,ne
+68321,Pustiměř,Vyškov,EG.D,GasNet,ne
+68323,Ivanovice na Hané,Vyškov,EG.D,GasNet,ne
+68333,Nesovice,Hodonín;Vyškov,EG.D,GasNet,ne
+68335,Letonice u Vyškova,Vyškov,EG.D,GasNet,ne
+68341,Bohdalice,Vyškov,EG.D,GasNet,ne
+68351,Holubice,Vyškov,EG.D,GasNet,ne
+68352,Křenovice u Slavkova,Vyškov,EG.D,GasNet,ne
+68354,Otnice,Vyškov,EG.D,GasNet,ne
+68401,Slavkov u Brna,Vyškov,EG.D,GasNet,ne
+68501,Bučovice,Hodonín;Vyškov,EG.D,GasNet,ne
+68601,Uherské Hradiště 1,Uherské Hradiště,EG.D,GasNet,ne
+68603,Staré Město u Uherského Hradiště,Uherské Hradiště,EG.D,GasNet,ne
+68604,Kunovice,Uherské Hradiště,EG.D,GasNet,ne
+68605,Uherské Hradiště 5,Uherské Hradiště,EG.D,GasNet,ne
+68606,Uherské Hradiště 6,Uherské Hradiště,EG.D,GasNet,ne
+68609,Míkovice,Uherské Hradiště,EG.D,GasNet,ne
+68703,Babice u Uherského Hradiště,Uherské Hradiště,EG.D,GasNet,ne
+68704,Traplice,Uherské Hradiště,EG.D,GasNet,ne
+68705,Jalubí,Uherské Hradiště,EG.D,GasNet,ne
+68706,Velehrad,Uherské Hradiště,EG.D,GasNet,ne
+68707,Tupesy,Uherské Hradiště,EG.D,GasNet,ne
+68708,Buchlovice,Uherské Hradiště,EG.D,GasNet,ne
+68709,Boršice u Buchlovic,Uherské Hradiště,EG.D,GasNet,ne
+68710,Zlechov,Uherské Hradiště,EG.D,GasNet,ne
+68711,Topolná,Uherské Hradiště,EG.D,GasNet,ne
+68712,Bílovice u Uherského Hradiště,Uherské Hradiště,EG.D,GasNet,ne
+68713,Březolupy,Uherské Hradiště,EG.D,GasNet,ne
+68722,Ostrožská Nová Ves,Uherské Hradiště,EG.D,GasNet,ne
+68723,Ostrožská Lhota,Uherské Hradiště,EG.D,GasNet,ne
+68724,Uherský Ostroh,Uherské Hradiště,EG.D,GasNet,ne
+68725,Hluk,Uherské Hradiště,EG.D,GasNet,ne
+68731,Šumice,Uherské Hradiště,EG.D,GasNet,ne
+68732,Nezdenice,Uherské Hradiště,EG.D,GasNet,ne
+68733,Hradčovice,Uherské Hradiště,EG.D,GasNet,ne
+68734,Uherský Brod 3,Uherské Hradiště,EG.D,GasNet,ne
+68737,Polešovice,Uherské Hradiště,EG.D,GasNet,ne
+68738,Nedakonice,Uherské Hradiště,EG.D,GasNet,ne
+68741,Medlovice,Uherské Hradiště,EG.D,GasNet,ne
+68742,Osvětimany,Uherské Hradiště,EG.D,GasNet,ne
+68751,Nivnice,Uherské Hradiště,EG.D,GasNet,ne
+68752,Korytná,Uherské Hradiště,EG.D,GasNet,ne
+68753,Suchá Loz,Uherské Hradiště,EG.D,GasNet,ne
+68754,Bánov u Uherského Brodu,Uherské Hradiště,EG.D,GasNet,ne
+68755,Bystřice pod Lopeníkem,Uherské Hradiště,EG.D,GasNet,ne
+68756,Prakšice,Uherské Hradiště,EG.D,GasNet,ne
+68761,Vlčnov,Uherské Hradiště,EG.D,GasNet,ne
+68762,Dolní Němčí,Uherské Hradiště,EG.D,GasNet,ne
+68763,Boršice u Blatnice,Uherské Hradiště,EG.D,GasNet,ne
+68764,Horní Němčí,Uherské Hradiště,EG.D,GasNet,ne
+68765,Strání,Uherské Hradiště,EG.D,GasNet,ne
+68766,Květná,Uherské Hradiště,EG.D,GasNet,ne
+68767,Březová u Uherského Brodu,Uherské Hradiště,EG.D,GasNet,ne
+68771,Bojkovice,Uherské Hradiště,EG.D,GasNet,ne
+68774,Starý Hrozenkov,Uherské Hradiště,EG.D,GasNet,ne
+68801,Uherský Brod 1,Uherské Hradiště,EG.D,GasNet,ne
+69002,Břeclav 2,Břeclav,EG.D,GasNet,ne
+69003,Břeclav 3,Břeclav,EG.D,GasNet,ne
+69006,Břeclav 6,Břeclav,EG.D,GasNet,ne
+69101,Moravský Žižkov,Břeclav,EG.D,GasNet,ne
+69102,Velké Bílovice,Břeclav,EG.D,GasNet,ne
+69103,Rakvice,Břeclav,EG.D,GasNet,ne
+69104,Přítluky,Břeclav,EG.D,GasNet,ne
+69105,Zaječí,Břeclav,EG.D,GasNet,ne
+69106,Velké Pavlovice,Břeclav,EG.D,GasNet,ne
+69107,Němčičky u Břeclavi,Břeclav,EG.D,GasNet,ne
+69108,Bořetice u Hustopečí,Břeclav,EG.D,GasNet,ne
+69109,Vrbice u Břeclavě,Břeclav,EG.D,GasNet,ne
+69110,Kobylí na Moravě,Břeclav,EG.D,GasNet,ne
+69111,Brumovice na Moravě,Břeclav,EG.D,GasNet,ne
+69112,Boleradice,Břeclav,EG.D,GasNet,ne
+69121,Sedlec u Mikulova,Břeclav,EG.D,GasNet,ne
+69122,Pasohlávky,Brno-venkov,EG.D,GasNet,ne
+69123,Pohořelice,Brno-venkov;Břeclav,EG.D,GasNet,ne
+69124,Přibice,Brno-venkov,EG.D,GasNet,ne
+69125,Vranovice,Brno-venkov,EG.D,GasNet,ne
+69126,Pouzdřany,Břeclav,EG.D,GasNet,ne
+69127,Popice,Břeclav,EG.D,GasNet,ne
+69129,Dolní Věstonice,Břeclav,EG.D,GasNet,ne
+69130,Vlasatice,Brno-venkov,EG.D,GasNet,ne
+69141,Břeclav 4,Břeclav,EG.D,GasNet,ne
+69142,Valtice,Břeclav,EG.D,GasNet,ne
+69143,Hlohovec u Břeclavě,Břeclav,EG.D,GasNet,ne
+69144,Lednice na Moravě,Břeclav,EG.D,GasNet,ne
+69145,Podivín,Břeclav,EG.D,GasNet,ne
+69146,Ladná,Břeclav,EG.D,GasNet,ne
+69151,Lanžhot,Břeclav,EG.D,GasNet,ne
+69152,Kostice u Břeclavě,Břeclav,EG.D,GasNet,ne
+69153,Tvrdonice,Břeclav,EG.D,GasNet,ne
+69154,Týnec u Břeclavě,Břeclav,EG.D,GasNet,ne
+69155,Moravská Nová Ves,Břeclav,EG.D,GasNet,ne
+69156,Hrušky,Břeclav,EG.D,GasNet,ne
+69162,Uherčice u Hustopečí,Břeclav,EG.D,GasNet,ne
+69163,Velké Němčice,Břeclav,EG.D,GasNet,ne
+69164,Nosislav,Brno-venkov;Břeclav,EG.D,GasNet,ne
+69165,Křepice u Hustopečí,Břeclav,EG.D,GasNet,ne
+69167,Šakvice,Břeclav,EG.D,GasNet,ne
+69171,Diváky,Břeclav,EG.D,GasNet,ne
+69172,Klobouky u Brna,Břeclav,EG.D,GasNet,ne
+69173,Krumvíř,Břeclav;Hodonín,EG.D,GasNet,ne
+69174,Velké Hostěrádky,Břeclav,EG.D,GasNet,ne
+69175,Borkovany,Břeclav,EG.D,GasNet,ne
+69176,Šitbořice,Břeclav,EG.D,GasNet,ne
+69181,Březí u Mikulova,Břeclav,EG.D,GasNet,ne
+69182,Novosedly na Moravě,Břeclav,EG.D,GasNet,ne
+69183,Drnholec,Břeclav,EG.D,GasNet,ne
+69185,Dolní Dunajovice,Břeclav,EG.D,GasNet,ne
+69186,Perná,Břeclav,EG.D,GasNet,ne
+69188,Milovice u Mikulova,Břeclav,EG.D,GasNet,ne
+69189,Bulhary,Břeclav,EG.D,GasNet,ne
+69201,Mikulov na Moravě,Břeclav,EG.D,GasNet,ne
+69301,Hustopeče u Brna,Břeclav,EG.D,GasNet,ne
+69501,Hodonín 1,Hodonín,EG.D,GasNet,ne
+69601,Rohatec,Hodonín,EG.D,GasNet,ne
+69602,Ratíškovice,Hodonín,EG.D,GasNet,ne
+69603,Dubňany,Hodonín,EG.D,GasNet,ne
+69604,Svatobořice,Hodonín,EG.D,GasNet,ne
+69605,Milotice u Kyjova,Hodonín,EG.D,GasNet,ne
+69606,Vacenovice,Hodonín,EG.D,GasNet,ne
+69611,Mutěnice,Hodonín,EG.D,GasNet,ne
+69612,Hovorany,Hodonín,EG.D,GasNet,ne
+69613,Šardice,Hodonín,EG.D,GasNet,ne
+69614,Čejč,Hodonín,EG.D,GasNet,ne
+69615,Čejkovice,Hodonín,EG.D,GasNet,ne
+69616,Starý Poddvorov,Hodonín,EG.D,GasNet,ne
+69617,Dolní Bojanovice,Hodonín,EG.D,GasNet,ne
+69618,Lužice u Hodonína,Hodonín,EG.D,GasNet,ne
+69619,Mikulčice,Hodonín,EG.D,GasNet,ne
+69621,Prušánky,Hodonín,EG.D,GasNet,ne
+69631,Bukovany u Hodonína,Hodonín,EG.D,GasNet,ne
+69632,Ždánice,Hodonín,EG.D,GasNet,ne
+69633,Archlebov,Hodonín,EG.D,GasNet,ne
+69634,Žarošice,Hodonín,EG.D,GasNet,ne
+69635,Dambořice,Hodonín,EG.D,GasNet,ne
+69636,Násedlovice,Hodonín,EG.D,GasNet,ne
+69637,Želetice u Kyjova,Hodonín,EG.D,GasNet,ne
+69638,Strážovice,Hodonín,EG.D,GasNet,ne
+69639,Lovčice u Kyjova,Hodonín,EG.D,GasNet,ne
+69641,Vlkoš u Kyjova,Hodonín,EG.D,GasNet,ne
+69642,Vracov,Hodonín,EG.D,GasNet,ne
+69647,Žeravice,Hodonín,EG.D,GasNet,ne
+69648,Ježov,Hodonín,EG.D,GasNet,ne
+69649,Žádovice,Hodonín,EG.D,GasNet,ne
+69650,Moravany u Kyjova,Hodonín,EG.D,GasNet,ne
+69651,Kostelec u Kyjova,Hodonín,EG.D,GasNet,ne
+69655,Kyjov 3,Hodonín,EG.D,GasNet,ne
+69661,Vnorovy,Hodonín,EG.D,GasNet,ne
+69662,Strážnice,Hodonín,EG.D,GasNet,ne
+69663,Hroznová Lhota,Hodonín,EG.D,GasNet,ne
+69664,Kněždub,Hodonín,EG.D,GasNet,ne
+69665,Petrov u Hodonína,Hodonín,EG.D,GasNet,ne
+69666,Sudoměřice nad Moravou,Hodonín,EG.D,GasNet,ne
+69667,Radějov u Hodonína,Hodonín,EG.D,GasNet,ne
+69671,Blatnice pod Svatým Antonínkem,Hodonín,EG.D,GasNet,ne
+69672,Lipov,Hodonín,EG.D,GasNet,ne
+69673,Hrubá Vrbka,Hodonín,EG.D,GasNet,ne
+69674,Velká nad Veličkou,Hodonín,EG.D,GasNet,ne
+69676,Louka nad Veličkou,Hodonín,EG.D,GasNet,ne
+69681,Bzenec,Hodonín,EG.D,GasNet,ne
+69683,Domanín,Hodonín,EG.D,GasNet,ne
+69684,Těmice u Hodonína,Hodonín,EG.D,GasNet,ne
+69685,Moravský Písek,Hodonín,EG.D,GasNet,ne
+69701,Kyjov 1,Hodonín,EG.D,GasNet,ne
+69801,Veselí nad Moravou,Hodonín,EG.D,GasNet,ne
+70030,Ostrava 30,Ostrava-město,ČEZ Distribuce,GasNet,ne
+70200,Ostrava 2,Ostrava-město,ČEZ Distribuce,GasNet,ne
+70300,Ostrava 3,Ostrava-město,ČEZ Distribuce,GasNet,ne
+70800,Ostrava 8,Ostrava-město,ČEZ Distribuce,GasNet,ne
+70900,Ostrava 9,Ostrava-město,ČEZ Distribuce,GasNet,ne
+71000,Ostrava 10,Ostrava-město,ČEZ Distribuce,GasNet,ne
+71100,Ostrava 11,Opava;Ostrava-město,ČEZ Distribuce,GasNet,ne
+71200,Ostrava 12,Ostrava-město,ČEZ Distribuce,GasNet,ne
+71300,Ostrava 13,Ostrava-město,ČEZ Distribuce,GasNet,ne
+71500,Ostrava 15,Ostrava-město,ČEZ Distribuce,GasNet,ne
+71600,Ostrava 16,Ostrava-město,ČEZ Distribuce,GasNet,ne
+71700,Ostrava 17,Ostrava-město,ČEZ Distribuce,GasNet,ne
+71800,Ostrava 18,Ostrava-město,ČEZ Distribuce,GasNet,ne
+71900,Ostrava 19,Ostrava-město,ČEZ Distribuce,GasNet,ne
+72000,Ostrava 20,Ostrava-město,ČEZ Distribuce,GasNet,ne
+72100,Ostrava 21,Ostrava-město,ČEZ Distribuce,GasNet,ne
+72200,Ostrava 22,Ostrava-město,ČEZ Distribuce,GasNet,ne
+72300,Ostrava 23,Ostrava-město,ČEZ Distribuce,GasNet,ne
+72400,Ostrava 24,Ostrava-město,ČEZ Distribuce,GasNet,ne
+72525,Ostrava 25,Ostrava-město,ČEZ Distribuce,GasNet,ne
+72526,Ostrava 26,Ostrava-město,ČEZ Distribuce,GasNet,ne
+72527,Ostrava 27,Ostrava-město,ČEZ Distribuce,GasNet,ne
+72528,Ostrava 28,Ostrava-město,ČEZ Distribuce,GasNet,ne
+72529,Ostrava 29,Ostrava-město,ČEZ Distribuce,GasNet,ne
+73301,Karviná 1,Karviná,ČEZ Distribuce,GasNet,ne
+73401,Karviná 4,Karviná,ČEZ Distribuce,GasNet,ne
+73503,Karviná 3,Karviná,ČEZ Distribuce,GasNet,ne
+73506,Karviná 6,Karviná,ČEZ Distribuce,GasNet,ne
+73511,Orlová 1,Karviná,ČEZ Distribuce,GasNet,ne
+73514,Orlová 4,Karviná,ČEZ Distribuce,GasNet,ne
+73531,Bohumín 3,Karviná,ČEZ Distribuce,GasNet,ne
+73532,Rychvald,Karviná,ČEZ Distribuce,GasNet,ne
+73533,Doubrava,Karviná,ČEZ Distribuce,GasNet,ne
+73534,Stonava,Karviná,ČEZ Distribuce,GasNet,ne
+73535,Horní Suchá,Karviná,ČEZ Distribuce,GasNet,ne
+73541,Petřvald u Karviné,Karviná,ČEZ Distribuce,GasNet,ne
+73542,Těrlicko,Karviná,ČEZ Distribuce,GasNet,ne
+73543,Albrechtice u Českého Těšína,Karviná,ČEZ Distribuce,GasNet,ne
+73551,Bohumín 5,Karviná,ČEZ Distribuce,GasNet,ne
+73552,Bohumín 4,Karviná,ČEZ Distribuce,GasNet,ne
+73553,Dolní Lutyně,Karviná,ČEZ Distribuce,GasNet,ne
+73561,Chotěbuz,Karviná,ČEZ Distribuce,GasNet,ne
+73562,Český Těšín 6,Karviná,ČEZ Distribuce,GasNet,ne
+73564,Havířov 4,Karviná,ČEZ Distribuce,GasNet,ne
+73571,Dětmarovice,Karviná,ČEZ Distribuce,GasNet,ne
+73572,Petrovice u Karviné,Karviná,ČEZ Distribuce,GasNet,ne
+73581,Bohumín 1,Karviná,ČEZ Distribuce,GasNet,ne
+73601,Havířov 1,Frýdek-Místek;Karviná,ČEZ Distribuce,GasNet,ne
+73701,Český Těšín 1,Karviná,ČEZ Distribuce,GasNet,ne
+73801,Frýdek-Místek 1,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73901,Baška,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73904,Pražmo,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73911,Frýdlant nad Ostravicí,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73912,Čeladná,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73913,Kunčice pod Ondřejníkem,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73914,Ostravice,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73915,Staré Hamry,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73921,Paskov,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73923,Stará Ves nad Ondřejnicí,Ostrava-město,ČEZ Distribuce,GasNet,ne
+73924,Krmelín,Frýdek-Místek;Ostrava-město,ČEZ Distribuce,GasNet,ne
+73925,Sviadnov,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73932,Vratimov 1,Frýdek-Místek;Ostrava-město,ČEZ Distribuce,GasNet,ne
+73934,Šenov u Ostravy,Ostrava-město,ČEZ Distribuce,GasNet,ne
+73936,Sedliště,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73937,Horní Bludovice,Frýdek-Místek;Karviná,ČEZ Distribuce,GasNet,ne
+73938,Dolní Domaslavice,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73939,Lučina,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73941,Palkovice,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73942,Frýdek-Místek 8,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73943,Staříč,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73944,Brušperk,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73945,Fryčovice,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73946,Hukvaldy,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73947,Kozlovice,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73949,Metylovice,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73951,Dobrá,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73953,Hnojník,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73955,Smilovice u Třince,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73959,Střítež u Českého Těšína,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73961,Třinec 1,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73981,Milíkov u Jablunkova,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73984,Písek u Jablunkova,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73985,Bukovec,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73991,Jablunkov,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73992,Návsí,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73994,Vendryně,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73995,Bystřice nad Olší,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73997,Hrádek nad Olší,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+73998,Mosty u Jablunkova,Frýdek-Místek,ČEZ Distribuce,GasNet,ne
+74101,Nový Jičín 1,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74201,Suchdol nad Odrou,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74213,Studénka 3,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74221,Kopřivnice,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74231,Starý Jičín,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74233,Jeseník nad Odrou,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74235,Odry,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74236,Jakubčovice nad Odrou,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74237,Spálov,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74242,Šenov u Nového Jičína,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74243,Pustějov,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74245,Fulnek 1,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74247,Hladké Životice,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74251,Mošnov,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74253,Kunín,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74254,Bartošovice na Moravě,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74255,Albrechtičky,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74256,Sedlnice,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74257,Libhošť,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74258,Příbor,Frýdek-Místek;Nový Jičín,ČEZ Distribuce,GasNet,ne
+74260,Petřvald u Nového Jičína,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74265,Rybí,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74266,Štramberk,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74267,Ženklava,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74271,Hodslavice,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74272,Mořkov,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74273,Veřovice,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74274,Tichá,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74275,Lichnov u Nového Jičína,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74281,Bravantice,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74282,Jistebník,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74283,Klimkovice,Ostrava-město,ČEZ Distribuce,GasNet,ne
+74285,Vřesina u Bílovce,Ostrava-město,ČEZ Distribuce,GasNet,ne
+74291,Velké Albrechtice,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74292,Bílovec 5,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74293,Slatina u Bílovce,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74301,Bílovec 1,Nový Jičín;Opava;Ostrava-město,ČEZ Distribuce,GasNet,ne
+74401,Frenštát pod Radhoštěm,Nový Jičín,ČEZ Distribuce,GasNet,ne
+74601,Opava 1,Opava,ČEZ Distribuce,GasNet,ne
+74705,Opava 5,Opava,ČEZ Distribuce,GasNet,ne
+74706,Opava 6,Opava,ČEZ Distribuce,GasNet,ne
+74707,Opava 7,Opava,ČEZ Distribuce,GasNet,ne
+74711,Kozmice u Hlučína,Opava,ČEZ Distribuce,GasNet,ne
+74714,Ludgeřovice,Opava,ČEZ Distribuce,GasNet,ne
+74715,Šilheřovice,Opava,ČEZ Distribuce,GasNet,ne
+74716,Hať u Hlučína,Opava,ČEZ Distribuce,GasNet,ne
+74717,Darkovice,Opava,ČEZ Distribuce,GasNet,ne
+74718,Píšť,Opava,ČEZ Distribuce,GasNet,ne
+74719,Bohuslavice u Hlučína,Opava,ČEZ Distribuce,GasNet,ne
+74720,Vřesina u Hlučína,Opava,ČEZ Distribuce,GasNet,ne
+74721,Kravaře u Hlučína,Opava,ČEZ Distribuce,GasNet,ne
+74722,Dolní Benešov,Opava,ČEZ Distribuce,GasNet,ne
+74723,Bolatice,Opava,ČEZ Distribuce,GasNet,ne
+74724,Chuchelná,Opava,ČEZ Distribuce,GasNet,ne
+74725,Sudice,Opava,ČEZ Distribuce,GasNet,ne
+74727,Kobeřice,Opava,ČEZ Distribuce,GasNet,ne
+74728,Štěpánkovice,Opava,ČEZ Distribuce,GasNet,ne
+74731,Velké Hoštice,Opava,ČEZ Distribuce,GasNet,ne
+74733,Oldřišov,Opava,ČEZ Distribuce,GasNet,ne
+74735,Hněvošice,Opava,ČEZ Distribuce,GasNet,ne
+74741,Hradec nad Moravicí,Opava,ČEZ Distribuce,GasNet,ne
+74743,Větřkovice u Vítkova,Opava,ČEZ Distribuce,GasNet,ne
+74744,Březová u Vítkova,Opava,ČEZ Distribuce,GasNet,ne
+74745,Skřipov u Opavy,Opava,ČEZ Distribuce,GasNet,ne
+74747,Vítkov 3,Opava,ČEZ Distribuce,GasNet,ne
+74751,Výdejní místo Stěbořice,Opava,ČEZ Distribuce,GasNet,ne
+74752,Hlavnice,Opava,ČEZ Distribuce,GasNet,ne
+74753,Jakartovice,Opava,ČEZ Distribuce,GasNet,ne
+74754,Mladecko,Opava,ČEZ Distribuce,GasNet,ne
+74755,Litultovice,Opava,ČEZ Distribuce,GasNet,ne
+74756,Dolní Životice,Opava,ČEZ Distribuce,GasNet,ne
+74757,Slavkov u Opavy,Opava,ČEZ Distribuce,GasNet,ne
+74761,Raduň,Opava,ČEZ Distribuce,GasNet,ne
+74762,Mokré Lazce,Opava,ČEZ Distribuce,GasNet,ne
+74763,Hrabyně 1,Opava,ČEZ Distribuce,GasNet,ne
+74764,Velká Polom,Opava;Ostrava-město,ČEZ Distribuce,GasNet,ne
+74766,Dolní Lhota,Ostrava-město,ČEZ Distribuce,GasNet,ne
+74767,Hrabyně 3,Opava,ČEZ Distribuce,GasNet,ne
+74768,Kyjovice,Opava,ČEZ Distribuce,GasNet,ne
+74769,Pustá Polom,Opava,ČEZ Distribuce,GasNet,ne
+74770,Opava 9,Opava,ČEZ Distribuce,GasNet,ne
+74771,Brumovice u Opavy,Opava,ČEZ Distribuce,GasNet,ne
+74773,Vávrovice,Opava,ČEZ Distribuce,GasNet,ne
+74774,Neplachovice,Opava,ČEZ Distribuce,GasNet,ne
+74775,Velké Heraltice,Opava,ČEZ Distribuce,GasNet,ne
+74781,Otice,Opava,ČEZ Distribuce,GasNet,ne
+74782,Štáblovice,Opava,ČEZ Distribuce,GasNet,ne
+74784,Melč,Opava,ČEZ Distribuce,GasNet,ne
+74786,Kružberk,Opava,ČEZ Distribuce,GasNet,ne
+74787,Budišov nad Budišovkou,Opava,ČEZ Distribuce,GasNet,ne
+74791,Štítina,Opava,ČEZ Distribuce,GasNet,ne
+74792,Háj ve Slezsku,Opava,ČEZ Distribuce,GasNet,ne
+74794,Děhylov,Opava,ČEZ Distribuce,GasNet,ne
+74795,Suché Lazce,Opava,ČEZ Distribuce,GasNet,ne
+74801,Hlučín,Opava,ČEZ Distribuce,GasNet,ne
+74901,Vítkov 1,Opava,ČEZ Distribuce,GasNet,ne
+75002,Přerov 2,Přerov,ČEZ Distribuce,GasNet,ne
+75101,Tovačov,Přerov,ČEZ Distribuce,GasNet,ne
+75102,Troubky nad Bečvou,Přerov,ČEZ Distribuce,GasNet,ne
+75103,Brodek u Přerova,Olomouc;Přerov,ČEZ Distribuce,GasNet,ne
+75104,Rokytnice u Přerova,Přerov,ČEZ Distribuce,GasNet,ne
+75105,Kokory,Přerov,ČEZ Distribuce,GasNet,ne
+75111,Radslavice,Přerov,ČEZ Distribuce,GasNet,ne
+75114,Dřevohostice,Přerov,ČEZ Distribuce,GasNet,ne
+75115,Domaželice u Přerova,Přerov,ČEZ Distribuce,GasNet,ne
+75116,Želatovice,Přerov,ČEZ Distribuce,GasNet,ne
+75117,Horní Moštěnice,Přerov,ČEZ Distribuce,GasNet,ne
+75118,Říkovice,Přerov,ČEZ Distribuce,GasNet,ne
+75119,Vlkoš u Přerova,Přerov,ČEZ Distribuce,GasNet,ne
+75121,Prosenice,Přerov,ČEZ Distribuce,GasNet,ne
+75122,Osek nad Bečvou,Přerov,ČEZ Distribuce,GasNet,ne
+75123,Dolní Újezd u Lipníka nad Bečvou,Přerov,ČEZ Distribuce,GasNet,ne
+75124,Přerov 4,Přerov,ČEZ Distribuce,GasNet,ne
+75125,Veselíčko u Lipníka nad Bečvou,Přerov,ČEZ Distribuce,GasNet,ne
+75127,Výdejní místo Penčice,Přerov,ČEZ Distribuce,GasNet,ne
+75131,Lipník nad Bečvou,Olomouc;Přerov,ČEZ Distribuce,GasNet,ne
+75144,Polkovice,Přerov,ČEZ Distribuce,GasNet,ne
+75201,Kojetín,Přerov,ČEZ Distribuce,GasNet,ne
+75301,Hranice 1,Přerov,ČEZ Distribuce,GasNet,ne
+75352,Skalička u Hranic,Přerov,ČEZ Distribuce,GasNet,ne
+75353,Všechovice,Přerov,ČEZ Distribuce,GasNet,ne
+75354,Soběchleby,Přerov,ČEZ Distribuce,GasNet,ne
+75355,Paršovice,Přerov,ČEZ Distribuce,GasNet,ne
+75356,Opatovice u Hranic,Přerov,ČEZ Distribuce,GasNet,ne
+75361,Hranice 4,Přerov,ČEZ Distribuce,GasNet,ne
+75362,Potštát,Olomouc;Přerov,ČEZ Distribuce,GasNet,ne
+75363,Střítež nad Ludinou,Přerov,ČEZ Distribuce,GasNet,ne
+75364,Bělotín,Přerov,ČEZ Distribuce,GasNet,ne
+75366,Hustopeče nad Bečvou,Přerov,ČEZ Distribuce,GasNet,ne
+75367,Milotice nad Bečvou,Přerov,ČEZ Distribuce,GasNet,ne
+75368,Černotín,Přerov,ČEZ Distribuce,GasNet,ne
+75501,Vsetín 1,Vsetín,ČEZ Distribuce,GasNet,ne
+75601,Hovězí,Vsetín,ČEZ Distribuce,GasNet,ne
+75602,Huslenky,Vsetín,ČEZ Distribuce,GasNet,ne
+75603,Halenkov,Vsetín,ČEZ Distribuce,GasNet,ne
+75604,Nový Hrozenkov,Vsetín,ČEZ Distribuce,GasNet,ne
+75605,Karolinka,Vsetín,ČEZ Distribuce,GasNet,ne
+75606,Velké Karlovice,Vsetín,ČEZ Distribuce,GasNet,ne
+75607,Zděchov,Vsetín,ČEZ Distribuce,GasNet,ne
+75611,Valašská Polanka,Vsetín,ČEZ Distribuce,GasNet,ne
+75612,Horní Lideč,Vsetín,ČEZ Distribuce,GasNet,ne
+75614,Francova Lhota,Vsetín,ČEZ Distribuce,GasNet,ne
+75621,Ratiboř u Vsetína,Vsetín,ČEZ Distribuce,GasNet,ne
+75622,Hošťálková u Vsetína,Vsetín,ČEZ Distribuce,GasNet,ne
+75623,Jablůnka nad Bečvou,Vsetín,ČEZ Distribuce,GasNet,ne
+75624,Bystřička,Vsetín,ČEZ Distribuce,GasNet,ne
+75625,Růžďka,Vsetín,ČEZ Distribuce,GasNet,ne
+75627,Valašská Bystřice,Vsetín,ČEZ Distribuce,GasNet,ne
+75631,Liptál,Vsetín,ČEZ Distribuce,GasNet,ne
+75641,Lešná,Vsetín,ČEZ Distribuce,GasNet,ne
+75642,Choryně,Vsetín,ČEZ Distribuce,GasNet,ne
+75643,Kelč,Vsetín,ČEZ Distribuce,GasNet,ne
+75644,Loučka u Valašského Meziříčí,Vsetín,ČEZ Distribuce,GasNet,ne
+75645,Branky,Vsetín,ČEZ Distribuce,GasNet,ne
+75651,Zašová,Vsetín,ČEZ Distribuce,GasNet,ne
+75652,Střítež nad Bečvou,Vsetín,ČEZ Distribuce,GasNet,ne
+75653,Vidče,Vsetín,ČEZ Distribuce,GasNet,ne
+75654,Zubří,Vsetín,ČEZ Distribuce,GasNet,ne
+75655,Dolní Bečva,Vsetín,ČEZ Distribuce,GasNet,ne
+75656,Prostřední Bečva,Vsetín,ČEZ Distribuce,GasNet,ne
+75657,Horní Bečva,Vsetín,ČEZ Distribuce,GasNet,ne
+75661,Rožnov pod Radhoštěm 1,Vsetín,ČEZ Distribuce,GasNet,ne
+75662,Hutisko-Solanec,Vsetín,ČEZ Distribuce,GasNet,ne
+75663,Krhová,Vsetín,ČEZ Distribuce,GasNet,ne
+75701,Valašské Meziříčí 1,Vsetín,ČEZ Distribuce,GasNet,ne
+76001,Zlín 1,Zlín,EG.D,GasNet,ne
+76005,Zlín 5,Zlín,EG.D,GasNet,ne
+76301,Mysločovice,Zlín,EG.D,GasNet,ne
+76302,Zlín 4,Zlín,EG.D,GasNet,ne
+76307,Velký Ořechov,Zlín,EG.D,GasNet,ne
+76310,Hvozdná,Zlín,EG.D,GasNet,ne
+76311,Želechovice nad Dřevnicí,Zlín,EG.D,GasNet,ne
+76312,Vizovice,Zlín,EG.D,GasNet,ne
+76313,Jasenná u Vizovic,Zlín,EG.D,GasNet,ne
+76314,Zlín 12,Zlín,EG.D,GasNet,ne
+76315,Slušovice,Zlín,EG.D,GasNet,ne
+76316,Fryšták,Zlín,EG.D,GasNet,ne
+76317,Lukov u Zlína,Zlín,EG.D,GasNet,ne
+76318,Trnava u Zlína,Zlín,EG.D,GasNet,ne
+76319,Kašava,Zlín,EG.D,GasNet,ne
+76321,Slavičín,Zlín,EG.D,GasNet,ne
+76323,Dolní Lhota u Luhačovic,Zlín,EG.D,GasNet,ne
+76324,Vlachovice,Zlín,EG.D,GasNet,ne
+76325,Újezd u Valašských Klobouk,Zlín,EG.D,GasNet,ne
+76326,Luhačovice,Zlín,EG.D,GasNet,ne
+76331,Brumov-Bylnice,Zlín,EG.D,GasNet,ne
+76332,Nedašov,Zlín,EG.D,GasNet,ne
+76333,Štítná nad Vláří,Zlín,EG.D,GasNet,ne
+76334,Brumov-Bylnice 3,Zlín,EG.D,GasNet,ne
+76341,Biskupice u Luhačovic,Zlín,EG.D,GasNet,ne
+76345,Březůvky,Zlín,EG.D,GasNet,ne
+76351,Bohuslavice u Zlína,Zlín,EG.D,GasNet,ne
+76361,Napajedla,Zlín,EG.D,GasNet,ne
+76362,Tlumačov,Zlín,EG.D,GasNet,ne
+76363,Halenkovice,Zlín,EG.D,GasNet,ne
+76364,Spytihněv,Zlín,EG.D,GasNet,ne
+76502,Otrokovice 2,Zlín,EG.D,GasNet,ne
+76601,Valašské Klobouky,Zlín,EG.D,GasNet,ne
+76701,Kroměříž 1,Kroměříž,EG.D,GasNet,ne
+76801,Výdejní místo Jarohněvice,Kroměříž,EG.D,GasNet,ne
+76802,Zdounky,Kroměříž,EG.D,GasNet,ne
+76803,Roštín,Kroměříž,EG.D,GasNet,ne
+76804,Střílky,Kroměříž,EG.D,GasNet,ne
+76805,Koryčany,Kroměříž,EG.D,GasNet,ne
+76811,Chropyně,Kroměříž,EG.D,GasNet,ne
+76812,Rataje u Kroměříže,Kroměříž,EG.D,GasNet,ne
+76813,Litenčice,Kroměříž,EG.D,GasNet,ne
+76821,Kvasice,Kroměříž;Zlín,EG.D,GasNet,ne
+76823,Břest,Kroměříž,EG.D,GasNet,ne
+76824,Hulín,Kroměříž,EG.D,GasNet,ne
+76831,Zlobice,Kroměříž,EG.D,GasNet,ne
+76832,Zborovice,Kroměříž,EG.D,GasNet,ne
+76833,Morkovice-Slížany,Kroměříž,EG.D,GasNet,ne
+76834,Pačlavice,Kroměříž,EG.D,GasNet,ne
+76841,Bystřice pod Hostýnem 7,Kroměříž;Zlín,EG.D,GasNet,ne
+76842,Prusinovice,Kroměříž,EG.D,GasNet,ne
+76843,Kostelec u Holešova,Kroměříž,EG.D,GasNet,ne
+76852,Míškovice u Holešova,Kroměříž,EG.D,GasNet,ne
+76861,Bystřice pod Hostýnem 1,Kroměříž;Zlín,EG.D,GasNet,ne
+76871,Rajnochovice,Kroměříž,EG.D,GasNet,ne
+76872,Chvalčov,Kroměříž,EG.D,GasNet,ne
+76875,Loukov,Kroměříž,EG.D,GasNet,ne
+76901,Holešov,Kroměříž,EG.D,GasNet,ne
+77900,Olomouc 9,Olomouc,ČEZ Distribuce,GasNet,ne
+78301,Olomouc 18,Olomouc,ČEZ Distribuce,GasNet,ne
+78305,Horní Loděnice,Olomouc,ČEZ Distribuce,GasNet,ne
+78306,Domašov nad Bystřicí,Olomouc,ČEZ Distribuce,GasNet,ne
+78307,Město Libavá,Olomouc,ČEZ Distribuce,GasNet,ne
+78313,Štěpánov u Olomouce,Olomouc,ČEZ Distribuce,GasNet,ne
+78314,Bohuňovice,Olomouc,ČEZ Distribuce,GasNet,ne
+78316,Dolany u Olomouce,Olomouc,ČEZ Distribuce,GasNet,ne
+78321,Chudobín,Olomouc,ČEZ Distribuce,GasNet,ne
+78322,Cholina,Olomouc,ČEZ Distribuce,GasNet,ne
+78324,Slavětín u Litovle,Olomouc,ČEZ Distribuce,GasNet,ne
+78325,Bouzov,Olomouc,ČEZ Distribuce,GasNet,ne
+78332,Náklo,Olomouc,ČEZ Distribuce,GasNet,ne
+78333,Příkazy,Olomouc,ČEZ Distribuce,GasNet,ne
+78335,Horka nad Moravou,Olomouc,ČEZ Distribuce,GasNet,ne
+78336,Křelov-Břuchotín,Olomouc,ČEZ Distribuce,GasNet,ne
+78342,Slatinice,Olomouc;Prostějov,ČEZ Distribuce,GasNet,ano
+78344,Náměšť na Hané,Olomouc,ČEZ Distribuce,GasNet,ne
+78345,Senice na Hané,Olomouc,ČEZ Distribuce,GasNet,ne
+78346,Těšetice,Olomouc,ČEZ Distribuce,GasNet,ne
+78347,Hněvotín,Olomouc,ČEZ Distribuce,GasNet,ne
+78349,Lutín,Olomouc,ČEZ Distribuce,GasNet,ne
+78353,Velká Bystřice,Olomouc,ČEZ Distribuce,GasNet,ne
+78354,Přáslavice,Olomouc,ČEZ Distribuce,GasNet,ne
+78355,Velký Újezd,Olomouc,ČEZ Distribuce,GasNet,ne
+78356,Doloplazy,Olomouc,ČEZ Distribuce,GasNet,ne
+78357,Tršice,Olomouc,ČEZ Distribuce,GasNet,ne
+78361,Hlubočky 1,Olomouc,ČEZ Distribuce,GasNet,ne
+78365,Hlubočky 3,Olomouc,ČEZ Distribuce,GasNet,ne
+78372,Velký Týnec 1,Olomouc,ČEZ Distribuce,GasNet,ne
+78373,Grygov,Olomouc,ČEZ Distribuce,GasNet,ne
+78375,Dub nad Moravou,Olomouc,ČEZ Distribuce,GasNet,ne
+78383,Troubelice,Olomouc,ČEZ Distribuce,GasNet,ne
+78385,Šumvald u Uničova,Olomouc,ČEZ Distribuce,GasNet,ne
+78386,Dlouhá Loučka,Bruntál;Olomouc,ČEZ Distribuce,GasNet,ne
+78391,Uničov 1,Olomouc,ČEZ Distribuce,GasNet,ne
+78396,Újezd u Uničova,Olomouc,ČEZ Distribuce,GasNet,ne
+78397,Paseka u Šternberka,Olomouc,ČEZ Distribuce,GasNet,ne
+78401,Litovel,Olomouc,ČEZ Distribuce,GasNet,ne
+78501,Šternberk 1,Olomouc,ČEZ Distribuce,GasNet,ne
+78701,Šumperk 1,Šumperk,ČEZ Distribuce,GasNet,ne
+78801,Oskava,Šumperk,ČEZ Distribuce,GasNet,ne
+78803,Nový Malín,Šumperk,ČEZ Distribuce,GasNet,ne
+78804,Hrabišín,Šumperk,ČEZ Distribuce,GasNet,ne
+78805,Libina,Šumperk,ČEZ Distribuce,GasNet,ne
+78811,Loučná nad Desnou,Šumperk,ČEZ Distribuce,GasNet,ne
+78813,Vikýřovice,Šumperk,ČEZ Distribuce,GasNet,ne
+78814,Rapotín,Šumperk,ČEZ Distribuce,GasNet,ne
+78815,Velké Losiny,Šumperk,ČEZ Distribuce,GasNet,ne
+78816,Petrov nad Desnou,Šumperk,ČEZ Distribuce,GasNet,ne
+78820,Dolní Studénky,Šumperk,ČEZ Distribuce,GasNet,ne
+78821,Sudkov,Šumperk,ČEZ Distribuce,GasNet,ne
+78823,Jindřichov u Šumperka,Šumperk,ČEZ Distribuce,GasNet,ne
+78825,Výdejní místo Branná,Jeseník;Šumperk,ČEZ Distribuce,GasNet,ne
+78832,Staré Město pod Sněžníkem,Šumperk,ČEZ Distribuce,GasNet,ne
+78833,Hanušovice,Ústí nad Orlicí;Šumperk,ČEZ Distribuce,GasNet,ne
+78901,Zábřeh,Šumperk,ČEZ Distribuce,GasNet,ne
+78961,Bludov,Šumperk,ČEZ Distribuce,GasNet,ne
+78962,Olšany u Šumperka,Šumperk,ČEZ Distribuce,GasNet,ne
+78963,Ruda nad Moravou,Šumperk,ČEZ Distribuce,GasNet,ne
+78964,Bohdíkov,Šumperk,ČEZ Distribuce,GasNet,ne
+78969,Postřelmov,Šumperk,ČEZ Distribuce,GasNet,ne
+78971,Leština u Zábřeha,Šumperk,ČEZ Distribuce,GasNet,ne
+78972,Dubicko,Šumperk,ČEZ Distribuce,GasNet,ne
+78973,Úsov,Šumperk,ČEZ Distribuce,GasNet,ne
+78974,Rohle,Šumperk,ČEZ Distribuce,GasNet,ne
+78975,Brníčko u Zábřeha,Šumperk,ČEZ Distribuce,GasNet,ne
+78982,Moravičany,Šumperk,ČEZ Distribuce,GasNet,ne
+78983,Loštice,Šumperk,ČEZ Distribuce,GasNet,ne
+78985,Mohelnice,Šumperk,ČEZ Distribuce,GasNet,ne
+78991,Štíty,Šumperk,ČEZ Distribuce,GasNet,ne
+79001,Jeseník 1,Jeseník,ČEZ Distribuce,GasNet,ne
+79051,Supíkovice,Jeseník,ČEZ Distribuce,GasNet,ne
+79052,Velké Kunětice,Jeseník,ČEZ Distribuce,GasNet,ne
+79053,Stará Červená Voda,Jeseník,ČEZ Distribuce,GasNet,ne
+79054,Černá Voda,Jeseník,ČEZ Distribuce,GasNet,ne
+79055,Vidnava,Jeseník,ČEZ Distribuce,GasNet,ne
+79057,Bernartice u Javorníka,Jeseník,ČEZ Distribuce,GasNet,ne
+79058,Velká Kraš,Jeseník,ČEZ Distribuce,GasNet,ne
+79061,Lipová-lázně 1,Jeseník,ČEZ Distribuce,GasNet,ne
+79063,Lipová-lázně 3,Jeseník,ČEZ Distribuce,GasNet,ne
+79064,Vápenná,Jeseník,ČEZ Distribuce,GasNet,ne
+79065,Žulová,Jeseník,ČEZ Distribuce,GasNet,ne
+79069,Bílá Voda u Javorníka,Jeseník,ČEZ Distribuce,GasNet,ne
+79070,Javorník u Jeseníku,Jeseník,ČEZ Distribuce,GasNet,ne
+79081,Česká Ves,Jeseník,ČEZ Distribuce,GasNet,ne
+79082,Písečná u Jeseníku,Jeseník,ČEZ Distribuce,GasNet,ne
+79084,Mikulovice u Jeseníku 1,Jeseník,ČEZ Distribuce,GasNet,ne
+79201,Bruntál 1,Bruntál,ČEZ Distribuce,GasNet,ne
+79302,Lomnice u Rýmařova,Bruntál,ČEZ Distribuce,GasNet,ne
+79303,Dětřichov nad Bystřicí,Bruntál,ČEZ Distribuce,GasNet,ne
+79305,Moravský Beroun,Bruntál;Olomouc,ČEZ Distribuce,GasNet,ne
+79312,Horní Benešov,Bruntál;Opava,ČEZ Distribuce,GasNet,ne
+79315,Lichnov u Bruntálu,Bruntál,ČEZ Distribuce,GasNet,ne
+79316,Zátor,Bruntál,ČEZ Distribuce,GasNet,ne
+79323,Karlovice,Bruntál,ČEZ Distribuce,GasNet,ne
+79324,Karlova Studánka,Bruntál,ČEZ Distribuce,GasNet,ne
+79326,Vrbno pod Pradědem,Bruntál,ČEZ Distribuce,GasNet,ne
+79331,Světlá Hora,Bruntál,ČEZ Distribuce,GasNet,ne
+79336,Malá Morávka,Bruntál,ČEZ Distribuce,GasNet,ne
+79342,Janovice u Rýmařova,Bruntál,ČEZ Distribuce,GasNet,ne
+79344,Horní Město,Bruntál,ČEZ Distribuce,GasNet,ne
+79351,Břidličná,Bruntál;Olomouc,ČEZ Distribuce,GasNet,ne
+79356,Ryžoviště,Bruntál,ČEZ Distribuce,GasNet,ne
+79368,Dvorce u Bruntálu,Bruntál,ČEZ Distribuce,GasNet,ne
+79371,Holčovice,Bruntál,ČEZ Distribuce,GasNet,ne
+79374,Heřmanovice,Bruntál,ČEZ Distribuce,GasNet,ne
+79376,Zlaté Hory v Jeseníkách,Jeseník,ČEZ Distribuce,GasNet,ne
+79382,Třemešná u Krnova,Bruntál,ČEZ Distribuce,GasNet,ne
+79383,Jindřichov u Krnova,Bruntál,ČEZ Distribuce,GasNet,ne
+79384,Janov u Krnova,Bruntál,ČEZ Distribuce,GasNet,ne
+79391,Úvalno,Bruntál,ČEZ Distribuce,GasNet,ne
+79393,Brantice,Bruntál,ČEZ Distribuce,GasNet,ne
+79395,Město Albrechtice,Bruntál,ČEZ Distribuce,GasNet,ne
+79397,Slezské Rudoltice,Bruntál,ČEZ Distribuce,GasNet,ne
+79399,Osoblaha,Bruntál,ČEZ Distribuce,GasNet,ne
+79401,Krnov 1,Bruntál,ČEZ Distribuce,GasNet,ne
+79501,Rýmařov,Bruntál,ČEZ Distribuce,GasNet,ne
+79601,Prostějov 1,Prostějov,EG.D,GasNet,ne
+79603,Prostějov 3,Prostějov,EG.D,GasNet,ne
+79604,Prostějov 4,Prostějov,EG.D,GasNet,ne
+79607,Držovice,Prostějov,EG.D,GasNet,ne
+79802,Mostkovice,Prostějov,EG.D,GasNet,ne
+79803,Plumlov,Prostějov;Vyškov,EG.D,GasNet,ne
+79804,Určice,Prostějov,EG.D,GasNet,ne
+79805,Myslejovice,Prostějov;Vyškov,EG.D,GasNet,ne
+79806,Otaslavice,Prostějov,EG.D,GasNet,ne
+79807,Brodek u Prostějova,Prostějov,EG.D,GasNet,ne
+79808,Kelčice,Prostějov,EG.D,GasNet,ne
+79809,Vřesovice,Prostějov,EG.D,GasNet,ne
+79811,Prostějov 6,Prostějov,EG.D,GasNet,ne
+79812,Kralice na Hané,Prostějov,EG.D,GasNet,ne
+79813,Vrbátky,Prostějov,EG.D,GasNet,ne
+79814,Olšany u Prostějova,Prostějov,EG.D,GasNet,ne
+79816,Čelechovice na Hané,Prostějov,EG.D,GasNet,ne
+79817,Smržice,Prostějov,EG.D,GasNet,ne
+79821,Bedihošť,Prostějov,EG.D,GasNet,ne
+79823,Klenovice na Hané,Prostějov,EG.D,GasNet,ne
+79824,Pivín,Prostějov,EG.D,GasNet,ne
+79825,Dobromilice,Prostějov,EG.D,GasNet,ne
+79826,Nezamyslice u Prostějova,Prostějov,EG.D,GasNet,ne
+79827,Němčice nad Hanou,Prostějov,EG.D,GasNet,ne
+79828,Mořice,Prostějov,EG.D,GasNet,ne
+79829,Tištín,Prostějov,EG.D,GasNet,ne
+79830,Pavlovice u Kojetína,Prostějov,EG.D,GasNet,ne
+79841,Kostelec na Hané,Prostějov,EG.D,GasNet,ne
+79842,Lešany u Prostějova,Prostějov,EG.D,GasNet,ne
+79843,Ptení,Prostějov,EG.D,GasNet,ne
+79844,Stražisko,Prostějov,EG.D,GasNet,ne
+79845,Suchdol u Prostějova,Prostějov,EG.D,GasNet,ne
+79846,Brodek u Konice,Prostějov,EG.D,GasNet,ne
+79847,Horní Štěpánov,Prostějov,EG.D,GasNet,ne
+79848,Protivanov,Prostějov,EG.D,GasNet,ne
+79849,Malé Hradisko,Prostějov,EG.D,GasNet,ne
+79851,Přemyslovice,Prostějov,EG.D,GasNet,ne
+79852,Konice,Prostějov,EG.D,GasNet,ne
+79853,Výdejní místo Jesenec,Prostějov,EG.D,GasNet,ne
+79854,Kladky,Prostějov,EG.D,GasNet,ne
+79855,Hvozd u Prostějova,Prostějov,EG.D,GasNet,ne
+79856,Bohuslavice u Konice,Prostějov,EG.D,GasNet,ne
+79857,Laškov,Prostějov,EG.D,GasNet,ne
+79858,Čechy pod Kosířem,Prostějov,EG.D,GasNet,ne
+79861,Drahany,Prostějov,EG.D,GasNet,ne
+79862,Rozstání,Prostějov,EG.D,GasNet,ne
