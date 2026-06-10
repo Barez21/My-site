@@ -231,19 +231,7 @@
               <div class="kalk-hint">Podle PSČ automaticky zjistíme vaše distribuční území.</div>
             </div>
 
-            <div class="kalk-step kalk-step-optional">
-              <div class="kalk-step-label">
-                Současná cena za elektřinu
-                <span class="kalk-optional-badge">volitelné — pro srovnání</span>
-              </div>
-              <div class="kalk-input-row">
-                <input type="number" id="soucasna-cena" class="kalk-input" placeholder="např. 4 200" min="0" max="20000" step="10">
-                <span class="kalk-input-unit">Kč / MWh s DPH</span>
-              </div>
-              <div class="kalk-hint">Najdete ji na faktuře jako „cena za silovou elektřinu".</div>
-            </div>
-
-            <button class="kalk-submit" id="kalk-btn">Spočítat →</button>
+<button class="kalk-submit" id="kalk-btn">Spočítat →</button>
 
           </div>
 
@@ -319,6 +307,65 @@
           </div>
 
           <a href="index.html#final-cta" class="kalk-cta">Chci tuto nabídku →</a>
+
+          <!-- ROZKLAD CEN -->
+          <div class="rozklad" id="rozklad-j" style="display:none">
+            <div class="rozklad-header">
+              <div class="rozklad-title">Rozklad ceny</div>
+              <button class="rozklad-print-btn" onclick="printRozklad('rozklad-j')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                Stáhnout / Tisknout
+              </button>
+            </div>
+            <div class="rozklad-body">
+              <div class="rozklad-chart">
+                <svg id="rozklad-j-svg" width="180" height="180" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg"></svg>
+              </div>
+              <div class="rozklad-cols">
+                <div class="rozklad-col">
+                  <div class="rozklad-col-title">FREE for YOU</div>
+                  <div class="rozklad-row">
+                    <div class="rozklad-dot" style="background:#44e6a3"></div>
+                    <span class="rozklad-lbl">Silová elektřina</span>
+                    <span class="rozklad-val" id="rozklad-j-p-silova">—</span>
+                    <span class="rozklad-pct" id="rozklad-j-p-silova-pct">—</span>
+                  </div>
+                  <div class="rozklad-row">
+                    <div class="rozklad-dot" style="background:#31c486"></div>
+                    <span class="rozklad-lbl">Stálý plat</span>
+                    <span class="rozklad-val" id="rozklad-j-p-stalat">—</span>
+                    <span class="rozklad-pct" id="rozklad-j-p-stalat-pct">—</span>
+                  </div>
+                </div>
+                <div class="rozklad-col">
+                  <div class="rozklad-col-title">Distribuce a poplatky</div>
+                  <div class="rozklad-row">
+                    <div class="rozklad-dot" style="background:#5a7090"></div>
+                    <span class="rozklad-lbl">Distribuce za MWh</span>
+                    <span class="rozklad-val" id="rozklad-j-p-distmwh">—</span>
+                    <span class="rozklad-pct" id="rozklad-j-p-distmwh-pct">—</span>
+                  </div>
+                  <div class="rozklad-row">
+                    <div class="rozklad-dot" style="background:#122d4f"></div>
+                    <span class="rozklad-lbl">Distribuce měsíčně</span>
+                    <span class="rozklad-val" id="rozklad-j-p-distmes">—</span>
+                    <span class="rozklad-pct" id="rozklad-j-p-distmes-pct">—</span>
+                  </div>
+                  <div class="rozklad-row">
+                    <div class="rozklad-dot" style="background:#c2d4ee"></div>
+                    <span class="rozklad-lbl">Daně a ostatní</span>
+                    <span class="rozklad-val" id="rozklad-j-p-dane">—</span>
+                    <span class="rozklad-pct" id="rozklad-j-p-dane-pct">—</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="rozklad-total">
+              Celkem ročně: <strong id="rozklad-j-total">—</strong>
+              &nbsp;·&nbsp; průměrně <strong id="rozklad-j-mwh">—</strong> / MWh s DPH
+            </div>
+            <div class="rozklad-note">Distribuce a poplatky jsou regulované státem — stejné u všech dodavatelů.</div>
+          </div>
         </div>
 
       </div>
@@ -390,24 +437,6 @@
             </div>
           </div>
 
-          <!-- Srovnání -->
-          <div class="kalk-form-two-col kalk-step-centered" id="srovnani-wrap">
-            <div class="kalk-step kalk-step-optional" id="srovnani-vt-wrap">
-              <div class="kalk-step-label">Současná cena VT <span class="kalk-optional-badge">pro srovnání</span></div>
-              <div class="kalk-input-row">
-                <input type="number" id="s2-cena-vt" class="kalk-input" placeholder="např. 4 200" min="0" step="10">
-                <span class="kalk-input-unit">Kč / MWh s DPH</span>
-              </div>
-            </div>
-            <div class="kalk-step kalk-step-optional" id="srovnani-nt-wrap">
-              <div class="kalk-step-label">Současná cena NT <span class="kalk-optional-badge">pro srovnání</span></div>
-              <div class="kalk-input-row">
-                <input type="number" id="s2-cena-nt" class="kalk-input" placeholder="např. 3 800" min="0" step="10">
-                <span class="kalk-input-unit">Kč / MWh s DPH</span>
-              </div>
-            </div>
-          </div>
-
           <div class="kalk-step-centered">
             <button class="kalk-submit kalk-submit-centered" id="kalk-btn2">Spočítat →</button>
           </div>
@@ -429,19 +458,71 @@
               <div class="kalk-breakdown-row"><span>Silová elektřina VT</span><span id="r2-vt">—</span></div>
               <div class="kalk-breakdown-row"><span>Silová elektřina NT</span><span id="r2-nt">—</span></div>
               <div class="kalk-breakdown-row"><span>Stálý měsíční plat (12 ×)</span><span id="r2-stalat">—</span></div>
+              <div class="kalk-breakdown-row"><span>Distribuce, systém. služby, daně</span><span id="r2-distribuce">—</span></div>
             </div>
           </div>
-          <div class="kalk-comparison" id="kalk-comparison2" style="display:none">
-            <div class="kalk-comparison-title">Srovnání se současným dodavatelem</div>
-            <div class="kalk-comparison-grid">
-              <div class="kalk-comp-box"><div class="kalk-comp-label">Nyní platíte (odhad)</div><div class="kalk-comp-val" id="c2-ted">—</div></div>
-              <div class="kalk-comp-arrow">→</div>
-              <div class="kalk-comp-box kalk-comp-box-ffy"><div class="kalk-comp-label">U FREE for YOU</div><div class="kalk-comp-val" id="c2-ffy">—</div></div>
-            </div>
-            <div class="kalk-saving" id="kalk-saving2"></div>
-          </div>
+          <div class="kalk-comparison" id="kalk-comparison2" style="display:none"></div>
           <div class="kalk-disclaimer">Výpočet zahrnuje cenu silové elektřiny a stálý měsíční plat. Distribuce se liší dle sazby a jističe a je zobrazena zvlášť.</div>
           <a href="index.html#final-cta" class="kalk-cta">Chci tuto nabídku →</a>
+
+          <!-- ROZKLAD CEN -->
+          <div class="rozklad" id="rozklad-s" style="display:none">
+            <div class="rozklad-header">
+              <div class="rozklad-title">Rozklad ceny</div>
+              <button class="rozklad-print-btn" onclick="printRozklad('rozklad-s')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                Stáhnout / Tisknout
+              </button>
+            </div>
+            <div class="rozklad-body">
+              <div class="rozklad-chart">
+                <svg id="rozklad-s-svg" width="180" height="180" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg"></svg>
+              </div>
+              <div class="rozklad-cols">
+                <div class="rozklad-col">
+                  <div class="rozklad-col-title">FREE for YOU</div>
+                  <div class="rozklad-row">
+                    <div class="rozklad-dot" style="background:#44e6a3"></div>
+                    <span class="rozklad-lbl">Silová elektřina</span>
+                    <span class="rozklad-val" id="rozklad-s-p-silova">—</span>
+                    <span class="rozklad-pct" id="rozklad-s-p-silova-pct">—</span>
+                  </div>
+                  <div class="rozklad-row">
+                    <div class="rozklad-dot" style="background:#31c486"></div>
+                    <span class="rozklad-lbl">Stálý plat</span>
+                    <span class="rozklad-val" id="rozklad-s-p-stalat">—</span>
+                    <span class="rozklad-pct" id="rozklad-s-p-stalat-pct">—</span>
+                  </div>
+                </div>
+                <div class="rozklad-col">
+                  <div class="rozklad-col-title">Distribuce a poplatky</div>
+                  <div class="rozklad-row">
+                    <div class="rozklad-dot" style="background:#5a7090"></div>
+                    <span class="rozklad-lbl">Distribuce za MWh</span>
+                    <span class="rozklad-val" id="rozklad-s-p-distmwh">—</span>
+                    <span class="rozklad-pct" id="rozklad-s-p-distmwh-pct">—</span>
+                  </div>
+                  <div class="rozklad-row">
+                    <div class="rozklad-dot" style="background:#122d4f"></div>
+                    <span class="rozklad-lbl">Distribuce měsíčně</span>
+                    <span class="rozklad-val" id="rozklad-s-p-distmes">—</span>
+                    <span class="rozklad-pct" id="rozklad-s-p-distmes-pct">—</span>
+                  </div>
+                  <div class="rozklad-row">
+                    <div class="rozklad-dot" style="background:#c2d4ee"></div>
+                    <span class="rozklad-lbl">Daně a ostatní</span>
+                    <span class="rozklad-val" id="rozklad-s-p-dane">—</span>
+                    <span class="rozklad-pct" id="rozklad-s-p-dane-pct">—</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="rozklad-total">
+              Celkem ročně: <strong id="rozklad-s-total">—</strong>
+              &nbsp;·&nbsp; průměrně <strong id="rozklad-s-mwh">—</strong> / MWh s DPH
+            </div>
+            <div class="rozklad-note">Distribuce a poplatky jsou regulované státem — stejné u všech dodavatelů.</div>
+          </div>
         </div>
 
       </div>
@@ -673,33 +754,95 @@
   }
 
   // ── Kalkulačka ──
-  const CENY = {
-    silova: {
-      '24': 3386.79, 'aku8': 3386.79, 'aku16': 3471.49,
-      'D01d': 3386.79, 'D02d': 3386.79, 'D61d': 3386.79,
-      'D25d': 3386.79, 'D26d': 3386.79, 'D27d': 3386.79,
-      'D35d': 3471.49, 'D45d': 3471.49, 'D56d': 3471.49, 'D57d': 3471.49,
-    },
-    stalat: 163.35
+
+  // Silová elektřina FFY (s DPH) — stejná pro všechny distributory
+  const SILOVA = {
+    'D01d': { vt: 3386.79, nt: null },
+    'D02d': { vt: 3386.79, nt: null },
+    'D25d': { vt: 3386.79, nt: 3386.79 },
+    'D26d': { vt: 3386.79, nt: 3386.79 },
+    'D27d': { vt: 3386.79, nt: 3386.79 },
+    'D35d': { vt: 3471.49, nt: 3471.49 },
+    'D45d': { vt: 3471.49, nt: 3471.49 },
+    'D56d': { vt: 3471.49, nt: 3471.49 },
+    'D57d': { vt: 3471.49, nt: 3471.49 },
+    'D61d': { vt: 3386.79, nt: 3386.79 },
+  };
+  const STALAT = 163.35; // Kč/měsíc s DPH
+
+  // Distribuční sazby VT (Kč/MWh bez DPH) dle distributora a tarifu
+  const DIST_VT = {
+    cez: { D01d:2666.66, D02d:2078.58, D25d:2252.45, D26d:1202.06, D27d:2252.45, D35d:754.77, D45d:754.77, D56d:754.77, D57d:754.77, D61d:3306.67 },
+    pre: { D01d:1854.71, D02d:1516.53, D25d:1656.49, D26d:1009.35, D27d:1656.49, D35d:421.52, D45d:421.52, D56d:421.52, D57d:421.52, D61d:2343.05 },
+    eon: { D01d:2711.14, D02d:2295.34, D25d:2243.88, D26d:1237.94, D27d:2243.88, D35d:749.87, D45d:749.87, D56d:749.87, D57d:749.87, D61d:3367.23 },
   };
 
-  // Tarify: VT only = true, NT only = false, both = null
-  const TARIF_CONFIG = {
-    'D01d': { vt: true,  nt: false },
-    'D02d': { vt: true,  nt: false },
-    'D25d': { vt: true,  nt: true  },
-    'D26d': { vt: true,  nt: true  },
-    'D27d': { vt: true,  nt: true  },
-    'D35d': { vt: true,  nt: true  },
-    'D45d': { vt: true,  nt: true  },
-    'D56d': { vt: true,  nt: true  },
-    'D57d': { vt: true,  nt: true  },
-    'D61d': { vt: true,  nt: true  },
+  // Distribuční sazby NT (Kč/MWh bez DPH) — jen pro dvoutarifní
+  const DIST_NT = {
+    cez: { D25d:116.50, D26d:116.50, D27d:116.50, D35d:116.50, D45d:116.50, D56d:116.50, D57d:116.50, D61d:116.50 },
+    pre: { D25d:175.20, D26d:175.20, D27d:175.20, D35d:175.20, D45d:175.20, D56d:175.20, D57d:175.20, D61d:175.20 },
+    eon: { D25d:224.30, D26d:224.30, D27d:224.30, D35d:224.30, D45d:224.30, D56d:224.30, D57d:224.30, D61d:224.30 },
   };
+
+  // Systémové služby (Kč/MWh bez DPH) — stejné pro všechny
+  const SYS = 164.24;
+
+  // POZE — aktuálně 0
+  const POZE = 0;
+
+  // Daň z elektřiny (Kč/MWh bez DPH)
+  const DAN = 28.30;
+
+  // Nesíťová infrastruktura (Kč/měsíc bez DPH)
+  const NI = 12.87;
+
+  // Jistič (Kč/měsíc bez DPH) — [dist][sazba][jistič A]
+  // Hodnoty bez DPH z ceníků 2026
+  const JISTIC = {
+    cez: {
+      D01d: { 10:50.00,  16:79.00,  20:99.00,  25:124.00, 32:158.00, 40:198.00, 50:248.00, 63:312.00 },
+      D02d: { 10:102.00, 16:164.00, 20:205.00, 25:256.00, 32:327.00, 40:409.00, 50:512.00, 63:644.00 },
+      D25d: { 10:107.00, 16:172.00, 20:215.00, 25:269.00, 32:344.00, 40:430.00, 50:537.00, 63:677.00 },
+      D26d: { 10:145.00, 16:231.00, 20:289.00, 25:362.00, 32:463.00, 40:578.00, 50:723.00, 63:911.00 },
+      D27d: { 10:102.00, 16:163.00, 20:204.00, 25:255.00, 32:326.00, 40:408.00, 50:510.00, 63:643.00 },
+      D35d: { 10:222.00, 16:355.00, 20:444.00, 25:555.00, 32:710.00, 40:888.00, 50:1110.00, 63:1399.00 },
+      D45d: { 10:222.00, 16:355.00, 20:444.00, 25:555.00, 32:710.00, 40:888.00, 50:1110.00, 63:1399.00 },
+      D56d: { 10:222.00, 16:355.00, 20:444.00, 25:555.00, 32:710.00, 40:888.00, 50:1110.00, 63:1399.00 },
+      D57d: { 10:222.00, 16:355.00, 20:444.00, 25:555.00, 32:710.00, 40:896.00, 50:1289.00, 63:1949.00 },
+      D61d: { 10:89.00,  16:143.00, 20:179.00, 25:224.00, 32:286.00, 40:358.00, 50:447.00, 63:563.00 },
+    },
+    pre: {
+      D01d: { 10:44.00,  16:70.00,  20:88.00,  25:110.00, 32:140.00, 40:175.00, 50:219.00, 63:276.00 },
+      D02d: { 10:87.00,  16:139.00, 20:173.00, 25:217.00, 32:277.00, 40:347.00, 50:434.00, 63:546.00 },
+      D25d: { 10:80.00,  16:128.00, 20:160.00, 25:200.00, 32:256.00, 40:320.00, 50:401.00, 63:505.00 },
+      D26d: { 10:110.00, 16:175.00, 20:219.00, 25:274.00, 32:350.00, 40:438.00, 50:548.00, 63:690.00 },
+      D27d: { 10:76.00,  16:122.00, 20:152.00, 25:191.00, 32:244.00, 40:305.00, 50:381.00, 63:480.00 },
+      D35d: { 10:154.00, 16:246.00, 20:308.00, 25:385.00, 32:492.00, 40:616.00, 50:770.00, 63:970.00 },
+      D45d: { 10:154.00, 16:246.00, 20:308.00, 25:385.00, 32:492.00, 40:616.00, 50:770.00, 63:970.00 },
+      D56d: { 10:154.00, 16:246.00, 20:308.00, 25:385.00, 32:492.00, 40:616.00, 50:770.00, 63:970.00 },
+      D57d: { 10:154.00, 16:246.00, 20:308.00, 25:385.00, 32:492.00, 40:622.00, 50:933.00, 63:1433.00 },
+      D61d: { 10:64.00,  16:103.00, 20:128.00, 25:161.00, 32:205.00, 40:257.00, 50:321.00, 63:404.00 },
+    },
+    eon: {
+      D01d: { 10:48.00,  16:77.00,  20:96.00,  25:120.00, 32:154.00, 40:192.00, 50:240.00, 63:302.00 },
+      D02d: { 10:100.00, 16:160.00, 20:200.00, 25:250.00, 32:320.00, 40:400.00, 50:500.00, 63:629.00 },
+      D25d: { 10:98.00,  16:157.00, 20:196.00, 25:245.00, 32:314.00, 40:392.00, 50:491.00, 63:618.00 },
+      D26d: { 10:140.00, 16:223.00, 20:279.00, 25:349.00, 32:446.00, 40:558.00, 50:698.00, 63:879.00 },
+      D27d: { 10:93.00,  16:149.00, 20:187.00, 25:233.00, 32:299.00, 40:373.00, 50:467.00, 63:588.00 },
+      D35d: { 10:190.00, 16:304.00, 20:380.00, 25:475.00, 32:608.00, 40:760.00, 50:950.00, 63:1196.00 },
+      D45d: { 10:190.00, 16:304.00, 20:380.00, 25:475.00, 32:608.00, 40:760.00, 50:950.00, 63:1196.00 },
+      D56d: { 10:190.00, 16:304.00, 20:380.00, 25:475.00, 32:608.00, 40:760.00, 50:950.00, 63:1196.00 },
+      D57d: { 10:189.00, 16:302.00, 20:378.00, 25:473.00, 32:605.00, 40:764.00, 50:1098.00, 63:1619.00 },
+      D61d: { 10:90.00,  16:144.00, 20:179.00, 25:224.00, 32:287.00, 40:359.00, 50:449.00, 63:565.00 },
+    },
+  };
+
+  const DPH = 1.21;
 
   function formatKc(v) { return Math.round(v).toLocaleString('cs-CZ') + ' Kč'; }
+  function withDph(v)  { return v * DPH; }
 
-  // ── PSC lookup ──
+  // PSC lookup
   let pscData = null;
   async function loadPsc() {
     if (pscData) return pscData;
@@ -708,11 +851,19 @@
       const text = await r.text();
       pscData = {};
       text.split('\n').slice(1).forEach(line => {
-        const [psc, obec, okres, dist_e, dist_p] = line.replace(/\r/g,'').split(',').map(s => s && s.trim());
-        if (psc) pscData[psc.replace(/\s/g,'')] = { obec, okres, dist_e, dist_p };
+        const [psc, obec, okres, dist_e] = line.replace(/\r/g,'').split(',').map(s => s && s.trim());
+        if (psc) pscData[psc] = { obec, dist_e };
       });
     } catch(e) { pscData = {}; }
     return pscData;
+  }
+
+  // Map CSV distributor name → our key
+  function distKey(name) {
+    if (!name) return null;
+    if (name.includes('PRE') || name.includes('Pre')) return 'pre';
+    if (name.includes('EG') || name.includes('E.ON') || name.includes('eon')) return 'eon';
+    return 'cez';
   }
 
   function showPscResult(inputId, resultId) {
@@ -723,7 +874,7 @@
     if (row) {
       el.textContent = row.obec + ' — ' + row.dist_e;
       el.className = 'kalk-psc-result psc-ok';
-      return row.dist_e;
+      return distKey(row.dist_e);
     } else {
       el.textContent = 'PSČ nenalezeno';
       el.className = 'kalk-psc-result psc-err';
@@ -731,21 +882,15 @@
     }
   }
 
-  // Load PSC on page load
   loadPsc();
 
-  // PSC live feedback
   ['psc-j','psc-s'].forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
-    el.addEventListener('input', async () => {
-      await loadPsc();
-      const resultId = id === 'psc-j' ? 'psc-j-result' : 'psc-s-result';
-      showPscResult(id, resultId);
-    });
+    el.addEventListener('input', async () => { await loadPsc(); showPscResult(id, id === 'psc-j' ? 'psc-j-result' : 'psc-s-result'); });
   });
 
-  // ── Tabs ──
+  // Tabs
   document.querySelectorAll('.kalk-tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.kalk-tab-btn').forEach(b => b.classList.remove('active'));
@@ -764,113 +909,221 @@
 
   document.getElementById('kalk-btn').addEventListener('click', async () => {
     await loadPsc();
-    const spotreba    = parseFloat(document.getElementById('spotreba').value);
-    const soucasnaCena = parseFloat(document.getElementById('soucasna-cena').value);
+    const spotreba = parseFloat(document.getElementById('spotreba').value);
     if (!spotreba || spotreba <= 0) { document.getElementById('spotreba').focus(); return; }
 
-    showPscResult('psc-j', 'psc-j-result');
+    const dist = showPscResult('psc-j', 'psc-j-result') || 'cez';
 
-    const nakladSilova = spotreba * CENY.silova[activeTarif];
-    const nakladStalat = CENY.stalat * 12;
-    const total = nakladSilova + nakladStalat;
+    // Map jednoducha tarif to sazba
+    const sazbaMap = { '24': 'D01d', 'aku8': 'D25d', 'aku16': 'D35d' };
+    const sazba = sazbaMap[activeTarif];
+    const silovaConf = SILOVA[sazba];
+
+    // Jednoducha: předpokládáme veškerou spotřebu jako VT
+    const nakladSilova = spotreba * silovaConf.vt;
+    const nakladStalat = STALAT * 12;
+
+    // Distribuce (bez DPH → přidáme DPH)
+    const distVT   = (DIST_VT[dist][sazba] || 0) * spotreba;
+    const distNT   = 0; // jednoducha nezná NT
+    const sys      = SYS * spotreba;
+    const dan      = DAN * spotreba;
+    const ni       = NI * 12;
+    const jistikVal = (JISTIC[dist][sazba] ? (JISTIC[dist][sazba][10] || 0) : 0) * 12; // default 3x10A
+    const distribuce = withDph(distVT + distNT + sys + dan + ni + jistikVal);
+
+    const total = nakladSilova + nakladStalat + distribuce;
 
     document.getElementById('r-rocni').textContent   = formatKc(total) + ' / rok';
     document.getElementById('r-mesicni').textContent  = formatKc(total / 12) + ' / měsíc';
     document.getElementById('r-silova').textContent   = formatKc(nakladSilova);
     document.getElementById('r-stalat').textContent   = formatKc(nakladStalat);
+    document.getElementById('r-distribuce') && (document.getElementById('r-distribuce').textContent = formatKc(distribuce));
 
-    const comp = document.getElementById('kalk-comparison');
-    if (soucasnaCena > 0) {
-      const nyni = spotreba * soucasnaCena + nakladStalat;
-      const rozdil = nyni - total;
-      document.getElementById('c-ted').textContent = formatKc(nyni) + ' / rok';
-      document.getElementById('c-ffy').textContent = formatKc(total) + ' / rok';
-      document.getElementById('kalk-saving').innerHTML = rozdil > 0
-        ? '<span class="saving-positive">Ušetříte přibližně ' + formatKc(rozdil) + ' ročně</span>'
-        : '<span class="saving-neutral">U současného dodavatele platíte o ' + formatKc(Math.abs(rozdil)) + ' méně ročně</span>';
-      comp.style.display = 'block';
-    } else { comp.style.display = 'none'; }
-
+    document.getElementById('kalk-comparison').style.display = 'none';
     const res = document.getElementById('kalk-result');
     res.style.display = 'block';
     res.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+    // Rozklad
+    showRozklad('rozklad-j', {
+      silova:  nakladSilova,
+      stalat:  nakladStalat,
+      distMwh: withDph(distVT + distNT + sys + dan),
+      distMes: withDph(ni + jistikVal * 12),
+      dane:    0,
+      spotreba: spotreba,
+    });
   });
-  document.getElementById('spotreba').addEventListener('keydown', e => {
-    if (e.key === 'Enter') document.getElementById('kalk-btn').click();
-  });
+  document.getElementById('spotreba').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('kalk-btn').click(); });
 
   // ── Přesná kalkulačka ──
-  let activeSazba = 'D01d', activeJistic = '10';
+  let activeSazba = 'D01d', activeJistic = 10;
 
   function updateTarifFields() {
-    const cfg = TARIF_CONFIG[activeSazba] || { vt: true, nt: true };
-    const vtWrap = document.getElementById('vt-wrap');
-    const ntWrap = document.getElementById('nt-wrap');
-    const srovVt = document.getElementById('srovnani-vt-wrap');
-    const srovNt = document.getElementById('srovnani-nt-wrap');
-
-    vtWrap.style.display = cfg.vt ? '' : 'none';
-    ntWrap.style.display = cfg.nt ? '' : 'none';
-    if (srovVt) srovVt.style.display = cfg.vt ? '' : 'none';
-    if (srovNt) srovNt.style.display = cfg.nt ? '' : 'none';
-
-    // Clear hidden fields
-    if (!cfg.vt) document.getElementById('spotreba-vt').value = '';
-    if (!cfg.nt) document.getElementById('spotreba-nt').value = '';
+    const cfg = SILOVA[activeSazba];
+    const ntVis = cfg && cfg.nt !== null;
+    document.getElementById('vt-wrap').style.display = '';
+    document.getElementById('nt-wrap').style.display = ntVis ? '' : 'none';
+    if (!ntVis) document.getElementById('spotreba-nt').value = '';
   }
 
   document.querySelectorAll('[data-sazba]').forEach(b => b.addEventListener('click', () => {
     document.querySelectorAll('[data-sazba]').forEach(x => x.classList.remove('active'));
-    b.classList.add('active'); activeSazba = b.dataset.sazba;
-    updateTarifFields();
+    b.classList.add('active'); activeSazba = b.dataset.sazba; updateTarifFields();
   }));
-
   document.querySelectorAll('[data-jistic]').forEach(b => b.addEventListener('click', () => {
     document.querySelectorAll('[data-jistic]').forEach(x => x.classList.remove('active'));
-    b.classList.add('active'); activeJistic = b.dataset.jistic;
+    b.classList.add('active'); activeJistic = parseInt(b.dataset.jistic);
   }));
 
-  // Init VT/NT fields
   updateTarifFields();
 
   document.getElementById('kalk-btn2').addEventListener('click', async () => {
     await loadPsc();
-    showPscResult('psc-s', 'psc-s-result');
+    const dist = showPscResult('psc-s', 'psc-s-result') || 'cez';
 
-    const vt     = parseFloat(document.getElementById('spotreba-vt').value) || 0;
-    const nt     = parseFloat(document.getElementById('spotreba-nt').value) || 0;
-    const cenaVT = parseFloat(document.getElementById('s2-cena-vt').value) || 0;
-    const cenaNT = parseFloat(document.getElementById('s2-cena-nt').value) || 0;
+    const vt = parseFloat(document.getElementById('spotreba-vt').value) || 0;
+    const nt = parseFloat(document.getElementById('spotreba-nt').value) || 0;
     if (!vt && !nt) { document.getElementById('spotreba-vt').focus(); return; }
 
-    const cenaSilova   = CENY.silova[activeSazba] || 3386.79;
-    const nakladVT     = vt * cenaSilova;
-    const nakladNT     = nt * cenaSilova;
-    const nakladStalat = CENY.stalat * 12;
-    const total        = nakladVT + nakladNT + nakladStalat;
+    const celkem = vt + nt;
+    const silovaConf = SILOVA[activeSazba];
+
+    // Dodavatel
+    const nakladVT    = vt * silovaConf.vt;
+    const nakladNT    = nt * (silovaConf.nt || 0);
+    const nakladStalat = STALAT * 12;
+
+    // Distribuce (bez DPH)
+    const distVT  = (DIST_VT[dist][activeSazba] || 0) * vt;
+    const distNT  = nt > 0 ? ((DIST_NT[dist] && DIST_NT[dist][activeSazba]) || 0) * nt : 0;
+    const sys     = SYS * celkem;
+    const dan     = DAN * celkem;
+    const ni      = NI * 12;
+    const jistikVal = (JISTIC[dist][activeSazba] && JISTIC[dist][activeSazba][activeJistic]) || 0;
+    const jistikRoc  = jistikVal * 12;
+    const distribuce = withDph(distVT + distNT + sys + dan + ni + jistikRoc);
+
+    const dodavatel = nakladVT + nakladNT + nakladStalat;
+    const total = dodavatel + distribuce;
 
     document.getElementById('r2-rocni').textContent   = formatKc(total) + ' / rok';
     document.getElementById('r2-mesicni').textContent  = formatKc(total / 12) + ' / měsíc';
-    document.getElementById('r2-vt').textContent       = vt ? formatKc(nakladVT)  : '—';
-    document.getElementById('r2-nt').textContent       = nt ? formatKc(nakladNT)  : '—';
+    document.getElementById('r2-vt').textContent       = vt ? formatKc(nakladVT) : '—';
+    document.getElementById('r2-nt').textContent       = nt ? formatKc(nakladNT) : '—';
     document.getElementById('r2-stalat').textContent   = formatKc(nakladStalat);
+    document.getElementById('r2-distribuce') && (document.getElementById('r2-distribuce').textContent = formatKc(distribuce));
 
-    const comp2 = document.getElementById('kalk-comparison2');
-    if (cenaVT > 0 || cenaNT > 0) {
-      const nyni   = vt * (cenaVT || cenaSilova) + nt * (cenaNT || cenaSilova) + nakladStalat;
-      const rozdil = nyni - total;
-      document.getElementById('c2-ted').textContent = formatKc(nyni) + ' / rok';
-      document.getElementById('c2-ffy').textContent = formatKc(total) + ' / rok';
-      document.getElementById('kalk-saving2').innerHTML = rozdil > 0
-        ? '<span class="saving-positive">Ušetříte přibližně ' + formatKc(rozdil) + ' ročně</span>'
-        : '<span class="saving-neutral">Ceny jsou srovnatelné nebo u nás o ' + formatKc(Math.abs(rozdil)) + ' vyšší</span>';
-      comp2.style.display = 'block';
-    } else { comp2.style.display = 'none'; }
-
+    document.getElementById('kalk-comparison2').style.display = 'none';
     const res2 = document.getElementById('kalk-result2');
     res2.style.display = 'block';
     res2.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+    // Rozklad
+    showRozklad('rozklad-s', {
+      silova:  nakladVT + nakladNT,
+      stalat:  nakladStalat,
+      distMwh: withDph(distVT + distNT + sys + dan),
+      distMes: withDph(ni + jistikRoc),
+      dane:    0,
+      spotreba: celkem,
+    });
   });
+
+  // ── Rozklad ceny ──
+  function drawPie(svgId, segments) {
+    // segments: [{color, pct}]
+    const svg = document.getElementById(svgId);
+    if (!svg) return;
+    svg.innerHTML = '';
+    const cx = 90, cy = 90, R = 78, r = 42;
+    let angle = -Math.PI / 2;
+    segments.forEach(seg => {
+      if (seg.pct <= 0) return;
+      const a = seg.pct * 2 * Math.PI;
+      const x1 = cx + R * Math.cos(angle), y1 = cy + R * Math.sin(angle);
+      const x2 = cx + R * Math.cos(angle + a), y2 = cy + R * Math.sin(angle + a);
+      const xi1 = cx + r * Math.cos(angle), yi1 = cy + r * Math.sin(angle);
+      const xi2 = cx + r * Math.cos(angle + a), yi2 = cy + r * Math.sin(angle + a);
+      const large = a > Math.PI ? 1 : 0;
+      const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+      path.setAttribute('d', `M${xi1},${yi1} L${x1},${y1} A${R},${R} 0 ${large},1 ${x2},${y2} L${xi2},${yi2} A${r},${r} 0 ${large},0 ${xi1},${yi1} Z`);
+      path.setAttribute('fill', seg.color);
+      svg.appendChild(path);
+      angle += a;
+    });
+    // Center circle background
+    const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    circle.setAttribute('cx', cx); circle.setAttribute('cy', cy);
+    circle.setAttribute('r', r); circle.setAttribute('fill', '#daeafe');
+    svg.appendChild(circle);
+  }
+
+  function showRozklad(rid, data) {
+    // data: { silova, stalat, distMwh, distMes, dane, celkem, spotreba }
+    const el = document.getElementById(rid);
+    if (!el) return;
+    const total = data.silova + data.stalat + data.distMwh + data.distMes + data.dane;
+    const pct = v => total > 0 ? v / total : 0;
+    const fmt = v => Math.round(v).toLocaleString('cs-CZ') + ' Kč';
+    const fmtPct = v => Math.round(v * 100) + ' %';
+
+    // Fill values
+    const set = (id, val) => { const e = document.getElementById(id); if(e) e.textContent = val; };
+    set(rid+'-p-silova',     fmt(data.silova));
+    set(rid+'-p-silova-pct', fmtPct(pct(data.silova)));
+    set(rid+'-p-stalat',     fmt(data.stalat));
+    set(rid+'-p-stalat-pct', fmtPct(pct(data.stalat)));
+    set(rid+'-p-distmwh',    fmt(data.distMwh));
+    set(rid+'-p-distmwh-pct',fmtPct(pct(data.distMwh)));
+    set(rid+'-p-distmes',    fmt(data.distMes));
+    set(rid+'-p-distmes-pct',fmtPct(pct(data.distMes)));
+    set(rid+'-p-dane',       fmt(data.dane));
+    set(rid+'-p-dane-pct',   fmtPct(pct(data.dane)));
+    set(rid+'-total',        fmt(total));
+
+    const mwhPrice = data.spotreba > 0 ? Math.round(total / data.spotreba) : 0;
+    set(rid+'-mwh', mwhPrice.toLocaleString('cs-CZ') + ' Kč');
+
+    // Draw pie
+    drawPie(rid+'-svg', [
+      { color: '#44e6a3', pct: pct(data.silova)  },
+      { color: '#31c486', pct: pct(data.stalat)   },
+      { color: '#5a7090', pct: pct(data.distMwh)  },
+      { color: '#122d4f', pct: pct(data.distMes)  },
+      { color: '#c2d4ee', pct: pct(data.dane)     },
+    ]);
+
+    el.style.display = 'block';
+  }
+
+  function printRozklad(rid) {
+    const el = document.getElementById(rid);
+    if (!el) return;
+    const win = window.open('', '_blank');
+    win.document.write(`<!DOCTYPE html><html><head>
+      <meta charset="UTF-8">
+      <title>Rozklad ceny — FREE for YOU</title>
+      <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+      <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Ubuntu, sans-serif; background: #f4f7fd; color: #122d4f; padding: 32px; }
+        .print-header { background: linear-gradient(135deg,#214470,#2f364a); color: white; border-radius: 12px; padding: 18px 24px; margin-bottom: 24px; display:flex; align-items:center; justify-content:space-between; }
+        .print-logo { font-size: 16px; font-weight: 700; }
+        .print-sub { font-size: 11px; opacity: 0.55; margin-top: 2px; }
+        .print-title { font-size: 13px; opacity: 0.8; }
+      </style>
+    </head><body>
+    <div class="print-header">
+      <div><div class="print-logo">FREE for YOU energie</div><div class="print-sub">S námi jste volní</div></div>
+      <div class="print-title">Orientační rozklad ceny energie</div>
+    </div>
+    ${el.outerHTML}
+    <script>window.onload=()=>{window.print();window.close();}<\/script>
+    </body></html>`);
+    win.document.close();
+  }
 
 </script>
 

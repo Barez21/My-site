@@ -6274,3 +6274,112 @@
   .kalk-result-main-row { grid-template-columns: 1fr; gap: 1.25rem; }
   .kalk-result-breakdown { border-left: none; padding-left: 0; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1rem; }
 }
+
+/* ── Rozklad ceny ── */
+.rozklad {
+  margin-top: 2rem;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.03);
+}
+
+.rozklad-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.rozklad-title {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--accent);
+}
+.rozklad-print-btn {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 7px; padding: 6px 14px;
+  font-family: inherit; font-size: 0.78rem; font-weight: 500;
+  color: rgba(255,255,255,0.55); cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.rozklad-print-btn:hover {
+  background: rgba(255,255,255,0.1); color: white;
+  border-color: rgba(255,255,255,0.2);
+}
+
+.rozklad-body {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 2rem;
+  padding: 1.5rem;
+  align-items: center;
+}
+
+.rozklad-chart { display: flex; justify-content: center; }
+
+.rozklad-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+.rozklad-col-title {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: rgba(255,255,255,0.3);
+  margin-bottom: 0.75rem; padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.rozklad-row {
+  display: grid;
+  grid-template-columns: 12px 1fr auto auto;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.rozklad-row:last-child { border-bottom: none; }
+.rozklad-dot {
+  width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0;
+}
+.rozklad-lbl { font-size: 0.8rem; color: rgba(255,255,255,0.55); font-weight: 300; }
+.rozklad-val { font-size: 0.82rem; font-weight: 600; color: rgba(255,255,255,0.75); text-align: right; white-space: nowrap; }
+.rozklad-pct {
+  font-size: 0.72rem; color: rgba(255,255,255,0.3);
+  min-width: 36px; text-align: right; font-weight: 400;
+}
+
+.rozklad-total {
+  padding: 0.85rem 1.5rem;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  font-size: 0.85rem; color: rgba(255,255,255,0.45); font-weight: 300;
+}
+.rozklad-total strong { color: white; font-weight: 700; }
+
+.rozklad-note {
+  padding: 0.6rem 1.5rem 1rem;
+  font-size: 0.72rem; color: rgba(255,255,255,0.2); font-weight: 300;
+}
+
+/* Light mode */
+[data-theme="light"] .rozklad { background: #fff; border-color: rgba(33,69,113,0.1); }
+[data-theme="light"] .rozklad-header { border-bottom-color: rgba(33,69,113,0.08); }
+[data-theme="light"] .rozklad-print-btn { background: rgba(33,69,113,0.05); border-color: rgba(33,69,113,0.12); color: #3A5A7A; }
+[data-theme="light"] .rozklad-print-btn:hover { background: rgba(33,69,113,0.1); color: #0E1E2F; }
+[data-theme="light"] .rozklad-col-title { color: rgba(14,30,47,0.4); border-bottom-color: rgba(33,69,113,0.08); }
+[data-theme="light"] .rozklad-row { border-bottom-color: rgba(33,69,113,0.06); }
+[data-theme="light"] .rozklad-lbl { color: #3A5A7A; }
+[data-theme="light"] .rozklad-val { color: #0E1E2F; }
+[data-theme="light"] .rozklad-pct { color: rgba(14,30,47,0.3); }
+[data-theme="light"] .rozklad-total { border-top-color: rgba(33,69,113,0.08); color: #3A6298; }
+[data-theme="light"] .rozklad-total strong { color: #0E1E2F; }
+[data-theme="light"] .rozklad-note { color: rgba(14,30,47,0.3); }
+
+@media (max-width: 700px) {
+  .rozklad-body { grid-template-columns: 1fr; }
+  .rozklad-cols { grid-template-columns: 1fr; }
+  .rozklad-chart { display: none; }
+}
+
+/* Print styles */
+@media print {
+  .rozklad-print-btn { display: none; }
+  .rozklad { border: 1px solid #c2d4ee; }
+}
