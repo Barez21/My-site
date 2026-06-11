@@ -4720,3 +4720,21 @@
 @media (max-width: 600px) {
   .eb-features { grid-template-columns: 1fr; }
 }
+
+/* ── Review source link ── */
+.review-source-link {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.25);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: color .15s;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding-top: 0.6rem;
+  width: 100%;
+}
+.review-source-link:hover { color: var(--accent); }
+[data-theme="light"] .review-source-link { color: rgba(14,30,47,0.3); border-top-color: rgba(33,69,113,0.08); }
+[data-theme="light"] .review-source-link:hover { color: var(--green-dark); }
