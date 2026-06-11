@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FREE for YOU — Stabilní energie bez zbytečné marže</title>
-<meta name="description" content="Regulovaný obchodník s energiemi s licencí ERÚ. Polovinu zisku investujeme zpět do vlastních zdrojů energie — a směřujeme tak k nákladové ceně. Přechod vyřídíme za Vás, bez přerušení dodávky.">
+<title>FREE for YOU energie — Stabilní energie bez zbytečné marže</title>
+<meta name="description" content="Regulovaný obchodník s energiemi s licencí ERÚ. Polovinu zisku investujeme zpět do vlastních zdrojů — a směřujeme k nákladové ceně energie. Přechod vyřídíme za Vás, bez přerušení dodávky.">
 <meta name="theme-color" content="#214571">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="cs_CZ">
-<meta property="og:title" content="FREE for YOU — Stabilní energie bez zbytečné marže">
+<meta property="og:title" content="FREE for YOU energie — Stabilní energie bez zbytečné marže">
 <meta property="og:description" content="Zisk investujeme do vlastních výrobních zdrojů. Čím víc vyrobíme sami, tím stabilnější je Vaše cena. S námi jste volní.">
 <meta property="og:url" content="https://www.freeforyou.cz/">
 <meta name="twitter:card" content="summary_large_image">
@@ -275,7 +275,7 @@
     <div class="how-note">
       <div class="how-note-text">
         <strong>Nic nepřerušujeme. Nic neinstalujete. Jen změníte dodavatele.</strong><br>
-        Jednoduché. Žádné instalace krabiček navíc. Elektřina dál teče do Vaší zásuvky přesně tak, jak jste zvyklí — jen od dodavatele, který ji neprodražuje zbytečnou marží.
+        Jednoduché. Žádné boxy navíc. Elektřina dál teče do Vaší zásuvky přesně tak, jak jste zvyklí — jen od dodavatele, který ji neprodražuje zbytečnou marží.
       </div>
     </div>
   </div>
@@ -515,13 +515,13 @@
   <div class="section-inner">
     <div class="contact-wrapper">
       <div class="contact-left">
-        <div class="section-label">Nezodpověděli jsme Vaši otázku?</div>
+        <div class="section-label">Nezodpověděli jsme Vás?</div>
         <h2 class="section-title light">Ozvěte se nám.<br><em class="contact-em">Odpovídá člověk.</em></h2>
-        <p class="section-sub light">Žádná ústředna a přepojování. Žádné čekání ve frontě. Žádný robot. Buď telefon zvedne rovnou kolega — nebo se Vám ozveme obratem.</p>
+        <p class="section-sub light">Žádná hlasová ústředna. Žádné čekání na frontu. Buď telefon zvedne rovnou kolega — nebo se Vám ozveme obratem.</p>
         <div class="contact-promise">
           <div class="promise-item">
             <span class="promise-dot"></span>
-            Telefon zvedáme osobně, ne robot, ne zmáčkněte 1 pro...
+            Telefon zvedáme osobně, ne robot
           </div>
           <div class="promise-item">
             <span class="promise-dot"></span>
@@ -556,7 +556,7 @@
             <div class="channel-body">
               <div class="channel-label">WhatsApp</div>
               <div class="channel-value">Napsat zprávu</div>
-              <div class="channel-note">Napište kdykoli</div>
+              <div class="channel-note">Napište kdykoli · Odpovíme obratem</div>
             </div>
           </a>
 
