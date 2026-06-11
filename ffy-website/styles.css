@@ -4738,3 +4738,134 @@
 .review-source-link:hover { color: var(--accent); }
 [data-theme="light"] .review-source-link { color: rgba(14,30,47,0.3); border-top-color: rgba(33,69,113,0.08); }
 [data-theme="light"] .review-source-link:hover { color: var(--green-dark); }
+
+/* ── Náš příběh — stats ── */
+.pribeh-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 2rem 0;
+}
+.pribeh-stat {
+  padding: 1.5rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+  text-align: center;
+}
+.pribeh-stat-num {
+  font-size: 1.6rem; font-weight: 700;
+  color: var(--accent); line-height: 1;
+  letter-spacing: -0.02em; margin-bottom: 0.4rem;
+}
+.pribeh-stat-label {
+  font-size: 0.78rem; color: rgba(255,255,255,0.38);
+  font-weight: 300; line-height: 1.4;
+}
+[data-theme="light"] .pribeh-stat { background: #fff; border-color: rgba(33,69,113,0.1); }
+[data-theme="light"] .pribeh-stat-num { color: var(--green-dark); }
+[data-theme="light"] .pribeh-stat-label { color: #3A6298; }
+
+@media (max-width: 600px) {
+  .pribeh-stats { grid-template-columns: 1fr; }
+}
+
+/* ── Příběh — break quote ── */
+.pribeh-break {
+  margin: 0.5rem 0;
+  padding: 2rem 2.5rem;
+  border-left: 3px solid var(--accent);
+  background: rgba(69,231,163,0.05);
+  border-radius: 0 12px 12px 0;
+}
+.pribeh-break-small { padding: 1.5rem 2rem; }
+.pribeh-break-text {
+  font-size: 1.1rem; font-weight: 600;
+  color: white; line-height: 1.5;
+  font-style: italic;
+}
+.pribeh-break-small .pribeh-break-text {
+  font-size: 0.92rem; font-weight: 400;
+  color: rgba(255,255,255,0.55); font-style: normal;
+}
+
+[data-theme="light"] .pribeh-break { background: rgba(69,231,163,0.07); border-left-color: var(--green-dark); }
+[data-theme="light"] .pribeh-break-text { color: #0E1E2F; }
+[data-theme="light"] .pribeh-break-small .pribeh-break-text { color: #3A6298; }
+
+/* ── Náš příběh — narativní layout ── */
+.pribeh-section { padding: 64px 0 80px; }
+.pribeh-inner {
+  width: min(720px, 100%);
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Prose text */
+.pribeh-prose {
+  display: flex; flex-direction: column; gap: 1.1rem;
+  margin-bottom: 1rem;
+}
+.pribeh-prose p {
+  font-size: 1.02rem; color: rgba(255,255,255,0.68);
+  font-weight: 300; line-height: 1.85; margin: 0;
+}
+.pribeh-prose strong { color: rgba(255,255,255,0.88); font-weight: 600; }
+
+/* Chapter header */
+.pribeh-chapter { margin: 2.5rem 0 0; }
+.pribeh-chapter-last { margin-bottom: 0.5rem; }
+.pribeh-chapter-label {
+  font-size: 0.62rem; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+/* Pull quote */
+.pribeh-break { margin: 3rem 0; }
+.pribeh-break-final { margin-bottom: 0.5rem; }
+.pribeh-break-inner {
+  display: flex; flex-direction: column; align-items: center; gap: 1rem;
+}
+.pribeh-break-line {
+  width: 40px; height: 1px; background: rgba(69,231,163,0.35);
+}
+.pribeh-quote {
+  font-size: 1.25rem; font-weight: 400; font-style: italic;
+  color: rgba(255,255,255,0.75); text-align: center;
+  line-height: 1.55; margin: 0; max-width: 540px;
+  quotes: "\201E" "\201C";
+}
+.pribeh-quote::before { content: open-quote; color: var(--accent); margin-right: 2px; }
+.pribeh-quote::after  { content: close-quote; color: var(--accent); margin-left: 2px; }
+.pribeh-quote-sm { font-size: 1rem; color: rgba(255,255,255,0.55); }
+
+/* Breakthrough moment */
+.pribeh-breakthrough {
+  margin: 3rem 0 2.5rem;
+  text-align: center;
+  padding: 2.5rem 1rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.pribeh-breakthrough-word {
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  font-weight: 800; color: var(--accent);
+  letter-spacing: -0.03em; line-height: 1;
+  margin-bottom: 1rem;
+}
+.pribeh-breakthrough-sub {
+  font-size: 0.95rem; color: rgba(255,255,255,0.45);
+  font-weight: 300; line-height: 1.65;
+  max-width: 480px; margin: 0 auto;
+}
+
+/* Light mode */
+[data-theme="light"] .pribeh-prose p { color: #3A5A7A; }
+[data-theme="light"] .pribeh-prose strong { color: #0E1E2F; }
+[data-theme="light"] .pribeh-quote { color: #0E1E2F; }
+[data-theme="light"] .pribeh-quote-sm { color: #3A6298; }
+[data-theme="light"] .pribeh-break-line { background: rgba(69,231,163,0.5); }
+[data-theme="light"] .pribeh-breakthrough { border-color: rgba(33,69,113,0.1); }
+[data-theme="light"] .pribeh-breakthrough-word { color: var(--green-dark); }
+[data-theme="light"] .pribeh-breakthrough-sub { color: #3A6298; }
