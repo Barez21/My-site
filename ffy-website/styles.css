@@ -2663,11 +2663,11 @@
   }
 
   /* FAQ items */
-  .faq-item:hover { border-color: rgba(255,255,255,0.12); }
-  .faq-item.open { border-color: rgba(69,231,163,0.2); }
+  .faq-item:hover { border-color: rgba(33,69,113,0.2); }
+  .faq-item.open { border-color: rgba(69,231,163,0.35); }
 
-  .faq-q:hover { color: white; }
-  .faq-item.open .faq-q { color: white; }
+  .faq-q:hover { color: var(--primary); }
+  .faq-item.open .faq-q { color: #0E1E2F; }
 
   .faq-link {
     color: var(--accent); text-decoration: none; font-weight: 400;
