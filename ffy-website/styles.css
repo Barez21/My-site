@@ -4869,3 +4869,89 @@
 [data-theme="light"] .pribeh-breakthrough { border-color: rgba(33,69,113,0.1); }
 [data-theme="light"] .pribeh-breakthrough-word { color: var(--green-dark); }
 [data-theme="light"] .pribeh-breakthrough-sub { color: #3A6298; }
+
+/* ── Tým v příběhu ── */
+.pribeh-team {
+  margin: 3rem 0 2rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+/* Dvě hlavní karty */
+.pribeh-team-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 1.5rem 0 1.25rem;
+}
+.pribeh-team-card-main {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1.25rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+}
+.pribeh-team-avatar {
+  width: 44px; height: 44px; min-width: 44px;
+  border-radius: 50%;
+  background: rgba(69,231,163,0.1);
+  border: 1px solid rgba(69,231,163,0.2);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.pribeh-team-avatar svg {
+  width: 24px; height: 24px;
+  stroke: var(--accent); opacity: 0.7;
+}
+.pribeh-team-name {
+  font-size: 0.92rem; font-weight: 700;
+  color: rgba(255,255,255,0.85); margin-bottom: 0.15rem;
+}
+.pribeh-team-role {
+  font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--accent); opacity: 0.7; margin-bottom: 0.5rem;
+}
+.pribeh-team-bio {
+  font-size: 0.8rem; color: rgba(255,255,255,0.38);
+  font-weight: 300; line-height: 1.55;
+}
+
+/* Čtyři kompaktní */
+.pribeh-team-rest {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+.pribeh-team-mini {
+  padding: 0.85rem 1rem;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 8px;
+  text-align: center;
+}
+.pribeh-team-mini-name {
+  font-size: 0.82rem; font-weight: 600;
+  color: rgba(255,255,255,0.6); margin-bottom: 0.2rem;
+}
+.pribeh-team-mini-role {
+  font-size: 0.7rem; color: rgba(255,255,255,0.25);
+  font-weight: 300;
+}
+
+/* Light mode */
+[data-theme="light"] .pribeh-team { border-top-color: rgba(33,69,113,0.1); }
+[data-theme="light"] .pribeh-team-card-main { background: #fff; border-color: rgba(33,69,113,0.1); }
+[data-theme="light"] .pribeh-team-avatar { background: rgba(69,231,163,0.1); border-color: rgba(69,231,163,0.25); }
+[data-theme="light"] .pribeh-team-name { color: #0E1E2F; }
+[data-theme="light"] .pribeh-team-bio  { color: #3A6298; }
+[data-theme="light"] .pribeh-team-mini { background: rgba(33,69,113,0.02); border-color: rgba(33,69,113,0.08); }
+[data-theme="light"] .pribeh-team-mini-name { color: #0E1E2F; }
+[data-theme="light"] .pribeh-team-mini-role { color: #3A6298; }
+
+@media (max-width: 680px) {
+  .pribeh-team-main { grid-template-columns: 1fr; }
+  .pribeh-team-rest { grid-template-columns: 1fr 1fr; }
+}
