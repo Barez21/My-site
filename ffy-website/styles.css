@@ -5127,3 +5127,12 @@ textarea {
   .kontakt-grid { grid-template-columns: 1fr; }
   .kontakt-channels { grid-template-columns: 1fr; }
 }
+
+/* ── Dokumenty — disabled stav ── */
+.doc-row-disabled {
+  opacity: 0.4;
+  cursor: default;
+  pointer-events: none;
+}
+.doc-row-disabled .doc-row-dl { display: none; }
+.doc-row-disabled .doc-row-meta { font-style: italic; }

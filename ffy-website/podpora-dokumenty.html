@@ -2,7 +2,7 @@
 <html lang="cs">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Dokumenty — FREE for YOU energie</title>
 <meta name="description" content="FREE for YOU energie — Dokumenty">
 <meta name="theme-color" content="#214571">
@@ -10,6 +10,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,300;0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<style>
+@media (max-width: 860px) {
+  .nav-cta       { display: none !important; }
+  .nav-hamburger { display: flex !important; }
+  .nav-tabs      { display: none !important; }
+}
+</style>
 </head>
 <body>
 
@@ -23,7 +30,8 @@
       <svg class="icon-sun"  width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
     </button>
     <a class="nav-logo" href="index.html">
-      <img src="logo-white.svg" alt="FREE for YOU energie" class="nav-logo-img">
+      <img src="logo-white.svg" alt="FREE for YOU energie" class="nav-logo-img logo-dark-mode">
+      <img src="logo-light.svg" alt="FREE for YOU energie" class="nav-logo-img logo-light-mode">
     </a>
 
     <ul class="nav-tabs">
@@ -93,10 +101,9 @@
       <!-- Col 2: Jak to funguje? -->
       <div class="mega-col" data-col="2">
         <div class="mega-col-label">Jak to funguje?</div>
-        <a href="https://www.energobanking.cz/" target="_blank" class="mega-link mega-link-highlight">
+        <a href="jak-energobanking.html" class="mega-link mega-link-highlight">
           <span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></span>
           <span class="mega-link-body"><strong>Energobanking</strong><span>Váš portál pro správu energie</span></span>
-          <span class="mega-ext-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
         </a>
         <a href="jak-sdileni-elektriny.html" class="mega-link">
           <span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16M3 21v-5h5"/></svg></span>
@@ -146,6 +153,10 @@
 <div class="mobile-drawer" id="mobile-drawer" aria-hidden="true">
   <div class="mobile-drawer-inner">
 
+    <div class="mobile-cta-top">
+      <a href="https://www.energobanking.cz/" target="_blank" class="mobile-cta-energo">Energobanking →</a>
+    </div>
+
     <div class="mobile-section">
       <div class="mobile-section-title">Naše ceny</div>
       <a href="ceny-aktualni-nabidka.html" class="mobile-link">Aktuální nabídka</a>
@@ -163,7 +174,7 @@
 
     <div class="mobile-section">
       <div class="mobile-section-title">Jak to funguje?</div>
-      <a href="https://www.energobanking.cz/" target="_blank" class="mobile-link mobile-link-accent">Energobanking →</a>
+      <a href="jak-energobanking.html" class="mobile-link mobile-link-accent">Energobanking</a>
       <a href="jak-sdileni-elektriny.html" class="mobile-link">Sdílení elektřiny</a>
       <a href="jak-vykup-elektriny.html" class="mobile-link">Výkup elektřiny</a>
       <a href="jak-proudiky.html" class="mobile-link">Proudíky</a>
@@ -206,17 +217,17 @@
           <span class="faq-arrow">▾</span>
         </button>
         <div class="faq-a docs-faq-body">
-          <a href="docs/smlouvy/smlouva-dodavka-elektriny.pdf" class="doc-row" download>
+          <a href="docs/Smlouva-El-FO-Komplet.pdf" class="doc-row" download>
             <div class="doc-row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
-            <div class="doc-row-body"><div class="doc-row-name">Vzorová smlouva o dodávce elektřiny</div><div class="doc-row-meta">PDF · aktuální verze</div></div>
+            <div class="doc-row-body"><div class="doc-row-name">Smlouva o dodávce elektřiny</div><div class="doc-row-meta">PDF · aktuální verze</div></div>
             <div class="doc-row-dl">Stáhnout</div>
           </a>
-          <a href="docs/smlouvy/smlouva-dodavka-plynu.pdf" class="doc-row" download>
+          <a href="#" class="doc-row doc-row-disabled">
             <div class="doc-row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
             <div class="doc-row-body"><div class="doc-row-name">Vzorová smlouva o dodávce plynu</div><div class="doc-row-meta">PDF · aktuální verze</div></div>
             <div class="doc-row-dl">Stáhnout</div>
           </a>
-          <a href="docs/smlouvy/smlouva-vykup-elektriny.pdf" class="doc-row" download>
+          <a href="#" class="doc-row doc-row-disabled">
             <div class="doc-row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 14l2 2 4-4"/></svg></div>
             <div class="doc-row-body"><div class="doc-row-name">Vzorová smlouva o výkupu elektřiny</div><div class="doc-row-meta">PDF · aktuální verze</div></div>
             <div class="doc-row-dl">Stáhnout</div>
@@ -230,12 +241,12 @@
           <span class="faq-arrow">▾</span>
         </button>
         <div class="faq-a docs-faq-body">
-          <a href="docs/pm/plna-moc-zmena-dodavatele.pdf" class="doc-row" download>
+          <a href="#" class="doc-row doc-row-disabled">
             <div class="doc-row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 14l2 2 4-4"/></svg></div>
             <div class="doc-row-body"><div class="doc-row-name">Plná moc — změna dodavatele</div><div class="doc-row-meta">PDF · aktuální verze</div></div>
             <div class="doc-row-dl">Stáhnout</div>
           </a>
-          <a href="docs/pm/plna-moc-prepis.pdf" class="doc-row" download>
+          <a href="#" class="doc-row doc-row-disabled">
             <div class="doc-row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 14l2 2 4-4"/></svg></div>
             <div class="doc-row-body"><div class="doc-row-name">Plná moc — přepis odběrného místa</div><div class="doc-row-meta">PDF · aktuální verze</div></div>
             <div class="doc-row-dl">Stáhnout</div>
@@ -249,12 +260,12 @@
           <span class="faq-arrow">▾</span>
         </button>
         <div class="faq-a docs-faq-body">
-          <a href="docs/faktury/vzor-faktury-elektrina.pdf" class="doc-row" download>
+          <a href="docs/Faktura_elektrika_nedoplatek (kopie).pdf" class="doc-row" download>
             <div class="doc-row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h4"/></svg></div>
             <div class="doc-row-body"><div class="doc-row-name">Vzorová faktura — elektřina</div><div class="doc-row-meta">PDF · ukázka vyúčtování</div></div>
             <div class="doc-row-dl">Stáhnout</div>
           </a>
-          <a href="docs/faktury/vzor-faktury-plyn.pdf" class="doc-row" download>
+          <a href="#" class="doc-row doc-row-disabled">
             <div class="doc-row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h4"/></svg></div>
             <div class="doc-row-body"><div class="doc-row-name">Vzorová faktura — plyn</div><div class="doc-row-meta">PDF · ukázka vyúčtování</div></div>
             <div class="doc-row-dl">Stáhnout</div>
@@ -268,17 +279,17 @@
           <span class="faq-arrow">▾</span>
         </button>
         <div class="faq-a docs-faq-body">
-          <a href="docs/op/vseobecne-obchodni-podminky.pdf" class="doc-row" download>
+          <a href="docs/Všeobecné obchodní podmínky- Komplet.pdf" class="doc-row" download>
             <div class="doc-row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
             <div class="doc-row-body"><div class="doc-row-name">Všeobecné obchodní podmínky</div><div class="doc-row-meta">PDF · platné od 1. 11. 2023</div></div>
             <div class="doc-row-dl">Stáhnout</div>
           </a>
-          <a href="docs/op/podminky-systemu-ffy.pdf" class="doc-row" download>
+          <a href="#" class="doc-row doc-row-disabled">
             <div class="doc-row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
             <div class="doc-row-body"><div class="doc-row-name">Podmínky systému FREE for YOU</div><div class="doc-row-meta">PDF · platné od 1. 11. 2023</div></div>
             <div class="doc-row-dl">Stáhnout</div>
           </a>
-          <a href="docs/op/ochrana-osobnich-udaju.pdf" class="doc-row" download>
+          <a href="#" class="doc-row doc-row-disabled">
             <div class="doc-row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
             <div class="doc-row-body"><div class="doc-row-name">Ochrana osobních údajů (GDPR)</div><div class="doc-row-meta">PDF · aktuální verze</div></div>
             <div class="doc-row-dl">Stáhnout</div>
