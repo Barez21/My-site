@@ -260,12 +260,12 @@
   .mega-backdrop.visible { display: block; }
 
   @media (max-width: 860px) {
-    .nav-tabs   { display: none; }
-    .mega-panel { display: none !important; }
-    .nav-bar    { justify-content: space-between; padding: 0 1.25rem; }
-    .nav-hamburger { display: flex; }
-    .nav-cta    { display: none; }
-    .theme-toggle { margin-right: 0; }
+    .nav-tabs      { display: none; }
+    .mega-panel    { display: none !important; }
+    .nav-bar       { justify-content: space-between; padding: 0 1.25rem; }
+    .nav-hamburger { display: flex !important; }
+    .nav-cta       { display: none !important; }
+    .theme-toggle  { margin-right: 0; }
   }
 
   /* ─── HERO ─── */
