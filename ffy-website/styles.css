@@ -76,9 +76,8 @@
   [data-theme="light"] .logo-dark-mode  { display: none; }
 
   /* Logo switching — mobile/desktop */
-  .logo-icon-wrap { display: none; align-items: center; }
-  .logo-icon-wrap img { height: 36px; width: auto; }
-  .logo-full { display: flex; align-items: center; }
+  .logo-icon-wrap { display: none; }
+  .logo-full      { display: block; }
 
   /* Menu tabs — evenly fill the middle space */
   .nav-tabs {
@@ -272,9 +271,10 @@
     .nav-cta { display: none; }
     .theme-toggle { margin-right: 0; }
 
-    /* Přepnutí na kompaktní logo */
-    .logo-full  { display: none !important; }
-    .logo-icon-wrap { display: flex !important; }
+    /* Logo přepnutí na ikonu */
+    .logo-full      { display: none; }
+    .logo-icon-wrap { display: block; }
+    .logo-icon-wrap img { height: 36px; width: auto; }
   }
 
   /* ─── HERO ─── */
