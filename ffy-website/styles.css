@@ -1917,6 +1917,24 @@
   [data-theme="light"] .rozklad-total strong { color: #0E1E2F; }
   [data-theme="light"] .rozklad-note { color: rgba(14,30,47,0.35); }
 
+  /* ── Dokumenty light mode — force override ── */
+  [data-theme="light"] .docs-list-section { background: var(--bg); }
+  [data-theme="light"] .docs-group { border-bottom-color: rgba(33,69,113,0.1); }
+  [data-theme="light"] .docs-group-btn { background: transparent; }
+  [data-theme="light"] .docs-group-title { color: #0E1E2F !important; }
+  [data-theme="light"] .docs-group.is-open .docs-group-title { color: var(--primary) !important; }
+  [data-theme="light"] .docs-group-count { color: rgba(14,30,47,0.35) !important; }
+  [data-theme="light"] .docs-group-arrow { color: rgba(14,30,47,0.35) !important; }
+  [data-theme="light"] .doc-row { border-bottom-color: rgba(33,69,113,0.06); }
+  [data-theme="light"] .doc-row:hover { background: rgba(33,69,113,0.04); }
+  [data-theme="light"] .doc-row-name { color: #0E1E2F !important; }
+  [data-theme="light"] .doc-row-meta { color: rgba(14,30,47,0.4) !important; }
+  [data-theme="light"] .doc-row-icon { background: rgba(33,69,113,0.05) !important; }
+  [data-theme="light"] .doc-row-icon svg { stroke: #3A6298 !important; }
+  [data-theme="light"] .doc-row:hover .doc-row-icon svg { stroke: var(--primary) !important; }
+  [data-theme="light"] .doc-row-dl { color: var(--green-dark) !important; }
+  [data-theme="light"] .docs-intro { color: #3A6298 !important; }
+
   /* ── Footer ── */
   [data-theme="light"] .site-footer { background: var(--footer-bg); border-top-color: rgba(33,69,113,0.12); }
   [data-theme="light"] .footer-tagline { color: rgba(14,30,47,0.45); }
@@ -3652,11 +3670,11 @@
   transition: background .12s;
 }
 .doc-row:last-child { border-bottom: none; margin-bottom: 0.5rem; }
-.doc-row:hover { background: rgba(255,255,255,0.05); }
+.doc-row:hover { background: var(--doc-icon-bg, rgba(255,255,255,0.05)); }
 
 .doc-row-icon {
   width: 34px; height: 34px; min-width: 34px;
-  background: rgba(255,255,255,0.05);
+  background: var(--doc-icon-bg, rgba(255,255,255,0.05));
   border-radius: 7px;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
@@ -3672,11 +3690,11 @@
 .doc-row-body { flex: 1; }
 .doc-row-name {
   font-size: 0.88rem; font-weight: 500;
-  color: rgba(255,255,255,0.72);
+  color: var(--doc-name-color, rgba(255,255,255,0.72));
   margin-bottom: 0.1rem;
 }
 .doc-row-meta {
-  font-size: 0.72rem; color: rgba(255,255,255,0.22); font-weight: 300;
+  font-size: 0.72rem; color: var(--doc-meta-color, rgba(255,255,255,0.22)); font-weight: 300;
 }
 
 .doc-row-dl {
@@ -3689,9 +3707,13 @@
 
 [data-theme="light"] .doc-row { border-bottom-color: rgba(33,69,113,0.06); }
 [data-theme="light"] .doc-row:hover { background: rgba(33,69,113,0.04); }
+[data-theme="light"] { --doc-icon-bg: rgba(33,69,113,0.05); --doc-icon-stroke: #3A6298; }
 [data-theme="light"] .doc-row-icon { background: rgba(33,69,113,0.05); }
 [data-theme="light"] .doc-row-icon svg { stroke: #3A6298; }
+[data-theme="light"] .doc-row-name { color: #0E1E2F !important; }
+[data-theme="light"] .doc-row-meta { color: rgba(14,30,47,0.4) !important; }
 [data-theme="light"] .doc-row:hover .doc-row-icon svg { stroke: var(--primary); }
+[data-theme="light"] { --doc-name-color: #0E1E2F; --doc-meta-color: rgba(14,30,47,0.4); }
 [data-theme="light"] .doc-row-name { color: #0E1E2F; }
 [data-theme="light"] .doc-row-meta { color: rgba(14,30,47,0.35); }
 
@@ -5136,3 +5158,137 @@ textarea {
 }
 .doc-row-disabled .doc-row-dl { display: none; }
 .doc-row-disabled .doc-row-meta { font-style: italic; }
+
+/* ── PDF Modal ── */
+.pdf-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+.pdf-modal.is-open { display: flex; }
+
+.pdf-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(8,16,26,0.85);
+  backdrop-filter: blur(4px);
+  cursor: pointer;
+}
+
+.pdf-modal-box {
+  position: relative;
+  z-index: 1;
+  width: min(900px, 100%);
+  height: min(85vh, 1000px);
+  background: #1a2a3a;
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+  animation: modalIn .22s cubic-bezier(0.16,1,0.3,1);
+}
+@keyframes modalIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+
+.pdf-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.25rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.03);
+}
+.pdf-modal-title {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.75);
+}
+.pdf-modal-close {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 6px;
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  color: rgba(255,255,255,0.5);
+  transition: background .15s, color .15s;
+  flex-shrink: 0;
+}
+.pdf-modal-close:hover { background: rgba(255,255,255,0.12); color: white; }
+
+.pdf-modal-frame {
+  width: 100%;
+  flex: 1;
+  border: none;
+  background: white;
+}
+
+/* Light mode */
+[data-theme="light"] .pdf-modal-box { background: #ffffff; }
+[data-theme="light"] .pdf-modal-header { background: #f4f7fd; border-bottom-color: rgba(33,69,113,0.12); }
+[data-theme="light"] .pdf-modal-title { color: #0E1E2F; }
+[data-theme="light"] .pdf-modal-close { background: rgba(33,69,113,0.06); border-color: rgba(33,69,113,0.15); color: #3A5A7A; }
+[data-theme="light"] .pdf-modal-close:hover { background: rgba(33,69,113,0.12); color: #0E1E2F; }
+
+@media (max-width: 600px) {
+  .pdf-modal { padding: 0; }
+  .pdf-modal-box { width: 100%; height: 100%; border-radius: 0; }
+}
+
+/* ── Chybějící light mode overrides — kompletní fix ── */
+
+/* Subpage shared */
+[data-theme="light"] .subpage-breadcrumb a { color: rgba(255,255,255,0.6); }
+[data-theme="light"] .subpage-breadcrumb { color: rgba(255,255,255,0.5); }
+[data-theme="light"] .subpage-h1 { color: white; }
+[data-theme="light"] .subpage-placeholder { color: rgba(255,255,255,0.3); }
+
+/* Kalkulačka */
+[data-theme="light"] .kalk-optional-badge { color: rgba(14,30,47,0.35); background: rgba(33,69,113,0.06); }
+[data-theme="light"] .kalk-comparison-title { color: rgba(14,30,47,0.4) !important; }
+[data-theme="light"] .kalk-comp-arrow { color: rgba(14,30,47,0.2) !important; }
+[data-theme="light"] .kalk-comp-val { color: rgba(14,30,47,0.6) !important; }
+[data-theme="light"] .saving-neutral { color: rgba(14,30,47,0.45) !important; }
+[data-theme="light"] .kalk-tarif-tag { color: rgba(14,30,47,0.3); }
+[data-theme="light"] .kalk-tarif-code { color: rgba(14,30,47,0.25); }
+[data-theme="light"] .kalk-result-title { color: var(--green-dark); }
+[data-theme="light"] .kalk-psc-result.psc-ok { color: var(--green-dark); }
+
+/* Rozklad */
+[data-theme="light"] .rozklad-title { color: var(--green-dark); }
+
+/* Blog */
+[data-theme="light"] .blog-tag { color: var(--green-dark); background: rgba(69,231,163,0.1); border-color: rgba(69,231,163,0.25); }
+[data-theme="light"] .blog-card-read { color: var(--green-dark); }
+[data-theme="light"] .post-meta-top .blog-date { color: rgba(14,30,47,0.4); }
+
+/* Energobanking */
+[data-theme="light"] .eb-feature-title { color: #0E1E2F !important; }
+[data-theme="light"] .eb-feature-desc { color: #3A6298 !important; }
+
+/* Sdílení + výkup */
+[data-theme="light"] .sdileni-block-label { color: var(--green-dark); }
+[data-theme="light"] .pribeh-chapter-label { color: var(--green-dark); }
+
+/* Tým */
+[data-theme="light"] .pribeh-team-role { color: var(--green-dark); opacity: 0.85; }
+
+/* Mobile drawer */
+[data-theme="light"] .mobile-section-title { color: rgba(14,30,47,0.45) !important; }
+[data-theme="light"] .mobile-link { color: #3A5A7A !important; }
+[data-theme="light"] .mobile-link:hover { color: #0E1E2F !important; }
+[data-theme="light"] .mobile-link-accent { color: var(--green-dark) !important; }
+[data-theme="light"] .mobile-drawer { background: #ffffff; }
+[data-theme="light"] .mobile-section { border-bottom-color: rgba(33,69,113,0.08); }
+[data-theme="light"] .mobile-cta-top { border-bottom-color: rgba(33,69,113,0.1); }
+
+/* Kontakt */
+[data-theme="light"] .kontakt-section { background: var(--bg); }

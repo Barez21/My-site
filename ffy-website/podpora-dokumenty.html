@@ -217,7 +217,7 @@
           <span class="faq-arrow">▾</span>
         </button>
         <div class="faq-a docs-faq-body">
-          <a href="docs/Smlouva-El-FO-Komplet.pdf" class="doc-row" download>
+          <a onclick="openPdfModal('docs/smlouvy/Smlouva-El-FO-Komplet.pdf', 'Smlouva o dodávce elektřiny')" href="#" class="doc-row">
             <div class="doc-row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
             <div class="doc-row-body"><div class="doc-row-name">Smlouva o dodávce elektřiny</div><div class="doc-row-meta">PDF · aktuální verze</div></div>
             <div class="doc-row-dl">Stáhnout</div>
@@ -260,7 +260,7 @@
           <span class="faq-arrow">▾</span>
         </button>
         <div class="faq-a docs-faq-body">
-          <a href="docs/Faktura_elektrika_nedoplatek (kopie).pdf" class="doc-row" download>
+          <a onclick="openPdfModal('docs/faktury/Faktura_elektrika_nedoplatek (kopie).pdf', 'Vzorová faktura — elektřina')" href="#" class="doc-row">
             <div class="doc-row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h4"/></svg></div>
             <div class="doc-row-body"><div class="doc-row-name">Vzorová faktura — elektřina</div><div class="doc-row-meta">PDF · ukázka vyúčtování</div></div>
             <div class="doc-row-dl">Stáhnout</div>
@@ -279,7 +279,7 @@
           <span class="faq-arrow">▾</span>
         </button>
         <div class="faq-a docs-faq-body">
-          <a href="docs/Všeobecné obchodní podmínky- Komplet.pdf" class="doc-row" download>
+          <a onclick="openPdfModal('docs/op/Všeobecné obchodní podmínky- Komplet.pdf', 'Všeobecné obchodní podmínky')" href="#" class="doc-row">
             <div class="doc-row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
             <div class="doc-row-body"><div class="doc-row-name">Všeobecné obchodní podmínky</div><div class="doc-row-meta">PDF · platné od 1. 11. 2023</div></div>
             <div class="doc-row-dl">Stáhnout</div>
@@ -299,6 +299,19 @@
     </div>
   </section>
 
+  <!-- PDF Modal -->
+  <div class="pdf-modal" id="pdf-modal">
+    <div class="pdf-modal-backdrop" onclick="closePdfModal()"></div>
+    <div class="pdf-modal-box">
+      <div class="pdf-modal-header">
+        <span class="pdf-modal-title" id="pdf-modal-title"></span>
+        <button class="pdf-modal-close" onclick="closePdfModal()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <iframe class="pdf-modal-frame" id="pdf-modal-frame" src=""></iframe>
+    </div>
+  </div>
 </main>
 
 <!-- FOOTER -->
@@ -527,6 +540,22 @@
     document.querySelectorAll('.docs-group.is-open').forEach(g => g.classList.remove('is-open'));
     if (!isOpen) group.classList.add('is-open');
   }
+
+  // ── PDF Modal ──
+  function openPdfModal(src, title) {
+    document.getElementById('pdf-modal-frame').src = src;
+    document.getElementById('pdf-modal-title').textContent = title;
+    document.getElementById('pdf-modal').classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closePdfModal() {
+    document.getElementById('pdf-modal').classList.remove('is-open');
+    document.getElementById('pdf-modal-frame').src = '';
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closePdfModal();
+  });
 
 </script>
 
