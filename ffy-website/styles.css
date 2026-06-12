@@ -4976,3 +4976,154 @@
   .pribeh-team-main { grid-template-columns: 1fr; }
   .pribeh-team-rest { grid-template-columns: 1fr 1fr; }
 }
+
+/* ══════════════════════════════════════════
+   MOBILE OPTIMALIZACE
+   ══════════════════════════════════════════ */
+
+/* Safe areas (notch, dynamic island) */
+nav {
+  padding-top: env(safe-area-inset-top);
+}
+.mobile-drawer {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Touch targets — min 44px */
+.nav-hamburger {
+  min-width: 44px;
+  min-height: 44px;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+.mobile-link {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 0 1.25rem;
+}
+.kalk-pill,
+.kalk-distrib-btn {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Tap feedback */
+.mobile-link:active,
+.sdileni-btn-primary:active,
+.sdileni-btn-secondary:active,
+.kalk-submit:active,
+.kalk-pill:active,
+.btn-primary:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+  transition: transform 50ms ease, opacity 50ms ease;
+}
+
+/* Prevent iOS zoom on inputs (min 16px) */
+.kalk-input,
+.kform-input,
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="tel"],
+textarea {
+  font-size: max(16px, 1rem) !important;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* ── Mobile breakpoint (≤600px) ── */
+@media (max-width: 600px) {
+
+  /* Typography scale */
+  .subpage-h1  { font-size: 1.75rem; }
+  .hero-headline { font-size: 2rem; line-height: 1.2; }
+  .section-title { font-size: 1.5rem; }
+
+  /* Nav logo menší */
+  .nav-logo-img { height: 34px; }
+
+  /* Hero padding */
+  #hero { padding: 90px 1.25rem 50px; }
+  .subpage-header { padding: 36px 1.25rem 32px; }
+
+  /* Sekce padding */
+  .sdileni-section,
+  .pribeh-section,
+  .kalk-section,
+  .blog-section,
+  .docs-list-section { padding-left: 1.25rem; padding-right: 1.25rem; }
+
+  /* Sdílení bloky — stack na jednom sloupci */
+  .sdileni-block,
+  .sdileni-steps-block { grid-template-columns: 1fr; gap: 0.75rem; padding: 1.75rem 0; }
+
+  /* CTA wrap */
+  .sdileni-cta-wrap { flex-direction: column; align-items: flex-start; padding: 1.25rem; }
+  .sdileni-cta-btns { width: 100%; flex-direction: column; }
+  .sdileni-btn-primary,
+  .sdileni-btn-secondary { width: 100%; text-align: center; padding: 14px 20px; }
+
+  /* Kalkulačka */
+  .kalk-form-row,
+  .kalk-form-row-slozita { grid-template-columns: 1fr; }
+  .kalk-form-two-col    { grid-template-columns: 1fr; }
+  .kalk-result-main-row { grid-template-columns: 1fr; gap: 1rem; }
+  .kalk-result-breakdown { border-left: none; padding-left: 0; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1rem; }
+  .kalk-wide-inner { padding: 1.5rem 1.25rem 0; }
+  .kalk-tabs-nav { padding: 0 1.25rem; }
+  .kalk-distrib-grid { grid-template-columns: 1fr 1fr 1fr; }
+
+  /* Blog */
+  .blog-card-featured { grid-template-columns: 1fr; }
+  .blog-grid { grid-template-columns: 1fr; }
+  .blog-card-img-featured { height: 180px; min-height: unset; }
+  .blog-card-body { padding: 1.1rem 1.25rem; }
+
+  /* FAQ */
+  .faq-q { font-size: 0.88rem; padding: 1rem 1rem; }
+  .faq-a  { padding: 0 1rem 1rem; }
+
+  /* Rozklad */
+  .rozklad-body { grid-template-columns: 1fr; }
+  .rozklad-cols { grid-template-columns: 1fr; }
+  .rozklad-chart { display: none; }
+  .rozklad-header { padding: 0.85rem 1rem; }
+  .rozklad-body,
+  .rozklad-total,
+  .rozklad-note { padding-left: 1rem; padding-right: 1rem; }
+
+  /* Features grid */
+  .eb-features { grid-template-columns: 1fr; }
+  .pribeh-team-main { grid-template-columns: 1fr; }
+  .pribeh-team-rest  { grid-template-columns: 1fr 1fr; }
+  .pribeh-breakthrough-word { font-size: 2.5rem; }
+
+  /* Footer */
+  .footer-inner { grid-template-columns: 1fr; gap: 2rem; padding: 2rem 1.25rem; }
+  .footer-bottom { padding: 1.25rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+
+  /* Dokumenty */
+  .docs-list-inner { padding: 0 1.25rem; }
+  .doc-row { padding: 0.75rem 0.5rem; }
+
+  /* Reference carousel */
+  .review-card { flex: 0 0 calc(100% - 1rem); }
+
+  /* Mobile drawer větší tap targets */
+  .mobile-cta-top { padding: 1rem; }
+  .mobile-section-title { padding: 0.85rem 1.25rem 0.4rem; }
+
+  /* Kontakt */
+  .kontakt-grid { grid-template-columns: 1fr; }
+  .kontakt-channels { grid-template-columns: 1fr; }
+}
