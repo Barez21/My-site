@@ -69,15 +69,11 @@
     display: block;
   }
 
-  /* Logo switching — theme */
+  /* Logo switching — theme only */
   .logo-light-mode { display: none; }
   .logo-dark-mode  { display: block; }
   [data-theme="light"] .logo-light-mode { display: block; }
   [data-theme="light"] .logo-dark-mode  { display: none; }
-
-  /* Logo switching — mobile/desktop */
-  .logo-icon-wrap { display: none; }
-  .logo-full      { display: block; }
 
   /* Menu tabs — evenly fill the middle space */
   .nav-tabs {
@@ -264,17 +260,12 @@
   .mega-backdrop.visible { display: block; }
 
   @media (max-width: 860px) {
-    .nav-tabs  { display: none; }
+    .nav-tabs   { display: none; }
     .mega-panel { display: none !important; }
-    .nav-bar { justify-content: space-between; padding: 0 1.25rem; }
+    .nav-bar    { justify-content: space-between; padding: 0 1.25rem; }
     .nav-hamburger { display: flex; }
-    .nav-cta { display: none; }
+    .nav-cta    { display: none; }
     .theme-toggle { margin-right: 0; }
-
-    /* Logo přepnutí na ikonu */
-    .logo-full      { display: none; }
-    .logo-icon-wrap { display: block; }
-    .logo-icon-wrap img { height: 36px; width: auto; }
   }
 
   /* ─── HERO ─── */
@@ -1561,7 +1552,25 @@
   .mobile-link:hover, .mobile-link:active { color: white; }
   .mobile-link-accent { color: var(--accent); font-weight: 500; }
 
-  .mobile-cta-wrap {
+  .mobile-cta-top {
+    padding: 1rem 1.25rem 0.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    margin-bottom: 0.5rem;
+  }
+  .mobile-cta-energo {
+    display: block;
+    background: var(--accent);
+    color: var(--navy-dark);
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    text-align: center;
+    transition: opacity .15s;
+  }
+  .mobile-cta-energo:hover { opacity: 0.88; }
+  [data-theme="light"] .mobile-cta-top { border-bottom-color: rgba(33,69,113,0.1); }
     padding: 1.5rem 1.5rem 1rem;
     margin-top: auto;
   }
