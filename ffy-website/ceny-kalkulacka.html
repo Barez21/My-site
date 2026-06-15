@@ -319,9 +319,9 @@
 
           <div class="kalk-result-main-row">
             <div class="kalk-result-box">
-              <div class="kalk-result-box-label">Celkový roční náklad (odhad)</div>
-              <div class="kalk-result-big" id="r-rocni">—</div>
-              <div class="kalk-result-sub" id="r-mesicni">—</div>
+              <div class="kalk-result-box-label">Odhadovaný měsíční náklad</div>
+              <div class="kalk-result-big" id="r-mesicni">—</div>
+              <div class="kalk-result-sub" id="r-rocni">—</div>
             </div>
             <div class="kalk-result-breakdown">
               <div class="kalk-breakdown-row">
@@ -489,9 +489,9 @@
           </div>
           <div class="kalk-result-main-row">
             <div class="kalk-result-box">
-              <div class="kalk-result-box-label">Celkový roční náklad (odhad)</div>
-              <div class="kalk-result-big" id="r2-rocni">—</div>
-              <div class="kalk-result-sub" id="r2-mesicni">—</div>
+              <div class="kalk-result-box-label">Odhadovaný měsíční náklad</div>
+              <div class="kalk-result-big" id="r2-mesicni">—</div>
+              <div class="kalk-result-sub" id="r2-rocni">—</div>
             </div>
             <div class="kalk-result-breakdown">
               <div class="kalk-breakdown-row"><span>Silová elektřina VT</span><span id="r2-vt">—</span></div>
@@ -977,8 +977,8 @@
 
     const total = nakladSilova + nakladStalat + distribuce;
 
-    document.getElementById('r-rocni').textContent   = formatKc(total) + ' / rok';
     document.getElementById('r-mesicni').textContent  = formatKc(total / 12) + ' / měsíc';
+    document.getElementById('r-rocni').textContent    = formatKc(total) + ' / rok';
     document.getElementById('r-silova').textContent   = formatKc(nakladSilova);
     document.getElementById('r-stalat').textContent   = formatKc(nakladStalat);
     document.getElementById('r-distribuce') && (document.getElementById('r-distribuce').textContent = formatKc(distribuce));
@@ -1055,8 +1055,8 @@
     const dodavatel = nakladVT + nakladNT + nakladStalat;
     const total = dodavatel + distribuce;
 
-    document.getElementById('r2-rocni').textContent   = formatKc(total) + ' / rok';
     document.getElementById('r2-mesicni').textContent  = formatKc(total / 12) + ' / měsíc';
+    document.getElementById('r2-rocni').textContent    = formatKc(total) + ' / rok';
     document.getElementById('r2-vt').textContent       = vt ? formatKc(nakladVT) : '—';
     document.getElementById('r2-nt').textContent       = nt ? formatKc(nakladNT) : '—';
     document.getElementById('r2-stalat').textContent   = formatKc(nakladStalat);
