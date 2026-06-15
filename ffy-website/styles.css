@@ -5682,3 +5682,8 @@ textarea {
   .kalk-card .kalk-wide-inner { padding: 1.5rem 1.25rem 0; }
   .kalk-card .kalk-tab-btn { padding: 0.85rem 1.25rem; font-size: 0.82rem; }
 }
+
+/* ── Donut SVG transitions ── */
+.rozklad svg path {
+  transition: opacity .2s ease;
+}

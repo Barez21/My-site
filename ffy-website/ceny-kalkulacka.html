@@ -1118,6 +1118,7 @@
         path.setAttribute('d', 'M0,0');
         path.setAttribute('fill', seg.color);
         path.setAttribute('opacity', '0');
+        path.setAttribute('data-zero', '1');
       } else {
         const a = seg.pct * 2 * Math.PI;
         const x1 = cx + R * Math.cos(angle), y1 = cy + R * Math.sin(angle);
@@ -1149,13 +1150,20 @@
     if (!svg || !svg._segments) return;
     const rows = Array.from(parent.querySelectorAll('.rozklad-row'));
     const idx = rows.indexOf(row);
+    // Dim all segments, highlight active
     svg._segments.forEach((s, i) => {
-      s.style.opacity = i === idx ? '1' : '0.3';
-      s.style.transform = i === idx ? 'scale(1.04)' : 'scale(1)';
-      s.style.transformOrigin = '90px 90px';
-      s.style.transition = 'opacity .2s, transform .2s';
+      if (s.getAttribute('data-zero') === '1') return;
+      if (i === idx) {
+        s.setAttribute('opacity', '1');
+        s.setAttribute('stroke', '#fff');
+        s.setAttribute('stroke-width', '2');
+      } else {
+        s.setAttribute('opacity', '0.25');
+        s.removeAttribute('stroke');
+        s.removeAttribute('stroke-width');
+      }
     });
-    rows.forEach((r, i) => r.style.opacity = i === idx ? '1' : '0.5');
+    rows.forEach((r, i) => { r.style.opacity = i === idx ? '1' : '0.4'; });
   });
   document.addEventListener('mouseout', e => {
     const row = e.target.closest('.rozklad-row');
@@ -1163,8 +1171,15 @@
     const parent = row.closest('.rozklad');
     if (!parent) return;
     const svg = parent.querySelector('svg');
-    if (svg && svg._segments) svg._segments.forEach(s => { s.style.opacity = '1'; s.style.transform = 'scale(1)'; });
-    parent.querySelectorAll('.rozklad-row').forEach(r => r.style.opacity = '1');
+    if (svg && svg._segments) {
+      svg._segments.forEach(s => {
+        if (s.getAttribute('data-zero') === '1') return;
+        s.setAttribute('opacity', '1');
+        s.removeAttribute('stroke');
+        s.removeAttribute('stroke-width');
+      });
+    }
+    parent.querySelectorAll('.rozklad-row').forEach(r => { r.style.opacity = '1'; });
   });
 
   function showRozklad(rid, data) {
