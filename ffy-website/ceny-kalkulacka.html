@@ -1106,33 +1106,36 @@
 
   // ── Rozklad ceny ──
   function drawPie(svgId, segments) {
-    // segments: [{color, pct}]
     const svg = document.getElementById(svgId);
     if (!svg) return;
     svg.innerHTML = '';
     const cx = 90, cy = 90, R = 78, r = 42;
     let angle = -Math.PI / 2;
     segments.forEach(seg => {
-      if (seg.pct <= 0) return;
-      const a = seg.pct * 2 * Math.PI;
-      const x1 = cx + R * Math.cos(angle), y1 = cy + R * Math.sin(angle);
-      const x2 = cx + R * Math.cos(angle + a), y2 = cy + R * Math.sin(angle + a);
-      const xi1 = cx + r * Math.cos(angle), yi1 = cy + r * Math.sin(angle);
-      const xi2 = cx + r * Math.cos(angle + a), yi2 = cy + r * Math.sin(angle + a);
-      const large = a > Math.PI ? 1 : 0;
       const path = document.createElementNS('http://www.w3.org/2000/svg','path');
-      path.setAttribute('d', `M${xi1},${yi1} L${x1},${y1} A${R},${R} 0 ${large},1 ${x2},${y2} L${xi2},${yi2} A${r},${r} 0 ${large},0 ${xi1},${yi1} Z`);
-      path.setAttribute('fill', seg.color);
+      if (seg.pct <= 0.001) {
+        // Zero segment — invisible but keeps index alignment
+        path.setAttribute('d', 'M0,0');
+        path.setAttribute('fill', seg.color);
+        path.setAttribute('opacity', '0');
+      } else {
+        const a = seg.pct * 2 * Math.PI;
+        const x1 = cx + R * Math.cos(angle), y1 = cy + R * Math.sin(angle);
+        const x2 = cx + R * Math.cos(angle + a), y2 = cy + R * Math.sin(angle + a);
+        const xi1 = cx + r * Math.cos(angle), yi1 = cy + r * Math.sin(angle);
+        const xi2 = cx + r * Math.cos(angle + a), yi2 = cy + r * Math.sin(angle + a);
+        const large = a > Math.PI ? 1 : 0;
+        path.setAttribute('d', `M${xi1},${yi1} L${x1},${y1} A${R},${R} 0 ${large},1 ${x2},${y2} L${xi2},${yi2} A${r},${r} 0 ${large},0 ${xi1},${yi1} Z`);
+        path.setAttribute('fill', seg.color);
+        angle += a;
+      }
       svg.appendChild(path);
-      angle += a;
     });
-    // Center circle background
     const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
     circle.setAttribute('cx', cx); circle.setAttribute('cy', cy);
     circle.setAttribute('r', r); circle.setAttribute('fill', '#daeafe');
     svg.appendChild(circle);
 
-    // Store segment references for hover interaction
     svg._segments = Array.from(svg.querySelectorAll('path'));
   }
 

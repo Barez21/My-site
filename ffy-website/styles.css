@@ -4049,7 +4049,7 @@
 }
 
 /* ── Kalkulačka ── */
-.kalk-section { padding: 32px 2rem 80px; }
+.kalk-section { padding: 48px 2rem 80px; }
 
 /* Tabs nav */
 .kalk-tabs-nav {
@@ -5540,32 +5540,62 @@ textarea {
   box-shadow: 0 4px 32px rgba(33,69,113,0.06);
 }
 
-/* Tabs inside card — no outer padding */
+/* Tabs — real tab look */
 .kalk-card .kalk-tabs-nav {
   position: relative;
-  margin: 0; padding: 0;
+  margin: 0;
+  padding: 0;
   max-width: unset;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  background: rgba(255,255,255,0.02);
+  display: flex;
+  border-bottom: none;
+  background: rgba(255,255,255,0.03);
 }
 [data-theme="light"] .kalk-card .kalk-tabs-nav {
-  background: #f8fbff;
-  border-bottom-color: rgba(33,69,113,0.08);
-}
-.kalk-card .kalk-tab-btn {
-  padding: 1rem 2rem;
-  font-size: 0.9rem;
+  background: rgba(33,69,113,0.04);
 }
 
-/* Animated tab slider */
-.kalk-tab-slider {
+.kalk-card .kalk-tab-btn {
+  flex: 1;
+  padding: 1.1rem 2rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: rgba(255,255,255,0.35);
+  transition: color .2s, background .2s, border-color .2s;
+  text-align: center;
+  position: relative;
+}
+.kalk-card .kalk-tab-btn:hover {
+  color: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.03);
+}
+.kalk-card .kalk-tab-btn.active {
+  color: white;
+  background: transparent;
+  border-bottom: none;
+}
+.kalk-card .kalk-tab-btn:not(.active) {
+  border-bottom: 2px solid rgba(255,255,255,0.06);
+}
+/* Active tab merges with content below */
+.kalk-card .kalk-tab-btn.active::after {
+  content: '';
   position: absolute;
-  bottom: 0; left: 0;
-  height: 2px;
+  bottom: -1px; left: 0; right: 0;
+  height: 3px;
   background: var(--accent);
-  border-radius: 2px 2px 0 0;
-  transition: left .3s cubic-bezier(0.4, 0, 0.2, 1), width .3s cubic-bezier(0.4, 0, 0.2, 1);
-  pointer-events: none;
+  border-radius: 3px 3px 0 0;
+}
+
+[data-theme="light"] .kalk-card .kalk-tab-btn { color: rgba(14,30,47,0.4); }
+[data-theme="light"] .kalk-card .kalk-tab-btn:hover { color: rgba(14,30,47,0.7); background: rgba(33,69,113,0.03); }
+[data-theme="light"] .kalk-card .kalk-tab-btn.active { color: #0E1E2F; }
+[data-theme="light"] .kalk-card .kalk-tab-btn:not(.active) { border-bottom-color: rgba(33,69,113,0.08); }
+
+/* Animated tab slider — hidden, using ::after instead */
+.kalk-tab-slider {
+  display: none;
 }
 
 /* Content inside card */
@@ -5603,18 +5633,13 @@ textarea {
 [data-theme="light"] .psc-ok .psc-text { color: var(--green-dark); }
 [data-theme="light"] .psc-ok .psc-check { stroke: var(--green-dark); }
 
-/* ── Gradient accent on main number ── */
+/* ── Main number — solid accent ── */
 .kalk-result-big {
-  background: linear-gradient(135deg, #45e7a3, #30c487, #28b8a0);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--accent);
+  font-size: 2.6rem;
 }
 [data-theme="light"] .kalk-result-big {
-  background: linear-gradient(135deg, #1a8a5a, #217a50, #1a6a48);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--green-dark);
 }
 
 /* ── Stagger result reveal ── */
@@ -5641,7 +5666,14 @@ textarea {
 /* ── Interactive donut rows ── */
 .rozklad-row {
   transition: opacity .2s;
-  cursor: default;
+  cursor: pointer;
+}
+.rozklad-row:hover {
+  background: rgba(255,255,255,0.03);
+  border-radius: 4px;
+}
+[data-theme="light"] .rozklad-row:hover {
+  background: rgba(33,69,113,0.03);
 }
 
 /* ── Card responsive ── */
