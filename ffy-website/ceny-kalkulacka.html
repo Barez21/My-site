@@ -248,10 +248,12 @@
   </section>
 
   <section class="kalk-section">
-    <div class="kalk-tabs-nav">
-      <button class="kalk-tab-btn active" data-tab="jednoducha">Jednoduchá kalkulačka</button>
-      <button class="kalk-tab-btn" data-tab="slozita">Přesná kalkulačka</button>
-    </div>
+    <div class="kalk-card">
+      <div class="kalk-tabs-nav">
+        <button class="kalk-tab-btn active" data-tab="jednoducha">Jednoduchá</button>
+        <button class="kalk-tab-btn" data-tab="slozita">Přesná</button>
+        <div class="kalk-tab-slider" id="kalk-tab-slider"></div>
+      </div>
 
     <!-- JEDNODUCHÁ -->
     <div class="kalk-tab-panel active" id="tab-jednoducha">
@@ -275,7 +277,7 @@
               <div class="kalk-step-label">PSČ odběrného místa</div>
               <div class="kalk-psc-row">
                 <input type="text" id="psc-j" class="kalk-input kalk-input-psc" placeholder="např. 12000" maxlength="5" inputmode="numeric" pattern="[0-9]{5}">
-                <div class="kalk-psc-result" id="psc-j-result"></div>
+                <div class="kalk-psc-result" id="psc-j-result"><svg class="psc-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span class="psc-text"></span></div>
               </div>
               <div class="kalk-hint">Podle PSČ automaticky zjistíme vaše distribuční území.</div>
             </div>
@@ -421,7 +423,7 @@
             <div class="kalk-step-label">PSČ odběrného místa</div>
             <div class="kalk-psc-row">
               <input type="text" id="psc-s" class="kalk-input kalk-input-psc" placeholder="např. 12000" maxlength="5" inputmode="numeric" pattern="[0-9]{5}">
-              <div class="kalk-psc-result" id="psc-s-result"></div>
+              <div class="kalk-psc-result" id="psc-s-result"><svg class="psc-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span class="psc-text"></span></div>
             </div>
             <div class="kalk-hint">Podle PSČ zjistíme vaše distribuční území.</div>
           </div>
@@ -565,6 +567,7 @@
         </div>
 
       </div>
+    </div>
     </div>
 
   </section>
@@ -908,14 +911,20 @@
   function showPscResult(inputId, resultId) {
     const val = document.getElementById(inputId).value.replace(/\s/g,'');
     const el  = document.getElementById(resultId);
-    if (!pscData || val.length < 5) { el.textContent = ''; el.className = 'kalk-psc-result'; return null; }
+    const check = el.querySelector('.psc-check');
+    const txt   = el.querySelector('.psc-text');
+    if (!pscData || val.length < 5) {
+      el.className = 'kalk-psc-result';
+      if(txt) txt.textContent = '';
+      return null;
+    }
     const row = pscData[val];
     if (row) {
-      el.textContent = row.obec + ' — ' + row.dist_e;
-      el.className = 'kalk-psc-result psc-ok';
+      if(txt) txt.textContent = row.obec + ' — ' + row.dist_e;
+      el.className = 'kalk-psc-result psc-ok psc-animate';
       return distKey(row.dist_e);
     } else {
-      el.textContent = 'PSČ nenalezeno';
+      if(txt) txt.textContent = 'PSČ nenalezeno';
       el.className = 'kalk-psc-result psc-err';
       return null;
     }
@@ -930,14 +939,25 @@
   });
 
   // Tabs
-  document.querySelectorAll('.kalk-tab-btn').forEach(btn => {
+  // Tab slider animation
+  const tabBtns = document.querySelectorAll('.kalk-tab-btn');
+  const tabSlider = document.getElementById('kalk-tab-slider');
+  function moveSlider(btn) {
+    tabSlider.style.left = btn.offsetLeft + 'px';
+    tabSlider.style.width = btn.offsetWidth + 'px';
+  }
+  tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.kalk-tab-btn').forEach(b => b.classList.remove('active'));
+      tabBtns.forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.kalk-tab-panel').forEach(p => p.classList.remove('active'));
       btn.classList.add('active');
       document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+      moveSlider(btn);
     });
   });
+  // Init slider position
+  setTimeout(() => { const a = document.querySelector('.kalk-tab-btn.active'); if(a) moveSlider(a); }, 50);
+  window.addEventListener('resize', () => { const a = document.querySelector('.kalk-tab-btn.active'); if(a) moveSlider(a); });
 
   // ── Jednoduchá ──
   let activeTarif = '24';
@@ -986,6 +1006,9 @@
     document.getElementById('kalk-comparison').style.display = 'none';
     const res = document.getElementById('kalk-result');
     res.style.display = 'block';
+    res.classList.remove('kalk-result-animate');
+    void res.offsetWidth;
+    res.classList.add('kalk-result-animate');
     res.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
     // Rozklad
@@ -1065,6 +1088,9 @@
     document.getElementById('kalk-comparison2').style.display = 'none';
     const res2 = document.getElementById('kalk-result2');
     res2.style.display = 'block';
+    res2.classList.remove('kalk-result-animate');
+    void res2.offsetWidth;
+    res2.classList.add('kalk-result-animate');
     res2.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
     // Rozklad
@@ -1105,7 +1131,38 @@
     circle.setAttribute('cx', cx); circle.setAttribute('cy', cy);
     circle.setAttribute('r', r); circle.setAttribute('fill', '#daeafe');
     svg.appendChild(circle);
+
+    // Store segment references for hover interaction
+    svg._segments = Array.from(svg.querySelectorAll('path'));
   }
+
+  // Interactive donut — hover on row highlights segment
+  document.addEventListener('mouseover', e => {
+    const row = e.target.closest('.rozklad-row');
+    if (!row) return;
+    const parent = row.closest('.rozklad');
+    if (!parent) return;
+    const svg = parent.querySelector('svg');
+    if (!svg || !svg._segments) return;
+    const rows = Array.from(parent.querySelectorAll('.rozklad-row'));
+    const idx = rows.indexOf(row);
+    svg._segments.forEach((s, i) => {
+      s.style.opacity = i === idx ? '1' : '0.3';
+      s.style.transform = i === idx ? 'scale(1.04)' : 'scale(1)';
+      s.style.transformOrigin = '90px 90px';
+      s.style.transition = 'opacity .2s, transform .2s';
+    });
+    rows.forEach((r, i) => r.style.opacity = i === idx ? '1' : '0.5');
+  });
+  document.addEventListener('mouseout', e => {
+    const row = e.target.closest('.rozklad-row');
+    if (!row) return;
+    const parent = row.closest('.rozklad');
+    if (!parent) return;
+    const svg = parent.querySelector('svg');
+    if (svg && svg._segments) svg._segments.forEach(s => { s.style.opacity = '1'; s.style.transform = 'scale(1)'; });
+    parent.querySelectorAll('.rozklad-row').forEach(r => r.style.opacity = '1');
+  });
 
   function showRozklad(rid, data) {
     // data: { silova, stalat, distMwh, distMes, dane, celkem, spotreba }

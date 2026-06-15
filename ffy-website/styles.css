@@ -4049,7 +4049,7 @@
 }
 
 /* ── Kalkulačka ── */
-.kalk-section { padding: 0 0 80px; }
+.kalk-section { padding: 32px 2rem 80px; }
 
 /* Tabs nav */
 .kalk-tabs-nav {
@@ -5519,4 +5519,134 @@ textarea {
 
 @media (max-width: 600px) {
   .proudiky-tiers { grid-template-columns: 1fr; }
+}
+
+/* ══════════════════════════════════════════
+   KALKULAČKA — redesign
+   ══════════════════════════════════════════ */
+
+/* Card wrapper */
+.kalk-card {
+  max-width: 1060px;
+  margin: 0 auto;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  overflow: hidden;
+}
+[data-theme="light"] .kalk-card {
+  background: #ffffff;
+  border-color: rgba(33,69,113,0.12);
+  box-shadow: 0 4px 32px rgba(33,69,113,0.06);
+}
+
+/* Tabs inside card — no outer padding */
+.kalk-card .kalk-tabs-nav {
+  position: relative;
+  margin: 0; padding: 0;
+  max-width: unset;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.02);
+}
+[data-theme="light"] .kalk-card .kalk-tabs-nav {
+  background: #f8fbff;
+  border-bottom-color: rgba(33,69,113,0.08);
+}
+.kalk-card .kalk-tab-btn {
+  padding: 1rem 2rem;
+  font-size: 0.9rem;
+}
+
+/* Animated tab slider */
+.kalk-tab-slider {
+  position: absolute;
+  bottom: 0; left: 0;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 2px 2px 0 0;
+  transition: left .3s cubic-bezier(0.4, 0, 0.2, 1), width .3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+/* Content inside card */
+.kalk-card .kalk-wide-inner {
+  padding: 2rem 2.5rem 0;
+}
+
+/* ── PSČ checkmark animation ── */
+.psc-check {
+  width: 16px; height: 16px;
+  stroke: var(--accent);
+  display: none;
+  flex-shrink: 0;
+}
+.psc-check polyline {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+}
+.psc-ok .psc-check {
+  display: inline-block;
+}
+.psc-animate .psc-check polyline {
+  animation: checkDraw .35s ease forwards;
+}
+@keyframes checkDraw {
+  to { stroke-dashoffset: 0; }
+}
+.kalk-psc-result {
+  display: flex; align-items: center; gap: 0.4rem;
+  min-height: 1.4em;
+}
+.psc-text { font-size: 0.82rem; font-weight: 500; }
+.psc-ok .psc-text { color: var(--accent); }
+.psc-err .psc-text { color: rgba(231,100,100,0.8); }
+[data-theme="light"] .psc-ok .psc-text { color: var(--green-dark); }
+[data-theme="light"] .psc-ok .psc-check { stroke: var(--green-dark); }
+
+/* ── Gradient accent on main number ── */
+.kalk-result-big {
+  background: linear-gradient(135deg, #45e7a3, #30c487, #28b8a0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+[data-theme="light"] .kalk-result-big {
+  background: linear-gradient(135deg, #1a8a5a, #217a50, #1a6a48);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Stagger result reveal ── */
+.kalk-result-animate .kalk-result-box {
+  animation: resultSlide .4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.kalk-result-animate .kalk-result-breakdown {
+  animation: resultSlide .4s cubic-bezier(0.16, 1, 0.3, 1) .1s both;
+}
+.kalk-result-animate .kalk-disclaimer {
+  animation: resultSlide .4s cubic-bezier(0.16, 1, 0.3, 1) .15s both;
+}
+.kalk-result-animate .kalk-cta {
+  animation: resultSlide .4s cubic-bezier(0.16, 1, 0.3, 1) .2s both;
+}
+.kalk-result-animate .rozklad {
+  animation: resultSlide .5s cubic-bezier(0.16, 1, 0.3, 1) .25s both;
+}
+@keyframes resultSlide {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Interactive donut rows ── */
+.rozklad-row {
+  transition: opacity .2s;
+  cursor: default;
+}
+
+/* ── Card responsive ── */
+@media (max-width: 700px) {
+  .kalk-card { border-radius: 14px; margin: 0 0.5rem; }
+  .kalk-card .kalk-wide-inner { padding: 1.5rem 1.25rem 0; }
+  .kalk-card .kalk-tab-btn { padding: 0.85rem 1.25rem; font-size: 0.82rem; }
 }
