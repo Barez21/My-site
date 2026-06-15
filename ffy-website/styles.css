@@ -5663,17 +5663,9 @@ textarea {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Interactive donut rows ── */
+/* ── Rozklad rows ── */
 .rozklad-row {
-  transition: opacity .2s;
-  cursor: pointer;
-}
-.rozklad-row:hover {
-  background: rgba(255,255,255,0.03);
-  border-radius: 4px;
-}
-[data-theme="light"] .rozklad-row:hover {
-  background: rgba(33,69,113,0.03);
+  cursor: default;
 }
 
 /* ── Card responsive ── */
@@ -5683,7 +5675,76 @@ textarea {
   .kalk-card .kalk-tab-btn { padding: 0.85rem 1.25rem; font-size: 0.82rem; }
 }
 
-/* ── Donut SVG transitions ── */
-.rozklad svg path {
-  transition: opacity .2s ease;
+
+/* ══════════════════════════════════════════
+   NEBULA BLOBS — ambient background
+   ══════════════════════════════════════════ */
+.nebula {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.nebula-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.12;
+  will-change: transform;
+}
+
+/* Blob 1 — zelená, větší, pomalejší */
+.nebula-blob-1 {
+  width: 55vw; height: 55vw;
+  background: radial-gradient(circle, #44e6a3 0%, rgba(68,230,163,0.3) 40%, transparent 70%);
+  top: -10%; left: -15%;
+  animation: nebula1 28s ease-in-out infinite;
+}
+
+/* Blob 2 — modrá, menší, rychlejší */
+.nebula-blob-2 {
+  width: 45vw; height: 45vw;
+  background: radial-gradient(circle, #2a5a9e 0%, rgba(33,68,112,0.4) 40%, transparent 70%);
+  bottom: -15%; right: -10%;
+  animation: nebula2 22s ease-in-out infinite;
+}
+
+@keyframes nebula1 {
+  0%   { transform: translate(0, 0) scale(1); }
+  15%  { transform: translate(12vw, 18vh) scale(1.08); }
+  35%  { transform: translate(25vw, 5vh) scale(0.95); }
+  55%  { transform: translate(10vw, 35vh) scale(1.12); }
+  75%  { transform: translate(-5vw, 20vh) scale(1.02); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+@keyframes nebula2 {
+  0%   { transform: translate(0, 0) scale(1); }
+  20%  { transform: translate(-15vw, -12vh) scale(1.1); }
+  40%  { transform: translate(-8vw, -28vh) scale(0.92); }
+  60%  { transform: translate(-22vw, -8vh) scale(1.06); }
+  80%  { transform: translate(-5vw, -20vh) scale(0.98); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+/* Light mode — jemnější */
+[data-theme="light"] .nebula-blob { opacity: 0.06; }
+[data-theme="light"] .nebula-blob-1 {
+  background: radial-gradient(circle, #44e6a3 0%, rgba(68,230,163,0.2) 40%, transparent 70%);
+}
+[data-theme="light"] .nebula-blob-2 {
+  background: radial-gradient(circle, #214470 0%, rgba(33,68,112,0.2) 40%, transparent 70%);
+}
+
+/* Respektuj reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .nebula-blob { animation: none !important; }
+}
+
+/* Obsah nad blobama */
+nav, main, footer, section, .subpage-main, .subpage-header, #hero, .site-footer {
+  position: relative;
+  z-index: 1;
 }
