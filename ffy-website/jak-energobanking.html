@@ -2,14 +2,59 @@
 <html lang="cs">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Energobanking — FREE for YOU energie</title>
-<meta name="description" content="FREE for YOU energie — Energobanking">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Energobanking — zákaznický portál FREE for YOU</title>
 <meta name="theme-color" content="#214571">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,300;0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<style>
+@media (max-width: 860px) {
+  .nav-cta       { display: none !important; }
+  .nav-hamburger { display: flex !important; }
+  .nav-tabs      { display: none !important; }
+}
+</style>
+<meta name="description" content="Energobanking je váš online přehled spotřeby, faktur, výroby a sdílení elektřiny. Zdarma pro každého zákazníka FREE for YOU.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://b-place.org/ffy-website/jak-energobanking.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Energobanking — zákaznický portál FREE for YOU">
+<meta property="og:description" content="Energobanking je váš online přehled spotřeby, faktur, výroby a sdílení elektřiny. Zdarma pro každého zákazníka FREE for YOU.">
+<meta property="og:url" content="https://b-place.org/ffy-website/jak-energobanking.html">
+<meta property="og:image" content="https://b-place.org/ffy-website/logo.svg">
+<meta property="og:locale" content="cs_CZ">
+<meta property="og:site_name" content="FREE for YOU energie">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "FREE for YOU s.r.o.",
+  "url": "https://www.freeforyou.cz",
+  "logo": "https://b-place.org/ffy-website/logo.svg",
+  "description": "Český dodavatel elektřiny budující vlastní obnovitelné zdroje energie.",
+  "foundingDate": "2016",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Českomoravská 2255/12a",
+    "addressLocality": "Praha 9 - Libeň",
+    "postalCode": "19000",
+    "addressCountry": "CZ"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+420-227-072-292",
+    "email": "info@freeforyou.cz",
+    "contactType": "customer service",
+    "availableLanguage": "cs"
+  },
+  "sameAs": [
+    "https://www.firmy.cz/detail/13169716-free-for-you-s-r-o-praha-liben.html"
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -97,7 +142,6 @@
         <a href="jak-energobanking.html" class="mega-link mega-link-highlight">
           <span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></span>
           <span class="mega-link-body"><strong>Energobanking</strong><span>Váš portál pro správu energie</span></span>
-          <span class="mega-ext-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
         </a>
         <a href="jak-sdileni-elektriny.html" class="mega-link">
           <span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16M3 21v-5h5"/></svg></span>
@@ -146,6 +190,10 @@
 <!-- Mobile drawer -->
 <div class="mobile-drawer" id="mobile-drawer" aria-hidden="true">
   <div class="mobile-drawer-inner">
+
+    <div class="mobile-cta-top">
+      <a href="https://www.energobanking.cz/" target="_blank" class="mobile-cta-energo">Energobanking →</a>
+    </div>
 
     <div class="mobile-section">
       <div class="mobile-section-title">Naše ceny</div>
@@ -356,9 +404,9 @@
             <li><a href="proc-nas-pribeh.html">Naše vize</a></li>
             <li><a href="proc-nas-pribeh.html">Náš tým</a></li>
             <li><a href="proc-reference.html">Reference zákazníků</a></li>
-            <li><a href="#">Pro média</a></li>
+            <li><a href="pro-media.html">Pro média</a></li>
             <li><a href="#">Případové studie</a></li>
-            <li><a href="#">Obchodní podmínky</a></li>
+            <li><a href="docs/op/vseobecne-obchodni-podminky.pdf" target="_blank">Obchodní podmínky</a></li>
           </ul>
         </div>
 
@@ -402,7 +450,7 @@
         © FREE for YOU s.r.o. — Regulovaný obchodník s energiemi, licence ERÚ
       </div>
       <div class="footer-bottom-right">
-        <a href="#">Obchodní podmínky</a>
+        <a href="docs/op/vseobecne-obchodni-podminky.pdf" target="_blank">Obchodní podmínky</a>
         <a href="#">Ochrana osobních údajů</a>
         <a href="#">Cookies</a>
       </div>

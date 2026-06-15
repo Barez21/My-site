@@ -5438,3 +5438,85 @@ textarea {
   .media-block { grid-template-columns: 1fr; gap: 0.75rem; }
   .media-logos { grid-template-columns: 1fr 1fr; }
 }
+
+/* ── Proudíky ── */
+.proudiky-rules {
+  display: flex; flex-direction: column; gap: 0.75rem;
+  margin: 0.75rem 0 0.5rem;
+}
+.proudiky-rule {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: rgba(69,231,163,0.06);
+  border: 1px solid rgba(69,231,163,0.15);
+  border-radius: 10px;
+}
+.proudiky-rule-icon {
+  width: 36px; height: 36px; min-width: 36px;
+  background: rgba(69,231,163,0.12);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.proudiky-rule-icon svg { stroke: var(--accent); }
+.proudiky-rule-big {
+  font-size: 1rem; font-weight: 700;
+  color: rgba(255,255,255,0.85);
+}
+.proudiky-rule-desc {
+  font-size: 0.8rem; color: rgba(255,255,255,0.38);
+  font-weight: 300; margin-top: 0.1rem;
+}
+
+/* Tiers */
+.proudiky-tiers {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem; margin: 0.75rem 0;
+}
+.proudiky-tier {
+  padding: 1.5rem 1.25rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+  text-align: center;
+}
+.proudiky-tier-badge {
+  display: inline-block;
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 12px; border-radius: 100px;
+  margin-bottom: 0.75rem;
+}
+.tier-basic  { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); }
+.tier-silver { background: rgba(192,192,210,0.15); color: #c0c0d2; border: 1px solid rgba(192,192,210,0.25); }
+.tier-gold   { background: rgba(255,200,50,0.12); color: #e8b830; border: 1px solid rgba(255,200,50,0.25); }
+
+.proudiky-tier-multi {
+  font-size: 2.2rem; font-weight: 800; color: var(--accent);
+  line-height: 1; margin-bottom: 0.4rem;
+}
+.proudiky-tier-desc {
+  font-size: 0.82rem; color: rgba(255,255,255,0.55);
+  font-weight: 400; margin-bottom: 0.5rem;
+}
+.proudiky-tier-cond {
+  font-size: 0.72rem; color: rgba(255,255,255,0.25);
+  font-weight: 300; font-style: italic;
+}
+
+/* Light mode */
+[data-theme="light"] .proudiky-rule { background: rgba(69,231,163,0.07); border-color: rgba(69,231,163,0.25); }
+[data-theme="light"] .proudiky-rule-icon { background: rgba(69,231,163,0.12); }
+[data-theme="light"] .proudiky-rule-big { color: #0E1E2F; }
+[data-theme="light"] .proudiky-rule-desc { color: #3A6298; }
+[data-theme="light"] .proudiky-tier { background: #fff; border-color: rgba(33,69,113,0.1); }
+[data-theme="light"] .proudiky-tier-multi { color: var(--green-dark); }
+[data-theme="light"] .proudiky-tier-desc { color: #3A5A7A; }
+[data-theme="light"] .proudiky-tier-cond { color: rgba(14,30,47,0.35); }
+[data-theme="light"] .tier-basic { background: rgba(33,69,113,0.06); color: #3A6298; }
+[data-theme="light"] .tier-silver { background: rgba(120,120,140,0.1); color: #6a6a7a; border-color: rgba(120,120,140,0.2); }
+[data-theme="light"] .tier-gold { background: rgba(200,160,30,0.1); color: #9a7a10; border-color: rgba(200,160,30,0.2); }
+
+@media (max-width: 600px) {
+  .proudiky-tiers { grid-template-columns: 1fr; }
+}
