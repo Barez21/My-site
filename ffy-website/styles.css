@@ -5682,7 +5682,7 @@ textarea {
 .nebula {
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: -1;
   overflow: hidden;
   pointer-events: none;
 }
@@ -5743,8 +5743,4 @@ textarea {
   .nebula-blob { animation: none !important; }
 }
 
-/* Obsah nad blobama */
-nav, main, footer, section, .subpage-main, .subpage-header, #hero, .site-footer {
-  position: relative;
-  z-index: 1;
-}
+
