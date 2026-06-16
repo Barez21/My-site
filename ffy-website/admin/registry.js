@@ -183,8 +183,9 @@ const BLOCK_REGISTRY = {
 
   features_grid: {
     label: 'Grid funkcí',
-    description: 'Karty s ikonou, názvem a popisem',
+    description: 'Karty s názvem a popisem v mřížce',
     schema: [
+      { key: 'section_label', label: 'Nadpis sekce', type: 'text', hint: 'Volitelné — zelený label nad gridem' },
       { key: 'columns', label: 'Sloupce', type: 'select', options: [
         { value: '2', label: '2 sloupce' },
         { value: '3', label: '3 sloupce' },
@@ -194,14 +195,19 @@ const BLOCK_REGISTRY = {
         { key: 'desc', label: 'Popis', type: 'textarea' },
       ]},
     ],
-    defaults: { columns: '2', items: [{ title: 'Funkce 1', desc: 'Popis funkce.' }] },
+    defaults: { section_label: '', columns: '2', items: [{ title: 'Funkce 1', desc: 'Popis funkce.' }] },
     render: function(p) {
       var cols = p.columns || '2';
       var items = (p.items || []).map(function(item) {
         return '<div class="eb-feature"><div><div class="eb-feature-title">' + item.title + '</div>' +
           '<div class="eb-feature-desc">' + item.desc + '</div></div></div>';
       }).join('\n');
-      return '<div class="eb-features" style="grid-template-columns:repeat(' + cols + ',1fr)">' + items + '</div>';
+      var label = p.section_label ? '<div class="sdileni-block-label">' + p.section_label + '</div>' : '';
+      var grid = '<div class="eb-features" style="grid-template-columns:repeat(' + cols + ',1fr)">' + items + '</div>';
+      if (label) {
+        return '<div class="sdileni-block">' + label + '<div class="sdileni-block-content">' + grid + '</div></div>';
+      }
+      return grid;
     }
   },
 
@@ -271,7 +277,23 @@ const BLOCK_REGISTRY = {
 function renderBlocksHTML(blocks) {
   return blocks.map(function(b) {
     var reg = BLOCK_REGISTRY[b.type];
-    return reg ? reg.render(b.props) : '<!-- unknown block: ' + b.type + ' -->';
+    if (!reg) {
+      return '<div style="padding:1.5rem;margin:1rem 0;background:rgba(224,85,85,0.08);border:1px solid rgba(224,85,85,0.2);border-radius:10px;text-align:center">' +
+        '<div style="font-size:0.82rem;color:rgba(224,85,85,0.8);font-weight:600">Neznámý blok: ' + b.type + '</div>' +
+        '<div style="font-size:0.72rem;color:rgba(255,255,255,0.3);margin-top:0.3rem">Tento typ bloku není v registru. Přidejte ho do BLOCK_REGISTRY.</div></div>';
+    }
+    try {
+      var html = reg.render(b.props);
+      if (!html || html.trim() === '') {
+        return '<div style="padding:1rem;margin:1rem 0;background:rgba(255,200,50,0.06);border:1px dashed rgba(255,200,50,0.2);border-radius:8px;text-align:center;font-size:0.78rem;color:rgba(255,200,50,0.5)">' +
+          reg.label + ' — prázdný blok</div>';
+      }
+      return html;
+    } catch(e) {
+      return '<div style="padding:1rem;margin:1rem 0;background:rgba(224,85,85,0.08);border:1px solid rgba(224,85,85,0.2);border-radius:10px;text-align:center">' +
+        '<div style="font-size:0.82rem;color:rgba(224,85,85,0.8)">Chyba v bloku: ' + reg.label + '</div>' +
+        '<div style="font-size:0.72rem;color:rgba(255,255,255,0.3);margin-top:0.3rem">' + e.message + '</div></div>';
+    }
   }).join('\n\n      ');
 }
 
@@ -334,27 +356,35 @@ function generateId() {
 function getInitialPages() {
   var SEED_CONTENT = {
     'jak-energobanking': [
-      { type: 'content_section', props: { label: 'Co to je', content: 'Energobanking je virtuální účet, který FREE for YOU vytvoří automaticky každému zákazníkovi po registraci. Přístup je zdarma — stačí webový prohlížeč.\n\nFunguje jako rozcestník pro vše, co se u vás děje s energiemi.' }},
-      { type: 'content_section', props: { label: 'Jak se přihlásit', content: 'Energobanking účet vzniká automaticky po podpisu smlouvy s FREE for YOU. Přihlašovací údaje dostanete e-mailem.' }},
-      { type: 'cta_block', props: { title: 'Přejít do Energobankingu', description: 'Portál je dostupný online.', btn1_text: 'Otevřít Energobanking →', btn1_url: 'https://www.energobanking.cz/', btn2_text: 'Potřebuji pomoc', btn2_url: 'podpora-kontakty.html' }},
+      { type: 'content_section', props: { label: 'Co to je', content: 'Energobanking je virtuální účet, který FREE for YOU vytvoří automaticky každému zákazníkovi po registraci. Přístup je zdarma — stačí webový prohlížeč.\n\nFunguje jako rozcestník pro vše, co se u vás děje s energiemi. Vidíte faktury, spotřebu, výrobu ze solárů, sdílení elektřiny i historii plateb — na jednom místě, bez nutnosti psát e-maily nebo volat.' }},
+      { type: 'features_grid', props: { section_label: 'Co v něm najdete', columns: '2', items: [
+        { title: 'Faktury a platby', desc: 'Historie vyúčtování, aktuální zálohy, přehled plateb. Vše ke stažení jako PDF.' },
+        { title: 'Spotřeba a výroba', desc: 'Přehled odběru po odběrných místech. Pokud máte vlastní zdroj, vidíte i výrobu a přebytky.' },
+        { title: 'Sdílení elektřiny', desc: 'Správa služby Elektřina od souseda — nastavení odběratelů, ceny sdílení a poměru rozdělení.' },
+        { title: 'Prodej přebytků', desc: 'Přehled prodané elektřiny a výplat za zúčtovací období.' },
+        { title: 'Reinvestice do OZE', desc: 'Sledujte, kolik z vašich plateb šlo zpět do obnovitelných zdrojů.' },
+        { title: 'Smlouvy a dokumenty', desc: 'Přístup ke všem smluvním dokumentům a obchodním podmínkám na jednom místě.' }
+      ] }},
+      { type: 'content_section', props: { label: 'Jak se přihlásit', content: 'Energobanking účet vzniká automaticky po podpisu smlouvy s FREE for YOU. Přihlašovací údaje dostanete e-mailem.\n\nPokud jste zákazník a přihlašovací údaje nemáte, napište nám na info@freeforyou.cz nebo zavolejte — přístup obnovíme obratem.' }},
+      { type: 'cta_block', props: { title: 'Přejít do Energobankingu', description: 'Portál je dostupný online — stačí přihlašovací údaje z e-mailu.', btn1_text: 'Otevřít Energobanking →', btn1_url: 'https://www.energobanking.cz/', btn2_text: 'Potřebuji pomoc', btn2_url: 'podpora-kontakty.html' }},
     ],
     'jak-proudiky': [
-      { type: 'content_section', props: { label: 'Co jsou Proudíky', content: 'FREE for YOU reinvestuje 50 % čistých zisků do obnovitelných zdrojů. Elektřina z těchto zdrojů se rozděluje mezi zákazníky — a Proudíky určují, jaký podíl vám náleží.' }},
-      { type: 'content_section', props: { label: 'Jak je získáváte', content: 'Proudíky se přičítají automaticky za každé odběrné místo zapsané na vaše jméno.' }},
-      { type: 'content_section', props: { label: 'Úrovně členství', content: 'Aktivním doporučováním nových zákazníků si můžete vylepšit členství — a tím násobit rychlost, jakou Proudíky sbíráte.' }},
+      { type: 'content_section', props: { label: 'Co jsou Proudíky', content: 'FREE for YOU reinvestuje 50 % čistých zisků do obnovitelných zdrojů a akumulačních zařízení. Elektřina z těchto zdrojů se následně rozděluje mezi zákazníky — a Proudíky určují, jaký podíl vám náleží.\n\nProudíky jsou body, které sbíráte odběrem energie u FREE for YOU. Čím více Proudíků máte, tím větší poměrnou část elektřiny z vlastních zdrojů dostanete.' }},
+      { type: 'content_section', props: { label: 'Jak je získáváte', content: 'Proudíky se přičítají automaticky za každé odběrné místo zapsané na vaše jméno. Žádné formuláře, žádné přihlašování — prostě odebíráte a body přibývají.\n\n1 Proudík za každých 1,5 MWh spotřebované elektřiny.\n1 Proudík za každý měsíc aktivního odběru.\n\nMáte-li více odběrných míst na své jméno, Proudíky se počítají za každé zvlášť a sčítají se.' }},
+      { type: 'content_section', props: { label: 'Úrovně členství', content: 'Aktivním doporučováním nových zákazníků si můžete vylepšit členství — a tím násobit rychlost, jakou Proudíky sbíráte.\n\nZákladní (1×) — standardní načítání, automaticky pro každého.\nSilver (2×) — doporučte 3–5 aktivních členů.\nGold (3×) — doporučte 6 a více aktivních členů.' }},
       { type: 'content_section', props: { label: 'K čemu to vede', content: 'Čím více Proudíků nasbíráte, tím větší podíl elektřiny z vlastních zdrojů FREE for YOU vám náleží.' }},
       { type: 'cta_block', props: { title: 'Začněte sbírat Proudíky', description: 'Body se počítají automaticky od prvního dne odběru.', btn1_text: 'Doporučte a vylepšete členství →', btn1_url: 'proc-slevy-za-doporuceni.html', btn2_text: 'Kontaktujte nás', btn2_url: 'podpora-kontakty.html' }},
     ],
     'jak-sdileni-elektriny': [
-      { type: 'content_section', props: { label: 'Jak to funguje', content: 'Elektřina od souseda propojuje zákazníky FREE for YOU s vlastním zdrojem elektřiny s těmi, kteří chtějí nakupovat lokálně vyrobenou elektřinu.' }},
-      { type: 'content_section', props: { label: 'Co si určujete vy', content: 'Cenu elektřiny pro odběratele si nastavujete sami. Cenu můžete jednou za 4 měsíce změnit.' }},
-      { type: 'content_section', props: { label: 'Co zařídí FREE for YOU', content: 'Zúčtování, fakturaci, komunikaci s distributorem a dodržení legislativy.' }},
+      { type: 'content_section', props: { label: 'Jak to funguje', content: 'Elektřina od souseda je služba, která propojuje zákazníky FREE for YOU s vlastním zdrojem elektřiny s těmi, kteří chtějí nakupovat lokálně vyrobenou elektřinu za výhodnější cenu.\n\nVy jako Výrobce prodáváte přebytky přímo přes FREE for YOU jinému zákazníkovi — Odběrateli. My zajistíme zúčtování, fakturaci a soulad s legislativou. Vy se domluvíte na ceně.' }},
+      { type: 'content_section', props: { label: 'Co si určujete vy', content: 'Cenu elektřiny pro odběratele si nastavujete sami. Jediná podmínka: nesmí být nižší než poplatek FREE for YOU za zprostředkování služby.\n\nCenu můžete jednou za 4 měsíce změnit — stačí nový návrh přes Energobanking. Odběratel má 336 hodin na přijetí.\n\nSdílet můžete neomezenému počtu odběratelů najednou. Určíte poměr rozdělení elektřiny — nebo ji rozdělíte rovným dílem.' }},
+      { type: 'content_section', props: { label: 'Co zařídí FREE for YOU', content: 'Zúčtování, fakturaci, komunikaci s distributorem a dodržení legislativy. Prodej přebytků, které odběratel nestihne spotřebovat, probíhá standardně dle vaší smlouvy.\n\nSdílení probíhá na dobu neurčitou. Ukončit ho může kdykoli každá ze stran — přes Energobanking.' }},
       { type: 'cta_block', props: { title: 'Chcete začít sdílet?', description: 'Vše nastavíte v Energobankingu.', btn1_text: 'Přejít do Energobankingu →', btn1_url: 'https://www.energobanking.cz/', btn2_text: 'elektrinaodsouseda.cz', btn2_url: 'https://www.elektrinaodsouseda.cz/' }},
     ],
     'jak-vykup-elektriny': [
-      { type: 'content_section', props: { label: 'Co se děje s přebytky', content: 'Fotovoltaika, vítr ani voda nevyrábí podle toho, kolik zrovna spotřebujete. Přebytky jdou do sítě bez náhrady, pokud nemáte sjednáno jinak.' }},
-      { type: 'content_section', props: { label: 'Jak to funguje', content: 'Uzavřete s námi smlouvu o výkupu přebytků. Přebytečná elektřina se automaticky zaúčtuje a proplatí za tržní cenu.\n\nZ výkupní ceny odečítáme náš poplatek — 19 % z tržní ceny, minimálně 780 Kč.' }},
-      { type: 'content_section', props: { label: 'Co z toho máte', content: 'Přebytky přestanou být ztráta a začnou být příjem.' }},
+      { type: 'content_section', props: { label: 'Co se děje s přebytky', content: 'Fotovoltaika, vítr ani voda nevyrábí podle toho, kolik zrovna spotřebujete. Přebytky jdou automaticky do sítě — bez náhrady, pokud nemáte sjednáno jinak.\n\nBaterie jsou jedním řešením. Prodej přebytků FREE for YOU je druhé — a nevyžaduje žádnou investici navíc.' }},
+      { type: 'content_section', props: { label: 'Jak to funguje', content: 'Uzavřete s námi smlouvu o výkupu přebytků. Přebytečná elektřina, kterou váš zdroj dodá do sítě, se automaticky zaúčtuje a proplatí za tržní cenu.\n\nZ výkupní ceny odečítáme náš poplatek — 19 % z tržní ceny, minimálně 780 Kč. Zbytek jde na váš účet. Vše vidíte v Energobankingu: kolik jste vyrobili, kolik prodali a kolik vám přijde.' }},
+      { type: 'content_section', props: { label: 'Co z toho máte', content: 'Přebytky přestanou být ztráta a začnou být příjem. Návratnost investice do fotovoltaiky se tím zkracuje — bez toho, abyste museli cokoliv dalšího řešit.\n\nProdej přebytků a sdílení elektřiny přes službu Elektřina od souseda se navzájem nevylučují.' }},
       { type: 'cta_block', props: { title: 'Chcete začít prodávat přebytky?', description: 'Smlouvu o výkupu vyřídíme s vámi.', btn1_text: 'Kontaktujte nás →', btn1_url: 'podpora-kontakty.html', btn2_text: 'Energobanking', btn2_url: 'https://www.energobanking.cz/' }},
     ],
     'podpora-faq': [
