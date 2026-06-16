@@ -53,9 +53,105 @@ function FieldRenderer({ field, value, onChange }) {
         </label>
       </div>;
 
+    case 'image':
+      return <ImageField field={field} value={value} onChange={onChange} />;
+
+    case 'array':
+      return <ArrayField field={field} value={value} onChange={onChange} />;
+
     default:
       return null;
   }
+}
+
+// ── Image Field ─────────────────────────
+function ImageField({ field, value, onChange }) {
+  const fileRef = useRef(null);
+
+  function handleFile(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) { onChange(ev.target.result); };
+    reader.readAsDataURL(file);
+  }
+
+  return (
+    <div className="adm-field">
+      <label className="adm-label">{field.label}</label>
+      <div style={{display:'flex',gap:'0.5rem',alignItems:'center'}}>
+        <input className="adm-input" value={value || ''} placeholder="URL nebo nahrát soubor..."
+          onChange={e => onChange(e.target.value)}
+          style={{flex:1}} />
+        <button className="adm-btn adm-btn-secondary adm-btn-sm"
+          onClick={() => fileRef.current && fileRef.current.click()}>📁 Nahrát</button>
+        <input ref={fileRef} type="file" accept="image/*" style={{display:'none'}} onChange={handleFile} />
+      </div>
+      {value && value.length > 10 && (
+        <div style={{marginTop:'0.5rem',borderRadius:'8px',overflow:'hidden',border:'1px solid var(--adm-border)',maxWidth:'200px'}}>
+          <img src={value} alt="Náhled" style={{width:'100%',display:'block'}} />
+        </div>
+      )}
+      {field.hint && <div className="adm-hint">{field.hint}</div>}
+    </div>
+  );
+}
+
+// ── Array Field ─────────────────────────
+function ArrayField({ field, value, onChange }) {
+  const items = Array.isArray(value) ? value : [];
+
+  function addItem() {
+    const blank = {};
+    field.arrayFields.forEach(f => { blank[f.key] = ''; });
+    onChange([...items, blank]);
+  }
+
+  function removeItem(idx) {
+    onChange(items.filter((_, i) => i !== idx));
+  }
+
+  function updateItem(idx, key, val) {
+    const updated = items.map((item, i) => i === idx ? { ...item, [key]: val } : item);
+    onChange(updated);
+  }
+
+  function moveItem(from, to) {
+    const arr = [...items];
+    const [moved] = arr.splice(from, 1);
+    arr.splice(to, 0, moved);
+    onChange(arr);
+  }
+
+  return (
+    <div className="adm-field">
+      <label className="adm-label">{field.label}</label>
+      {items.map((item, idx) => (
+        <div key={idx} style={{background:'var(--adm-bg)',border:'1px solid var(--adm-border)',borderRadius:'6px',padding:'0.65rem',marginBottom:'0.4rem',position:'relative'}}>
+          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'0.4rem'}}>
+            <span style={{fontSize:'0.65rem',color:'var(--adm-text3)',fontWeight:700}}>#{idx + 1}</span>
+            <div style={{display:'flex',gap:'0.2rem'}}>
+              {idx > 0 && <button className="adm-btn adm-btn-sm" style={{padding:'1px 5px',fontSize:'0.65rem',background:'none',border:'none',color:'var(--adm-text3)',cursor:'pointer'}} onClick={() => moveItem(idx, idx-1)}>↑</button>}
+              {idx < items.length - 1 && <button className="adm-btn adm-btn-sm" style={{padding:'1px 5px',fontSize:'0.65rem',background:'none',border:'none',color:'var(--adm-text3)',cursor:'pointer'}} onClick={() => moveItem(idx, idx+1)}>↓</button>}
+              <button className="adm-btn adm-btn-sm" style={{padding:'1px 5px',fontSize:'0.65rem',background:'none',border:'none',color:'var(--adm-danger)',cursor:'pointer'}} onClick={() => removeItem(idx)}>✕</button>
+            </div>
+          </div>
+          {field.arrayFields.map(af => (
+            <div key={af.key} style={{marginBottom:'0.4rem'}}>
+              <label style={{fontSize:'0.62rem',color:'var(--adm-text3)',display:'block',marginBottom:'0.2rem'}}>{af.label}</label>
+              {af.type === 'textarea'
+                ? <textarea className="adm-textarea" style={{minHeight:'60px',fontSize:'0.8rem'}} value={item[af.key] || ''} onChange={e => updateItem(idx, af.key, e.target.value)} />
+                : <input className="adm-input" style={{fontSize:'0.8rem'}} value={item[af.key] || ''} onChange={e => updateItem(idx, af.key, e.target.value)} />
+              }
+            </div>
+          ))}
+        </div>
+      ))}
+      <button className="adm-btn adm-btn-secondary adm-btn-sm" onClick={addItem} style={{marginTop:'0.3rem'}}>
+        + Přidat položku
+      </button>
+    </div>
+  );
 }
 
 
@@ -63,7 +159,7 @@ function FieldRenderer({ field, value, onChange }) {
 //  BLOCK ITEM
 // ═══════════════════════════════════
 
-function BlockItem({ block, index, total, editing, onToggle, onChange, onMove, onDelete }) {
+function BlockItem({ block, index, total, editing, onToggle, onChange, onMove, onDelete, onDuplicate }) {
   const reg = BLOCK_REGISTRY[block.type];
   if (!reg) return null;
 
@@ -83,6 +179,7 @@ function BlockItem({ block, index, total, editing, onToggle, onChange, onMove, o
         <div className="adm-block-actions" onClick={e => e.stopPropagation()}>
           {index > 0 && <button title="Nahoru" onClick={() => onMove(index, index - 1)}>↑</button>}
           {index < total - 1 && <button title="Dolů" onClick={() => onMove(index, index + 1)}>↓</button>}
+          <button title="Duplikovat" onClick={() => onDuplicate(index)}>⧉</button>
           <button title="Smazat" style={{color:'var(--adm-danger)'}} onClick={() => onDelete(index)}>✕</button>
         </div>
       </div>
@@ -296,6 +393,29 @@ function App() {
     setEditingBlock(null);
   }
 
+  function duplicateBlock(index) {
+    if (!activePage) return;
+    const original = activePage.blocks[index];
+    const copy = { id: generateId(), type: original.type, props: JSON.parse(JSON.stringify(original.props)) };
+    const blocks = [...activePage.blocks];
+    blocks.splice(index + 1, 0, copy);
+    updatePage({ ...activePage, blocks });
+    setEditingBlock(copy.id);
+  }
+
+  function duplicatePage(id) {
+    const original = pages.find(p => p.id === id);
+    if (!original) return;
+    const copy = JSON.parse(JSON.stringify(original));
+    copy.id = generateId();
+    copy.meta.title = copy.meta.title + ' (kopie)';
+    copy.meta.slug = copy.meta.slug + '-kopie';
+    copy.source = undefined;
+    copy.blocks.forEach(b => { b.id = generateId(); });
+    setPages([...pages, copy]);
+    setActivePageId(copy.id);
+  }
+
   // ── Render ──
 
   return (
@@ -362,6 +482,9 @@ function App() {
               <button className="adm-btn adm-btn-secondary adm-btn-sm" onClick={() => setShowPreview(!showPreview)}>
                 {showPreview ? 'Skrýt náhled' : 'Náhled'}
               </button>
+              <button className="adm-btn adm-btn-secondary adm-btn-sm" onClick={() => duplicatePage(activePage.id)} title="Duplikovat stránku">
+                ⧉ Kopie
+              </button>
               <button className="adm-btn adm-btn-primary adm-btn-sm" onClick={() => exportPage(activePage)}>
                 ↓ Export HTML
               </button>
@@ -384,6 +507,7 @@ function App() {
                       onChange={updateBlockProp}
                       onMove={moveBlock}
                       onDelete={deleteBlock}
+                      onDuplicate={duplicateBlock}
                     />
                   ))}
                   <AddBlockMenu onAdd={addBlock} />

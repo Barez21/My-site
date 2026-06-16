@@ -12,8 +12,10 @@
      url      — URL input
      select   — dropdown (vyžaduje options[])
      toggle   — checkbox boolean
+     image    — URL input + upload souboru s náhledem
+     array    — opakovatelná skupina polí (vyžaduje arrayFields[])
    
-   Každý field: { key, label, type, hint?, options? }
+   Každý field: { key, label, type, hint?, options?, arrayFields? }
    ══════════════════════════════════════════ */
 
 
@@ -132,6 +134,131 @@ const BLOCK_REGISTRY = {
     ],
     defaults: { code: '<div>\n  <!-- Vlastní HTML -->\n</div>' },
     render: function(p) { return p.code; }
+  },
+
+  image_block: {
+    label: 'Obrázek',
+    description: 'Obrázek s popiskem a alt textem',
+    schema: [
+      { key: 'src', label: 'URL obrázku', type: 'image', hint: 'Relativní cesta (img/foto.jpg) nebo plná URL' },
+      { key: 'alt', label: 'Alt text', type: 'text', hint: 'Popis obrázku pro čtečky a SEO' },
+      { key: 'caption', label: 'Popisek pod obrázkem', type: 'text', hint: 'Volitelné' },
+      { key: 'maxwidth', label: 'Maximální šířka', type: 'select', options: [
+        { value: '100%', label: 'Plná šířka' },
+        { value: '720px', label: 'Střední (720px)' },
+        { value: '480px', label: 'Malá (480px)' },
+      ]},
+    ],
+    defaults: { src: '', alt: '', caption: '', maxwidth: '100%' },
+    render: function(p) {
+      if (!p.src) return '<!-- image: no src -->';
+      var caption = p.caption ? '<figcaption style="font-size:0.78rem;color:rgba(255,255,255,0.35);margin-top:0.5rem;text-align:center">' + p.caption + '</figcaption>' : '';
+      return '<figure style="margin:1.5rem 0;text-align:center">' +
+        '<img src="' + p.src + '" alt="' + p.alt + '" style="max-width:' + p.maxwidth + ';width:100%;border-radius:10px;display:block;margin:0 auto" loading="lazy">' +
+        caption + '</figure>';
+    }
+  },
+
+  faq_block: {
+    label: 'Často kladené dotazy',
+    description: 'Accordion s otázkami a odpověďmi',
+    schema: [
+      { key: 'title', label: 'Název skupiny', type: 'text', hint: 'Např: Přechod k FREE for YOU' },
+      { key: 'items', label: 'Otázky', type: 'array', arrayFields: [
+        { key: 'q', label: 'Otázka', type: 'text' },
+        { key: 'a', label: 'Odpověď', type: 'textarea' },
+      ]},
+    ],
+    defaults: { title: 'Otázky a odpovědi', items: [{ q: 'Otázka?', a: 'Odpověď.' }] },
+    render: function(p) {
+      var items = (p.items || []).map(function(item) {
+        return '<div class="faq-item">' +
+          '<button class="faq-q" onclick="this.parentElement.classList.toggle(\'open\')">' + item.q + '<span class="faq-arrow">▾</span></button>' +
+          '<div class="faq-a">' + item.a + '</div></div>';
+      }).join('\n');
+      var titleHtml = p.title ? '<div class="faq-group-title">' + p.title + '</div>' : '';
+      return '<div class="faq-group">' + titleHtml + items + '</div>';
+    }
+  },
+
+  features_grid: {
+    label: 'Grid funkcí',
+    description: 'Karty s ikonou, názvem a popisem',
+    schema: [
+      { key: 'columns', label: 'Sloupce', type: 'select', options: [
+        { value: '2', label: '2 sloupce' },
+        { value: '3', label: '3 sloupce' },
+      ]},
+      { key: 'items', label: 'Funkce', type: 'array', arrayFields: [
+        { key: 'title', label: 'Název', type: 'text' },
+        { key: 'desc', label: 'Popis', type: 'textarea' },
+      ]},
+    ],
+    defaults: { columns: '2', items: [{ title: 'Funkce 1', desc: 'Popis funkce.' }] },
+    render: function(p) {
+      var cols = p.columns || '2';
+      var items = (p.items || []).map(function(item) {
+        return '<div class="eb-feature"><div><div class="eb-feature-title">' + item.title + '</div>' +
+          '<div class="eb-feature-desc">' + item.desc + '</div></div></div>';
+      }).join('\n');
+      return '<div class="eb-features" style="grid-template-columns:repeat(' + cols + ',1fr)">' + items + '</div>';
+    }
+  },
+
+  stat_row: {
+    label: 'Řada čísel / statistik',
+    description: 'Zvýrazněné metriky vedle sebe',
+    schema: [
+      { key: 'items', label: 'Statistiky', type: 'array', arrayFields: [
+        { key: 'number', label: 'Číslo / hodnota', type: 'text' },
+        { key: 'label', label: 'Popisek', type: 'text' },
+      ]},
+    ],
+    defaults: { items: [{ number: '50 %', label: 'zisku reinvestujeme' }, { number: '2016', label: 'dodáváme od' }] },
+    render: function(p) {
+      var items = (p.items || []).map(function(item) {
+        return '<div class="pribeh-stat"><div class="pribeh-stat-num">' + item.number + '</div>' +
+          '<div class="pribeh-stat-label">' + item.label + '</div></div>';
+      }).join('\n');
+      return '<div class="pribeh-stats" style="grid-template-columns:repeat(' + (p.items || []).length + ',1fr)">' + items + '</div>';
+    }
+  },
+
+  two_column: {
+    label: 'Dva sloupce',
+    description: 'Obsah ve dvou sloupcích',
+    schema: [
+      { key: 'left', label: 'Levý sloupec (HTML)', type: 'textarea' },
+      { key: 'right', label: 'Pravý sloupec (HTML)', type: 'textarea' },
+      { key: 'ratio', label: 'Poměr', type: 'select', options: [
+        { value: '1fr 1fr', label: '50 / 50' },
+        { value: '2fr 1fr', label: '66 / 33' },
+        { value: '1fr 2fr', label: '33 / 66' },
+      ]},
+    ],
+    defaults: { left: '<p>Levý sloupec</p>', right: '<p>Pravý sloupec</p>', ratio: '1fr 1fr' },
+    render: function(p) {
+      return '<div style="display:grid;grid-template-columns:' + p.ratio + ';gap:2rem;margin:1.5rem 0">' +
+        '<div>' + p.left + '</div><div>' + p.right + '</div></div>';
+    }
+  },
+
+  divider: {
+    label: 'Oddělovač',
+    description: 'Vizuální čára mezi bloky',
+    schema: [
+      { key: 'style', label: 'Styl', type: 'select', options: [
+        { value: 'line', label: 'Tenká čára' },
+        { value: 'space', label: 'Prázdné místo' },
+        { value: 'dots', label: 'Tečky' },
+      ]},
+    ],
+    defaults: { style: 'line' },
+    render: function(p) {
+      if (p.style === 'space') return '<div style="height:3rem"></div>';
+      if (p.style === 'dots') return '<div style="text-align:center;color:rgba(255,255,255,0.15);letter-spacing:0.5em;margin:2rem 0">• • •</div>';
+      return '<hr style="border:none;border-top:1px solid rgba(255,255,255,0.06);margin:2rem 0">';
+    }
   }
 
 };
