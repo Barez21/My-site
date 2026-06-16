@@ -204,50 +204,85 @@ function generateId() {
 
 // ── Seed data — existing pages ──────────
 function getInitialPages() {
+  var SEED_CONTENT = {
+    'jak-energobanking': [
+      { type: 'content_section', props: { label: 'Co to je', content: 'Energobanking je virtuální účet, který FREE for YOU vytvoří automaticky každému zákazníkovi po registraci. Přístup je zdarma — stačí webový prohlížeč.\n\nFunguje jako rozcestník pro vše, co se u vás děje s energiemi.' }},
+      { type: 'content_section', props: { label: 'Jak se přihlásit', content: 'Energobanking účet vzniká automaticky po podpisu smlouvy s FREE for YOU. Přihlašovací údaje dostanete e-mailem.' }},
+      { type: 'cta_block', props: { title: 'Přejít do Energobankingu', description: 'Portál je dostupný online.', btn1_text: 'Otevřít Energobanking →', btn1_url: 'https://www.energobanking.cz/', btn2_text: 'Potřebuji pomoc', btn2_url: 'podpora-kontakty.html' }},
+    ],
+    'jak-proudiky': [
+      { type: 'content_section', props: { label: 'Co jsou Proudíky', content: 'FREE for YOU reinvestuje 50 % čistých zisků do obnovitelných zdrojů. Elektřina z těchto zdrojů se rozděluje mezi zákazníky — a Proudíky určují, jaký podíl vám náleží.' }},
+      { type: 'content_section', props: { label: 'Jak je získáváte', content: 'Proudíky se přičítají automaticky za každé odběrné místo zapsané na vaše jméno.' }},
+      { type: 'content_section', props: { label: 'Úrovně členství', content: 'Aktivním doporučováním nových zákazníků si můžete vylepšit členství — a tím násobit rychlost, jakou Proudíky sbíráte.' }},
+      { type: 'content_section', props: { label: 'K čemu to vede', content: 'Čím více Proudíků nasbíráte, tím větší podíl elektřiny z vlastních zdrojů FREE for YOU vám náleží.' }},
+      { type: 'cta_block', props: { title: 'Začněte sbírat Proudíky', description: 'Body se počítají automaticky od prvního dne odběru.', btn1_text: 'Doporučte a vylepšete členství →', btn1_url: 'proc-slevy-za-doporuceni.html', btn2_text: 'Kontaktujte nás', btn2_url: 'podpora-kontakty.html' }},
+    ],
+    'jak-sdileni-elektriny': [
+      { type: 'content_section', props: { label: 'Jak to funguje', content: 'Elektřina od souseda propojuje zákazníky FREE for YOU s vlastním zdrojem elektřiny s těmi, kteří chtějí nakupovat lokálně vyrobenou elektřinu.' }},
+      { type: 'content_section', props: { label: 'Co si určujete vy', content: 'Cenu elektřiny pro odběratele si nastavujete sami. Cenu můžete jednou za 4 měsíce změnit.' }},
+      { type: 'content_section', props: { label: 'Co zařídí FREE for YOU', content: 'Zúčtování, fakturaci, komunikaci s distributorem a dodržení legislativy.' }},
+      { type: 'cta_block', props: { title: 'Chcete začít sdílet?', description: 'Vše nastavíte v Energobankingu.', btn1_text: 'Přejít do Energobankingu →', btn1_url: 'https://www.energobanking.cz/', btn2_text: 'elektrinaodsouseda.cz', btn2_url: 'https://www.elektrinaodsouseda.cz/' }},
+    ],
+    'jak-vykup-elektriny': [
+      { type: 'content_section', props: { label: 'Co se děje s přebytky', content: 'Fotovoltaika, vítr ani voda nevyrábí podle toho, kolik zrovna spotřebujete. Přebytky jdou do sítě bez náhrady, pokud nemáte sjednáno jinak.' }},
+      { type: 'content_section', props: { label: 'Jak to funguje', content: 'Uzavřete s námi smlouvu o výkupu přebytků. Přebytečná elektřina se automaticky zaúčtuje a proplatí za tržní cenu.\n\nZ výkupní ceny odečítáme náš poplatek — 19 % z tržní ceny, minimálně 780 Kč.' }},
+      { type: 'content_section', props: { label: 'Co z toho máte', content: 'Přebytky přestanou být ztráta a začnou být příjem.' }},
+      { type: 'cta_block', props: { title: 'Chcete začít prodávat přebytky?', description: 'Smlouvu o výkupu vyřídíme s vámi.', btn1_text: 'Kontaktujte nás →', btn1_url: 'podpora-kontakty.html', btn2_text: 'Energobanking', btn2_url: 'https://www.energobanking.cz/' }},
+    ],
+    'proc-nas-pribeh': [
+      { type: 'content_section', props: { label: '', content: 'Energie, jak ji dnes známe, není něco, co by lidé drželi v rukou. Přichází z dálky — z trhu, z rozhodnutí jiných.\n\nCena je v tomto systému nejviditelnější pravda. Všechno ostatní je až za ní.' }},
+      { type: 'quote_block', props: { text: 'Elektřina se stále musí někde nakoupit. A to znamená, že její cena nikdy není úplně naše.', style: 'large' }},
+      { type: 'content_section', props: { label: 'Slepé uličky', content: 'Prošli jsme všechny známé cesty.\n\nJaderná energie je stabilní, ale pomalá. Vodní energie je silná, ale vázaná na krajinu. Větrná energie naráží na proměnlivost prostředí.\n\nNešlo o ideologii. Šlo o hranice reality.' }},
+      { type: 'content_section', props: { label: 'Průlom', content: 'Střechy. Povrchy, které už existují.\n\nSolární energie není nová myšlenka. Nové je jen rozhodnutí, kam ji zasadit.' }},
+      { type: 'quote_block', props: { text: 'Energie nemá vznikat na úkor prostoru. Má vznikat v jeho rámci.', style: 'small' }},
+      { type: 'content_section', props: { label: 'Co nás vede', content: 'Každý člověk by měl mít možnost mít vlastní zdroj energie.\n\nKaždá instalovaná střecha, každá vyrobená kilowatthodina — není izolovaný projekt. Je to posun v tom, odkud energie přichází.' }},
+      { type: 'content_section', props: { label: 'Pomalá transformace', content: 'Nehledáme rychlou změnu. Budujeme pomalou transformaci.' }},
+      { type: 'quote_block', props: { text: 'Začne to tím, že se přestane brát jen zvenčí.', style: 'large' }},
+      { type: 'cta_block', props: { title: 'Chcete být součástí toho?', description: 'Každý zákazník FREE for YOU je součástí modelu.', btn1_text: 'Spočítat moji cenu →', btn1_url: 'ceny-kalkulacka.html', btn2_text: 'Kontaktujte nás', btn2_url: 'podpora-kontakty.html' }},
+    ],
+  };
+
   var seed = [
-    { slug: 'index', title: 'FREE for YOU energie — Stabilní energie z vlastních zdrojů', description: 'Dodáváme elektřinu od roku 2016. Stavíme vlastní solární zdroje na střechách a 50 % zisku reinvestujeme. Kalkulačka, ceníky a transparentní podmínky.', h1: 'Stabilní energie bez zbytečné marže.', lead: '' },
-    { slug: 'ceny-aktualni-nabidka', title: 'Aktuální nabídka elektřiny — FREE for YOU energie', description: 'Aktuální ceny silové elektřiny FREE for YOU pro domácnosti. Tarify FIX 2025 pro distribuční území ČEZ, PRE a EG.D.', h1: 'Aktuální nabídka', lead: 'Zde vidíte naše aktuálně nabízené tarify.' },
-    { slug: 'ceny-kalkulacka', title: 'Kalkulačka ceny elektřiny — FREE for YOU energie', description: 'Spočítejte si orientační roční náklad za elektřinu u FREE for YOU. Zadejte spotřebu a PSČ — kalkulačka zobrazí celkovou cenu včetně distribuce.', h1: 'Kalkulačka', lead: 'Zadejte loňskou roční spotřebu a zjistěte, kolik byste platili u FREE for YOU.' },
-    { slug: 'ceny-ceniky', title: 'Ceníky elektřiny 2026 — FREE for YOU energie', description: 'Kompletní ceníky elektřiny FREE for YOU ke stažení v PDF.', h1: 'Ceníky', lead: 'Vyberte své distribuční území a zobrazte aktuální ceníky.' },
-    { slug: 'proc-slevy-za-doporuceni', title: 'Slevy za doporučení — FREE for YOU energie', description: 'Doporučte FREE for YOU a získejte slevu až 500 Kč za smlouvu plus 20 Kč za každou spotřebovanou MWh.', h1: 'Slevy za doporučení', lead: 'Když přivedete přítele, ušetříte oba.' },
-    { slug: 'proc-investice-oze', title: 'Investice do obnovitelných zdrojů — FREE for YOU energie', description: 'FREE for YOU reinvestuje 50 % zisku do vlastních solárních elektráren na střechách.', h1: 'Zisk, který pracuje dál.', lead: 'Část toho, co vyděláme, jde rovnou zpátky do vlastní výroby energie.' },
-    { slug: 'proc-nas-pribeh', title: 'Náš příběh — FREE for YOU energie', description: 'Jak jsme od dodavatele elektřiny došli ke stavbě vlastních solárních zdrojů.', h1: 'Náš příběh', lead: 'Otázka, která nás nenechala odejít.' },
-    { slug: 'proc-reference', title: 'Reference a hodnocení zákazníků — FREE for YOU energie', description: 'Co říkají zákazníci FREE for YOU. Hodnocení z Firmy.cz a Google.', h1: 'Reference zákazníků', lead: 'Co o nás říkají lidé, kteří nám svěřili svou energii.' },
-    { slug: 'jak-energobanking', title: 'Energobanking — zákaznický portál FREE for YOU', description: 'Energobanking je váš online přehled spotřeby, faktur, výroby a sdílení elektřiny.', h1: 'Energobanking', lead: 'Zákaznický portál FREE for YOU.' },
-    { slug: 'jak-sdileni-elektriny', title: 'Sdílení elektřiny — Elektřina od souseda | FREE for YOU', description: 'Máte solár a přebytky? Prodejte je sousedovi přes FREE for YOU.', h1: 'Sdílení elektřiny', lead: 'Místo prodeje do sítě za výkupní cenu můžete elektřinu prodat přímo sousedovi.' },
-    { slug: 'jak-vykup-elektriny', title: 'Prodej elektřiny — FREE for YOU energie', description: 'Prodejte přebytky z fotovoltaiky za tržní cenu.', h1: 'Prodej elektřiny', lead: 'Přebytky nemusí téct zadarmo do sítě.' },
-    { slug: 'jak-proudiky', title: 'Proudíky — věrnostní program FREE for YOU energie', description: 'Proudíky jsou body za odběr energie u FREE for YOU.', h1: 'Proudíky', lead: 'Body za odběr energie, podle kterých se rozděluje elektřina z vlastních zdrojů.' },
-    { slug: 'podpora-faq', title: 'Časté dotazy — FREE for YOU energie', description: 'Odpovědi na nejčastější otázky o změně dodavatele a službách FREE for YOU.', h1: 'Časté dotazy', lead: 'Nenašli jste odpověď? Napište nebo zavolejte.' },
-    { slug: 'podpora-dokumenty', title: 'Dokumenty ke stažení — FREE for YOU energie', description: 'Smlouvy, obchodní podmínky, vzory faktur a plné moci.', h1: 'Dokumenty', lead: 'Všechny důležité dokumenty na jednom místě.' },
-    { slug: 'podpora-kontakty', title: 'Kontakty — FREE for YOU energie', description: 'Kontaktujte FREE for YOU. Telefon +420 227 072 292, e-mail info@freeforyou.cz.', h1: 'Kontakty', lead: 'Telefon zvedá člověk. E-mail čteme a odpovídáme do 24 hodin.' },
-    { slug: 'podpora-blog', title: 'Blog — novinky ze světa energií | FREE for YOU', description: 'Články o cenách elektřiny, solární energii a změně dodavatele.', h1: 'Blog', lead: 'Novinky a postřehy ze světa energií.' },
-    { slug: 'pro-media', title: 'Pro média — FREE for YOU energie', description: 'Loga, základní informace o firmě a kontakt pro novináře.', h1: 'Pro média', lead: 'Loga, základní informace a kontakt pro novináře a partnery.' },
-    { slug: 'blog/proc-cena-elektriciny-nesouvisí-s-fakturou', title: 'Proč cena elektřiny na burze nesouvisí s fakturou | FREE for YOU', description: 'Cena elektřiny na burze klesla, ale zálohy zůstávají stejné.', h1: 'Proč cena elektřiny na burze nesouvisí s tím, co platíte na faktuře', lead: '' },
-    { slug: 'blog/co-se-deje-s-prebytkovou-elektricinou', title: 'Co se děje s přebytky ze solárů | FREE for YOU', description: 'Solár vyrábí i když nikdo není doma.', h1: 'Co se děje s elektřinou ze solárů, když ji nikdo nespotřebuje', lead: '' },
-    { slug: 'blog/zmena-dodavatele-co-se-zmeni', title: 'Změna dodavatele: co se změní a co ne | FREE for YOU', description: 'Dodávka se nepřeruší, zásuvky zůstanou stejné.', h1: 'Změna dodavatele: co se opravdu změní a co zůstane stejné', lead: '' },
+    { slug: 'index', title: 'FREE for YOU energie — Stabilní energie z vlastních zdrojů', description: 'Dodáváme elektřinu od roku 2016. Stavíme vlastní solární zdroje na střechách.', h1: 'Stabilní energie bez zbytečné marže.', lead: '', managed: true },
+    { slug: 'ceny-aktualni-nabidka', title: 'Aktuální nabídka elektřiny — FREE for YOU', description: 'Aktuální ceny silové elektřiny FREE for YOU pro domácnosti.', h1: 'Aktuální nabídka', lead: 'Naše aktuálně nabízené tarify.', managed: true },
+    { slug: 'ceny-kalkulacka', title: 'Kalkulačka ceny elektřiny — FREE for YOU', description: 'Spočítejte si náklad za elektřinu u FREE for YOU.', h1: 'Kalkulačka', lead: 'Zadejte spotřebu a zjistěte cenu.', managed: true },
+    { slug: 'ceny-ceniky', title: 'Ceníky elektřiny 2026 — FREE for YOU', description: 'Ceníky elektřiny ke stažení v PDF.', h1: 'Ceníky', lead: 'Ceníky dle distribučního území.', managed: true },
+    { slug: 'proc-slevy-za-doporuceni', title: 'Slevy za doporučení — FREE for YOU', description: 'Doporučte FREE for YOU a získejte slevu.', h1: 'Slevy za doporučení', lead: 'Když přivedete přítele, ušetříte oba.', managed: true },
+    { slug: 'proc-investice-oze', title: 'Investice do OZE — FREE for YOU', description: 'Reinvestujeme 50 % zisku do solárních elektráren.', h1: 'Zisk, který pracuje dál.', lead: '', managed: true },
+    { slug: 'proc-nas-pribeh', title: 'Náš příběh — FREE for YOU', description: 'Od dodavatele ke stavbě vlastních zdrojů.', h1: 'Náš příběh', lead: 'Otázka, která nás nenechala odejít.' },
+    { slug: 'proc-reference', title: 'Reference — FREE for YOU', description: 'Hodnocení zákazníků z Firmy.cz a Google.', h1: 'Reference zákazníků', lead: '', managed: true },
+    { slug: 'jak-energobanking', title: 'Energobanking — FREE for YOU', description: 'Zákaznický portál pro správu energie.', h1: 'Energobanking', lead: 'Zákaznický portál FREE for YOU.' },
+    { slug: 'jak-sdileni-elektriny', title: 'Sdílení elektřiny — FREE for YOU', description: 'Prodejte přebytky sousedovi.', h1: 'Sdílení elektřiny', lead: '' },
+    { slug: 'jak-vykup-elektriny', title: 'Prodej elektřiny — FREE for YOU', description: 'Prodejte přebytky za tržní cenu.', h1: 'Prodej elektřiny', lead: '' },
+    { slug: 'jak-proudiky', title: 'Proudíky — FREE for YOU', description: 'Věrnostní program.', h1: 'Proudíky', lead: 'Body za odběr energie.' },
+    { slug: 'podpora-faq', title: 'Časté dotazy — FREE for YOU', description: 'Odpovědi na nejčastější otázky.', h1: 'Časté dotazy', lead: '', managed: true },
+    { slug: 'podpora-dokumenty', title: 'Dokumenty — FREE for YOU', description: 'Smlouvy, VOP, vzory faktur.', h1: 'Dokumenty', lead: '', managed: true },
+    { slug: 'podpora-kontakty', title: 'Kontakty — FREE for YOU', description: 'Telefon, e-mail, adresa.', h1: 'Kontakty', lead: '', managed: true },
+    { slug: 'podpora-blog', title: 'Blog — FREE for YOU', description: 'Články ze světa energií.', h1: 'Blog', lead: '', managed: true },
+    { slug: 'pro-media', title: 'Pro média — FREE for YOU', description: 'Loga a informace pro novináře.', h1: 'Pro média', lead: '', managed: true },
+    { slug: 'blog/proc-cena-elektriciny', title: 'Proč cena na burze nesouvisí s fakturou', description: '', h1: 'Proč cena elektřiny na burze nesouvisí s fakturou', lead: '', managed: true },
+    { slug: 'blog/co-se-deje-s-prebytkovou-elektricinou', title: 'Co se děje s přebytky ze solárů', description: '', h1: 'Co se děje s přebytkovou elektřinou', lead: '', managed: true },
+    { slug: 'blog/zmena-dodavatele', title: 'Změna dodavatele: co se změní', description: '', h1: 'Změna dodavatele', lead: '', managed: true },
   ];
 
   return seed.map(function(s) {
-    var breadcrumb = 'Domů';
-    if (s.slug.startsWith('ceny-')) breadcrumb = 'Domů / Naše ceny';
-    else if (s.slug.startsWith('proc-')) breadcrumb = 'Domů / Proč FREE for YOU?';
-    else if (s.slug.startsWith('jak-')) breadcrumb = 'Domů / Jak to funguje?';
-    else if (s.slug.startsWith('podpora-')) breadcrumb = 'Domů / Podpora';
-    else if (s.slug.startsWith('blog/')) breadcrumb = 'Domů / Blog';
+    var bc = 'Domů';
+    if (s.slug.startsWith('ceny-')) bc = 'Domů / Naše ceny';
+    else if (s.slug.startsWith('proc-')) bc = 'Domů / Proč FREE for YOU?';
+    else if (s.slug.startsWith('jak-')) bc = 'Domů / Jak to funguje?';
+    else if (s.slug.startsWith('podpora-')) bc = 'Domů / Podpora';
+    else if (s.slug.startsWith('blog/')) bc = 'Domů / Blog';
+
+    var header = { id: generateId(), type: 'page_header', props: { breadcrumb: bc, heading: s.h1, lead: s.lead || '', badges: '' } };
+    var extra = (SEED_CONTENT[s.slug] || []).map(function(b) {
+      return { id: generateId(), type: b.type, props: Object.assign({}, b.props) };
+    });
 
     return {
       id: generateId(),
-      source: 'existing',
-      meta: {
-        title: s.title,
-        description: s.description,
-        slug: s.slug,
-        canonical: 'https://www.freeforyou.cz/' + s.slug + '.html',
-        robots: 'index, follow'
-      },
-      blocks: [
-        { id: generateId(), type: 'page_header', props: { breadcrumb: breadcrumb, heading: s.h1, lead: s.lead || '', badges: '' } }
-      ]
+      source: s.managed ? 'managed' : 'existing',
+      meta: { title: s.title, description: s.description, slug: s.slug, canonical: 'https://www.freeforyou.cz/' + s.slug + '.html', robots: 'index, follow' },
+      blocks: [header].concat(extra)
     };
   });
 }
