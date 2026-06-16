@@ -272,23 +272,13 @@ function MetaEditor({ meta, onChange }) {
 
 function PreviewPanel({ page, siteCSS }) {
   const iframeRef = useRef(null);
-  const [previewMode, setPreviewMode] = useState('auto'); // 'auto', 'blocks', 'original'
 
   useEffect(() => {
     if (!iframeRef.current || !page) return;
-
-    const useOriginal = page.originalUrl && (previewMode === 'auto' || previewMode === 'original');
-
-    if (useOriginal) {
-      // Load original page directly from server
-      iframeRef.current.src = page.originalUrl;
-    } else {
-      // Render from blocks
-      const html = renderPageHTML(page, siteCSS);
-      const blob = new Blob([html], { type: 'text/html' });
-      iframeRef.current.src = URL.createObjectURL(blob);
-    }
-  }, [page, siteCSS, previewMode, page && JSON.stringify(page.blocks), page && JSON.stringify(page.meta), page && page.customCss]);
+    const html = renderPageHTML(page, siteCSS);
+    const blob = new Blob([html], { type: 'text/html' });
+    iframeRef.current.src = URL.createObjectURL(blob);
+  }, [page, siteCSS, page && JSON.stringify(page.blocks), page && JSON.stringify(page.meta), page && page.customCss]);
 
   if (!page) {
     return (
@@ -299,21 +289,7 @@ function PreviewPanel({ page, siteCSS }) {
     );
   }
 
-  return (
-    <>
-      {page.originalUrl && (
-        <div style={{padding:'0.5rem 1.25rem',borderBottom:'1px solid var(--adm-border)',display:'flex',gap:'0.5rem',alignItems:'center',background:'var(--adm-surface)',flexShrink:0}}>
-          <span style={{fontSize:'0.68rem',color:'var(--adm-text3)'}}>Náhled:</span>
-          <button className={`adm-btn adm-btn-sm ${previewMode !== 'blocks' ? 'adm-btn-primary' : 'adm-btn-secondary'}`}
-            onClick={() => setPreviewMode(previewMode === 'blocks' ? 'auto' : 'blocks')}
-            style={{fontSize:'0.65rem',padding:'2px 8px'}}>
-            {previewMode === 'blocks' ? '📄 Originál' : '🧱 Bloky'}
-          </button>
-        </div>
-      )}
-      <iframe ref={iframeRef} className="adm-preview-frame" />
-    </>
-  );
+  return <iframe ref={iframeRef} className="adm-preview-frame" />;
 }
 
 
@@ -528,30 +504,6 @@ function App() {
             <div className="adm-editor-body">
               {activeTab === 'blocks' && (
                 <>
-                  {activePage.originalUrl && activePage.blocks.length <= 1 && (
-                    <div style={{padding:'1.25rem',background:'rgba(68,230,163,0.05)',border:'1px solid rgba(68,230,163,0.15)',borderRadius:'8px',marginBottom:'1rem'}}>
-                      <div style={{fontSize:'0.85rem',color:'var(--adm-accent)',fontWeight:600,marginBottom:'0.4rem'}}>Obsah spravován v HTML</div>
-                      <div style={{fontSize:'0.78rem',color:'var(--adm-text2)',lineHeight:1.5,marginBottom:'0.75rem'}}>
-                        Tato stránka má složitou strukturu (kalkulačka, karty, gridy...) která zatím není rozložená do bloků. Náhled zobrazuje originální stránku ze serveru. Můžete editovat meta/SEO nebo načíst obsah jako HTML blok.
-                      </div>
-                      <button className="adm-btn adm-btn-secondary adm-btn-sm" onClick={() => {
-                        fetch(activePage.originalUrl)
-                          .then(r => r.text())
-                          .then(html => {
-                            var m = html.match(/<\/section>\s*\n([\s\S]*?)(?=\n\s*<!-- FOOTER|\n\s*<footer)/);
-                            var content = m ? m[1].trim() : html.match(/<main[^>]*>([\s\S]*?)<\/main>/)?.[1]?.trim() || '';
-                            if (content) {
-                              var block = { id: generateId(), type: 'raw_html', props: { code: content } };
-                              updatePage({ ...activePage, blocks: [...activePage.blocks, block] });
-                              setEditingBlock(block.id);
-                            }
-                          })
-                          .catch(e => alert('Chyba při načítání: ' + e.message));
-                      }}>
-                        ↓ Načíst obsah ze serveru
-                      </button>
-                    </div>
-                  )}
                   {activePage.blocks.length === 0 && (
                     <div className="adm-blocks-empty">Stránka je prázdná. Přidejte první blok.</div>
                   )}
