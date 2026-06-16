@@ -186,8 +186,12 @@ function renderPageHTML(page) {
 var STORE_KEY = 'ffy-cms-pages';
 
 function loadPages() {
-  try { return JSON.parse(localStorage.getItem(STORE_KEY)) || []; }
-  catch(e) { return []; }
+  try {
+    var stored = JSON.parse(localStorage.getItem(STORE_KEY));
+    if (stored && stored.length > 0) return stored;
+  } catch(e) {}
+  // First run — seed with existing site pages
+  return getInitialPages();
 }
 
 function savePages(pages) {
@@ -196,4 +200,54 @@ function savePages(pages) {
 
 function generateId() {
   return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+}
+
+// ── Seed data — existing pages ──────────
+function getInitialPages() {
+  var seed = [
+    { slug: 'index', title: 'FREE for YOU energie — Stabilní energie z vlastních zdrojů', description: 'Dodáváme elektřinu od roku 2016. Stavíme vlastní solární zdroje na střechách a 50 % zisku reinvestujeme. Kalkulačka, ceníky a transparentní podmínky.', h1: 'Stabilní energie bez zbytečné marže.', lead: '' },
+    { slug: 'ceny-aktualni-nabidka', title: 'Aktuální nabídka elektřiny — FREE for YOU energie', description: 'Aktuální ceny silové elektřiny FREE for YOU pro domácnosti. Tarify FIX 2025 pro distribuční území ČEZ, PRE a EG.D.', h1: 'Aktuální nabídka', lead: 'Zde vidíte naše aktuálně nabízené tarify.' },
+    { slug: 'ceny-kalkulacka', title: 'Kalkulačka ceny elektřiny — FREE for YOU energie', description: 'Spočítejte si orientační roční náklad za elektřinu u FREE for YOU. Zadejte spotřebu a PSČ — kalkulačka zobrazí celkovou cenu včetně distribuce.', h1: 'Kalkulačka', lead: 'Zadejte loňskou roční spotřebu a zjistěte, kolik byste platili u FREE for YOU.' },
+    { slug: 'ceny-ceniky', title: 'Ceníky elektřiny 2026 — FREE for YOU energie', description: 'Kompletní ceníky elektřiny FREE for YOU ke stažení v PDF.', h1: 'Ceníky', lead: 'Vyberte své distribuční území a zobrazte aktuální ceníky.' },
+    { slug: 'proc-slevy-za-doporuceni', title: 'Slevy za doporučení — FREE for YOU energie', description: 'Doporučte FREE for YOU a získejte slevu až 500 Kč za smlouvu plus 20 Kč za každou spotřebovanou MWh.', h1: 'Slevy za doporučení', lead: 'Když přivedete přítele, ušetříte oba.' },
+    { slug: 'proc-investice-oze', title: 'Investice do obnovitelných zdrojů — FREE for YOU energie', description: 'FREE for YOU reinvestuje 50 % zisku do vlastních solárních elektráren na střechách.', h1: 'Zisk, který pracuje dál.', lead: 'Část toho, co vyděláme, jde rovnou zpátky do vlastní výroby energie.' },
+    { slug: 'proc-nas-pribeh', title: 'Náš příběh — FREE for YOU energie', description: 'Jak jsme od dodavatele elektřiny došli ke stavbě vlastních solárních zdrojů.', h1: 'Náš příběh', lead: 'Otázka, která nás nenechala odejít.' },
+    { slug: 'proc-reference', title: 'Reference a hodnocení zákazníků — FREE for YOU energie', description: 'Co říkají zákazníci FREE for YOU. Hodnocení z Firmy.cz a Google.', h1: 'Reference zákazníků', lead: 'Co o nás říkají lidé, kteří nám svěřili svou energii.' },
+    { slug: 'jak-energobanking', title: 'Energobanking — zákaznický portál FREE for YOU', description: 'Energobanking je váš online přehled spotřeby, faktur, výroby a sdílení elektřiny.', h1: 'Energobanking', lead: 'Zákaznický portál FREE for YOU.' },
+    { slug: 'jak-sdileni-elektriny', title: 'Sdílení elektřiny — Elektřina od souseda | FREE for YOU', description: 'Máte solár a přebytky? Prodejte je sousedovi přes FREE for YOU.', h1: 'Sdílení elektřiny', lead: 'Místo prodeje do sítě za výkupní cenu můžete elektřinu prodat přímo sousedovi.' },
+    { slug: 'jak-vykup-elektriny', title: 'Prodej elektřiny — FREE for YOU energie', description: 'Prodejte přebytky z fotovoltaiky za tržní cenu.', h1: 'Prodej elektřiny', lead: 'Přebytky nemusí téct zadarmo do sítě.' },
+    { slug: 'jak-proudiky', title: 'Proudíky — věrnostní program FREE for YOU energie', description: 'Proudíky jsou body za odběr energie u FREE for YOU.', h1: 'Proudíky', lead: 'Body za odběr energie, podle kterých se rozděluje elektřina z vlastních zdrojů.' },
+    { slug: 'podpora-faq', title: 'Časté dotazy — FREE for YOU energie', description: 'Odpovědi na nejčastější otázky o změně dodavatele a službách FREE for YOU.', h1: 'Časté dotazy', lead: 'Nenašli jste odpověď? Napište nebo zavolejte.' },
+    { slug: 'podpora-dokumenty', title: 'Dokumenty ke stažení — FREE for YOU energie', description: 'Smlouvy, obchodní podmínky, vzory faktur a plné moci.', h1: 'Dokumenty', lead: 'Všechny důležité dokumenty na jednom místě.' },
+    { slug: 'podpora-kontakty', title: 'Kontakty — FREE for YOU energie', description: 'Kontaktujte FREE for YOU. Telefon +420 227 072 292, e-mail info@freeforyou.cz.', h1: 'Kontakty', lead: 'Telefon zvedá člověk. E-mail čteme a odpovídáme do 24 hodin.' },
+    { slug: 'podpora-blog', title: 'Blog — novinky ze světa energií | FREE for YOU', description: 'Články o cenách elektřiny, solární energii a změně dodavatele.', h1: 'Blog', lead: 'Novinky a postřehy ze světa energií.' },
+    { slug: 'pro-media', title: 'Pro média — FREE for YOU energie', description: 'Loga, základní informace o firmě a kontakt pro novináře.', h1: 'Pro média', lead: 'Loga, základní informace a kontakt pro novináře a partnery.' },
+    { slug: 'blog/proc-cena-elektriciny-nesouvisí-s-fakturou', title: 'Proč cena elektřiny na burze nesouvisí s fakturou | FREE for YOU', description: 'Cena elektřiny na burze klesla, ale zálohy zůstávají stejné.', h1: 'Proč cena elektřiny na burze nesouvisí s tím, co platíte na faktuře', lead: '' },
+    { slug: 'blog/co-se-deje-s-prebytkovou-elektricinou', title: 'Co se děje s přebytky ze solárů | FREE for YOU', description: 'Solár vyrábí i když nikdo není doma.', h1: 'Co se děje s elektřinou ze solárů, když ji nikdo nespotřebuje', lead: '' },
+    { slug: 'blog/zmena-dodavatele-co-se-zmeni', title: 'Změna dodavatele: co se změní a co ne | FREE for YOU', description: 'Dodávka se nepřeruší, zásuvky zůstanou stejné.', h1: 'Změna dodavatele: co se opravdu změní a co zůstane stejné', lead: '' },
+  ];
+
+  return seed.map(function(s) {
+    var breadcrumb = 'Domů';
+    if (s.slug.startsWith('ceny-')) breadcrumb = 'Domů / Naše ceny';
+    else if (s.slug.startsWith('proc-')) breadcrumb = 'Domů / Proč FREE for YOU?';
+    else if (s.slug.startsWith('jak-')) breadcrumb = 'Domů / Jak to funguje?';
+    else if (s.slug.startsWith('podpora-')) breadcrumb = 'Domů / Podpora';
+    else if (s.slug.startsWith('blog/')) breadcrumb = 'Domů / Blog';
+
+    return {
+      id: generateId(),
+      source: 'existing',
+      meta: {
+        title: s.title,
+        description: s.description,
+        slug: s.slug,
+        canonical: 'https://www.freeforyou.cz/' + s.slug + '.html',
+        robots: 'index, follow'
+      },
+      blocks: [
+        { id: generateId(), type: 'page_header', props: { breadcrumb: breadcrumb, heading: s.h1, lead: s.lead || '', badges: '' } }
+      ]
+    };
+  });
 }

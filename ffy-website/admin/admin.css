@@ -88,7 +88,7 @@ body { font-family: 'Ubuntu', sans-serif; background: var(--adm-bg); color: var(
 
 /* Add block dropdown */
 .adm-add-wrap { position: relative; margin-top: 0.75rem; text-align: center; }
-.adm-add-menu { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: var(--adm-surface2); border: 1px solid var(--adm-border2); border-radius: var(--adm-radius); padding: 0.4rem; min-width: 220px; z-index: 10; box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+.adm-add-menu { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: var(--adm-surface2); border: 1px solid var(--adm-border2); border-radius: var(--adm-radius); padding: 0.4rem; min-width: 220px; z-index: 10; box-shadow: 0 8px 24px rgba(0,0,0,0.4); margin-top: 4px; max-height: 320px; overflow-y: auto; }
 .adm-add-option { display: block; width: 100%; text-align: left; padding: 0.5rem 0.75rem; border: none; background: none; color: var(--adm-text); font-family: inherit; font-size: 0.82rem; cursor: pointer; border-radius: 4px; }
 .adm-add-option:hover { background: rgba(68,230,163,0.08); }
 .adm-add-option span { display: block; font-size: 0.68rem; color: var(--adm-text3); font-weight: 300; }

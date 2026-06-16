@@ -321,9 +321,12 @@ function App() {
             >
               <div>
                 <div className="adm-page-name">
-                  {(page.meta.title || 'Bez názvu').split('—')[0].trim()}
+                  {(page.meta.title || 'Bez názvu').split('—')[0].split('|')[0].trim()}
                 </div>
-                <div className="adm-page-slug">{page.meta.slug || '—'}.html</div>
+                <div className="adm-page-slug">
+                  {page.meta.slug || '—'}.html
+                  {page.source === 'existing' && <span style={{marginLeft:'0.4rem',color:'var(--adm-accent)',fontSize:'0.58rem',fontWeight:700,letterSpacing:'0.05em'}}>EXISTUJÍCÍ</span>}
+                </div>
               </div>
               <button
                 className="adm-page-del"
@@ -331,6 +334,15 @@ function App() {
               >✕</button>
             </div>
           ))}
+        </div>
+        <div style={{padding:'0.75rem',borderTop:'1px solid var(--adm-border)',flexShrink:0}}>
+          <button className="adm-btn adm-btn-sm" style={{width:'100%',justifyContent:'center',fontSize:'0.68rem',color:'var(--adm-text3)'}} onClick={() => {
+            if (confirm('Resetovat na výchozí stav? Všechny změny budou ztraceny.')) {
+              localStorage.removeItem('ffy-cms-pages');
+              setPages(loadPages());
+              setActivePageId(null);
+            }
+          }}>↻ Reset na výchozí</button>
         </div>
       </div>
 
