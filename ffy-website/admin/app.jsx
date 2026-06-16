@@ -454,8 +454,7 @@ function App() {
                 </div>
                 <div className="adm-page-slug">
                   {page.meta.slug || '—'}.html
-                  {page.source === 'existing' && <span style={{marginLeft:'0.4rem',color:'var(--adm-accent)',fontSize:'0.58rem',fontWeight:700,letterSpacing:'0.05em'}}>EDITOVATELNÁ</span>}
-                  {page.source === 'managed' && <span style={{marginLeft:'0.4rem',color:'var(--adm-text3)',fontSize:'0.58rem',fontWeight:700,letterSpacing:'0.05em'}}>POUZE META</span>}
+                  {page.source === 'existing' && <span style={{marginLeft:'0.4rem',color:'var(--adm-text3)',fontSize:'0.58rem',fontWeight:600,letterSpacing:'0.05em'}}>WEB</span>}
                 </div>
               </div>
               <button
