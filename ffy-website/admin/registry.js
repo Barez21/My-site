@@ -275,7 +275,7 @@ function renderBlocksHTML(blocks) {
   }).join('\n\n      ');
 }
 
-function renderPageHTML(page) {
+function renderPageHTML(page, inlineCss) {
   var blocksHTML = renderBlocksHTML(page.blocks);
   var hasHeader = page.blocks.some(function(b){ return b.type === 'page_header'; });
 
@@ -290,7 +290,8 @@ function renderPageHTML(page) {
     '<meta property="og:type" content="website">\n' +
     '<meta property="og:title" content="' + (page.meta.title || '') + '">\n' +
     '<meta property="og:description" content="' + (page.meta.description || '') + '">\n' +
-    '<link rel="stylesheet" href="../styles.css">\n' +
+    (inlineCss ? '<style>' + inlineCss + '</style>\n' : '<link rel="stylesheet" href="../styles.css">\n') +
+    (page.customCss ? '<style>' + page.customCss + '</style>\n' : '') +
     '</head>\n<body>\n' +
     '<div class="nebula" aria-hidden="true">\n' +
     '  <div class="nebula-blob nebula-blob-1"></div>\n' +
@@ -355,6 +356,11 @@ function getInitialPages() {
       { type: 'content_section', props: { label: 'Jak to funguje', content: 'Uzavřete s námi smlouvu o výkupu přebytků. Přebytečná elektřina se automaticky zaúčtuje a proplatí za tržní cenu.\n\nZ výkupní ceny odečítáme náš poplatek — 19 % z tržní ceny, minimálně 780 Kč.' }},
       { type: 'content_section', props: { label: 'Co z toho máte', content: 'Přebytky přestanou být ztráta a začnou být příjem.' }},
       { type: 'cta_block', props: { title: 'Chcete začít prodávat přebytky?', description: 'Smlouvu o výkupu vyřídíme s vámi.', btn1_text: 'Kontaktujte nás →', btn1_url: 'podpora-kontakty.html', btn2_text: 'Energobanking', btn2_url: 'https://www.energobanking.cz/' }},
+    ],
+    'podpora-faq': [
+      { type: 'faq_block', props: { title: 'Přechod k FREE for YOU', items: [{ q: 'Přijdu při přechodu o dodávku elektřiny nebo plynu?', a: 'Ne. Přechod probíhá čistě administrativně — fyzická dodávka se nepřerušuje.' }, { q: 'Jak dlouho přechod trvá?', a: 'Standardně 6 až 8 týdnů od podpisu smlouvy.' }, { q: 'Co musím udělat já a co zařídíte vy?', a: 'Vy vyplníte formulář a podepíšete smlouvu a plnou moc. Zbytek zařídíme za vás.' }, { q: 'Jaké dokumenty potřebuji?', a: 'Stačí poslední vyúčtování a podepsaná plná moc.' }, { q: 'Mohu přejít s výpovědní lhůtou?', a: 'Ano. Smlouvu za vás vypovíme a přechod naplánujeme na konec lhůty.' }, { q: 'Mohu přejít jen s elektřinou?', a: 'Ano, přejít můžete s elektřinou, plynem, nebo obojím.' }, { q: 'Co když budu chtít odejít?', a: 'Podmínky ukončení jsou ve smlouvě. Žádné skryté pokuty.' }] }},
+      { type: 'faq_block', props: { title: 'Ceny a produkty', items: [{ q: 'Jaký je rozdíl mezi fixním a SPOT tarifem?', a: 'Fix = dohodnutá cena na celé období. SPOT = cena se mění každou hodinu podle burzy.' }, { q: 'Jak se tvoří cena u FREE for YOU?', a: 'Regulovaná složka (distribuce, daně) + obchodní složka. Část zisku reinvestujeme do vlastních zdrojů.' }, { q: 'Co je Energobanking?', a: 'Zákaznický účet s fakturami, spotřebou a historií plateb. Přístup automaticky po přechodu.' }, { q: 'Jak fungují slevy za doporučení?', a: 'Doporučíte někoho, oba získáte slevu na energii. Funguje do 5 stupňů.' }, { q: 'Mění se cena v průběhu smlouvy?', a: 'U fixního tarifu ne. U SPOT se mění každou hodinu.' }, { q: 'Jsou v ceně zahrnuty poplatky za distribuci?', a: 'Jsou na faktuře, ale jde o regulované platby distributorovi — stejné u všech dodavatelů.' }] }},
+      { type: 'faq_block', props: { title: 'Pro stávající zákazníky', items: [{ q: 'Kdy probíhají odečty?', a: 'Odečty provádí distributor, ne FREE for YOU. Termíny se nemění.' }, { q: 'Proč dvě zálohy ve stejném měsíci?', a: 'Při přechodu může přijít záloha za aktuální měsíc od starého dodavatele a za další od nás.' }, { q: 'Vracíte přeplatky automaticky?', a: 'Ano, vždy automaticky na váš účet.' }, { q: 'Kde najdu smlouvy a faktury?', a: 'V Energobankingu. Obecné dokumenty na stránce Dokumenty.' }, { q: 'Jak probíhá přepis odběrného místa?', a: 'Kontaktujte nás — projdeme postup a vše zorganizujeme.' }, { q: 'Co dělat, když se stěhuji?', a: 'Napište co nejdříve. Převedeme smlouvu nebo zajistíme ukončení.' }] }},
     ],
     'proc-nas-pribeh': [
       { type: 'content_section', props: { label: '', content: 'Energie, jak ji dnes známe, není něco, co by lidé drželi v rukou. Přichází z dálky — z trhu, z rozhodnutí jiných.\n\nCena je v tomto systému nejviditelnější pravda. Všechno ostatní je až za ní.' }},

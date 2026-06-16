@@ -270,15 +270,15 @@ function MetaEditor({ meta, onChange }) {
 //  PREVIEW PANEL
 // ═══════════════════════════════════
 
-function PreviewPanel({ page }) {
+function PreviewPanel({ page, siteCSS }) {
   const iframeRef = useRef(null);
 
   useEffect(() => {
     if (!iframeRef.current || !page) return;
-    const html = renderPageHTML(page);
+    const html = renderPageHTML(page, siteCSS);
     const blob = new Blob([html], { type: 'text/html' });
     iframeRef.current.src = URL.createObjectURL(blob);
-  }, [page, page && JSON.stringify(page.blocks), page && JSON.stringify(page.meta)]);
+  }, [page, siteCSS, page && JSON.stringify(page.blocks), page && JSON.stringify(page.meta), page && page.customCss]);
 
   if (!page) {
     return (
@@ -298,7 +298,7 @@ function PreviewPanel({ page }) {
 // ═══════════════════════════════════
 
 function exportPage(page) {
-  const html = renderPageHTML(page);
+  const html = renderPageHTML(page, ''); // Export uses <link> not inline CSS
   const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -319,8 +319,17 @@ function App() {
   const [activeTab, setActiveTab] = useState('blocks');
   const [editingBlock, setEditingBlock] = useState(null);
   const [showPreview, setShowPreview] = useState(true);
+  const [siteCSS, setSiteCSS] = useState('');
 
   const activePage = pages.find(p => p.id === activePageId);
+
+  // Fetch main site CSS on mount
+  useEffect(() => {
+    fetch('../styles.css')
+      .then(r => r.ok ? r.text() : '')
+      .then(css => setSiteCSS(css))
+      .catch(() => setSiteCSS(''));
+  }, []);
 
   // Auto-save on every change
   useEffect(() => { savePages(pages); }, [pages]);
@@ -478,6 +487,9 @@ function App() {
               <button className={`adm-tab ${activeTab === 'meta' ? 'active' : ''}`} onClick={() => setActiveTab('meta')}>
                 Meta / SEO
               </button>
+              <button className={`adm-tab ${activeTab === 'css' ? 'active' : ''}`} onClick={() => setActiveTab('css')}>
+                CSS
+              </button>
               <div className="adm-tab-spacer" />
               <button className="adm-btn adm-btn-secondary adm-btn-sm" onClick={() => setShowPreview(!showPreview)}>
                 {showPreview ? 'Skrýt náhled' : 'Náhled'}
@@ -519,6 +531,28 @@ function App() {
                   onChange={meta => updatePage({ ...activePage, meta })}
                 />
               )}
+              {activeTab === 'css' && (
+                <div>
+                  <div className="adm-field">
+                    <label className="adm-label">Vlastní CSS pro tuto stránku</label>
+                    <textarea
+                      className="adm-textarea"
+                      style={{minHeight:'300px',fontFamily:'monospace',fontSize:'0.82rem',lineHeight:'1.5',tabSize:2}}
+                      value={activePage.customCss || ''}
+                      onChange={e => updatePage({ ...activePage, customCss: e.target.value })}
+                      placeholder="/* Vlastní CSS pravidla */&#10;.moje-trida {&#10;  color: red;&#10;}"
+                      spellCheck={false}
+                    />
+                    <div className="adm-hint">CSS se vloží jako &lt;style&gt; na konec &lt;head&gt; — přebíjí hlavní stylesheet. Aplikuje se pouze na tuto stránku.</div>
+                  </div>
+                  <div style={{marginTop:'1rem',padding:'0.75rem',background:'var(--adm-bg)',borderRadius:'6px',border:'1px solid var(--adm-border)'}}>
+                    <div className="adm-label" style={{marginBottom:'0.4rem'}}>Hlavní stylesheet</div>
+                    <div style={{fontSize:'0.75rem',color:'var(--adm-text3)'}}>
+                      {siteCSS ? `styles.css načten (${Math.round(siteCSS.length/1024)} KB) — náhled používá aktuální styly z webu` : 'styles.css se nepodařilo načíst — náhled bez stylů'}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </>
         ) : (
@@ -535,7 +569,7 @@ function App() {
           <div className="adm-preview-head">
             <span className="adm-preview-label">Náhled</span>
           </div>
-          <PreviewPanel page={activePage} />
+          <PreviewPanel page={activePage} siteCSS={siteCSS} />
         </div>
       )}
     </div>
