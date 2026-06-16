@@ -272,13 +272,23 @@ function MetaEditor({ meta, onChange }) {
 
 function PreviewPanel({ page, siteCSS }) {
   const iframeRef = useRef(null);
+  const [previewMode, setPreviewMode] = useState('auto'); // 'auto', 'blocks', 'original'
 
   useEffect(() => {
     if (!iframeRef.current || !page) return;
-    const html = renderPageHTML(page, siteCSS);
-    const blob = new Blob([html], { type: 'text/html' });
-    iframeRef.current.src = URL.createObjectURL(blob);
-  }, [page, siteCSS, page && JSON.stringify(page.blocks), page && JSON.stringify(page.meta), page && page.customCss]);
+
+    const useOriginal = page.originalUrl && (previewMode === 'auto' || previewMode === 'original');
+
+    if (useOriginal) {
+      // Load original page directly from server
+      iframeRef.current.src = page.originalUrl;
+    } else {
+      // Render from blocks
+      const html = renderPageHTML(page, siteCSS);
+      const blob = new Blob([html], { type: 'text/html' });
+      iframeRef.current.src = URL.createObjectURL(blob);
+    }
+  }, [page, siteCSS, previewMode, page && JSON.stringify(page.blocks), page && JSON.stringify(page.meta), page && page.customCss]);
 
   if (!page) {
     return (
@@ -289,7 +299,21 @@ function PreviewPanel({ page, siteCSS }) {
     );
   }
 
-  return <iframe ref={iframeRef} className="adm-preview-frame" />;
+  return (
+    <>
+      {page.originalUrl && (
+        <div style={{padding:'0.5rem 1.25rem',borderBottom:'1px solid var(--adm-border)',display:'flex',gap:'0.5rem',alignItems:'center',background:'var(--adm-surface)',flexShrink:0}}>
+          <span style={{fontSize:'0.68rem',color:'var(--adm-text3)'}}>Náhled:</span>
+          <button className={`adm-btn adm-btn-sm ${previewMode !== 'blocks' ? 'adm-btn-primary' : 'adm-btn-secondary'}`}
+            onClick={() => setPreviewMode(previewMode === 'blocks' ? 'auto' : 'blocks')}
+            style={{fontSize:'0.65rem',padding:'2px 8px'}}>
+            {previewMode === 'blocks' ? '📄 Originál' : '🧱 Bloky'}
+          </button>
+        </div>
+      )}
+      <iframe ref={iframeRef} className="adm-preview-frame" />
+    </>
+  );
 }
 
 
