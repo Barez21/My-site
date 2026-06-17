@@ -157,6 +157,97 @@ var BLOCK_REGISTRY = {
     }
   },
 
+  reviews_block: {
+    label: 'Recenze zákazníků', description: 'Karty s hodnocením',
+    schema: [
+      { key: 'section_label', label: 'Nadpis sekce', type: 'text' },
+      { key: 'items', label: 'Recenze', type: 'array', arrayFields: [
+        { key: 'text', label: 'Text recenze', type: 'textarea' },
+        { key: 'author', label: 'Autor', type: 'text' },
+        { key: 'date', label: 'Datum', type: 'text' },
+        { key: 'source', label: 'Zdroj (Google/Firmy.cz)', type: 'text' },
+        { key: 'source_url', label: 'Odkaz na ověření', type: 'url' },
+      ]},
+    ],
+    defaults: { section_label: '', items: [{text:'Skvělá zkušenost.',author:'Jan N.',date:'',source:'Google',source_url:'#'}] },
+    render: function(p) {
+      var cards = (p.items||[]).map(function(r){
+        var src = r.source ? '<a href="'+(r.source_url||'#')+'" class="review-source-link" target="_blank" rel="noopener">Ověřit na '+r.source+' →</a>' : '';
+        var meta = [r.author, r.date].filter(Boolean).join(' · ');
+        return '<div class="review-card"><div class="review-text">'+r.text+'</div><div class="review-author">'+meta+'</div>'+src+'</div>';
+      }).join('');
+      var lbl = p.section_label ? '<div class="sdileni-block-label">'+p.section_label+'</div>' : '';
+      return '<div class="reviews-block">'+lbl+'<div class="reviews-inner">'+cards+'</div></div>';
+    }
+  },
+
+  contact_form: {
+    label: 'Kontaktní formulář', description: 'Formulář se jménem, kontaktem a zprávou',
+    schema: [
+      { key: 'title', label: 'Nadpis', type: 'text' },
+      { key: 'intro', label: 'Úvodní text', type: 'textarea' },
+      { key: 'name_label', label: 'Popisek — jméno', type: 'text' },
+      { key: 'contact_label', label: 'Popisek — kontakt', type: 'text' },
+      { key: 'message_label', label: 'Popisek — zpráva', type: 'text' },
+      { key: 'submit_text', label: 'Text tlačítka', type: 'text' },
+      { key: 'action', label: 'Action URL (kam odeslat)', type: 'url', hint: 'Prázdné = jen vizuál bez odeslání' },
+    ],
+    defaults: { title: 'Napište nám', intro: '', name_label: 'Jméno', contact_label: 'Telefon nebo e-mail', message_label: 'Zpráva', submit_text: 'Odeslat', action: '' },
+    render: function(p) {
+      var action = p.action ? ' action="'+p.action+'" method="post"' : '';
+      return '<div class="kontakt-form-block">'+(p.title?'<div class="sdileni-block-label">'+p.title+'</div>':'')+(p.intro?'<p class="kform-intro">'+p.intro+'</p>':'')+
+        '<form class="kform"'+action+'>'+
+        '<div class="kform-group"><label class="kform-label">'+p.name_label+'</label><input type="text" name="name" class="kform-input"></div>'+
+        '<div class="kform-group"><label class="kform-label">'+p.contact_label+'</label><input type="text" name="contact" class="kform-input"></div>'+
+        '<div class="kform-group"><label class="kform-label">'+p.message_label+'</label><textarea name="message" class="kform-textarea" rows="5"></textarea></div>'+
+        '<button type="submit" class="kform-submit">'+p.submit_text+'</button>'+
+        '</form></div>';
+    }
+  },
+
+  blog_cards: {
+    label: 'Karty článků', description: 'Mřížka odkazů na blog články',
+    schema: [
+      { key: 'section_label', label: 'Nadpis sekce', type: 'text' },
+      { key: 'items', label: 'Články', type: 'array', arrayFields: [
+        { key: 'title', label: 'Název článku', type: 'text' },
+        { key: 'excerpt', label: 'Perex', type: 'textarea' },
+        { key: 'date', label: 'Datum', type: 'text' },
+        { key: 'tag', label: 'Štítek', type: 'text' },
+        { key: 'url', label: 'Odkaz', type: 'url' },
+      ]},
+    ],
+    defaults: { section_label: '', items: [{title:'Název článku',excerpt:'Perex...',date:'',tag:'',url:'#'}] },
+    render: function(p) {
+      var cards = (p.items||[]).map(function(a){
+        return '<a href="'+(a.url||'#')+'" class="blog-card">'+
+          '<div class="blog-card-body">'+
+          (a.tag?'<span class="blog-tag">'+a.tag+'</span>':'')+
+          '<div class="blog-card-title">'+a.title+'</div>'+
+          (a.excerpt?'<div class="blog-card-excerpt">'+a.excerpt+'</div>':'')+
+          (a.date?'<div class="blog-date">'+a.date+'</div>':'')+
+          '</div></a>';
+      }).join('');
+      var lbl = p.section_label ? '<div class="sdileni-block-label">'+p.section_label+'</div>' : '';
+      return '<div class="blog-cards-block">'+lbl+'<div class="blog-grid">'+cards+'</div></div>';
+    }
+  },
+
+  button_link: {
+    label: 'Tlačítko', description: 'Samostatné tlačítko s odkazem',
+    schema: [
+      { key: 'text', label: 'Text tlačítka', type: 'text' },
+      { key: 'url', label: 'Odkaz', type: 'url' },
+      { key: 'style', label: 'Styl', type: 'select', options: [{value:'primary',label:'Primární (zelené)'},{value:'secondary',label:'Sekundární'}] },
+      { key: 'align', label: 'Zarovnání', type: 'select', options: [{value:'left',label:'Vlevo'},{value:'center',label:'Na střed'},{value:'right',label:'Vpravo'}] },
+    ],
+    defaults: { text: 'Tlačítko →', url: '#', style: 'primary', align: 'left' },
+    render: function(p) {
+      var cls = p.style === 'secondary' ? 'sdileni-btn-secondary' : 'sdileni-btn-primary';
+      return '<div style="text-align:'+(p.align||'left')+';margin:1.5rem 0"><a href="'+p.url+'" class="'+cls+'">'+p.text+'</a></div>';
+    }
+  },
+
   raw_html: {
     label: 'Vlastní HTML', description: 'Libovolný HTML/JS kód',
     schema: [
@@ -201,7 +292,7 @@ function renderPageHTML(page, inlineCss) {
 // ═══════════════════════════════════
 
 var STORE_KEY = 'ffy-cms-pages';
-var SEED_VERSION = '2026-06-17-v2';
+var SEED_VERSION = '2026-06-17-v3';
 var VERSION_KEY = 'ffy-cms-seed-version';
 
 function loadPages() {
@@ -339,7 +430,7 @@ var SEED_PAGES = {
     title: 'Blog — novinky ze světa energií | FREE for YOU', desc: 'Články o cenách elektřiny, solární energii a změně dodavatele. Bez zbytečného žargonu.',
     h1: 'Blog', lead: 'Novinky, vysvětlení a postřehy ze světa energií. Bez zbytečného žargonu.',
     blocks: [
-      { type: 'content_section', props: { label: 'Proč cena elektřiny na burze nesouvisí s tím, co platíte na faktuře', content: 'Obrázek článku Energetika 5. června 2025 Proč cena elektřiny na burze nesouvisí s tím, co platíte na faktuře Médii pravidelně proletí zpráva, že cena elektřiny na burze klesla na historické minimum. A přesto vaše zálohy zůstávají stejné. Jak je to možné? Vysvětlujeme, co se schovává mezi burzou a vaší zásuvkou.\n\nObrázek článku Solární energie 18. května 2025 Co se děje s elektřinou ze solárů, když ji nikdo nespotřebuje Solární elektrárna vyrábí, i když nikdo doma není. Co se stane s přebytkovou elektřinou a jak funguje sdílení v rámci komunity FREE for YOU?\n\nObrázek článku Prakticky 2. dubna 2025 Změna dodavatele: co se opravdu změní a co zůstane stejné Největší strach lidí při změně dodavatele je, že přijdou o dodávku. Spoiler: nepřijdou. Vysvětlujeme krok za krokem, co přechod obnáší a co si nemusíte řešit vůbec.' } },
+      { type: 'blog_cards', props: { section_label: '', items: [{ title: 'Co se děje s elektřinou ze solárů, když ji nikdo nespotřebuje', excerpt: 'Solární elektrárna vyrábí, i když nikdo doma není. Co se stane s přebytkovou elektřinou a jak funguje sdílení v rámci komunity FREE for YOU?', date: '18. května 2025', tag: 'Solární energie', url: 'blog/co-se-deje-s-prebytkovou-elektricinou.html' }, { title: 'Změna dodavatele: co se opravdu změní a co zůstane stejné', excerpt: 'Největší strach lidí při změně dodavatele je, že přijdou o dodávku. Spoiler: nepřijdou. Vysvětlujeme krok za krokem, co přechod obnáší a co si nemusíte řešit vůbec.', date: '2. dubna 2025', tag: 'Prakticky', url: 'blog/zmena-dodavatele-co-se-zmeni.html' }] } },
     ]
   },
   'podpora-dokumenty': {
@@ -362,7 +453,7 @@ var SEED_PAGES = {
     title: 'Kontakty — FREE for YOU energie', desc: 'Kontaktujte FREE for YOU. Telefon +420 227 072 292, e-mail info@freeforyou.cz. Sídlo Českomoravská 2255/12a, Praha 9.',
     h1: 'Kontakty', lead: 'Telefon zvedá člověk. E-mail čteme a odpovídáme v pracovní dny do 24 hodin.',
     blocks: [
-      { type: 'content_section', props: { label: 'Kontakty', content: 'Telefon zvedá člověk. E-mail čteme a odpovídáme v pracovní dny do 24 hodin.' } },
+      { type: 'contact_form', props: { title: '', intro: '', name_label: 'Jméno', contact_label: 'Telefon nebo e-mail', message_label: 'Zpráva', submit_text: 'Odeslat', action: '' } },
     ]
   },
   'pro-media': {
@@ -404,8 +495,8 @@ var SEED_PAGES = {
     title: 'Reference a hodnocení zákazníků — FREE for YOU energie', desc: 'Co říkají zákazníci FREE for YOU. Hodnocení z Firmy.cz a Google — ověřitelné recenze s přímými odkazy na profily.',
     h1: 'Reference zákazníků', lead: 'Co o nás říkají lidé, kteří nám svěřili svou energii.',
     blocks: [
-      { type: 'content_section', props: { label: '', content: 'Jsme odběratelem 6 let. Ceny jsou přijatelné, dodavatel pravidelně informuje o veškerých změnách. Jsme velice spokojeni a vřele všem doporučujeme.\n\nSlužby FREE for You jsou na vysoké úrovni. Jejich zaměstnanci se snaží vždy pomoct a hlavně všichni vystupují slušně a profesionálně. Vše do sebe dobře zapadá, což na člověka působí velice příjemně.\n\nZa mě spokojenost, ceny přiměřené, nikdy mi nebylo odmítnuto mimořádné vyúčtování, skvělá komunikace. Rovněž tak přeplatky v termínu vždy vráceny.\n\nDoporučuji! Přechod proběhl naprosto bez problémů, vše zařídili za mě. Od té doby žádné starosti s energiemi.\n\nJsem zákazníkem přes 4 roky, vždy korektní jednání, transparentní faktury. Oceňuji, že se telefon zvedá skutečně rychle a mluví s vámi člověk, ne automat.\n\nPřešel jsem od velkého dodavatele a nelituji. Ceny srovnatelné, ale přístup naprosto jiný — osobní, rychlý, bez čekání na lince.\n\nEnergobanking je skvělá věc — vše přehledně online, faktury dostupné okamžitě. Líbí se mi, že firma jde s dobou a nečeká se na papírové výpisy.\n\nMáme u FREE for YOU jak domácnost, tak firmu. Везде spokojenost, komunikace funguje, smlouvy jasné. Doporučuji bez výhrad.\n\nSolidní dodavatel, ceny odpovídají situaci na trhu. Oceňuji přehledný zákaznický portál a to, že na e-mail vždy odpoví do druhého dne.\n\nPřechod proběhl hladce, bez přerušení dodávky. Zákaznická péče profesionální a ochotná. Rád doporučuji dál.' } },
-      { type: 'content_section', props: { label: '', content: 'Google <a href="https://www.google.com/search?q=FREE+for+YOU+Recenze" target="_blank" class="reviews-source-link">Zobrazit na Google →</a> ★★★★★ Musím říct, že jsem vděčný, že mi byl doporučen právě menší dodavatel, jako je Free For You. Komunikace se zákaznickou podporou je na špičkové úrovni. Naštěstí je tam naprosto lidský přístup. A o cenové politice — FFY rozhodně patří k tomu nejlepšímu na trhu.\n\nKonečně společnost, kde si připadáte jako vážený zákazník, komunikujete s konkrétní osobou, žádné telefonní automaty. Na počátku energetické krize jsem odešla k ČEZu a velice ráda jsem se po roce vrátila. U FFY jsem na tom o hodně líp.\n\nDodavatel s prozákaznickým přístupem. Vyzdvihuji především portál pro zákazníky Energobanking kde vidím vše přehledně, faktury a vysvětlivky. Lepší zkušenost než s velkými dodavateli, doporučuji dále.\n\nSkvěle se snaží pracovat pro zákazníky. Rozhodl jsem se opravdu pochválit všechny z FREE for YOU. Díky za jejich služby a přístup.\n\nZa mě nejlepší dodavatel. Rychlá a skvělá komunikace. Odpověď na e-mail takřka okamžitě. Doporučuju.\n\nMám u Free For You jak barák tak kanceláře a jsem spokojený. Perfektní přístup i případné řešení. Už jen to, že se dovolám bez 10minutového čekání — to samo o sobě stojí za to.\n\nS firmou jsem velice spokojen. Paní Veronika Krbcová jako obchodní zástupkyně odvádí skvělou práci — vše srozumitelně vysvětlí a dokáže poradit, jaký produkt je pro klienta nejvýhodnější.\n\nPo přechodu jsem čekal, že nastane nějaký chaos. Nestalo se nic — elektřina tekla dál, smlouva přišla mailem, vše hotovo za týden. Přesně jak slibovali.\n\nOceňuji transparentní faktury — přesně vím za co platím. Žádné skryté poplatky, žádná překvapení. A pokud mám dotaz, vždy dostanou rychlou odpověď.\n\nPřešel jsem před rokem a jsem spokojený. Ceny rozumné, Energobanking přehledný. Jednou jsem potřeboval řešit změnu sazby — vyřídili to za mě, bez papírování.' } },
+      { type: 'reviews_block', props: { section_label: '', items: [{ text: 'Jsme odběratelem 6 let. Ceny jsou přijatelné, dodavatel pravidelně informuje o veškerých změnách. Jsme velice spokojeni a vřele všem doporučujeme. Věra Škvárová', author: 'Věra Škvárová', date: 'Listopad 2024', source: '', source_url: '#' }] } },
+      { type: 'reviews_block', props: { section_label: '', items: [{ text: 'Musím říct, že jsem vděčný, že mi byl doporučen právě menší dodavatel, jako je Free For You. Komunikace se zákaznickou podporou je na špičkové úrovni. Naštěstí je tam naprosto lidský přístup. A o cenové politice — FFY rozhodně patří k tomu nejlepšímu na trhu. Tomáš Pospíchal', author: 'Tomáš Pospíchal', date: 'Červen 2025', source: 'Google', source_url: 'https://www.google.com/maps/place/FREE+for+YOU+s.r.o.' }] } },
     ]
   },
   'proc-slevy-za-doporuceni': {
