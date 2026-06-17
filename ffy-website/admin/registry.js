@@ -158,26 +158,41 @@ var BLOCK_REGISTRY = {
   },
 
   reviews_block: {
-    label: 'Recenze zákazníků', description: 'Karty s hodnocením',
+    label: 'Recenze zákazníků', description: 'Skupina recenzí z jednoho zdroje',
     schema: [
-      { key: 'section_label', label: 'Nadpis sekce', type: 'text' },
+      { key: 'source_name', label: 'Zdroj', type: 'text', hint: 'Např: firmy.cz nebo Google' },
+      { key: 'source_url', label: 'Odkaz na profil', type: 'url' },
+      { key: 'source_link_text', label: 'Text odkazu na profil', type: 'text', hint: 'Např: Zobrazit profil →' },
       { key: 'items', label: 'Recenze', type: 'array', arrayFields: [
+        { key: 'stars', label: 'Hvězdičky (1-5)', type: 'text' },
         { key: 'text', label: 'Text recenze', type: 'textarea' },
         { key: 'author', label: 'Autor', type: 'text' },
         { key: 'date', label: 'Datum', type: 'text' },
-        { key: 'source', label: 'Zdroj (Google/Firmy.cz)', type: 'text' },
-        { key: 'source_url', label: 'Odkaz na ověření', type: 'url' },
+        { key: 'verify_url', label: 'Odkaz na ověření', type: 'url' },
       ]},
     ],
-    defaults: { section_label: '', items: [{text:'Skvělá zkušenost.',author:'Jan N.',date:'',source:'Google',source_url:'#'}] },
+    defaults: { source_name: 'Google', source_url: '#', source_link_text: 'Zobrazit profil →',
+      items: [{stars:'5',text:'Skvělá zkušenost.',author:'Jan N.',date:'2025',verify_url:'#'}] },
     render: function(p) {
+      function starStr(n) {
+        var num = parseInt(n) || 5;
+        var s = '';
+        for (var i = 0; i < num; i++) s += '★';
+        return s;
+      }
+      var sourceCls = p.source_name && p.source_name.toLowerCase().indexOf('google') >= 0 ? 'google-logo' : 'firmy-logo';
+      var header = '<div class="reviews-section-header"><div class="reviews-source"><div class="reviews-source-logo ' + sourceCls + '">' + (p.source_name||'') + '</div></div>' +
+        (p.source_url ? '<a href="' + p.source_url + '" target="_blank" rel="noopener" class="reviews-source-link">' + (p.source_link_text||'Zobrazit profil →') + '</a>' : '') + '</div>';
       var cards = (p.items||[]).map(function(r){
-        var src = r.source ? '<a href="'+(r.source_url||'#')+'" class="review-source-link" target="_blank" rel="noopener">Ověřit na '+r.source+' →</a>' : '';
-        var meta = [r.author, r.date].filter(Boolean).join(' · ');
-        return '<div class="review-card"><div class="review-text">'+r.text+'</div><div class="review-author">'+meta+'</div>'+src+'</div>';
+        var verify = r.verify_url ? '<a href="' + r.verify_url + '" target="_blank" rel="noopener" class="review-source-link">Ověřit na ' + (p.source_name||'') + ' →</a>' : '';
+        return '<div class="review-card">' +
+          '<div class="review-stars">' + starStr(r.stars) + '</div>' +
+          '<p class="review-text">' + r.text + '</p>' +
+          '<div class="review-author">' + (r.author||'') + '</div>' +
+          (r.date ? '<div class="review-date">' + r.date + '</div>' : '') +
+          verify + '</div>';
       }).join('');
-      var lbl = p.section_label ? '<div class="sdileni-block-label">'+p.section_label+'</div>' : '';
-      return '<div class="reviews-block">'+lbl+'<div class="reviews-inner">'+cards+'</div></div>';
+      return '<div class="reviews-section"><div class="reviews-inner">' + header + '<div class="reviews-grid">' + cards + '</div></div></div>';
     }
   },
 
@@ -230,6 +245,153 @@ var BLOCK_REGISTRY = {
       }).join('');
       var lbl = p.section_label ? '<div class="sdileni-block-label">'+p.section_label+'</div>' : '';
       return '<div class="blog-cards-block">'+lbl+'<div class="blog-grid">'+cards+'</div></div>';
+    }
+  },
+
+  tariff_cards: {
+    label: 'Tarifní karty', description: 'Karty s tarify a cenami',
+    schema: [
+      { key: 'group_label', label: 'Nadpis skupiny', type: 'text', hint: 'Např: Fixní tarify' },
+      { key: 'group_desc', label: 'Popis skupiny', type: 'textarea' },
+      { key: 'items', label: 'Tarify', type: 'array', arrayFields: [
+        { key: 'type_label', label: 'Typ (Elektřina/Plyn)', type: 'text' },
+        { key: 'name', label: 'Název tarifu', type: 'text' },
+        { key: 'subtitle', label: 'Podtitulek', type: 'text' },
+        { key: 'price_num', label: 'Cena (číslo)', type: 'text' },
+        { key: 'price_unit', label: 'Jednotka', type: 'text' },
+        { key: 'price_sub', label: 'Cena bez DPH / poznámka', type: 'text' },
+        { key: 'cta_text', label: 'Text tlačítka', type: 'text' },
+        { key: 'cta_url', label: 'Odkaz tlačítka', type: 'url' },
+      ]},
+    ],
+    defaults: { group_label: 'Fixní tarify', group_desc: '', items: [{type_label:'Elektřina',name:'Tarif FIX2026',subtitle:'',price_num:'X,XX',price_unit:'Kč / kWh s DPH',price_sub:'',cta_text:'Chci tento tarif →',cta_url:'#'}] },
+    render: function(p) {
+      var cards = (p.items||[]).map(function(t){
+        var isPlyn = (t.type_label||'').toLowerCase().indexOf('plyn') >= 0;
+        return '<div class="tarif-card tarif-' + (isPlyn?'plyn':'elektrina') + '">' +
+          '<div class="tarif-card-header"><div class="tarif-type-label">' + (t.type_label||'') + '</div>' +
+          '<div class="tarif-name">' + (t.name||'') + '</div>' +
+          (t.subtitle?'<div class="tarif-subtitle">' + t.subtitle + '</div>':'') + '</div>' +
+          '<div class="tarif-price-block"><div class="tarif-price-main"><span class="tarif-price-num">' + (t.price_num||'') + '</span> <span class="tarif-price-unit">' + (t.price_unit||'') + '</span></div>' +
+          (t.price_sub?'<div class="tarif-price-sub">' + t.price_sub + '</div>':'') + '</div>' +
+          '<div class="tarif-card-footer"><a href="' + (t.cta_url||'#') + '" class="tarif-cta">' + (t.cta_text||'Chci tento tarif →') + '</a></div></div>';
+      }).join('');
+      var head = '';
+      if (p.group_label) head += '<div class="tarify-group-title">' + p.group_label + '</div>';
+      if (p.group_desc) head += '<div class="tarify-group-desc">' + p.group_desc + '</div>';
+      return '<div class="tarify-block">' + head + '<div class="tarify-cards">' + cards + '</div></div>';
+    }
+  },
+
+  pricelist_block: {
+    label: 'Ceníky ke stažení', description: 'Karty s PDF ceníky',
+    schema: [
+      { key: 'section_label', label: 'Nadpis sekce', type: 'text' },
+      { key: 'items', label: 'Ceníky', type: 'array', arrayFields: [
+        { key: 'meta', label: 'Štítek (Elektřina · platný od...)', type: 'text' },
+        { key: 'name', label: 'Název ceníku', type: 'text' },
+        { key: 'size', label: 'Velikost (PDF · 284 kB)', type: 'text' },
+        { key: 'url', label: 'Odkaz na PDF', type: 'url' },
+      ]},
+    ],
+    defaults: { section_label: '', items: [{meta:'Elektřina · platný od 1. 1. 2026',name:'Ceník elektřiny',size:'PDF',url:'#'}] },
+    render: function(p) {
+      var cards = (p.items||[]).map(function(c){
+        var isPlyn = (c.meta||'').toLowerCase().indexOf('plyn') >= 0;
+        return '<a href="' + (c.url||'#') + '" class="cenik-card" target="_blank" rel="noopener">' +
+          '<div class="cenik-card-body"><div class="cenik-card-meta meta-' + (isPlyn?'plyn':'elektrina') + '">' + (c.meta||'') + '</div>' +
+          '<div class="cenik-card-name">' + (c.name||'') + '</div></div>' +
+          '<div class="cenik-card-footer"><span class="cenik-card-size">' + (c.size||'PDF') + '</span><span class="cenik-card-btn">Stáhnout</span></div></a>';
+      }).join('');
+      var lbl = p.section_label ? '<div class="sdileni-block-label">' + p.section_label + '</div>' : '';
+      return '<div class="ceniky-block">' + lbl + '<div class="ceniky-grid">' + cards + '</div></div>';
+    }
+  },
+
+  documents_block: {
+    label: 'Dokumenty ke stažení', description: 'Seznam dokumentů s odkazy',
+    schema: [
+      { key: 'group_label', label: 'Nadpis skupiny', type: 'text' },
+      { key: 'items', label: 'Dokumenty', type: 'array', arrayFields: [
+        { key: 'name', label: 'Název dokumentu', type: 'text' },
+        { key: 'meta', label: 'Popis / formát', type: 'text' },
+        { key: 'url', label: 'Odkaz (prázdné = Připravujeme)', type: 'url' },
+      ]},
+    ],
+    defaults: { group_label: 'Smlouvy', items: [{name:'Dokument',meta:'PDF',url:''}] },
+    render: function(p) {
+      var rows = (p.items||[]).map(function(d){
+        var available = d.url && d.url !== '#' && d.url !== '';
+        var action = available
+          ? '<a href="' + d.url + '" class="doc-row-dl" target="_blank" rel="noopener">Stáhnout</a>'
+          : '<span class="doc-row-dl doc-row-dl-soon">Připravujeme</span>';
+        return '<div class="doc-row' + (available?'':' doc-row-soon') + '">' +
+          '<div class="doc-row-icon"></div>' +
+          '<div class="doc-row-body"><div class="doc-row-name">' + (d.name||'') + '</div>' +
+          (d.meta?'<div class="doc-row-meta">' + d.meta + '</div>':'') + '</div>' +
+          action + '</div>';
+      }).join('');
+      var lbl = p.group_label ? '<div class="docs-group-title">' + p.group_label + '</div>' : '';
+      return '<div class="docs-group">' + lbl + '<div class="docs-list-inner">' + rows + '</div></div>';
+    }
+  },
+
+  tier_cards: {
+    label: 'Úrovně / stupně', description: 'Karty s úrovněmi (Basic/Silver/Gold)',
+    schema: [
+      { key: 'section_label', label: 'Nadpis sekce', type: 'text' },
+      { key: 'items', label: 'Úrovně', type: 'array', arrayFields: [
+        { key: 'badge', label: 'Název úrovně', type: 'text' },
+        { key: 'multi', label: 'Násobitel (1×/2×/3×)', type: 'text' },
+        { key: 'desc', label: 'Popis', type: 'text' },
+        { key: 'cond', label: 'Podmínka', type: 'text' },
+      ]},
+    ],
+    defaults: { section_label: '', items: [{badge:'Základní',multi:'1×',desc:'Standardní',cond:'Automaticky'}] },
+    render: function(p) {
+      var cards = (p.items||[]).map(function(t){
+        var badgeLower = (t.badge||'').toLowerCase();
+        var tierCls = badgeLower.indexOf('gold') >= 0 ? 'tier-gold' : badgeLower.indexOf('silver') >= 0 ? 'tier-silver' : 'tier-basic';
+        return '<div class="proudiky-tier"><div class="proudiky-tier-badge ' + tierCls + '">' + (t.badge||'') + '</div>' +
+          '<div class="proudiky-tier-multi">' + (t.multi||'') + '</div>' +
+          '<div class="proudiky-tier-desc">' + (t.desc||'') + '</div>' +
+          (t.cond?'<div class="proudiky-tier-cond">' + t.cond + '</div>':'') + '</div>';
+      }).join('');
+      var lbl = p.section_label ? '<div class="sdileni-block-label">' + p.section_label + '</div>' : '';
+      return '<div class="tiers-block">' + lbl + '<div class="proudiky-tiers" style="grid-template-columns:repeat(' + (p.items||[]).length + ',1fr)">' + cards + '</div></div>';
+    }
+  },
+
+  team_grid: {
+    label: 'Tým', description: 'Členové týmu s rolemi',
+    schema: [
+      { key: 'section_label', label: 'Nadpis sekce', type: 'text' },
+      { key: 'main', label: 'Hlavní členové (s bio)', type: 'array', arrayFields: [
+        { key: 'name', label: 'Jméno', type: 'text' },
+        { key: 'role', label: 'Role', type: 'text' },
+        { key: 'bio', label: 'Bio', type: 'textarea' },
+      ]},
+      { key: 'mini', label: 'Ostatní členové', type: 'array', arrayFields: [
+        { key: 'name', label: 'Jméno', type: 'text' },
+        { key: 'role', label: 'Role', type: 'text' },
+      ]},
+    ],
+    defaults: { section_label: 'Tým', main: [{name:'Jméno',role:'Role',bio:''}], mini: [] },
+    render: function(p) {
+      var mainCards = (p.main||[]).map(function(m){
+        return '<div class="pribeh-team-main"><div class="pribeh-team-avatar"></div>' +
+          '<div class="pribeh-team-info"><div class="pribeh-team-name">' + (m.name||'') + '</div>' +
+          '<div class="pribeh-team-role">' + (m.role||'') + '</div>' +
+          (m.bio?'<div class="pribeh-team-bio">' + m.bio + '</div>':'') + '</div></div>';
+      }).join('');
+      var miniCards = (p.mini||[]).map(function(m){
+        return '<div class="pribeh-team-mini"><div class="pribeh-team-mini-name">' + (m.name||'') + '</div>' +
+          '<div class="pribeh-team-mini-role">' + (m.role||'') + '</div></div>';
+      }).join('');
+      var lbl = p.section_label ? '<div class="sdileni-block-label">' + p.section_label + '</div>' : '';
+      return '<div class="pribeh-team">' + lbl +
+        (mainCards?'<div class="pribeh-team-rest">' + mainCards + '</div>':'') +
+        (miniCards?'<div class="pribeh-team-mini-wrap">' + miniCards + '</div>':'') + '</div>';
     }
   },
 
@@ -292,7 +454,7 @@ function renderPageHTML(page, inlineCss) {
 // ═══════════════════════════════════
 
 var STORE_KEY = 'ffy-cms-pages';
-var SEED_VERSION = '2026-06-17-v3';
+var SEED_VERSION = '2026-06-17-v5';
 var VERSION_KEY = 'ffy-cms-seed-version';
 
 function loadPages() {
@@ -366,14 +528,15 @@ var SEED_PAGES = {
     title: 'Aktuální nabídka elektřiny — FREE for YOU energie', desc: 'Aktuální ceny silové elektřiny FREE for YOU pro domácnosti. Tarify FIX 2025 pro distribuční území ČEZ, PRE a EG.D.',
     h1: 'Aktuální nabídka', lead: 'Zde vidíte naše aktuálně nabízené tarify. Vyberte si, co odpovídá vašemu způsobu odběru.',
     blocks: [
-      { type: 'features_grid', props: { section_label: '', columns: '2', items: [{ title: 'Fixní tarify', desc: 'Víte přesně, za kolik platíte. Cena je dohodnutá předem a nemění se podle dění na trhu. Vhodné pro ty, kdo chtějí jistotu a klid při plánování výdajů domácnosti.' }, { title: 'Tarif FIX2026', desc: 'Fixní cena elektřiny na celý rok 2026' }, { title: 'Tarif FIX2026', desc: 'Fixní cena plynu na celý rok 2026' }, { title: 'SPOT tarify', desc: 'Cena se mění každou hodinu podle toho, kolik elektřina nebo plyn stojí na burzovním trhu. Když je trh levný — platíte méně. Vhodné pro ty, kdo sledují spotřebu a dokážou ji přizpůsobit době, kdy je energie nejlevnější.' }, { title: 'Tarif SPOT', desc: 'Hodinová cena podle burzovního trhu' }, { title: 'Tarif SPOT', desc: 'Denní cena podle burzovního trhu' }] } },
+      { type: 'tariff_cards', props: { group_label: 'Fixní tarify', group_desc: 'Víte přesně, za kolik platíte. Cena je dohodnutá předem a nemění se podle dění na trhu. Vhodné pro ty, kdo chtějí jistotu a klid při plánování výdajů domácnosti.', items: [{ type_label: 'Elektřina', name: 'Tarif FIX2026', subtitle: 'Fixní cena elektřiny na celý rok 2026', price_num: 'X,XX', price_unit: 'Kč / kWh s DPH', price_sub: 'X,XX Kč / kWh bez DPH', cta_text: 'Chci tento tarif →', cta_url: 'index.html#final-cta' }, { type_label: 'Plyn', name: 'Tarif FIX2026', subtitle: 'Fixní cena plynu na celý rok 2026', price_num: 'X,XX', price_unit: 'Kč / kWh s DPH', price_sub: 'X,XX Kč / kWh bez DPH', cta_text: 'Chci tento tarif →', cta_url: 'index.html#final-cta' }] } },
+      { type: 'tariff_cards', props: { group_label: 'SPOT tarify', group_desc: 'Cena se mění každou hodinu podle toho, kolik elektřina nebo plyn stojí na burzovním trhu. Když je trh levný — platíte méně. Vhodné pro ty, kdo sledují spotřebu a dokážou ji přizpůsobit době, kdy je energie nejlevnější.', items: [{ type_label: 'Elektřina', name: 'Tarif SPOT', subtitle: 'Hodinová cena podle burzovního trhu', price_num: 'X,XX', price_unit: 'Kč / kWh s DPH', price_sub: 'Marže X,XX Kč / kWh bez DPH', cta_text: 'Chci tento tarif →', cta_url: 'index.html#final-cta' }, { type_label: 'Plyn', name: 'Tarif SPOT', subtitle: 'Denní cena podle burzovního trhu', price_num: 'X,XX', price_unit: 'Kč / kWh s DPH', price_sub: 'Marže X,XX Kč / kWh bez DPH', cta_text: 'Chci tento tarif →', cta_url: 'index.html#final-cta' }] } },
     ]
   },
   'ceny-ceniky': {
     title: 'Ceníky elektřiny 2026 — FREE for YOU energie', desc: 'Kompletní ceníky elektřiny FREE for YOU ke stažení v PDF. Ceny distribuce, silové elektřiny a poplatků pro všechna distribuční území.',
     h1: 'Ceníky', lead: 'Vyberte své distribuční území a zobrazte aktuální ceníky elektřiny a plynu.',
     blocks: [
-      { type: 'content_section', props: { label: 'Ceníky', content: 'Vyberte své distribuční území a zobrazte aktuální ceníky elektřiny a plynu.' } },
+      { type: 'pricelist_block', props: { section_label: '', items: [{ meta: 'Elektřina · platný od 1. 1. 2026', name: 'Ceník elektřiny FIX2026 — ČEZ', size: 'PDF · 284 kB', url: '#' }, { meta: 'Plyn · platný od 1. 1. 2026', name: 'Ceník plynu FIX2026 — ČEZ', size: 'PDF · 196 kB', url: '#' }, { meta: 'Elektřina · platný od 1. 1. 2026', name: 'Ceník elektřiny SPOT — ČEZ', size: 'PDF · 211 kB', url: '#' }, { meta: 'Plyn · platný od 1. 1. 2026', name: 'Ceník plynu SPOT — ČEZ', size: 'PDF · 178 kB', url: '#' }, { meta: 'Elektřina · platný od 1. 7. 2025', name: 'Ceník elektřiny FIX2025 H2 — ČEZ', size: 'PDF · 268 kB', url: '#' }, { meta: 'Plyn · platný od 1. 7. 2025', name: 'Ceník plynu FIX2025 H2 — ČEZ', size: 'PDF · 189 kB', url: '#' }, { meta: 'Elektřina · platný od 1. 1. 2026', name: 'Ceník elektřiny FIX2026 — EG.D', size: 'PDF · 276 kB', url: '#' }, { meta: 'Plyn · platný od 1. 1. 2026', name: 'Ceník plynu FIX2026 — EG.D', size: 'PDF · 192 kB', url: '#' }, { meta: 'Elektřina · platný od 1. 1. 2026', name: 'Ceník elektřiny SPOT — EG.D', size: 'PDF · 208 kB', url: '#' }, { meta: 'Plyn · platný od 1. 1. 2026', name: 'Ceník plynu SPOT — EG.D', size: 'PDF · 175 kB', url: '#' }, { meta: 'Elektřina · platný od 1. 7. 2025', name: 'Ceník elektřiny FIX2025 H2 — EG.D', size: 'PDF · 261 kB', url: '#' }, { meta: 'Plyn · platný od 1. 7. 2025', name: 'Ceník plynu FIX2025 H2 — EG.D', size: 'PDF · 184 kB', url: '#' }, { meta: 'Elektřina · platný od 1. 1. 2026', name: 'Ceník elektřiny FIX2026 — PRE', size: 'PDF · 271 kB', url: '#' }, { meta: 'Plyn · platný od 1. 1. 2026', name: 'Ceník plynu FIX2026 — PRE', size: 'PDF · 188 kB', url: '#' }, { meta: 'Elektřina · platný od 1. 1. 2026', name: 'Ceník elektřiny SPOT — PRE', size: 'PDF · 203 kB', url: '#' }, { meta: 'Plyn · platný od 1. 1. 2026', name: 'Ceník plynu SPOT — PRE', size: 'PDF · 172 kB', url: '#' }, { meta: 'Elektřina · platný od 1. 7. 2025', name: 'Ceník elektřiny FIX2025 H2 — PRE', size: 'PDF · 259 kB', url: '#' }, { meta: 'Plyn · platný od 1. 7. 2025', name: 'Ceník plynu FIX2025 H2 — PRE', size: 'PDF · 181 kB', url: '#' }] } },
     ]
   },
   'ceny-kalkulacka': {
@@ -415,7 +578,8 @@ var SEED_PAGES = {
     blocks: [
       { type: 'content_section', props: { label: 'Co jsou Proudíky', content: 'FREE for YOU reinvestuje 50 % čistých zisků do obnovitelných zdrojů a akumulačních zařízení. Elektřina z těchto zdrojů se následně rozděluje mezi zákazníky — a Proudíky určují, jaký podíl vám náleží.\n\nProudíky jsou body, které sbíráte odběrem energie u FREE for YOU. Čím více Proudíků máte, tím větší poměrnou část elektřiny z vlastních zdrojů dostanete.' } },
       { type: 'content_section', props: { label: 'Jak je získáváte', content: 'Proudíky se přičítají automaticky za každé odběrné místo zapsané na vaše jméno. Žádné formuláře, žádné přihlašování — prostě odebíráte a body přibývají.' } },
-      { type: 'content_section', props: { label: 'Úrovně členství', content: 'Aktivním doporučováním nových zákazníků si můžete vylepšit členství — a tím násobit rychlost, jakou Proudíky sbíráte.' } },
+      { type: 'content_section', props: { label: 'Úrovně členství', content: 'Aktivním doporučováním nových zákazníků si můžete vylepšit členství.' } },
+      { type: 'tier_cards', props: { section_label: '', items: [{ badge: 'Základní', multi: '1×', desc: 'Standardní načítání Proudíků', cond: '' }, { badge: 'Silver', multi: '2×', desc: 'Dvojnásobné načítání Proudíků', cond: '' }, { badge: 'Gold', multi: '3×', desc: 'Trojnásobné načítání Proudíků', cond: '' }] } },
       { type: 'content_section', props: { label: 'K čemu to vede', content: 'Čím více Proudíků nasbíráte, tím větší podíl elektřiny z vlastních zdrojů FREE for YOU vám náleží. Tato elektřina je vyráběná na střechách existujících objektů — a její cena nezávisí na burze.\n\nKaždý nový zdroj, který FREE for YOU postaví, zvyšuje celkový objem elektřiny k rozdělení. A s ním roste i reálný přínos každého Proudíku.' } },
       { type: 'cta_block', props: { title: 'Začněte sbírat Proudíky', description: 'Stačí být zákazníkem FREE for YOU. Body se počítají automaticky od prvního dne odběru.', btn1_text: 'Doporučte a vylepšete členství →', btn1_url: 'proc-slevy-za-doporuceni.html', btn2_text: 'Kontaktujte nás', btn2_url: 'podpora-kontakty.html' } },
     ]
@@ -453,7 +617,7 @@ var SEED_PAGES = {
     title: 'Dokumenty ke stažení — FREE for YOU energie', desc: 'Smlouvy, obchodní podmínky, vzory faktur a plné moci FREE for YOU. Vše ke stažení nebo náhledu v PDF.',
     h1: 'Dokumenty', lead: 'Všechny důležité dokumenty na jednom místě. Kliknutím sekci rozbalíte a dokument stáhnete.',
     blocks: [
-      { type: 'features_grid', props: { section_label: '', columns: '3', items: [{ title: 'Smlouva o dodávce elektřiny PDF · aktuální verze Stáhnout', desc: 'Vzorová smlouva o dodávce plynu' }, { title: 'Vzorová smlouva o výkupu elektřiny PDF · aktuální verze Stáhnout Plné moci ▾', desc: 'Plná moc — změna dodavatele' }, { title: 'Plná moc — přepis odběrného místa PDF · aktuální verze Stáhnout Vzory faktur ▾', desc: 'Vzorová faktura — elektřina' }, { title: 'Vzorová faktura — plyn PDF · ukázka vyúčtování Stáhnout Obchodní podmínky ▾', desc: 'Všeobecné obchodní podmínky' }, { title: 'Podmínky systému FREE for YOU PDF · platné od 1. 11. 2023 Stáhnout', desc: 'Ochrana osobních údajů (GDPR)' }] } },
+      { type: 'documents_block', props: { group_label: 'Dokumenty ke stažení', items: [{ name: 'Smlouva o dodávce elektřiny', meta: 'PDF · aktuální verze', url: '' }, { name: 'Vzorová smlouva o dodávce plynu', meta: 'PDF · aktuální verze', url: '' }, { name: 'Vzorová smlouva o výkupu elektřiny', meta: 'PDF · aktuální verze', url: '' }, { name: 'Plná moc — změna dodavatele', meta: 'PDF · aktuální verze', url: '' }, { name: 'Plná moc — přepis odběrného místa', meta: 'PDF · aktuální verze', url: '' }, { name: 'Vzorová faktura — elektřina', meta: 'PDF · ukázka vyúčtování', url: '' }, { name: 'Vzorová faktura — plyn', meta: 'PDF · ukázka vyúčtování', url: '' }, { name: 'Všeobecné obchodní podmínky', meta: 'PDF · platné od 1. 11. 2023', url: '' }, { name: 'Podmínky systému FREE for YOU', meta: 'PDF · platné od 1. 11. 2023', url: '' }, { name: 'Ochrana osobních údajů (GDPR)', meta: 'PDF · aktuální verze', url: '' }] } },
     ]
   },
   'podpora-faq': {
@@ -504,6 +668,7 @@ var SEED_PAGES = {
       { type: 'quote_block', props: { text: 'Elektřina se stále musí někde nakoupit. A to znamená, že její cena nikdy není úplně naše.', style: 'large' } },
       { type: 'quote_block', props: { text: 'Energie nemá vznikat na úkor prostoru. Má vznikat v jeho rámci.', style: 'small' } },
       { type: 'quote_block', props: { text: 'Začne to tím, že se přestane brát jen zvenčí.', style: 'large' } },
+      { type: 'team_grid', props: { section_label: 'Tým', main: [{ name: 'Lukáš Artur Vagner', role: 'Jednatel', bio: 'Více než 12 let v energetice — od obchodníka přes vedení obchodního týmu až po vybudování vlastní firmy.' }, { name: 'Rudolf Kováč', role: 'Vedoucí zákaznické péče', bio: 'Přes 10 let v zákaznické péči. Analýza a řízení zahraničních projektů a trhů, controlling a reporting.' }], mini: [{ name: 'Kateřina Kelišová', role: 'Zákaznická podpora' }, { name: 'Lenka Šťastná', role: 'Finanční oddělení' }, { name: 'Karel Svoboda', role: 'Backoffice' }, { name: 'Tomáš Alvarez', role: 'Marketing a optimalizace' }] } },
       { type: 'cta_block', props: { title: 'Chcete být součástí toho?', description: 'Každý zákazník FREE for YOU je součástí modelu — výroba, která roste, pracuje pro celou komunitu.', btn1_text: 'Spočítat moji cenu →', btn1_url: 'ceny-kalkulacka.html', btn2_text: 'Kontaktujte nás', btn2_url: 'podpora-kontakty.html' } },
     ]
   },
@@ -511,8 +676,8 @@ var SEED_PAGES = {
     title: 'Reference a hodnocení zákazníků — FREE for YOU energie', desc: 'Co říkají zákazníci FREE for YOU. Hodnocení z Firmy.cz a Google — ověřitelné recenze s přímými odkazy na profily.',
     h1: 'Reference zákazníků', lead: 'Co o nás říkají lidé, kteří nám svěřili svou energii.',
     blocks: [
-      { type: 'reviews_block', props: { section_label: '', items: [{ text: 'Jsme odběratelem 6 let. Ceny jsou přijatelné, dodavatel pravidelně informuje o veškerých změnách. Jsme velice spokojeni a vřele všem doporučujeme. Věra Škvárová', author: 'Věra Škvárová', date: 'Listopad 2024', source: '', source_url: '#' }] } },
-      { type: 'reviews_block', props: { section_label: '', items: [{ text: 'Musím říct, že jsem vděčný, že mi byl doporučen právě menší dodavatel, jako je Free For You. Komunikace se zákaznickou podporou je na špičkové úrovni. Naštěstí je tam naprosto lidský přístup. A o cenové politice — FFY rozhodně patří k tomu nejlepšímu na trhu. Tomáš Pospíchal', author: 'Tomáš Pospíchal', date: 'Červen 2025', source: 'Google', source_url: 'https://www.google.com/maps/place/FREE+for+YOU+s.r.o.' }] } },
+      { type: 'reviews_block', props: { source_name: 'firmy.cz', source_url: 'https://www.firmy.cz/detail/13169716-free-for-you-s-r-o-praha-liben.html', source_link_text: 'Zobrazit profil →', items: [{ stars: '5', text: 'Jsme odběratelem 6 let. Ceny jsou přijatelné, dodavatel pravidelně informuje o veškerých změnách. Jsme velice spokojeni a vřele všem doporučujeme.', author: 'Věra Škvárová', date: 'Listopad 2024', verify_url: 'https://www.firmy.cz/detail/13169716-free-for-you-s-r-o-praha-liben.html' }, { stars: '5', text: 'Služby FREE for You jsou na vysoké úrovni. Jejich zaměstnanci se snaží vždy pomoct a hlavně všichni vystupují slušně a profesionálně. Vše do sebe dobře zapadá, což na člověka působí velice příjemně.', author: 'Josef Kučera', date: 'Říjen 2024', verify_url: 'https://www.firmy.cz/detail/13169716-free-for-you-s-r-o-praha-liben.html' }, { stars: '5', text: 'Za mě spokojenost, ceny přiměřené, nikdy mi nebylo odmítnuto mimořádné vyúčtování, skvělá komunikace. Rovněž tak přeplatky v termínu vždy vráceny.', author: 'Věra Škvárová', date: '2023', verify_url: 'https://www.firmy.cz/detail/13169716-free-for-you-s-r-o-praha-liben.html' }, { stars: '5', text: 'Doporučuji! Přechod proběhl naprosto bez problémů, vše zařídili za mě. Od té doby žádné starosti s energiemi.', author: 'Martin Dvořák', date: '2024', verify_url: 'https://www.firmy.cz/detail/13169716-free-for-you-s-r-o-praha-liben.html' }, { stars: '5', text: 'Jsem zákazníkem přes 4 roky, vždy korektní jednání, transparentní faktury. Oceňuji, že se telefon zvedá skutečně rychle a mluví s vámi člověk, ne automat.', author: 'Lucie Marková', date: '2024', verify_url: 'https://www.firmy.cz/detail/13169716-free-for-you-s-r-o-praha-liben.html' }, { stars: '5', text: 'Přešel jsem od velkého dodavatele a nelituji. Ceny srovnatelné, ale přístup naprosto jiný — osobní, rychlý, bez čekání na lince.', author: 'Pavel Horák', date: '2023', verify_url: 'https://www.firmy.cz/detail/13169716-free-for-you-s-r-o-praha-liben.html' }, { stars: '5', text: 'Energobanking je skvělá věc — vše přehledně online, faktury dostupné okamžitě. Líbí se mi, že firma jde s dobou a nečeká se na papírové výpisy.', author: 'Ing. Radek Novotný', date: '2024', verify_url: 'https://www.firmy.cz/detail/13169716-free-for-you-s-r-o-praha-liben.html' }, { stars: '5', text: 'Máme u FREE for YOU jak domácnost, tak firmu. Везде spokojenost, komunikace funguje, smlouvy jasné. Doporučuji bez výhrad.', author: 'Petra Součková', date: '2023', verify_url: 'https://www.firmy.cz/detail/13169716-free-for-you-s-r-o-praha-liben.html' }, { stars: '4', text: 'Solidní dodavatel, ceny odpovídají situaci na trhu. Oceňuji přehledný zákaznický portál a to, že na e-mail vždy odpoví do druhého dne.', author: 'Tomáš Brož', date: '2023', verify_url: 'https://www.firmy.cz/detail/13169716-free-for-you-s-r-o-praha-liben.html' }, { stars: '5', text: 'Přechod proběhl hladce, bez přerušení dodávky. Zákaznická péče profesionální a ochotná. Rád doporučuji dál.', author: 'Karel Beneš', date: '2022', verify_url: 'https://www.firmy.cz/detail/13169716-free-for-you-s-r-o-praha-liben.html' }] } },
+      { type: 'reviews_block', props: { source_name: 'Google', source_url: 'https://www.google.com/search?q=FREE+for+YOU+Recenze', source_link_text: 'Zobrazit na Google →', items: [{ stars: '5', text: 'Musím říct, že jsem vděčný, že mi byl doporučen právě menší dodavatel, jako je Free For You. Komunikace se zákaznickou podporou je na špičkové úrovni. Naštěstí je tam naprosto lidský přístup. A o cenové politice — FFY rozhodně patří k tomu nejlepšímu na trhu.', author: 'Tomáš Pospíchal', date: 'Červen 2025', verify_url: 'https://www.google.com/maps/place/FREE+for+YOU+s.r.o.' }, { stars: '5', text: 'Konečně společnost, kde si připadáte jako vážený zákazník, komunikujete s konkrétní osobou, žádné telefonní automaty. Na počátku energetické krize jsem odešla k ČEZu a velice ráda jsem se po roce vrátila. U FFY jsem na tom o hodně líp.', author: 'Jana Černohorská', date: 'Květen 2024', verify_url: 'https://www.google.com/maps/place/FREE+for+YOU+s.r.o.' }, { stars: '5', text: 'Dodavatel s prozákaznickým přístupem. Vyzdvihuji především portál pro zákazníky Energobanking kde vidím vše přehledně, faktury a vysvětlivky. Lepší zkušenost než s velkými dodavateli, doporučuji dále.', author: 'Pavel K.', date: '2024', verify_url: 'https://www.google.com/maps/place/FREE+for+YOU+s.r.o.' }, { stars: '5', text: 'Skvěle se snaží pracovat pro zákazníky. Rozhodl jsem se opravdu pochválit všechny z FREE for YOU. Díky za jejich služby a přístup.', author: 'Tomáš Polívka', date: 'Říjen 2023', verify_url: 'https://www.google.com/maps/place/FREE+for+YOU+s.r.o.' }, { stars: '5', text: 'Za mě nejlepší dodavatel. Rychlá a skvělá komunikace. Odpověď na e-mail takřka okamžitě. Doporučuju.', author: 'Daniel', date: 'Říjen 2022', verify_url: 'https://www.google.com/maps/place/FREE+for+YOU+s.r.o.' }, { stars: '5', text: 'Mám u Free For You jak barák tak kanceláře a jsem spokojený. Perfektní přístup i případné řešení. Už jen to, že se dovolám bez 10minutového čekání — to samo o sobě stojí za to.', author: 'Ondřej B.', date: '2022', verify_url: 'https://www.google.com/maps/place/FREE+for+YOU+s.r.o.' }, { stars: '5', text: 'S firmou jsem velice spokojen. Paní Veronika Krbcová jako obchodní zástupkyně odvádí skvělou práci — vše srozumitelně vysvětlí a dokáže poradit, jaký produkt je pro klienta nejvýhodnější.', author: 'Jiří Sedláček', date: '2023', verify_url: 'https://www.google.com/maps/place/FREE+for+YOU+s.r.o.' }, { stars: '5', text: 'Po přechodu jsem čekal, že nastane nějaký chaos. Nestalo se nic — elektřina tekla dál, smlouva přišla mailem, vše hotovo za týden. Přesně jak slibovali.', author: 'Miroslav Tůma', date: '2024', verify_url: 'https://www.google.com/maps/place/FREE+for+YOU+s.r.o.' }, { stars: '5', text: 'Oceňuji transparentní faktury — přesně vím za co platím. Žádné skryté poplatky, žádná překvapení. A pokud mám dotaz, vždy dostanou rychlou odpověď.', author: 'Hana Procházková', date: '2024', verify_url: 'https://www.google.com/maps/place/FREE+for+YOU+s.r.o.' }, { stars: '4', text: 'Přešel jsem před rokem a jsem spokojený. Ceny rozumné, Energobanking přehledný. Jednou jsem potřeboval řešit změnu sazby — vyřídili to za mě, bez papírování.', author: 'Robert Majer', date: '2023', verify_url: 'https://www.google.com/maps/place/FREE+for+YOU+s.r.o.' }] } },
     ]
   },
   'proc-slevy-za-doporuceni': {

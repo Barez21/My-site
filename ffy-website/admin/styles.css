@@ -5751,3 +5751,28 @@ textarea {
 .kontakt-form-block .kform { max-width: 560px; margin-top: 1rem; }
 .kontakt-form-block .kform-intro { color: rgba(255,255,255,0.55); margin-bottom: 1rem; }
 [data-theme="light"] .kontakt-form-block .kform-intro { color: #3A5A7A; }
+
+/* ── CMS reviews grid (náhled bez carouselu) ── */
+.reviews-section .reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+@media (max-width: 700px) {
+  .reviews-section .reviews-grid { grid-template-columns: 1fr; }
+}
+
+/* ── CMS specialized block wrappers ── */
+.tarify-block .tarify-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 1rem; }
+.tarify-block .tarify-group-title { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+.tarify-block .tarify-group-desc { color: rgba(255,255,255,0.55); margin-bottom: 1rem; font-size: 0.9rem; }
+[data-theme="light"] .tarify-block .tarify-group-desc { color: #3A5A7A; }
+.tarify-block + .tarify-block { margin-top: 2.5rem; }
+
+.tiers-block .proudiky-tiers { margin-top: 1rem; }
+.pribeh-team .pribeh-team-mini-wrap { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.75rem; margin-top: 1rem; }
+
+@media (max-width: 700px) {
+  .tarify-block .tarify-cards { grid-template-columns: 1fr; }
+}
