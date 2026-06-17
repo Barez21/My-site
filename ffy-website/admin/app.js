@@ -711,6 +711,7 @@ function App() {
     onClick: () => {
       if (confirm('Resetovat na výchozí stav? Všechny změny budou ztraceny.')) {
         localStorage.removeItem('ffy-cms-pages');
+        localStorage.removeItem('ffy-cms-seed-version');
         setPages(loadPages());
         setActivePageId(null);
       }

@@ -201,12 +201,22 @@ function renderPageHTML(page, inlineCss) {
 // ═══════════════════════════════════
 
 var STORE_KEY = 'ffy-cms-pages';
+var SEED_VERSION = '2026-06-17-v2';
+var VERSION_KEY = 'ffy-cms-seed-version';
 
 function loadPages() {
   try {
+    var storedVersion = localStorage.getItem(VERSION_KEY);
+    // If seed version changed, discard old data and reseed
+    if (storedVersion !== SEED_VERSION) {
+      localStorage.removeItem(STORE_KEY);
+      localStorage.setItem(VERSION_KEY, SEED_VERSION);
+      return getInitialPages();
+    }
     var stored = JSON.parse(localStorage.getItem(STORE_KEY));
     if (stored && stored.length > 0) return stored;
   } catch(e) {}
+  localStorage.setItem(VERSION_KEY, SEED_VERSION);
   return getInitialPages();
 }
 
