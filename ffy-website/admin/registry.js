@@ -319,6 +319,22 @@ function generateId() {
   return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
 }
 
+// ── Media library storage ──
+var MEDIA_KEY = 'ffy-cms-media';
+
+function loadMedia() {
+  try {
+    var stored = JSON.parse(localStorage.getItem(MEDIA_KEY));
+    if (stored) return stored;
+  } catch(e) {}
+  return [];
+}
+
+function saveMedia(media) {
+  try { localStorage.setItem(MEDIA_KEY, JSON.stringify(media)); }
+  catch(e) { /* quota exceeded — media too large */ }
+}
+
 
 // ═══════════════════════════════════
 //  SEED DATA

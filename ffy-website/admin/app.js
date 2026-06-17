@@ -509,6 +509,145 @@ function exportPage(page) {
 }
 
 // ═══════════════════════════════════
+//  MEDIA LIBRARY
+// ═══════════════════════════════════
+
+function MediaLibrary({
+  library,
+  onUpdate
+}) {
+  const fileRef = useRef(null);
+  function handleUpload(e) {
+    const files = Array.from(e.target.files || []);
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = ev => {
+        onUpdate(prev => [...prev, {
+          id: generateId(),
+          name: file.name,
+          type: file.type.startsWith('video') ? 'video' : 'image',
+          data: ev.target.result,
+          added: new Date().toISOString().slice(0, 10)
+        }]);
+      };
+      reader.readAsDataURL(file);
+    });
+    e.target.value = '';
+  }
+  function copyUrl(item) {
+    navigator.clipboard && navigator.clipboard.writeText(item.data);
+  }
+  function remove(id) {
+    if (confirm('Odstranit z knihovny?')) onUpdate(prev => prev.filter(m => m.id !== id));
+  }
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '0.5rem 0.75rem'
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "adm-btn adm-btn-secondary adm-btn-sm",
+    style: {
+      width: '100%',
+      justifyContent: 'center',
+      marginBottom: '0.5rem'
+    },
+    onClick: () => fileRef.current && fileRef.current.click()
+  }, "+ Nahrát média"), /*#__PURE__*/React.createElement("input", {
+    ref: fileRef,
+    type: "file",
+    accept: "image/*,video/*",
+    multiple: true,
+    style: {
+      display: 'none'
+    },
+    onChange: handleUpload
+  }), library.length === 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '1rem',
+      textAlign: 'center',
+      color: 'var(--adm-text3)',
+      fontSize: '0.7rem'
+    }
+  }, "Knihovna je prázdná. Nahrajte obrázky nebo videa."), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr',
+      gap: '0.4rem'
+    }
+  }, library.map(item => /*#__PURE__*/React.createElement("div", {
+    key: item.id,
+    style: {
+      background: 'var(--adm-bg)',
+      border: '1px solid var(--adm-border)',
+      borderRadius: '6px',
+      overflow: 'hidden',
+      position: 'relative'
+    }
+  }, item.type === 'video' ? /*#__PURE__*/React.createElement("video", {
+    src: item.data,
+    style: {
+      width: '100%',
+      height: '60px',
+      objectFit: 'cover',
+      display: 'block'
+    }
+  }) : /*#__PURE__*/React.createElement("img", {
+    src: item.data,
+    alt: item.name,
+    style: {
+      width: '100%',
+      height: '60px',
+      objectFit: 'cover',
+      display: 'block'
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '0.25rem 0.4rem',
+      fontSize: '0.6rem',
+      color: 'var(--adm-text2)',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis'
+    }
+  }, item.name), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      borderTop: '1px solid var(--adm-border)'
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => copyUrl(item),
+    title: "Kopírovat URL",
+    style: {
+      flex: 1,
+      border: 'none',
+      background: 'none',
+      color: 'var(--adm-accent)',
+      cursor: 'pointer',
+      fontSize: '0.6rem',
+      padding: '2px'
+    }
+  }, "📋 URL"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => remove(item.id),
+    title: "Smazat",
+    style: {
+      border: 'none',
+      background: 'none',
+      color: 'var(--adm-danger)',
+      cursor: 'pointer',
+      fontSize: '0.6rem',
+      padding: '2px 6px'
+    }
+  }, "✕"))))), library.length > 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '0.62rem',
+      color: 'var(--adm-text3)',
+      marginTop: '0.5rem',
+      lineHeight: 1.4
+    }
+  }, "Klikni „URL\" pro zkopírování, pak vlož do obrázkového bloku."));
+}
+
+// ═══════════════════════════════════
 //  MAIN APP
 // ═══════════════════════════════════
 
@@ -519,6 +658,25 @@ function App() {
   const [editingBlock, setEditingBlock] = useState(null);
   const [showPreview, setShowPreview] = useState(true);
   const [siteCSS, setSiteCSS] = useState('');
+  const [expandedCats, setExpandedCats] = useState({
+    html: true,
+    blog: false,
+    global: false,
+    media: false
+  });
+  const [mediaLibrary, setMediaLibrary] = useState(loadMedia);
+
+  // Persist media library
+  useEffect(() => {
+    saveMedia(mediaLibrary);
+  }, [mediaLibrary]);
+
+  // Categorize pages into sidebar sections
+  function categorize(page) {
+    if (page.meta.slug && page.meta.slug.indexOf('blog/') === 0) return 'blog';
+    if (page.meta.slug === '_header' || page.meta.slug === '_footer') return 'global';
+    return 'html';
+  }
   const activePage = pages.find(p => p.id === activePageId);
 
   // Fetch main site CSS on mount
@@ -661,40 +819,85 @@ function App() {
     onClick: createPage
   }, "+ Nová")), /*#__PURE__*/React.createElement("div", {
     className: "adm-sidebar-list"
-  }, pages.length === 0 && /*#__PURE__*/React.createElement("div", {
-    style: {
-      padding: '2rem 1rem',
-      textAlign: 'center',
-      color: 'var(--adm-text3)',
-      fontSize: '0.82rem'
-    }
-  }, "Zatím žádné stránky.", /*#__PURE__*/React.createElement("br", null), "Klikni „+ Nová\" pro začátek."), pages.map(page => /*#__PURE__*/React.createElement("div", {
-    key: page.id,
-    className: `adm-page-item ${page.id === activePageId ? 'active' : ''}`,
-    onClick: () => {
-      setActivePageId(page.id);
-      setActiveTab('blocks');
-      setEditingBlock(null);
-    }
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
-    className: "adm-page-name"
-  }, (page.meta.title || 'Bez názvu').split('—')[0].split('|')[0].trim()), /*#__PURE__*/React.createElement("div", {
-    className: "adm-page-slug"
-  }, page.meta.slug || '—', ".html", page.source === 'existing' && /*#__PURE__*/React.createElement("span", {
-    style: {
-      marginLeft: '0.4rem',
-      color: 'var(--adm-text3)',
-      fontSize: '0.58rem',
-      fontWeight: 600,
-      letterSpacing: '0.05em'
-    }
-  }, "WEB"))), /*#__PURE__*/React.createElement("button", {
-    className: "adm-page-del",
-    onClick: e => {
-      e.stopPropagation();
-      deletePage(page.id);
-    }
-  }, "✕")))), /*#__PURE__*/React.createElement("div", {
+  }, (() => {
+    const cats = [{
+      key: 'html',
+      label: 'HTML stránky',
+      icon: '📄'
+    }, {
+      key: 'blog',
+      label: 'Články blogu',
+      icon: '📰'
+    }, {
+      key: 'global',
+      label: 'Globální prvky',
+      icon: '🧩'
+    }, {
+      key: 'media',
+      label: 'Obrázky a videa',
+      icon: '🖼'
+    }];
+    return cats.map(cat => {
+      const isOpen = expandedCats[cat.key];
+      const catPages = cat.key === 'media' ? [] : pages.filter(p => categorize(p) === cat.key);
+      const count = cat.key === 'media' ? mediaLibrary.length : catPages.length;
+      return /*#__PURE__*/React.createElement("div", {
+        key: cat.key,
+        className: "adm-cat"
+      }, /*#__PURE__*/React.createElement("button", {
+        className: "adm-cat-head",
+        onClick: () => setExpandedCats({
+          ...expandedCats,
+          [cat.key]: !isOpen
+        })
+      }, /*#__PURE__*/React.createElement("span", {
+        className: "adm-cat-arrow",
+        style: {
+          transform: isOpen ? 'rotate(90deg)' : 'none'
+        }
+      }, "▸"), /*#__PURE__*/React.createElement("span", {
+        className: "adm-cat-icon"
+      }, cat.icon), /*#__PURE__*/React.createElement("span", {
+        className: "adm-cat-label"
+      }, cat.label), /*#__PURE__*/React.createElement("span", {
+        className: "adm-cat-count"
+      }, count)), isOpen && /*#__PURE__*/React.createElement("div", {
+        className: "adm-cat-body"
+      }, cat.key === 'media' ? /*#__PURE__*/React.createElement(MediaLibrary, {
+        library: mediaLibrary,
+        onUpdate: setMediaLibrary
+      }) : /*#__PURE__*/React.createElement(React.Fragment, null, catPages.length === 0 && /*#__PURE__*/React.createElement("div", {
+        style: {
+          padding: '0.75rem 1rem',
+          color: 'var(--adm-text3)',
+          fontSize: '0.72rem'
+        }
+      }, cat.key === 'global' ? 'Hlavička a patička (připravujeme)' : 'Žádné stránky'), catPages.map(page => /*#__PURE__*/React.createElement("div", {
+        key: page.id,
+        className: `adm-page-item ${page.id === activePageId ? 'active' : ''}`,
+        onClick: () => {
+          setActivePageId(page.id);
+          setActiveTab('blocks');
+          setEditingBlock(null);
+        }
+      }, /*#__PURE__*/React.createElement("div", {
+        style: {
+          minWidth: 0,
+          flex: 1
+        }
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "adm-page-name"
+      }, (page.meta.title || 'Bez názvu').split('—')[0].split('|')[0].trim()), /*#__PURE__*/React.createElement("div", {
+        className: "adm-page-slug"
+      }, page.meta.slug || '—', ".html")), /*#__PURE__*/React.createElement("button", {
+        className: "adm-page-del",
+        onClick: e => {
+          e.stopPropagation();
+          deletePage(page.id);
+        }
+      }, "✕"))))));
+    });
+  })()), /*#__PURE__*/React.createElement("div", {
     style: {
       padding: '0.75rem',
       borderTop: '1px solid var(--adm-border)',
@@ -712,7 +915,9 @@ function App() {
       if (confirm('Resetovat na výchozí stav? Všechny změny budou ztraceny.')) {
         localStorage.removeItem('ffy-cms-pages');
         localStorage.removeItem('ffy-cms-seed-version');
+        localStorage.removeItem('ffy-cms-media');
         setPages(loadPages());
+        setMediaLibrary(loadMedia());
         setActivePageId(null);
       }
     }
