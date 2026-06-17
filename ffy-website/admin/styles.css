@@ -5776,3 +5776,14 @@ textarea {
 @media (max-width: 700px) {
   .tarify-block .tarify-cards { grid-template-columns: 1fr; }
 }
+
+/* ── CMS plain content wrapper (matches sdileni width) ── */
+.subpage-content { padding: 48px 0 80px; }
+.subpage-content-inner { width: min(960px, 100%); margin: 0 auto; padding: 0 2rem; }
+.subpage-content-inner .tarify-cards,
+.subpage-content-inner .ceniky-grid,
+.subpage-content-inner .reviews-grid,
+.subpage-content-inner .blog-grid { margin-bottom: 2rem; }
+
+/* rules block wrapper */
+.rules-block .proudiky-rules { margin-top: 1rem; }
