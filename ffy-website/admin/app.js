@@ -872,7 +872,7 @@ function App() {
           color: 'var(--adm-text3)',
           fontSize: '0.72rem'
         }
-      }, cat.key === 'global' ? 'Hlavička a patička (připravujeme)' : 'Žádné stránky'), catPages.map(page => /*#__PURE__*/React.createElement("div", {
+      }, cat.key === 'global' ? 'Žádné globální prvky' : 'Žádné stránky'), catPages.map(page => /*#__PURE__*/React.createElement("div", {
         key: page.id,
         className: `adm-page-item ${page.id === activePageId ? 'active' : ''}`,
         onClick: () => {
@@ -889,7 +889,7 @@ function App() {
         className: "adm-page-name"
       }, (page.meta.title || 'Bez názvu').split('—')[0].split('|')[0].trim()), /*#__PURE__*/React.createElement("div", {
         className: "adm-page-slug"
-      }, page.meta.slug || '—', ".html")), /*#__PURE__*/React.createElement("button", {
+      }, page.meta.slug === '_header' ? 'Hlavní navigace' : page.meta.slug === '_footer' ? 'Patička webu' : (page.meta.slug || '—') + '.html')), page.meta.slug !== '_header' && page.meta.slug !== '_footer' && /*#__PURE__*/React.createElement("button", {
         className: "adm-page-del",
         onClick: e => {
           e.stopPropagation();

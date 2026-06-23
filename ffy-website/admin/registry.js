@@ -414,6 +414,78 @@ var BLOCK_REGISTRY = {
     }
   },
 
+  process_steps: {
+    label: 'Číslované kroky', description: 'Postup krok za krokem',
+    schema: [
+      { key: 'section_label', label: 'Nadpis sekce', type: 'text' },
+      { key: 'items', label: 'Kroky', type: 'array', arrayFields: [
+        { key: 'title', label: 'Název kroku', type: 'text' },
+        { key: 'desc', label: 'Popis', type: 'textarea' },
+      ]},
+    ],
+    defaults: { section_label: '', items: [{title:'Krok',desc:'Popis kroku'}] },
+    render: function(p) {
+      var steps = (p.items||[]).map(function(s, i){
+        return '<div class="slevy-step"><div class="slevy-step-num">' + (i+1) + '</div>' +
+          '<div class="slevy-step-body"><div class="slevy-step-title">' + s.title + '</div>' +
+          '<div class="slevy-step-desc">' + s.desc + '</div></div></div>';
+      }).join('');
+      var lbl = p.section_label ? '<div class="slevy-how-title">' + p.section_label + '</div>' : '';
+      return '<div class="slevy-how">' + lbl + '<div class="slevy-steps">' + steps + '</div></div>';
+    }
+  },
+
+  info_callout: {
+    label: 'Zvýrazněný box', description: 'Box s nadpisem, textem a příkladem',
+    schema: [
+      { key: 'title', label: 'Nadpis', type: 'text' },
+      { key: 'text', label: 'Text', type: 'textarea' },
+      { key: 'example', label: 'Příklad (zvýrazněný)', type: 'textarea', hint: 'Volitelné' },
+      { key: 'note', label: 'Poznámka pod', type: 'text', hint: 'Volitelné' },
+    ],
+    defaults: { title: 'Nadpis', text: 'Text...', example: '', note: '' },
+    render: function(p) {
+      return '<div class="slevy-accrual">' +
+        (p.title?'<div class="slevy-accrual-title">' + p.title + '</div>':'') +
+        (p.text?'<div class="slevy-accrual-text">' + p.text + '</div>':'') +
+        (p.example?'<div class="slevy-accrual-example">' + p.example + '</div>':'') +
+        (p.note?'<div class="slevy-accrual-note">' + p.note + '</div>':'') + '</div>';
+    }
+  },
+
+  rules_list: {
+    label: 'Seznam pravidel', description: 'Odrážkový seznam podmínek',
+    schema: [
+      { key: 'title', label: 'Nadpis', type: 'text' },
+      { key: 'items', label: 'Pravidla (každé na řádek)', type: 'textarea' },
+    ],
+    defaults: { title: 'Pravidla', items: 'První pravidlo\nDruhé pravidlo' },
+    render: function(p) {
+      var rows = (p.items||'').split('\n').filter(function(r){return r.trim();}).map(function(r){
+        return '<li>' + r.trim() + '</li>';
+      }).join('');
+      return '<div class="slevy-rules">' + (p.title?'<div class="slevy-rules-title">' + p.title + '</div>':'') +
+        '<ul class="slevy-rules-list">' + rows + '</ul></div>';
+    }
+  },
+
+  embed_widget: {
+    label: 'Živá komponenta', description: 'Vloží interaktivní část ze živé stránky (kalkulačka, infografika)',
+    schema: [
+      { key: 'source_page', label: 'Zdrojová stránka', type: 'text', hint: 'Např: ceny-kalkulacka.html' },
+      { key: 'selector', label: 'CSS selektor komponenty', type: 'text', hint: 'Např: .kalk-card nebo .slevy-infographic' },
+      { key: 'label', label: 'Popisek (v editoru)', type: 'text' },
+    ],
+    defaults: { source_page: '', selector: '', label: 'Interaktivní komponenta' },
+    render: function(p) {
+      if (!p.source_page) return '<div class="embed-placeholder">Není zadána zdrojová stránka</div>';
+      // In preview: show iframe of the live page cropped to component
+      return '<div class="embed-widget" data-source="' + p.source_page + '" data-selector="' + (p.selector||'') + '">' +
+        '<iframe src="../' + p.source_page + '" style="width:100%;height:600px;border:none;border-radius:12px;background:transparent" loading="lazy"></iframe>' +
+        '<div class="embed-widget-note">⚡ ' + (p.label||'Živá komponenta') + ' — interaktivní část načtená ze stránky ' + p.source_page + '</div></div>';
+    }
+  },
+
   button_link: {
     label: 'Tlačítko', description: 'Samostatné tlačítko s odkazem',
     schema: [
@@ -426,6 +498,54 @@ var BLOCK_REGISTRY = {
     render: function(p) {
       var cls = p.style === 'secondary' ? 'sdileni-btn-secondary' : 'sdileni-btn-primary';
       return '<div style="text-align:'+(p.align||'left')+';margin:1.5rem 0"><a href="'+p.url+'" class="'+cls+'">'+p.text+'</a></div>';
+    }
+  },
+
+  nav_menu: {
+    label: 'Hlavní menu', description: 'Horní navigace s mega menu',
+    schema: [
+      { key: 'cta_text', label: 'Text CTA tlačítka', type: 'text' },
+      { key: 'cta_url', label: 'Odkaz CTA', type: 'url' },
+      { key: 'columns', label: 'Sloupce mega menu', type: 'array', arrayFields: [
+        { key: 'title', label: 'Nadpis sloupce', type: 'text' },
+        { key: 'links', label: 'Odkazy (text|url na řádek)', type: 'textarea', hint: 'Formát: Text odkazu|stranka.html' },
+      ]},
+    ],
+    defaults: { cta_text: 'Chci to vyzkoušet', cta_url: '#', columns: [{title:'Naše ceny',links:'Aktuální nabídka|ceny-aktualni-nabidka.html\nKalkulačka|ceny-kalkulacka.html'}] },
+    render: function(p) {
+      var cols = (p.columns||[]).map(function(c){
+        var links = (c.links||'').split('\n').filter(function(l){return l.trim();}).map(function(l){
+          var parts = l.split('|');
+          return '<a href="' + (parts[1]||'#').trim() + '" class="mega-link">' + (parts[0]||'').trim() + '</a>';
+        }).join('');
+        return '<div class="mega-col"><div class="mega-col-title">' + c.title + '</div>' + links + '</div>';
+      }).join('');
+      return '<nav class="cms-nav-preview"><div class="cms-nav-bar"><div class="cms-nav-logo">FREE for YOU</div>' +
+        '<div class="cms-nav-cta">' + (p.cta_text||'') + '</div></div>' +
+        '<div class="cms-mega">' + cols + '</div></nav>';
+    }
+  },
+
+  site_footer: {
+    label: 'Patička webu', description: 'Spodní část se sloupci odkazů',
+    schema: [
+      { key: 'columns', label: 'Sloupce', type: 'array', arrayFields: [
+        { key: 'title', label: 'Nadpis sloupce', type: 'text' },
+        { key: 'links', label: 'Odkazy (text|url na řádek)', type: 'textarea', hint: 'Formát: Text|stranka.html' },
+      ]},
+      { key: 'copyright', label: 'Copyright text', type: 'text' },
+    ],
+    defaults: { columns: [{title:'O nás',links:'Náš příběh|proc-nas-pribeh.html'}], copyright: '© 2026 FREE for YOU s.r.o.' },
+    render: function(p) {
+      var cols = (p.columns||[]).map(function(c){
+        var links = (c.links||'').split('\n').filter(function(l){return l.trim();}).map(function(l){
+          var parts = l.split('|');
+          return '<a href="' + (parts[1]||'#').trim() + '">' + (parts[0]||'').trim() + '</a>';
+        }).join('');
+        return '<div class="footer-col"><div class="footer-col-title">' + c.title + '</div>' + links + '</div>';
+      }).join('');
+      return '<footer class="site-footer"><div class="footer-inner"><div class="footer-cols">' + cols + '</div>' +
+        '<div class="footer-bottom">' + (p.copyright||'') + '</div></div></footer>';
     }
   },
 
@@ -463,18 +583,13 @@ function renderBlocksHTML(blocks) {
 }
 
 function renderPageHTML(page, inlineCss) {
+  // Embed pages — show live page in iframe (interactive JS apps)
+  if (page.embed) {
+    return '<!DOCTYPE html>\n<html lang="cs">\n<head>\n<meta charset="UTF-8">\n<style>html,body{margin:0;padding:0;height:100%;overflow:hidden;background:#0a0f18}iframe{width:100%;height:100vh;border:none}</style>\n</head>\n<body>\n<iframe src="../'+page.meta.slug+'.html"></iframe>\n</body>\n</html>';
+  }
   var blocksHTML = renderBlocksHTML(page.blocks);
   var wrap = page.wrapper || 'sdileni';
-  var sectionOpen, sectionClose;
-  if (wrap === 'plain') {
-    // Minimal wrapper — blocks provide their own structure
-    sectionOpen = '<section class="subpage-content"><div class="subpage-content-inner">';
-    sectionClose = '</div></section>';
-  } else {
-    sectionOpen = '<section class="'+wrap+'-section"><div class="'+wrap+'-inner">';
-    sectionClose = '</div></section>';
-  }
-  return '<!DOCTYPE html>\n<html lang="cs">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n<title>'+(page.meta.title||'')+'</title>\n<meta name="description" content="'+(page.meta.description||'')+'">\n'+(inlineCss ? '<style>'+inlineCss+'</style>\n' : '<link rel="stylesheet" href="../styles.css">\n')+(page.customCss ? '<style>'+page.customCss+'</style>\n' : '')+'</head>\n<body>\n<div class="nebula" aria-hidden="true"><div class="nebula-blob nebula-blob-1"></div><div class="nebula-blob nebula-blob-2"></div></div>\n<main class="subpage-main">\n'+sectionOpen+'\n'+blocksHTML+'\n'+sectionClose+'\n</main>\n</body>\n</html>';
+  return '<!DOCTYPE html>\n<html lang="cs">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n<title>'+(page.meta.title||'')+'</title>\n<meta name="description" content="'+(page.meta.description||'')+'">\n'+(inlineCss ? '<style>'+inlineCss+'</style>\n' : '<link rel="stylesheet" href="../styles.css">\n')+(page.customCss ? '<style>'+page.customCss+'</style>\n' : '')+'</head>\n<body>\n<div class="nebula" aria-hidden="true"><div class="nebula-blob nebula-blob-1"></div><div class="nebula-blob nebula-blob-2"></div></div>\n<main class="subpage-main">\n<section class="'+wrap+'-section"><div class="'+wrap+'-inner">\n'+blocksHTML+'\n</div></section>\n</main>\n</body>\n</html>';
 }
 
 
@@ -483,7 +598,7 @@ function renderPageHTML(page, inlineCss) {
 // ═══════════════════════════════════
 
 var STORE_KEY = 'ffy-cms-pages';
-var SEED_VERSION = '2026-06-17-v6';
+var SEED_VERSION = '2026-06-17-v8';
 var VERSION_KEY = 'ffy-cms-seed-version';
 
 function loadPages() {
@@ -532,30 +647,44 @@ function saveMedia(media) {
 // ═══════════════════════════════════
 
 var SEED_PAGES = {
+  '_header': {
+    title: 'Hlavní menu', desc: '',
+    h1: 'Hlavní menu', lead: '', wrapper: 'sdileni',
+    blocks: [
+      { type: 'nav_menu', props: { cta_text: 'Chci to vyzkoušet', cta_url: '#', columns: [{ title: 'Naše ceny', links: 'Aktuální nabídka Platné ceny elektřiny a plynu|ceny-aktualni-nabidka.html\nKalkulačka Spočítejte si svoji úsporu|ceny-kalkulacka.html\nCeníky Ke stažení ve formátu PDF|ceny-ceniky.html' }, { title: 'Proč FREE for YOU?', links: 'Slevy za doporučení Přiveďte přítele a ušetříte oba|proc-slevy-za-doporuceni.html\nInvestice do OZE 50 % zisku jde zpět do zdrojů|proc-investice-oze.html\nNáš příběh Kdo jsme a proč to děláme|proc-nas-pribeh.html\nReference Co říkají naši zákazníci|proc-reference.html' }, { title: 'Jak to funguje?', links: 'Sdílení elektřiny Komunitní výroba a spotřeba|jak-sdileni-elektriny.html\nProdej elektřiny Prodejte přebytky ze svého zdroje|jak-vykup-elektriny.html\nProudíky Věrnostní program FREE for YOU|jak-proudiky.html' }, { title: 'Podpora', links: 'Časté dotazy Odpovědi na vaše otázky|podpora-faq.html\nDokumenty Smlouvy, faktury, plné moci|podpora-dokumenty.html\nKontakty Zavolejte nebo napište|podpora-kontakty.html\nBlog Novinky a tipy ze světa energií|podpora-blog.html' }] } },
+    ]
+  },
+  '_footer': {
+    title: 'Patička webu', desc: '',
+    h1: 'Patička', lead: '', wrapper: 'sdileni',
+    blocks: [
+      { type: 'site_footer', props: { columns: [{ title: 'Pro zákazníky', links: 'Elektřina|ceny-aktualni-nabidka.html\nPlyn|ceny-aktualni-nabidka.html\nSlevy na energie|proc-slevy-za-doporuceni.html' }, { title: 'Fotovoltaika', links: 'Prodej přebytků|jak-vykup-elektriny.html\nSdílení elektřiny|jak-sdileni-elektriny.html' }, { title: 'O nás', links: 'Naše vize|proc-nas-pribeh.html\nNáš tým|proc-nas-pribeh.html\nReference zákazníků|proc-reference.html\nPro média|pro-media.html\nPřípadové studie|#\nObchodní podmínky|docs/op/vseobecne-obchodni-podminky.pdf' }, { title: 'Zákaznická podpora', links: 'Kontakt|podpora-kontakty.html\nČasté dotazy|podpora-faq.html\nDokumenty ke stažení|podpora-dokumenty.html\nJak funguje Energobanking|jak-energobanking.html\nBlog|podpora-blog.html\ninfo@freeforyou.cz|mailto:info@freeforyou.cz\n+420 227 072 290|tel:+420227072290' }], copyright: '© 2026 FREE for YOU s.r.o. — Dodáváme elektřinu od roku 2016.' } },
+    ]
+  },
   'blog/co-se-deje-s-prebytkovou-elektricinou': {
     title: 'Co se děje s přebytky ze solárů | FREE for YOU', desc: 'Solár vyrábí i když nikdo není doma. Co se stane s přebytkovou elektřinou a jak funguje sdílení v komunitě FREE for YOU.',
-    h1: 'Co se děje s elektřinou ze solárů, když ji nikdo nespotřebuje', lead: '', wrapper: 'plain',
+    h1: 'Co se děje s elektřinou ze solárů, když ji nikdo nespotřebuje', lead: '', wrapper: 'sdileni',
     blocks: [
       { type: 'content_section', props: { label: 'Elektřina nemizí — jde do sítě', content: 'Obrázek článku Sluneční elektrárna se neřídí tím, jestli jste doma. Vyrábí, když svítí slunce — bez ohledu na to, jestli v tu chvíli někdo vaří nebo spí. Co se stane s elektřinou, kterou nikdo okamžitě nespotre?\n\nPřebytková elektřina se automaticky přelévá do distribuční sítě. Odtud ji čerpají ostatní odběratelé v okolí. Fyzicky jde o tok elektronů — elektřina z vaší střechy může svítit sousedovi dřív, než doputuje z vzdálené elektrárny.\n\nEnergie z vlastních zdrojů FREE for YOU se rozděluje ve třech krocích. Nejdřív za zvýhodněnou cenu dostane zákazník, u kterého zdroj stojí. Pak se rozdělí podle Proudíků — zákazníci, kteří jsou s námi déle a odebírají víc, mají vyšší nárok. Co zbyde, dostane rovným dílem každý zákazník FREE for YOU.\n\nNejde o fyzickou elektřinu — ta teče přes distribuční síť jako vždy. Jde o finanční dopad výroby, který se projeví na vaší faktuře.\n\nČím více vlastní výroby komunita má, tím méně závisí na tržní ceně. Elektrárna postavená dnes bude snižovat cenu i za deset let — protože slunce za svit fakturu nepošle.' } },
     ]
   },
   'blog/proc-cena-elektriciny-nesouvisí-s-fakturou': {
     title: 'Proč cena elektřiny na burze nesouvisí s fakturou | FREE for YOU', desc: 'Cena elektřiny na burze klesla, ale zálohy zůstávají stejné. Vysvětlujeme proč — a jak to řeší FREE for YOU.',
-    h1: 'Proč cena elektřiny na burze nesouvisí s tím, co platíte na faktuře', lead: '', wrapper: 'plain',
+    h1: 'Proč cena elektřiny na burze nesouvisí s tím, co platíte na faktuře', lead: '', wrapper: 'sdileni',
     blocks: [
       { type: 'content_section', props: { label: 'Kde se bere cena na vaší faktuře', content: 'Obrázek článku Když noviny píšou, že cena elektřiny na burze klesla, většina lidí očekává, že se to projeví na jejich faktuře. Nestane se. Aspoň ne hned — a ne automaticky.\n\nFaktura za elektřinu se skládá z několika částí. Největší jsou dvě: <strong>distribuce</strong> a <strong>silová elektřina</strong>. Distribuci platíte svému distributorovi (ČEZ, EG.D nebo PRE) — a ta je regulovaná státem. Na tu burza nemá vliv.\n\nSilová elektřina je ta část, kterou nakupuje váš dodavatel. A tady to zajímavé začíná.\n\nVětšina dodavatelů nekupuje elektřinu den po dni za aktuální burzovní cenu. Nakupují ji dopředu — měsíce nebo roky předem — za takzvané forwardové ceny. Když jste u dodavatele s fixním tarifem, cena vaší elektřiny byla sjednána možná rok před tím, než vám přišla první faktura.\n\nBurza může být levná dnes. Ale váš dodavatel ji koupil draho loni v zimě.\n\nU FREE for YOU vidíte na faktuře přesně, kolik platíte za silovou elektřinu a kolik za distribuci. Nic není schované v globální sazbě. Když ceny na trhu klesají, snažíme se to promítnout do nových smluv co nejdřív — ne za rok, až skončí aktuální smluvní období.\n\nVlastní zdroje, které budujeme, nás od tržní ceny postupně osvobozují. Elektřina vyrobená na vlastní střeše nestojí to, co říká burza.' } },
     ]
   },
   'blog/zmena-dodavatele-co-se-zmeni': {
     title: 'Změna dodavatele: co se změní a co ne | FREE for YOU', desc: 'Dodávka se nepřeruší, zásuvky zůstanou stejné. Vysvětlujeme krok za krokem, jak přechod k FREE for YOU probíhá.',
-    h1: 'Změna dodavatele: co se opravdu změní a co zůstane stejné', lead: '', wrapper: 'plain',
+    h1: 'Změna dodavatele: co se opravdu změní a co zůstane stejné', lead: '', wrapper: 'sdileni',
     blocks: [
       { type: 'content_section', props: { label: 'Co se nezmění', content: 'Obrázek článku Změna dodavatele energií zní složitě. Přitom je to jedna z nejjednodušších administrativních věcí, které za vás dnes někdo jiný celé vyřídí. Pojďme si projít, co se opravdu stane — a co vůbec ne.\n\n<strong>Distribuce.</strong> Elektřina nebo plyn teče do vašeho domu stejnou sítí jako dřív. Distributor (ČEZ, EG.D nebo PRE) zůstává stejný — ten si nevybíráte, závisí na tom, kde bydlíte. Fyzická dodávka se při přechodu nepřerušuje ani na minutu.\n\n<strong>Termíny odečtů</strong> zůstávají stejné. Provádí je distributor, ne dodavatel.\n\n<strong>Vaše zásuvky, kotel, sporák</strong> — nic z toho se nedotýkáme.\n\nZmění se, kdo vám posílá fakturu. A za jakou cenu. A jak s vámi komunikuje.\n\nPřechod trvá standardně 6 až 8 týdnů. Většinu té doby se čeká na lhůty na straně distribuce — administrativní proces, který za vás vyřídíme.\n\nVyplnit formulář. Podepsat smlouvu a plnou moc. To je vše. Výpověď stávajícímu dodavateli, komunikaci s distributorem a přihlášení odběrného místa zařídíme za vás.\n\nNejjednodušší způsob, jak se přesvědčit, je zkusit to. Přechod je možné kdykoliv zrušit — bez sankcí, pokud se stihnete rozhodnout včas.' } },
     ]
   },
   'ceny-aktualni-nabidka': {
     title: 'Aktuální nabídka elektřiny — FREE for YOU energie', desc: 'Aktuální ceny silové elektřiny FREE for YOU pro domácnosti. Tarify FIX 2025 pro distribuční území ČEZ, PRE a EG.D.',
-    h1: 'Aktuální nabídka', lead: 'Zde vidíte naše aktuálně nabízené tarify. Vyberte si, co odpovídá vašemu způsobu odběru.', wrapper: 'plain',
+    h1: 'Aktuální nabídka', lead: 'Zde vidíte naše aktuálně nabízené tarify. Vyberte si, co odpovídá vašemu způsobu odběru.', wrapper: 'sdileni',
     blocks: [
       { type: 'tariff_cards', props: { group_label: 'Fixní tarify', group_desc: 'Víte přesně, za kolik platíte. Cena je dohodnutá předem a nemění se podle dění na trhu. Vhodné pro ty, kdo chtějí jistotu a klid při plánování výdajů domácnosti.', items: [{ type_label: 'Elektřina', name: 'Tarif FIX2026', subtitle: 'Fixní cena elektřiny na celý rok 2026', price_num: 'X,XX', price_unit: 'Kč / kWh s DPH', price_sub: 'X,XX Kč / kWh bez DPH', cta_text: 'Chci tento tarif →', cta_url: 'index.html#final-cta' }, { type_label: 'Plyn', name: 'Tarif FIX2026', subtitle: 'Fixní cena plynu na celý rok 2026', price_num: 'X,XX', price_unit: 'Kč / kWh s DPH', price_sub: 'X,XX Kč / kWh bez DPH', cta_text: 'Chci tento tarif →', cta_url: 'index.html#final-cta' }] } },
       { type: 'tariff_cards', props: { group_label: 'SPOT tarify', group_desc: 'Cena se mění každou hodinu podle toho, kolik elektřina nebo plyn stojí na burzovním trhu. Když je trh levný — platíte méně. Vhodné pro ty, kdo sledují spotřebu a dokážou ji přizpůsobit době, kdy je energie nejlevnější.', items: [{ type_label: 'Elektřina', name: 'Tarif SPOT', subtitle: 'Hodinová cena podle burzovního trhu', price_num: 'X,XX', price_unit: 'Kč / kWh s DPH', price_sub: 'Marže X,XX Kč / kWh bez DPH', cta_text: 'Chci tento tarif →', cta_url: 'index.html#final-cta' }, { type_label: 'Plyn', name: 'Tarif SPOT', subtitle: 'Denní cena podle burzovního trhu', price_num: 'X,XX', price_unit: 'Kč / kWh s DPH', price_sub: 'Marže X,XX Kč / kWh bez DPH', cta_text: 'Chci tento tarif →', cta_url: 'index.html#final-cta' }] } },
@@ -563,16 +692,18 @@ var SEED_PAGES = {
   },
   'ceny-ceniky': {
     title: 'Ceníky elektřiny 2026 — FREE for YOU energie', desc: 'Kompletní ceníky elektřiny FREE for YOU ke stažení v PDF. Ceny distribuce, silové elektřiny a poplatků pro všechna distribuční území.',
-    h1: 'Ceníky', lead: 'Vyberte své distribuční území a zobrazte aktuální ceníky elektřiny a plynu.', wrapper: 'plain',
+    h1: 'Ceníky', lead: 'Vyberte své distribuční území a zobrazte aktuální ceníky elektřiny a plynu.', wrapper: 'sdileni',
     blocks: [
-      { type: 'pricelist_block', props: { section_label: '', items: [{ meta: 'Elektřina · platný od 1. 1. 2026', name: 'Ceník elektřiny FIX2026 — ČEZ', size: 'PDF · 284 kB', url: '#' }, { meta: 'Plyn · platný od 1. 1. 2026', name: 'Ceník plynu FIX2026 — ČEZ', size: 'PDF · 196 kB', url: '#' }, { meta: 'Elektřina · platný od 1. 1. 2026', name: 'Ceník elektřiny SPOT — ČEZ', size: 'PDF · 211 kB', url: '#' }, { meta: 'Plyn · platný od 1. 1. 2026', name: 'Ceník plynu SPOT — ČEZ', size: 'PDF · 178 kB', url: '#' }, { meta: 'Elektřina · platný od 1. 7. 2025', name: 'Ceník elektřiny FIX2025 H2 — ČEZ', size: 'PDF · 268 kB', url: '#' }, { meta: 'Plyn · platný od 1. 7. 2025', name: 'Ceník plynu FIX2025 H2 — ČEZ', size: 'PDF · 189 kB', url: '#' }, { meta: 'Elektřina · platný od 1. 1. 2026', name: 'Ceník elektřiny FIX2026 — EG.D', size: 'PDF · 276 kB', url: '#' }, { meta: 'Plyn · platný od 1. 1. 2026', name: 'Ceník plynu FIX2026 — EG.D', size: 'PDF · 192 kB', url: '#' }, { meta: 'Elektřina · platný od 1. 1. 2026', name: 'Ceník elektřiny SPOT — EG.D', size: 'PDF · 208 kB', url: '#' }, { meta: 'Plyn · platný od 1. 1. 2026', name: 'Ceník plynu SPOT — EG.D', size: 'PDF · 175 kB', url: '#' }, { meta: 'Elektřina · platný od 1. 7. 2025', name: 'Ceník elektřiny FIX2025 H2 — EG.D', size: 'PDF · 261 kB', url: '#' }, { meta: 'Plyn · platný od 1. 7. 2025', name: 'Ceník plynu FIX2025 H2 — EG.D', size: 'PDF · 184 kB', url: '#' }, { meta: 'Elektřina · platný od 1. 1. 2026', name: 'Ceník elektřiny FIX2026 — PRE', size: 'PDF · 271 kB', url: '#' }, { meta: 'Plyn · platný od 1. 1. 2026', name: 'Ceník plynu FIX2026 — PRE', size: 'PDF · 188 kB', url: '#' }, { meta: 'Elektřina · platný od 1. 1. 2026', name: 'Ceník elektřiny SPOT — PRE', size: 'PDF · 203 kB', url: '#' }, { meta: 'Plyn · platný od 1. 1. 2026', name: 'Ceník plynu SPOT — PRE', size: 'PDF · 172 kB', url: '#' }, { meta: 'Elektřina · platný od 1. 7. 2025', name: 'Ceník elektřiny FIX2025 H2 — PRE', size: 'PDF · 259 kB', url: '#' }, { meta: 'Plyn · platný od 1. 7. 2025', name: 'Ceník plynu FIX2025 H2 — PRE', size: 'PDF · 181 kB', url: '#' }] } },
+      { type: 'content_section', props: { label: '', content: 'Vyberte své distribuční území a komoditu. Zobrazí se odpovídající ceníky ke stažení v PDF.' } },
+      { type: 'embed_widget', props: { source_page: 'ceny-ceniky.html', selector: '.ceniky-inner', label: 'Interaktivní výběr ceníků' } },
     ]
   },
   'ceny-kalkulacka': {
     title: 'Kalkulačka ceny elektřiny — FREE for YOU energie', desc: 'Spočítejte si orientační roční náklad za elektřinu u FREE for YOU. Zadejte spotřebu a PSČ — kalkulačka zobrazí celkovou cenu včetně distribuce.',
-    h1: 'Kalkulačka', lead: 'Zadejte loňskou roční spotřebu a zjistěte, kolik byste platili u FREE for YOU.', wrapper: 'plain',
+    h1: 'Kalkulačka', lead: 'Zadejte loňskou roční spotřebu a zjistěte, kolik byste platili u FREE for YOU.', wrapper: 'sdileni',
     blocks: [
-      { type: 'features_grid', props: { section_label: '', columns: '3', items: [{ title: 'Základní odběr', desc: 'Svícení a spotřebiče, bez el. vytápění' }, { title: 'S elektrickým vařením', desc: 'Svícení + sporák nebo trouba na elektřinu' }, { title: 'S vytápěním nebo ohřevem vody', desc: 'Přímotop, tepelné čerpadlo nebo el. bojler' }, { title: 'Váš odhad u FREE for YOU Orientační výpočet. Přesná nabídka po kontaktu s námi. Odhadovaný měsíční náklad —', desc: '—' }, { title: 'FREE for YOU Silová elektřina — — Stálý plat — — Distribuce a poplatky Distribuce za MWh — — Distribuce měsíčně — — Daně a POZE — — Celkem ročně: — · průměrně — / MWh s DPH Distribuce a poplatky jsou regulované státem — stejné u všech dodavatelů. PSČ odběrného místa Podle PSČ zjistíme vaše distribuční území. Distribuční sazba D01d D02d D25d D26d D27d D35d D45d D56d D57d D61d Hlavní jistič do 3×10 A do 3×16 A do 3×20 A do 3×25 A do 3×32 A do 3×40 A do 3×50 A do 3×63 A Spotřeba VT (vysoký tarif) MWh / rok Spotřeba NT (nízký tarif) MWh / rok Spočítat → Váš odhad u FREE for YOU Orientační výpočet včetně distribuce dle sazby a jističe. Odhadovaný měsíční náklad —', desc: '—' }] } },
+      { type: 'content_section', props: { label: '', content: 'Zadejte loňskou roční spotřebu a zjistěte, kolik byste platili u FREE for YOU. Kalkulačka počítá celkovou cenu včetně distribuce, systémových poplatků a DPH.' } },
+      { type: 'embed_widget', props: { source_page: 'ceny-kalkulacka.html', selector: '.kalk-card', label: 'Interaktivní kalkulačka ceny elektřiny' } },
     ]
   },
   'index': {
@@ -638,21 +769,21 @@ var SEED_PAGES = {
   },
   'podpora-blog': {
     title: 'Blog — novinky ze světa energií | FREE for YOU', desc: 'Články o cenách elektřiny, solární energii a změně dodavatele. Bez zbytečného žargonu.',
-    h1: 'Blog', lead: 'Novinky, vysvětlení a postřehy ze světa energií. Bez zbytečného žargonu.', wrapper: 'plain',
+    h1: 'Blog', lead: 'Novinky, vysvětlení a postřehy ze světa energií. Bez zbytečného žargonu.', wrapper: 'sdileni',
     blocks: [
       { type: 'blog_cards', props: { section_label: '', items: [{ title: 'Co se děje s elektřinou ze solárů, když ji nikdo nespotřebuje', excerpt: 'Solární elektrárna vyrábí, i když nikdo doma není. Co se stane s přebytkovou elektřinou a jak funguje sdílení v rámci komunity FREE for YOU?', date: '18. května 2025', tag: 'Solární energie', url: 'blog/co-se-deje-s-prebytkovou-elektricinou.html' }, { title: 'Změna dodavatele: co se opravdu změní a co zůstane stejné', excerpt: 'Největší strach lidí při změně dodavatele je, že přijdou o dodávku. Spoiler: nepřijdou. Vysvětlujeme krok za krokem, co přechod obnáší a co si nemusíte řešit vůbec.', date: '2. dubna 2025', tag: 'Prakticky', url: 'blog/zmena-dodavatele-co-se-zmeni.html' }] } },
     ]
   },
   'podpora-dokumenty': {
     title: 'Dokumenty ke stažení — FREE for YOU energie', desc: 'Smlouvy, obchodní podmínky, vzory faktur a plné moci FREE for YOU. Vše ke stažení nebo náhledu v PDF.',
-    h1: 'Dokumenty', lead: 'Všechny důležité dokumenty na jednom místě. Kliknutím sekci rozbalíte a dokument stáhnete.', wrapper: 'plain',
+    h1: 'Dokumenty', lead: 'Všechny důležité dokumenty na jednom místě. Kliknutím sekci rozbalíte a dokument stáhnete.', wrapper: 'sdileni',
     blocks: [
       { type: 'documents_block', props: { group_label: 'Dokumenty ke stažení', items: [{ name: 'Smlouva o dodávce elektřiny', meta: 'PDF · aktuální verze', url: '' }, { name: 'Vzorová smlouva o dodávce plynu', meta: 'PDF · aktuální verze', url: '' }, { name: 'Vzorová smlouva o výkupu elektřiny', meta: 'PDF · aktuální verze', url: '' }, { name: 'Plná moc — změna dodavatele', meta: 'PDF · aktuální verze', url: '' }, { name: 'Plná moc — přepis odběrného místa', meta: 'PDF · aktuální verze', url: '' }, { name: 'Vzorová faktura — elektřina', meta: 'PDF · ukázka vyúčtování', url: '' }, { name: 'Vzorová faktura — plyn', meta: 'PDF · ukázka vyúčtování', url: '' }, { name: 'Všeobecné obchodní podmínky', meta: 'PDF · platné od 1. 11. 2023', url: '' }, { name: 'Podmínky systému FREE for YOU', meta: 'PDF · platné od 1. 11. 2023', url: '' }, { name: 'Ochrana osobních údajů (GDPR)', meta: 'PDF · aktuální verze', url: '' }] } },
     ]
   },
   'podpora-faq': {
     title: 'Časté dotazy — FREE for YOU energie', desc: 'Odpovědi na nejčastější otázky o změně dodavatele, fakturaci, distribuci a službách FREE for YOU.',
-    h1: 'Časté dotazy', lead: 'Nenašli jste odpověď? Napište nebo zavolejte — odpovídá člověk.', wrapper: 'faq',
+    h1: 'Časté dotazy', lead: 'Nenašli jste odpověď? Napište nebo zavolejte — odpovídá člověk.', wrapper: 'sdileni',
     blocks: [
       { type: 'faq_block', props: { title: 'Přechod k FREE for YOU', items: [{ q: 'Přijdu při přechodu o dodávku elektřiny nebo plynu?', a: 'Ne. Přechod mezi dodavateli probíhá čistě administrativně — fyzická dodávka se nepřerušuje ani na minutu. Elektřina nebo plyn teče dál stejnou sítí, mění se jen to, kdo vám posílá fakturu.' }, { q: 'Jak dlouho přechod trvá?', a: 'Standardně 6 až 8 týdnů od podpisu smlouvy. Většinu té doby běží lhůty na straně distribuce — my mezitím zařizujeme vše potřebné. Vy čekáte, my pracujeme.' }, { q: 'Co musím udělat já a co zařídíte vy?', a: 'Vy vyplníte krátký formulář a podepíšete smlouvu a plnou moc. Zbytek — výpověď stávající smlouvy, komunikace s distributorem, přihlášení odběrného místa — zařídíme za vás.' }, { q: 'Jaké dokumenty potřebuji k přechodu?', a: 'Stačí poslední vyúčtování od současného dodavatele a podepsaná plná moc. To je vše, co od vás potřebujeme, abychom mohli začít.' }, { q: 'Mohu přejít, i když mám smlouvu s výpovědní lhůtou?', a: 'Ano. Smlouvu za vás vypovíme a přechod naplánujeme tak, aby navazoval přesně na konec výpovědní lhůty. Nic neplatíte dvakrát.' }, { q: 'Mohu přejít jen s elektřinou, nebo musím i s plynem?', a: 'Přejít můžete s elektřinou, s plynem, nebo s obojím — záleží jen na vás. Každá komodita se řeší samostatně.' }, { q: 'Co když budu chtít odejít?', a: 'Podmínky ukončení smlouvy jsou jasně popsané ve smlouvě. Žádné skryté pokuty. Když se rozhodnete odejít, řeknete nám to a projdeme postup společně.' }] } },
       { type: 'faq_block', props: { title: 'Ceny a produkty', items: [{ q: 'Jaký je rozdíl mezi fixním a SPOT tarifem?', a: 'U fixního tarifu víte předem přesně, za kolik platíte — cena je dohodnutá na celé smluvní období. U SPOT tarifu se cena mění každou hodinu podle burzovního trhu. Když je trh levný, platíte méně. Když je drahý, platíte více. SPOT se vyplatí těm, kdo sledují spotřebu a dokážou ji přizpůsobit době, kdy je energie nejlevnější.' }, { q: 'Jak se tvoří cena energie u FREE for YOU?', a: 'Cena se skládá ze dvou částí — regulované složky (distribuce, daně, poplatky — stejné u všech dodavatelů) a obchodní složky, kterou stanovuje FREE for YOU. Část zisku z obchodní složky reinvestujeme do vlastních zdrojů. Když vlastní výroba roste, klesá naše závislost na tržní ceně — a to se časem projeví i na ceně pro vás.' }, { q: 'Co je Energobanking a musím ho používat?', a: 'Energobanking je váš zákaznický účet, kde vidíte faktury, spotřebu, historii plateb a dopad výroby komunity. Není povinný, ale doporučujeme ho — přehled o vlastní energii se hodí. Přístup dostanete automaticky po přechodu.' }, { q: 'Jak funguje systém slev za doporučení?', a: 'Když doporučíte FREE for YOU někomu dalšímu a ten přejde, získávají obě strany slevu na energii. Systém je nastaven tak, aby měl smysl jak pro toho, kdo doporučuje, tak pro toho, kdo přichází. Konkrétní podmínky a modelový příklad najdete na stránce Slevy za doporučení .' }, { q: 'Mění se cena v průběhu smlouvy?', a: 'U fixního tarifu ne — cena je garantovaná po celou dobu smluvního období. U SPOT tarifu se mění každou hodinu podle trhu. O jakékoli změně ceníku vás vždy informujeme předem.' }, { q: 'Jsou v ceně zahrnuty i poplatky za distribuci?', a: 'Poplatky za distribuci jsou součástí vaší faktury, ale nejde o naši marži — jde o regulované platby, které odvádíme distributorovi ve vaší oblasti. Jsou stejné u každého dodavatele. Na faktuře je vždy vidíte odděleně.' }] } },
@@ -661,14 +792,14 @@ var SEED_PAGES = {
   },
   'podpora-kontakty': {
     title: 'Kontakty — FREE for YOU energie', desc: 'Kontaktujte FREE for YOU. Telefon +420 227 072 292, e-mail info@freeforyou.cz. Sídlo Českomoravská 2255/12a, Praha 9.',
-    h1: 'Kontakty', lead: 'Telefon zvedá člověk. E-mail čteme a odpovídáme v pracovní dny do 24 hodin.', wrapper: 'plain',
+    h1: 'Kontakty', lead: 'Telefon zvedá člověk. E-mail čteme a odpovídáme v pracovní dny do 24 hodin.', wrapper: 'sdileni',
     blocks: [
       { type: 'contact_form', props: { title: '', intro: '', name_label: 'Jméno', contact_label: 'Telefon nebo e-mail', message_label: 'Zpráva', submit_text: 'Odeslat', action: '' } },
     ]
   },
   'pro-media': {
     title: 'Pro média — FREE for YOU energie', desc: 'Loga, základní informace o firmě a kontakt pro novináře. FREE for YOU s.r.o. — dodavatel elektřiny od roku 2016.',
-    h1: 'Pro média', lead: 'Loga, základní informace a kontakt pro novináře a partnery.', wrapper: 'plain',
+    h1: 'Pro média', lead: 'Loga, základní informace a kontakt pro novináře a partnery.', wrapper: 'sdileni',
     blocks: [
       { type: 'content_section', props: { label: 'O společnosti', content: '<strong>FREE for YOU s.r.o.</strong> je český dodavatel elektřiny a plynu, který od roku 2016 buduje vlastní obnovitelné zdroje energie. Společnost reinvestuje 50 % zisku do výstavby solárních elektráren na střechách existujících objektů — bez záboru zemědělské půdy.\n\nZákazníkům FREE for YOU nabízí transparentní cenotvorbu, komunitní model sdílení elektřiny a postupné snižování závislosti na tržní ceně díky vlastní výrobě.' } },
       { type: 'content_section', props: { label: 'Fakta Název společnosti FREE for YOU s.r.o. IČ 25336665 Sídlo Českomoravská 2255/12a, 190 00 Praha 9 – Libeň Obchodní rejstřík SZ C 260212, Městský soud v Praze Licence Obchod s elektřinou č. 141634108 Dodávky elektřiny od 2016 Distribuční území ČEZ Distribuce, EG.D, PRE Distribuce Reinvestice do OZE 50 % zisku Loga ke stažení', content: 'Logo FREE for YOU ve všech variantách. Používejte prosím vždy v dostatečné velikosti a s přiměřenou ochrannou zónou kolem.' } },
@@ -678,7 +809,7 @@ var SEED_PAGES = {
   },
   'proc-investice-oze': {
     title: 'Investice do obnovitelných zdrojů — FREE for YOU energie', desc: 'FREE for YOU reinvestuje 50 % zisku do vlastních solárních elektráren na střechách. Jak to funguje a proč to děláme.',
-    h1: 'Zisk, který pracuje dál.', lead: 'Část toho, co vyděláme, jde rovnou zpátky do vlastní výroby energie. Tady je proč — a co to znamená pro vaši cenu.', wrapper: 'plain',
+    h1: 'Zisk, který pracuje dál.', lead: 'Část toho, co vyděláme, jde rovnou zpátky do vlastní výroby energie. Tady je proč — a co to znamená pro vaši cenu.', wrapper: 'sdileni',
     blocks: [
       { type: 'content_section', props: { label: 'Proč zdroje', content: 'Věříme, že každý by měl mít ideálně vlastní zdroj energie. Ne jako luxus, ale jako samozřejmost.\n\nEnergie nakoupená na trhu závisí na tom, co trh zrovna dělá. Energie vyrobená vlastním zdrojem závisí na slunci. Když část spotřeby pokryjeme sami, trh nás ovlivňuje méně — a to se postupně projeví na ceně.' } },
       { type: 'content_section', props: { label: 'Jak to funguje', content: 'Ve stanovách FREE for YOU je zakotveno, že padesát procent zisku každý rok jde do výstavby solárních elektráren.\n\nNení to dobrovolné gesto. Je to pravidlo, které platí bez ohledu na to, co se děje na trhu.' } },
@@ -689,7 +820,7 @@ var SEED_PAGES = {
   },
   'proc-nas-pribeh': {
     title: 'Náš příběh — FREE for YOU energie', desc: 'Jak jsme od dodavatele elektřiny došli ke stavbě vlastních solárních zdrojů. Příběh FREE for YOU — od otázky po odpověď.',
-    h1: 'Náš příběh', lead: 'Otázka, která nás nenechala odejít.', wrapper: 'plain',
+    h1: 'Náš příběh', lead: 'Otázka, která nás nenechala odejít.', wrapper: 'sdileni',
     blocks: [
       { type: 'content_section', props: { label: 'Slepé uličky', content: 'Prošli jsme všechny známé cesty.\n\nJaderná energie je stabilní, ale pomalá v čase, který žijeme. Vodní energie je silná, ale vázaná na krajinu a její rovnováhu, která není jen technická. Větrná energie naráží na proměnlivost prostředí i společenské přijetí. Každá z těchto cest je reálná — a zároveň omezená svými vlastními podmínkami.\n\nNešlo o ideologii. Šlo o hranice reality.\n\nA právě v těchto hranicích se objevilo něco, co bylo překvapivě jednoduché.' } },
       { type: 'content_section', props: { label: 'Průlom', content: 'A právě v těchto hranicích se objevilo něco, co bylo překvapivě jednoduché. Ne zemědělská půda, ne nová zátěž krajiny, ne další zásah do prostoru, který už tak nese dost.\n\n<strong>Střechy.</strong> Povrchy, které už existují. Místa, která dnes často jen pasivně stojí nad tím, co by mohlo být využito.\n\nSolární energie není nová myšlenka. Nové je jen rozhodnutí, kam ji zasadit.' } },
@@ -704,7 +835,7 @@ var SEED_PAGES = {
   },
   'proc-reference': {
     title: 'Reference a hodnocení zákazníků — FREE for YOU energie', desc: 'Co říkají zákazníci FREE for YOU. Hodnocení z Firmy.cz a Google — ověřitelné recenze s přímými odkazy na profily.',
-    h1: 'Reference zákazníků', lead: 'Co o nás říkají lidé, kteří nám svěřili svou energii.', wrapper: 'plain',
+    h1: 'Reference zákazníků', lead: 'Co o nás říkají lidé, kteří nám svěřili svou energii.', wrapper: 'sdileni',
     blocks: [
       { type: 'reviews_block', props: { source_name: 'firmy.cz', source_url: 'https://www.firmy.cz/detail/13169716-free-for-you-s-r-o-praha-liben.html', source_link_text: 'Zobrazit profil →', items: [{ stars: '5', text: 'Jsme odběratelem 6 let. Ceny jsou přijatelné, dodavatel pravidelně informuje o veškerých změnách. Jsme velice spokojeni a vřele všem doporučujeme.', author: 'Věra Škvárová', date: 'Listopad 2024', verify_url: 'https://www.firmy.cz/detail/13169716-free-for-you-s-r-o-praha-liben.html' }, { stars: '5', text: 'Služby FREE for You jsou na vysoké úrovni. Jejich zaměstnanci se snaží vždy pomoct a hlavně všichni vystupují slušně a profesionálně. Vše do sebe dobře zapadá, což na člověka působí velice příjemně.', author: 'Josef Kučera', date: 'Říjen 2024', verify_url: 'https://www.firmy.cz/detail/13169716-free-for-you-s-r-o-praha-liben.html' }, { stars: '5', text: 'Za mě spokojenost, ceny přiměřené, nikdy mi nebylo odmítnuto mimořádné vyúčtování, skvělá komunikace. Rovněž tak přeplatky v termínu vždy vráceny.', author: 'Věra Škvárová', date: '2023', verify_url: 'https://www.firmy.cz/detail/13169716-free-for-you-s-r-o-praha-liben.html' }, { stars: '5', text: 'Doporučuji! Přechod proběhl naprosto bez problémů, vše zařídili za mě. Od té doby žádné starosti s energiemi.', author: 'Martin Dvořák', date: '2024', verify_url: 'https://www.firmy.cz/detail/13169716-free-for-you-s-r-o-praha-liben.html' }, { stars: '5', text: 'Jsem zákazníkem přes 4 roky, vždy korektní jednání, transparentní faktury. Oceňuji, že se telefon zvedá skutečně rychle a mluví s vámi člověk, ne automat.', author: 'Lucie Marková', date: '2024', verify_url: 'https://www.firmy.cz/detail/13169716-free-for-you-s-r-o-praha-liben.html' }, { stars: '5', text: 'Přešel jsem od velkého dodavatele a nelituji. Ceny srovnatelné, ale přístup naprosto jiný — osobní, rychlý, bez čekání na lince.', author: 'Pavel Horák', date: '2023', verify_url: 'https://www.firmy.cz/detail/13169716-free-for-you-s-r-o-praha-liben.html' }, { stars: '5', text: 'Energobanking je skvělá věc — vše přehledně online, faktury dostupné okamžitě. Líbí se mi, že firma jde s dobou a nečeká se na papírové výpisy.', author: 'Ing. Radek Novotný', date: '2024', verify_url: 'https://www.firmy.cz/detail/13169716-free-for-you-s-r-o-praha-liben.html' }, { stars: '5', text: 'Máme u FREE for YOU jak domácnost, tak firmu. Везде spokojenost, komunikace funguje, smlouvy jasné. Doporučuji bez výhrad.', author: 'Petra Součková', date: '2023', verify_url: 'https://www.firmy.cz/detail/13169716-free-for-you-s-r-o-praha-liben.html' }, { stars: '4', text: 'Solidní dodavatel, ceny odpovídají situaci na trhu. Oceňuji přehledný zákaznický portál a to, že na e-mail vždy odpoví do druhého dne.', author: 'Tomáš Brož', date: '2023', verify_url: 'https://www.firmy.cz/detail/13169716-free-for-you-s-r-o-praha-liben.html' }, { stars: '5', text: 'Přechod proběhl hladce, bez přerušení dodávky. Zákaznická péče profesionální a ochotná. Rád doporučuji dál.', author: 'Karel Beneš', date: '2022', verify_url: 'https://www.firmy.cz/detail/13169716-free-for-you-s-r-o-praha-liben.html' }] } },
       { type: 'reviews_block', props: { source_name: 'Google', source_url: 'https://www.google.com/search?q=FREE+for+YOU+Recenze', source_link_text: 'Zobrazit na Google →', items: [{ stars: '5', text: 'Musím říct, že jsem vděčný, že mi byl doporučen právě menší dodavatel, jako je Free For You. Komunikace se zákaznickou podporou je na špičkové úrovni. Naštěstí je tam naprosto lidský přístup. A o cenové politice — FFY rozhodně patří k tomu nejlepšímu na trhu.', author: 'Tomáš Pospíchal', date: 'Červen 2025', verify_url: 'https://www.google.com/maps/place/FREE+for+YOU+s.r.o.' }, { stars: '5', text: 'Konečně společnost, kde si připadáte jako vážený zákazník, komunikujete s konkrétní osobou, žádné telefonní automaty. Na počátku energetické krize jsem odešla k ČEZu a velice ráda jsem se po roce vrátila. U FFY jsem na tom o hodně líp.', author: 'Jana Černohorská', date: 'Květen 2024', verify_url: 'https://www.google.com/maps/place/FREE+for+YOU+s.r.o.' }, { stars: '5', text: 'Dodavatel s prozákaznickým přístupem. Vyzdvihuji především portál pro zákazníky Energobanking kde vidím vše přehledně, faktury a vysvětlivky. Lepší zkušenost než s velkými dodavateli, doporučuji dále.', author: 'Pavel K.', date: '2024', verify_url: 'https://www.google.com/maps/place/FREE+for+YOU+s.r.o.' }, { stars: '5', text: 'Skvěle se snaží pracovat pro zákazníky. Rozhodl jsem se opravdu pochválit všechny z FREE for YOU. Díky za jejich služby a přístup.', author: 'Tomáš Polívka', date: 'Říjen 2023', verify_url: 'https://www.google.com/maps/place/FREE+for+YOU+s.r.o.' }, { stars: '5', text: 'Za mě nejlepší dodavatel. Rychlá a skvělá komunikace. Odpověď na e-mail takřka okamžitě. Doporučuju.', author: 'Daniel', date: 'Říjen 2022', verify_url: 'https://www.google.com/maps/place/FREE+for+YOU+s.r.o.' }, { stars: '5', text: 'Mám u Free For You jak barák tak kanceláře a jsem spokojený. Perfektní přístup i případné řešení. Už jen to, že se dovolám bez 10minutového čekání — to samo o sobě stojí za to.', author: 'Ondřej B.', date: '2022', verify_url: 'https://www.google.com/maps/place/FREE+for+YOU+s.r.o.' }, { stars: '5', text: 'S firmou jsem velice spokojen. Paní Veronika Krbcová jako obchodní zástupkyně odvádí skvělou práci — vše srozumitelně vysvětlí a dokáže poradit, jaký produkt je pro klienta nejvýhodnější.', author: 'Jiří Sedláček', date: '2023', verify_url: 'https://www.google.com/maps/place/FREE+for+YOU+s.r.o.' }, { stars: '5', text: 'Po přechodu jsem čekal, že nastane nějaký chaos. Nestalo se nic — elektřina tekla dál, smlouva přišla mailem, vše hotovo za týden. Přesně jak slibovali.', author: 'Miroslav Tůma', date: '2024', verify_url: 'https://www.google.com/maps/place/FREE+for+YOU+s.r.o.' }, { stars: '5', text: 'Oceňuji transparentní faktury — přesně vím za co platím. Žádné skryté poplatky, žádná překvapení. A pokud mám dotaz, vždy dostanou rychlou odpověď.', author: 'Hana Procházková', date: '2024', verify_url: 'https://www.google.com/maps/place/FREE+for+YOU+s.r.o.' }, { stars: '4', text: 'Přešel jsem před rokem a jsem spokojený. Ceny rozumné, Energobanking přehledný. Jednou jsem potřeboval řešit změnu sazby — vyřídili to za mě, bez papírování.', author: 'Robert Majer', date: '2023', verify_url: 'https://www.google.com/maps/place/FREE+for+YOU+s.r.o.' }] } },
@@ -712,10 +843,13 @@ var SEED_PAGES = {
   },
   'proc-slevy-za-doporuceni': {
     title: 'Slevy za doporučení — FREE for YOU energie', desc: 'Doporučte FREE for YOU a získejte slevu až 500 Kč za smlouvu plus 20 Kč za každou spotřebovanou MWh. Sleva se přenáší až do 5. stupně.',
-    h1: 'Slevy za doporučení', lead: 'Když přivedete přítele, ušetříte oba. A když ten přítel přivede dalšího — ušetříte ještě víc. Systém je jednoduchý a průhledný.', wrapper: 'plain',
+    h1: 'Slevy za doporučení', lead: 'Když přivedete přítele, ušetříte oba. A když ten přítel přivede dalšího — ušetříte ještě víc. Systém je jednoduchý a průhledný.', wrapper: 'sdileni',
     blocks: [
-      { type: 'content_section', props: { label: '', content: 'Sleva se odečítá automaticky. Nemusíte o nic žádat. Vše vidíte v Energobankingu.\n\nSleva se nenačítá najednou — načítá se postupně, každý den, po dobu jednoho roku. Za každý den odběru vašeho přítele vám přibude 1/365 z roční předpokládané slevy.' } },
-      { type: 'features_grid', props: { section_label: '', columns: '2', items: [{ title: 'Jak to funguje 1', desc: 'Zaregistrujete se' }, { title: 'Doporučíte přítele', desc: 'Přítel při registraci zadá vaši přezdívku. Tím se zařadí do vaší sítě.' }, { title: 'Sleva se načítá', desc: 'Od 11. dne jeho odběru se vám začíná automaticky načítat sleva na vaší faktuře.' }, { title: 'Jak se sleva načítá Sleva se nenačítá najednou — načítá se postupně, každý den, po dobu jednoho roku. Za každý den odběru vašeho přítele vám přibude 1/365 z roční předpokládané slevy. Roční sleva za přímého přítele 500 Kč ÷ 365 dní Načítá se každý den ≈ 1,37 Kč / den Sleva začíná nabíhat od 11. dne odběru. Na fakturu se odečítá průběžně — jakmile dosáhne minimálně 100 Kč. Sleva za každou novou smlouvu Za každého přítele — a každého přítele vašeho přítele — získáváte slevu za uzavřenou smlouvu. Funguje to až do 5 stupňů doporučení. Stupeň Kdo to je Sleva / smlouva 1. Váš přímý přítel 500 Kč 2. Přítel vašeho přítele 250 Kč 3. 3. úroveň sítě 200 Kč 4. 4. úroveň sítě 150 Kč 5. 5. úroveň sítě 100 Kč Sleva ze spotřeby Vedle jednorázové slevy za smlouvu získáváte průběžnou slevu z každé nasmlouvané MWh. Stupeň Kdo to je Sleva / MWh 1. Přímý přítel 20 Kč 2. 2. úroveň 10 Kč 3. 3. úroveň 5 Kč 4. 4. úroveň 5 Kč 5. 5. úroveň 5 Kč Modelový příklad Jak vaše síť roste a co to znamená pro vaši slevu. Slevy za doporučení — FREE for YOU energie Hierarchická síť tří stupňů doporučení .sn-line { stroke: rgba(255,255,255,0.15); stroke-width: 0.5; stroke-dasharray: 4 3; fill: none; } .sn-line-2 { stroke: rgba(255,255,255,0.1); stroke-width: 0.5; stroke-dasharray: 3 3; fill: none; } .sn-you-c { fill: #44e6a3; stroke: rgba(69,231,163,0.6); stroke-width: 0.5; } .sn-you-t { font-family: Ubuntu,sans-serif; font-size: 13px; font-weight: 700; fill: #122d4f; text-anchor: middle; dominant-baseline: central; } .sn-l1-c { fill: rgba(69,231,163,0.12); stroke: #44e6a3; stroke-width: 1; } .sn-l1-t { font-family: Ubuntu,sans-serif; font-size: 12px; font-weight: 600; fill: #44e6a3; text-anchor: middle; dominant-baseline: central; } .sn-l2-c { fill: rgba(255,255,255,0.04); stroke: rgba(255,255,255,0.18); stroke-width: 0.5; } .sn-l2-t { font-family: Ubuntu,sans-serif; font-size: 11px; font-weight: 400; fill: rgba(255,255,255,0.35); text-anchor: middle; dominant-baseline: central; } .sn-lbl { font-family: Ubuntu,sans-serif; font-size: 12px; fill: rgba(255,255,255,0.35); dominant-baseline: central; } .sn-lead { stroke: rgba(255,255,255,0.12); stroke-width: 0.5; fill: none; } Vy A B C D E F G H I Vy 1. stupeň 2. stupeň Vy → musíte sami aktivně odebírat 1. stupeň — 3 přátelé = 3 × 500 Kč = 1 500 Kč / rok 2. stupeň — 6 přátel přátel = 6 × 250 Kč = 1 500 Kč / rok Celkem ze dvou úrovní: 3 000 Kč / rok Co je potřeba vědět Musíte sami aktivně odebírat energii od FREE for YOU Sleva se načítá od 11. dne odběru doporučeného zákazníka Minimum pro vyplacení slevy na faktuře je 100 Kč Platnost nárokovatelné slevy je 14 měsíců od vzniku Slevu lze převést do Energobankingu jiného zákazníka (poplatek 4 %) Chcete začít doporučovat?', desc: 'Svou přezdívku najdete po přihlášení v Energobankingu. Stačí ji sdílet.' }] } },
+      { type: 'process_steps', props: { section_label: 'Jak to funguje', items: [{ title: 'Zaregistrujete se', desc: 'Vytvoříte si přezdívku v Energobankingu. Ta slouží jako váš doporučovací kód.' }, { title: 'Doporučíte přítele', desc: 'Přítel při registraci zadá vaši přezdívku. Tím se zařadí do vaší sítě.' }, { title: 'Sleva se načítá', desc: 'Od 11. dne jeho odběru se vám začíná automaticky načítat sleva na vaší faktuře.' }] } },
+      { type: 'info_callout', props: { title: 'Jak se sleva načítá', text: 'Sleva se nenačítá najednou — načítá se postupně, každý den, po dobu jednoho roku. Za každý den odběru vašeho přítele vám přibude 1/365 z roční předpokládané slevy. Roční sleva za přímého přítele 500 Kč', example: 'Roční sleva za přímého přítele 500 Kč', note: 'Sleva začíná nabíhat od 11. dne odběru. Na fakturu se odečítá průběžně — jakmile dosáhne minimálně 100 Kč.' } },
+      { type: 'embed_widget', props: { source_page: 'proc-slevy-za-doporuceni.html', selector: '.slevy-infographic', label: 'Infografika sítě doporučení' } },
+      { type: 'rules_list', props: { title: 'Co je potřeba vědět', items: 'Musíte sami aktivně odebírat energii od FREE for YOU\nSleva se načítá od 11. dne odběru doporučeného zákazníka\nMinimum pro vyplacení slevy na faktuře je 100 Kč\nPlatnost nárokovatelné slevy je 14 měsíců od vzniku\nSlevu lze převést do Energobankingu jiného zákazníka (poplatek 4 %)' } },
+      { type: 'cta_block', props: { title: 'Chcete začít doporučovat?', description: 'Svou přezdívku najdete po přihlášení v Energobankingu. Stačí ji sdílet.', btn1_text: 'Přihlásit se do Energobankingu →', btn1_url: 'https://www.energobanking.cz/', btn2_text: '', btn2_url: '#' } },
     ]
   },
 };
@@ -727,14 +861,19 @@ function getInitialPages() {
     var slug = slugs[i];
     var s = SEED_PAGES[slug];
     var bc = 'Domů';
-    if (slug.startsWith('ceny-')) bc = 'Domů / Naše ceny';
+    if (slug === '_header' || slug === '_footer') bc = 'Globální prvek';
+    else if (slug.startsWith('ceny-')) bc = 'Domů / Naše ceny';
     else if (slug.startsWith('proc-')) bc = 'Domů / Proč FREE for YOU?';
     else if (slug.startsWith('jak-')) bc = 'Domů / Jak to funguje?';
     else if (slug.startsWith('podpora-')) bc = 'Domů / Podpora';
     else if (slug.startsWith('blog/')) bc = 'Domů / Blog';
     else if (slug === 'pro-media') bc = 'Domů / O nás';
-    var header = { id: generateId(), type: 'page_header', props: {
-      breadcrumb: bc, heading: s.h1 || s.title.split('—')[0].trim(), lead: s.lead || '', badges: '' }};
+    var isGlobal = (slug === '_header' || slug === '_footer');
+    var blocks = [];
+    if (!isGlobal) {
+      blocks.push({ id: generateId(), type: 'page_header', props: {
+        breadcrumb: bc, heading: s.h1 || s.title.split('—')[0].trim(), lead: s.lead || '', badges: '' }});
+    }
     var content = (s.blocks || []).map(function(b) {
       var props = {};
       for (var k in b.props) {
@@ -745,8 +884,8 @@ function getInitialPages() {
     pages.push({
       id: generateId(), source: 'existing', wrapper: s.wrapper || 'sdileni',
       meta: { title: s.title, description: s.desc, slug: slug,
-              canonical: 'https://www.freeforyou.cz/'+slug+'.html', robots: 'index, follow' },
-      blocks: [header].concat(content)
+              canonical: isGlobal ? '' : 'https://www.freeforyou.cz/'+slug+'.html', robots: 'index, follow' },
+      blocks: blocks.concat(content)
     });
   }
   return pages;
