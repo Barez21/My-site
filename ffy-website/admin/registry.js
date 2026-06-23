@@ -508,21 +508,24 @@ var BLOCK_REGISTRY = {
       { key: 'cta_url', label: 'Odkaz CTA', type: 'url' },
       { key: 'columns', label: 'Sloupce mega menu', type: 'array', arrayFields: [
         { key: 'title', label: 'Nadpis sloupce', type: 'text' },
-        { key: 'links', label: 'Odkazy (text|url na řádek)', type: 'textarea', hint: 'Formát: Text odkazu|stranka.html' },
+        { key: 'links', label: 'Odkazy', type: 'textarea', hint: 'Formát na řádek: Nadpis|Popis|stranka.html' },
       ]},
     ],
-    defaults: { cta_text: 'Chci to vyzkoušet', cta_url: '#', columns: [{title:'Naše ceny',links:'Aktuální nabídka|ceny-aktualni-nabidka.html\nKalkulačka|ceny-kalkulacka.html'}] },
+    defaults: { cta_text: 'Chci to vyzkoušet', cta_url: '#', columns: [] },
     render: function(p) {
       var cols = (p.columns||[]).map(function(c){
         var links = (c.links||'').split('\n').filter(function(l){return l.trim();}).map(function(l){
           var parts = l.split('|');
-          return '<a href="' + (parts[1]||'#').trim() + '" class="mega-link">' + (parts[0]||'').trim() + '</a>';
+          var title = (parts[0]||'').trim();
+          var desc = (parts[1]||'').trim();
+          var url = (parts[2]||parts[1]||'#').trim();
+          return '<a href="'+url+'" class="mega-link"><span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/></svg></span><span class="mega-link-body"><strong>'+title+'</strong>'+(desc?'<span>'+desc+'</span>':'')+'</span></a>';
         }).join('');
-        return '<div class="mega-col"><div class="mega-col-title">' + c.title + '</div>' + links + '</div>';
+        return '<div class="mega-col"><div class="mega-col-label">'+c.title+'</div>'+links+'</div>';
       }).join('');
-      return '<nav class="cms-nav-preview"><div class="cms-nav-bar"><div class="cms-nav-logo">FREE for YOU</div>' +
-        '<div class="cms-nav-cta">' + (p.cta_text||'') + '</div></div>' +
-        '<div class="cms-mega">' + cols + '</div></nav>';
+      return '<nav id="main-nav"><div class="nav-bar"><div class="nav-logo">FREE for YOU</div>'+
+        '<a href="'+(p.cta_url||'#')+'" class="nav-cta">'+(p.cta_text||'')+'</a></div>'+
+        '<div class="mega-panel" style="position:static;opacity:1;visibility:visible;transform:none;pointer-events:auto"><div class="mega-content">'+cols+'</div></div></nav>';
     }
   },
 
@@ -531,21 +534,21 @@ var BLOCK_REGISTRY = {
     schema: [
       { key: 'columns', label: 'Sloupce', type: 'array', arrayFields: [
         { key: 'title', label: 'Nadpis sloupce', type: 'text' },
-        { key: 'links', label: 'Odkazy (text|url na řádek)', type: 'textarea', hint: 'Formát: Text|stranka.html' },
+        { key: 'links', label: 'Odkazy', type: 'textarea', hint: 'Formát na řádek: Text|stranka.html' },
       ]},
       { key: 'copyright', label: 'Copyright text', type: 'text' },
     ],
-    defaults: { columns: [{title:'O nás',links:'Náš příběh|proc-nas-pribeh.html'}], copyright: '© 2026 FREE for YOU s.r.o.' },
+    defaults: { columns: [], copyright: '© 2026 FREE for YOU s.r.o.' },
     render: function(p) {
       var cols = (p.columns||[]).map(function(c){
         var links = (c.links||'').split('\n').filter(function(l){return l.trim();}).map(function(l){
           var parts = l.split('|');
-          return '<a href="' + (parts[1]||'#').trim() + '">' + (parts[0]||'').trim() + '</a>';
+          return '<a href="'+(parts[1]||'#').trim()+'">'+(parts[0]||'').trim()+'</a>';
         }).join('');
-        return '<div class="footer-col"><div class="footer-col-title">' + c.title + '</div>' + links + '</div>';
+        return '<div class="footer-col"><div class="footer-col-title">'+c.title+'</div>'+links+'</div>';
       }).join('');
-      return '<footer class="site-footer"><div class="footer-inner"><div class="footer-cols">' + cols + '</div>' +
-        '<div class="footer-bottom">' + (p.copyright||'') + '</div></div></footer>';
+      return '<footer class="site-footer"><div class="footer-inner"><div class="footer-cols">'+cols+'</div>'+
+        '<div class="footer-bottom"><div class="footer-copy">'+(p.copyright||'')+'</div></div></div></footer>';
     }
   },
 
@@ -598,7 +601,7 @@ function renderPageHTML(page, inlineCss) {
 // ═══════════════════════════════════
 
 var STORE_KEY = 'ffy-cms-pages';
-var SEED_VERSION = '2026-06-17-v8';
+var SEED_VERSION = '2026-06-17-v9';
 var VERSION_KEY = 'ffy-cms-seed-version';
 
 function loadPages() {
@@ -651,7 +654,7 @@ var SEED_PAGES = {
     title: 'Hlavní menu', desc: '',
     h1: 'Hlavní menu', lead: '', wrapper: 'sdileni',
     blocks: [
-      { type: 'nav_menu', props: { cta_text: 'Chci to vyzkoušet', cta_url: '#', columns: [{ title: 'Naše ceny', links: 'Aktuální nabídka Platné ceny elektřiny a plynu|ceny-aktualni-nabidka.html\nKalkulačka Spočítejte si svoji úsporu|ceny-kalkulacka.html\nCeníky Ke stažení ve formátu PDF|ceny-ceniky.html' }, { title: 'Proč FREE for YOU?', links: 'Slevy za doporučení Přiveďte přítele a ušetříte oba|proc-slevy-za-doporuceni.html\nInvestice do OZE 50 % zisku jde zpět do zdrojů|proc-investice-oze.html\nNáš příběh Kdo jsme a proč to děláme|proc-nas-pribeh.html\nReference Co říkají naši zákazníci|proc-reference.html' }, { title: 'Jak to funguje?', links: 'Sdílení elektřiny Komunitní výroba a spotřeba|jak-sdileni-elektriny.html\nProdej elektřiny Prodejte přebytky ze svého zdroje|jak-vykup-elektriny.html\nProudíky Věrnostní program FREE for YOU|jak-proudiky.html' }, { title: 'Podpora', links: 'Časté dotazy Odpovědi na vaše otázky|podpora-faq.html\nDokumenty Smlouvy, faktury, plné moci|podpora-dokumenty.html\nKontakty Zavolejte nebo napište|podpora-kontakty.html\nBlog Novinky a tipy ze světa energií|podpora-blog.html' }] } },
+      { type: 'nav_menu', props: { cta_text: 'Chci to vyzkoušet', cta_url: '#', columns: [{ title: 'Naše ceny', links: 'Aktuální nabídka|Platné ceny elektřiny a plynu|ceny-aktualni-nabidka.html\nKalkulačka|Spočítejte si svoji úsporu|ceny-kalkulacka.html\nCeníky|Ke stažení ve formátu PDF|ceny-ceniky.html' }, { title: 'Proč FREE for YOU?', links: 'Slevy za doporučení|Přiveďte přítele a ušetříte oba|proc-slevy-za-doporuceni.html\nInvestice do OZE|50 % zisku jde zpět do zdrojů|proc-investice-oze.html\nNáš příběh|Kdo jsme a proč to děláme|proc-nas-pribeh.html\nReference|Co říkají naši zákazníci|proc-reference.html' }, { title: 'Jak to funguje?', links: 'Sdílení elektřiny|Komunitní výroba a spotřeba|jak-sdileni-elektriny.html\nProdej elektřiny|Prodejte přebytky ze svého zdroje|jak-vykup-elektriny.html\nProudíky|Věrnostní program FREE for YOU|jak-proudiky.html' }, { title: 'Podpora', links: 'Časté dotazy|Odpovědi na vaše otázky|podpora-faq.html\nDokumenty|Smlouvy, faktury, plné moci|podpora-dokumenty.html\nKontakty|Zavolejte nebo napište|podpora-kontakty.html\nBlog|Novinky a tipy ze světa energií|podpora-blog.html' }] } },
     ]
   },
   '_footer': {

@@ -123,3 +123,26 @@ body { font-family: 'Ubuntu', sans-serif; background: var(--adm-bg); color: var(
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+
+/* ── Top-level shell + mode tabs ── */
+.adm-shell { display: flex; flex-direction: column; height: 100vh; }
+.adm-topbar { display: flex; align-items: center; gap: 2rem; padding: 0 1.25rem; height: 52px; background: var(--adm-surface); border-bottom: 1px solid var(--adm-border); flex-shrink: 0; }
+.adm-topbar-brand { font-weight: 700; color: var(--adm-accent); font-size: 0.95rem; letter-spacing: 0.02em; }
+.adm-topbar-tabs { display: flex; gap: 0.25rem; }
+.adm-topbar-tab { padding: 0.45rem 1rem; background: none; border: none; color: var(--adm-text3); font-family: inherit; font-size: 0.82rem; font-weight: 500; cursor: pointer; border-radius: 7px; transition: all .12s; }
+.adm-topbar-tab:hover { color: var(--adm-text2); background: rgba(255,255,255,0.03); }
+.adm-topbar-tab.active { color: var(--adm-accent); background: rgba(68,230,163,0.1); }
+.adm-shell .adm-layout { flex: 1; min-height: 0; }
+
+/* ── Create mode ── */
+.adm-create { flex: 1; overflow-y: auto; padding: 3rem 2rem; }
+.adm-create-inner { max-width: 880px; margin: 0 auto; }
+.adm-create-title { font-size: 1.5rem; font-weight: 700; color: var(--adm-text); margin: 0 0 0.4rem; }
+.adm-create-sub { color: var(--adm-text3); font-size: 0.9rem; margin: 0 0 2rem; }
+.adm-template-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
+.adm-template-card { text-align: left; background: var(--adm-surface); border: 1px solid var(--adm-border); border-radius: 12px; padding: 1.5rem; cursor: pointer; transition: all .15s; font-family: inherit; }
+.adm-template-card:hover { border-color: var(--adm-accent); background: rgba(68,230,163,0.04); transform: translateY(-2px); }
+.adm-template-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+.adm-template-name { font-size: 1rem; font-weight: 600; color: var(--adm-text); margin-bottom: 0.35rem; }
+.adm-template-desc { font-size: 0.8rem; color: var(--adm-text3); line-height: 1.5; margin-bottom: 0.75rem; }
+.adm-template-meta { font-size: 0.68rem; color: var(--adm-accent); font-weight: 600; }

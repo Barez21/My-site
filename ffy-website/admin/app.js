@@ -648,6 +648,141 @@ function MediaLibrary({
 }
 
 // ═══════════════════════════════════
+//  CREATE MODE (templates)
+// ═══════════════════════════════════
+
+var PAGE_TEMPLATES = [{
+  id: 'blank',
+  name: 'Prázdná stránka',
+  icon: '📄',
+  desc: 'Začni od nuly — jen záhlaví.',
+  blocks: []
+}, {
+  id: 'content',
+  name: 'Obsahová stránka',
+  icon: '📝',
+  desc: 'Záhlaví, dvě textové sekce a CTA.',
+  blocks: [{
+    type: 'content_section',
+    props: {
+      label: 'Sekce 1',
+      content: 'Text první sekce...'
+    }
+  }, {
+    type: 'content_section',
+    props: {
+      label: 'Sekce 2',
+      content: 'Text druhé sekce...'
+    }
+  }, {
+    type: 'cta_block',
+    props: {
+      title: 'Výzva k akci',
+      description: '',
+      btn1_text: 'Tlačítko →',
+      btn1_url: '#',
+      btn2_text: '',
+      btn2_url: '#'
+    }
+  }]
+}, {
+  id: 'landing',
+  name: 'Landing page',
+  icon: '🚀',
+  desc: 'Hero, výhody (grid), FAQ a CTA.',
+  blocks: [{
+    type: 'content_section',
+    props: {
+      label: '',
+      content: 'Hlavní sdělení stránky...'
+    }
+  }, {
+    type: 'features_grid',
+    props: {
+      section_label: 'Výhody',
+      columns: '2',
+      items: [{
+        title: 'Výhoda 1',
+        desc: 'Popis'
+      }, {
+        title: 'Výhoda 2',
+        desc: 'Popis'
+      }]
+    }
+  }, {
+    type: 'faq_block',
+    props: {
+      title: 'Časté dotazy',
+      items: [{
+        q: 'Otázka?',
+        a: 'Odpověď.'
+      }]
+    }
+  }, {
+    type: 'cta_block',
+    props: {
+      title: 'Začněte ještě dnes',
+      description: '',
+      btn1_text: 'Chci to →',
+      btn1_url: '#',
+      btn2_text: '',
+      btn2_url: '#'
+    }
+  }]
+}, {
+  id: 'article',
+  name: 'Článek / blog',
+  icon: '📰',
+  desc: 'Text s nadpisy, citát a závěr.',
+  blocks: [{
+    type: 'content_section',
+    props: {
+      label: '',
+      content: 'Úvodní odstavec článku...'
+    }
+  }, {
+    type: 'quote_block',
+    props: {
+      text: 'Zajímavý citát z článku.',
+      style: 'large'
+    }
+  }, {
+    type: 'content_section',
+    props: {
+      label: '',
+      content: 'Pokračování textu...'
+    }
+  }]
+}];
+function CreateMode({
+  onCreate
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "adm-create"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "adm-create-inner"
+  }, /*#__PURE__*/React.createElement("h2", {
+    className: "adm-create-title"
+  }, "Vytvořit novou stránku"), /*#__PURE__*/React.createElement("p", {
+    className: "adm-create-sub"
+  }, "Vyber šablonu jako výchozí bod. Vše půjde upravit."), /*#__PURE__*/React.createElement("div", {
+    className: "adm-template-grid"
+  }, PAGE_TEMPLATES.map(tpl => /*#__PURE__*/React.createElement("button", {
+    key: tpl.id,
+    className: "adm-template-card",
+    onClick: () => onCreate(tpl)
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "adm-template-icon"
+  }, tpl.icon), /*#__PURE__*/React.createElement("div", {
+    className: "adm-template-name"
+  }, tpl.name), /*#__PURE__*/React.createElement("div", {
+    className: "adm-template-desc"
+  }, tpl.desc), /*#__PURE__*/React.createElement("div", {
+    className: "adm-template-meta"
+  }, tpl.blocks.length === 0 ? 'Prázdná' : tpl.blocks.length + ' bloků'))))));
+}
+
+// ═══════════════════════════════════
 //  MAIN APP
 // ═══════════════════════════════════
 
@@ -665,6 +800,7 @@ function App() {
     media: false
   });
   const [mediaLibrary, setMediaLibrary] = useState(loadMedia);
+  const [topMode, setTopMode] = useState('web');
 
   // Persist media library
   useEffect(() => {
@@ -708,6 +844,37 @@ function App() {
           ...BLOCK_REGISTRY.page_header.defaults
         }
       }]
+    };
+    setPages([...pages, page]);
+    setActivePageId(page.id);
+    setActiveTab('blocks');
+  }
+  function createFromTemplate(tpl) {
+    const blocks = [{
+      id: generateId(),
+      type: 'page_header',
+      props: {
+        ...BLOCK_REGISTRY.page_header.defaults
+      }
+    }];
+    (tpl.blocks || []).forEach(b => {
+      blocks.push({
+        id: generateId(),
+        type: b.type,
+        props: JSON.parse(JSON.stringify(b.props))
+      });
+    });
+    const page = {
+      id: generateId(),
+      wrapper: 'sdileni',
+      meta: {
+        title: 'Nová stránka — FREE for YOU',
+        description: '',
+        slug: 'nova-stranka-' + Math.random().toString(36).substr(2, 4),
+        canonical: '',
+        robots: 'index, follow'
+      },
+      blocks: blocks
     };
     setPages([...pages, page]);
     setActivePageId(page.id);
@@ -807,6 +974,31 @@ function App() {
   // ── Render ──
 
   return /*#__PURE__*/React.createElement("div", {
+    className: "adm-shell"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "adm-topbar"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "adm-topbar-brand"
+  }, "FFY Builder"), /*#__PURE__*/React.createElement("div", {
+    className: "adm-topbar-tabs"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: `adm-topbar-tab ${topMode === 'web' ? 'active' : ''}`,
+    onClick: () => {
+      setTopMode('web');
+      setActivePageId(null);
+    }
+  }, "Správa webu"), /*#__PURE__*/React.createElement("button", {
+    className: `adm-topbar-tab ${topMode === 'create' ? 'active' : ''}`,
+    onClick: () => {
+      setTopMode('create');
+      setActivePageId(null);
+    }
+  }, "Tvorba nové stránky"))), topMode === 'create' ? /*#__PURE__*/React.createElement(CreateMode, {
+    onCreate: tpl => {
+      createFromTemplate(tpl);
+      setTopMode('web');
+    }
+  }) : /*#__PURE__*/React.createElement("div", {
     className: `adm-layout ${showPreview ? '' : 'preview-hidden'}`
   }, /*#__PURE__*/React.createElement("div", {
     className: "adm-sidebar"
@@ -814,9 +1006,9 @@ function App() {
     className: "adm-sidebar-head"
   }, /*#__PURE__*/React.createElement("div", {
     className: "adm-sidebar-title"
-  }, "FFY Builder"), /*#__PURE__*/React.createElement("button", {
+  }, "Stránky a prvky"), /*#__PURE__*/React.createElement("button", {
     className: "adm-btn adm-btn-primary adm-btn-sm",
-    onClick: createPage
+    onClick: () => setTopMode('create')
   }, "+ Nová")), /*#__PURE__*/React.createElement("div", {
     className: "adm-sidebar-list"
   }, (() => {
@@ -1024,7 +1216,7 @@ function App() {
   }, "Náhled")), /*#__PURE__*/React.createElement(PreviewPanel, {
     page: activePage,
     siteCSS: siteCSS
-  })));
+  }))));
 }
 
 // Mount
