@@ -57,6 +57,10 @@
 </script>
 </head>
 <body>
+<div class="nebula" aria-hidden="true">
+  <div class="nebula-blob nebula-blob-1"></div>
+  <div class="nebula-blob nebula-blob-2"></div>
+</div>
 
 <!-- NAV -->
 <nav id="main-nav">
@@ -226,9 +230,7 @@
       <a href="podpora-blog.html" class="mobile-link">Blog</a>
     </div>
 
-    <div class="mobile-cta-wrap">
-      <a href="https://www.energobanking.cz/" target="_blank" class="mobile-cta">Energobanking →</a>
-    </div>
+
 
   </div>
 </div>
@@ -1003,6 +1005,9 @@
     document.getElementById('r-stalat').textContent   = formatKc(nakladStalat);
     document.getElementById('r-distribuce') && (document.getElementById('r-distribuce').textContent = formatKc(distribuce));
 
+    // Analytics — dokončený výpočet
+    if (window.ffyKalkulackaDokoncena) window.ffyKalkulackaDokoncena({ mesicni: Math.round(total/12), rocni: Math.round(total) });
+
     document.getElementById('kalk-comparison').style.display = 'none';
     const res = document.getElementById('kalk-result');
     res.style.display = 'block';
@@ -1022,6 +1027,7 @@
     });
   });
   document.getElementById('spotreba').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('kalk-btn').click(); });
+  document.getElementById('spotreba').addEventListener('input', () => { if (window.ffyKalkulackaPouzita) window.ffyKalkulackaPouzita(); }, { once: true });
 
   // ── Přesná kalkulačka ──
   let activeSazba = 'D01d', activeJistic = 10;
@@ -1080,6 +1086,7 @@
 
     document.getElementById('r2-mesicni').textContent  = formatKc(total / 12) + ' / měsíc';
     document.getElementById('r2-rocni').textContent    = formatKc(total) + ' / rok';
+    if (window.ffyKalkulackaDokoncena) window.ffyKalkulackaDokoncena({ mesicni: Math.round(total/12), rocni: Math.round(total) });
     document.getElementById('r2-vt').textContent       = vt ? formatKc(nakladVT) : '—';
     document.getElementById('r2-nt').textContent       = nt ? formatKc(nakladNT) : '—';
     document.getElementById('r2-stalat').textContent   = formatKc(nakladStalat);
@@ -1140,48 +1147,6 @@
     svg._segments = Array.from(svg.querySelectorAll('path'));
   }
 
-  // Interactive donut — hover on row highlights segment
-  document.addEventListener('mouseover', e => {
-    const row = e.target.closest('.rozklad-row');
-    if (!row) return;
-    const parent = row.closest('.rozklad');
-    if (!parent) return;
-    const svg = parent.querySelector('svg');
-    if (!svg || !svg._segments) return;
-    const rows = Array.from(parent.querySelectorAll('.rozklad-row'));
-    const idx = rows.indexOf(row);
-    // Dim all segments, highlight active
-    svg._segments.forEach((s, i) => {
-      if (s.getAttribute('data-zero') === '1') return;
-      if (i === idx) {
-        s.setAttribute('opacity', '1');
-        s.setAttribute('stroke', '#fff');
-        s.setAttribute('stroke-width', '2');
-      } else {
-        s.setAttribute('opacity', '0.25');
-        s.removeAttribute('stroke');
-        s.removeAttribute('stroke-width');
-      }
-    });
-    rows.forEach((r, i) => { r.style.opacity = i === idx ? '1' : '0.4'; });
-  });
-  document.addEventListener('mouseout', e => {
-    const row = e.target.closest('.rozklad-row');
-    if (!row) return;
-    const parent = row.closest('.rozklad');
-    if (!parent) return;
-    const svg = parent.querySelector('svg');
-    if (svg && svg._segments) {
-      svg._segments.forEach(s => {
-        if (s.getAttribute('data-zero') === '1') return;
-        s.setAttribute('opacity', '1');
-        s.removeAttribute('stroke');
-        s.removeAttribute('stroke-width');
-      });
-    }
-    parent.querySelectorAll('.rozklad-row').forEach(r => { r.style.opacity = '1'; });
-  });
-
   function showRozklad(rid, data) {
     // data: { silova, stalat, distMwh, distMes, dane, celkem, spotreba }
     const el = document.getElementById(rid);
@@ -1234,5 +1199,7 @@
 
 
 
+<script src="analytics.js" defer></script>
+<script src="cookie-consent.js" defer></script>
 </body>
 </html>

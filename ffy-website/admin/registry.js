@@ -469,6 +469,24 @@ var BLOCK_REGISTRY = {
     }
   },
 
+  price_chart: {
+    label: 'Graf cen elektřiny', description: 'Graf spotových cen z OTE (denní průměr za rok)',
+    schema: [
+      { key: 'title', label: 'Nadpis', type: 'text' },
+      { key: 'intro', label: 'Úvodní text', type: 'textarea' },
+      { key: 'data_source', label: 'Zdroj dat (URL)', type: 'url', hint: 'Prázdné = ukázková data. IT sem doplní endpoint s ročními daty.' },
+    ],
+    defaults: { title: 'Vývoj cen elektřiny', intro: 'Denní průměr spotové ceny na burze OTE za posledních 12 měsíců.', data_source: '' },
+    render: function(p) {
+      var head = '';
+      if (p.title) head += '<div class="sdileni-block-label">' + p.title + '</div>';
+      if (p.intro) head += '<p style="color:rgba(255,255,255,0.6);margin-bottom:1rem">' + p.intro + '</p>';
+      var src = p.data_source ? ' data-source="' + p.data_source + '"' : '';
+      return head + '<div id="ffy-price-chart" class="ffy-price-chart"' + src + '><div style="padding:2rem;text-align:center;color:rgba(255,255,255,0.3)">Načítání grafu cen…</div></div>' +
+        '<script src="price-chart.js" defer></scr' + 'ipt>';
+    }
+  },
+
   embed_widget: {
     label: 'Živá komponenta', description: 'Vloží interaktivní část ze živé stránky (kalkulačka, infografika)',
     schema: [
@@ -601,7 +619,7 @@ function renderPageHTML(page, inlineCss) {
 // ═══════════════════════════════════
 
 var STORE_KEY = 'ffy-cms-pages';
-var SEED_VERSION = '2026-06-17-v9';
+var SEED_VERSION = '2026-06-17-v10';
 var VERSION_KEY = 'ffy-cms-seed-version';
 
 function loadPages() {
