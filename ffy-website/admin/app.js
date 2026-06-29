@@ -470,11 +470,12 @@ function PreviewPanel({
   const iframeRef = useRef(null);
   useEffect(() => {
     if (!iframeRef.current || !page) return;
-    const html = renderPageHTML(page, siteCSS);
-    const blob = new Blob([html], {
-      type: 'text/html'
-    });
-    iframeRef.current.src = URL.createObjectURL(blob);
+    // Use the live stylesheet link + base href so relative paths (embeds, ../styles.css) resolve
+    const baseHref = new URL('.', window.location.href).href;
+    let html = renderPageHTML(page, null); // null = use <link> to ../styles.css
+    // Inject <base> so ../ resolves relative to admin/ folder
+    html = html.replace('<head>', '<head>\n<base href="' + baseHref + '">');
+    iframeRef.current.srcdoc = html;
   }, [page, siteCSS, page && JSON.stringify(page.blocks), page && JSON.stringify(page.meta), page && page.customCss]);
   if (!page) {
     return /*#__PURE__*/React.createElement("div", {
@@ -656,12 +657,14 @@ var PAGE_TEMPLATES = [{
   name: 'Prázdná stránka',
   icon: '📄',
   desc: 'Začni od nuly — jen záhlaví.',
+  category: 'html',
   blocks: []
 }, {
   id: 'content',
   name: 'Obsahová stránka',
   icon: '📝',
   desc: 'Záhlaví, dvě textové sekce a CTA.',
+  category: 'html',
   blocks: [{
     type: 'content_section',
     props: {
@@ -690,6 +693,7 @@ var PAGE_TEMPLATES = [{
   name: 'Landing page',
   icon: '🚀',
   desc: 'Hero, výhody (grid), FAQ a CTA.',
+  category: 'html',
   blocks: [{
     type: 'content_section',
     props: {
@@ -734,6 +738,7 @@ var PAGE_TEMPLATES = [{
   name: 'Článek / blog',
   icon: '📰',
   desc: 'Text s nadpisy, citát a závěr.',
+  category: 'blog',
   blocks: [{
     type: 'content_section',
     props: {
@@ -797,10 +802,12 @@ function App() {
     html: true,
     blog: false,
     global: false,
+    new: true,
     media: false
   });
   const [mediaLibrary, setMediaLibrary] = useState(loadMedia);
   const [topMode, setTopMode] = useState('web');
+  const [unlockedPages, setUnlockedPages] = useState({});
 
   // Persist media library
   useEffect(() => {
@@ -809,9 +816,26 @@ function App() {
 
   // Categorize pages into sidebar sections
   function categorize(page) {
+    if (page.source === 'new') return 'new';
     if (page.meta.slug && page.meta.slug.indexOf('blog/') === 0) return 'blog';
     if (page.meta.slug === '_header' || page.meta.slug === '_footer') return 'global';
     return 'html';
+  }
+
+  // Existing site pages are locked by default; new pages are always editable
+  function isLocked(page) {
+    if (!page) return false;
+    if (page.source === 'new') return false;
+    return !unlockedPages[page.id];
+  }
+  function unlockPage(page) {
+    const label = page.meta.slug === '_header' ? 'hlavní navigaci' : page.meta.slug === '_footer' ? 'patičku webu' : 'živou stránku „' + page.meta.slug + '.html"';
+    if (confirm('Chystáte se upravit ' + label + ', která je na webu.\n\nZměny se po publikaci projeví návštěvníkům. Opravdu odemknout pro editaci?')) {
+      setUnlockedPages({
+        ...unlockedPages,
+        [page.id]: true
+      });
+    }
   }
   const activePage = pages.find(p => p.id === activePageId);
 
@@ -864,13 +888,17 @@ function App() {
         props: JSON.parse(JSON.stringify(b.props))
       });
     });
+    const rnd = Math.random().toString(36).substr(2, 4);
+    const isBlog = tpl.category === 'blog';
+    const slug = isBlog ? 'blog/novy-clanek-' + rnd : 'nova-stranka-' + rnd;
     const page = {
       id: generateId(),
+      source: 'new',
       wrapper: 'sdileni',
       meta: {
-        title: 'Nová stránka — FREE for YOU',
+        title: isBlog ? 'Nový článek — FREE for YOU' : 'Nová stránka — FREE for YOU',
         description: '',
-        slug: 'nova-stranka-' + Math.random().toString(36).substr(2, 4),
+        slug: slug,
         canonical: '',
         robots: 'index, follow'
       },
@@ -886,6 +914,11 @@ function App() {
     if (activePageId === id) setActivePageId(null);
   }
   function updatePage(updated) {
+    // Lock guard — existing site pages can't be modified until unlocked
+    const target = pages.find(p => p.id === updated.id);
+    if (target && isLocked(target)) {
+      return;
+    }
     setPages(pages.map(p => p.id === updated.id ? updated : p));
   }
 
@@ -1025,6 +1058,10 @@ function App() {
       label: 'Globální prvky',
       icon: '🧩'
     }, {
+      key: 'new',
+      label: 'Nové stránky',
+      icon: '✨'
+    }, {
       key: 'media',
       label: 'Obrázky a videa',
       icon: '🖼'
@@ -1033,6 +1070,44 @@ function App() {
       const isOpen = expandedCats[cat.key];
       const catPages = cat.key === 'media' ? [] : pages.filter(p => categorize(p) === cat.key);
       const count = cat.key === 'media' ? mediaLibrary.length : catPages.length;
+      const renderItem = page => {
+        const locked = isLocked(page);
+        return /*#__PURE__*/React.createElement("div", {
+          key: page.id,
+          className: `adm-page-item ${page.id === activePageId ? 'active' : ''}`,
+          onClick: () => {
+            setActivePageId(page.id);
+            setActiveTab('blocks');
+            setEditingBlock(null);
+          }
+        }, /*#__PURE__*/React.createElement("div", {
+          style: {
+            minWidth: 0,
+            flex: 1,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.4rem'
+          }
+        }, locked && /*#__PURE__*/React.createElement("span", {
+          className: "adm-lock-icon",
+          title: "Zamčeno"
+        }, "🔒"), /*#__PURE__*/React.createElement("div", {
+          style: {
+            minWidth: 0,
+            flex: 1
+          }
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "adm-page-name"
+        }, (page.meta.title || 'Bez názvu').split('—')[0].split('|')[0].trim()), /*#__PURE__*/React.createElement("div", {
+          className: "adm-page-slug"
+        }, page.meta.slug === '_header' ? 'Hlavní navigace' : page.meta.slug === '_footer' ? 'Patička webu' : (page.meta.slug || '—') + '.html'))), page.source === 'new' && /*#__PURE__*/React.createElement("button", {
+          className: "adm-page-del",
+          onClick: e => {
+            e.stopPropagation();
+            deletePage(page.id);
+          }
+        }, "✕"));
+      };
       return /*#__PURE__*/React.createElement("div", {
         key: cat.key,
         className: "adm-cat"
@@ -1064,30 +1139,7 @@ function App() {
           color: 'var(--adm-text3)',
           fontSize: '0.72rem'
         }
-      }, cat.key === 'global' ? 'Žádné globální prvky' : 'Žádné stránky'), catPages.map(page => /*#__PURE__*/React.createElement("div", {
-        key: page.id,
-        className: `adm-page-item ${page.id === activePageId ? 'active' : ''}`,
-        onClick: () => {
-          setActivePageId(page.id);
-          setActiveTab('blocks');
-          setEditingBlock(null);
-        }
-      }, /*#__PURE__*/React.createElement("div", {
-        style: {
-          minWidth: 0,
-          flex: 1
-        }
-      }, /*#__PURE__*/React.createElement("div", {
-        className: "adm-page-name"
-      }, (page.meta.title || 'Bez názvu').split('—')[0].split('|')[0].trim()), /*#__PURE__*/React.createElement("div", {
-        className: "adm-page-slug"
-      }, page.meta.slug === '_header' ? 'Hlavní navigace' : page.meta.slug === '_footer' ? 'Patička webu' : (page.meta.slug || '—') + '.html')), page.meta.slug !== '_header' && page.meta.slug !== '_footer' && /*#__PURE__*/React.createElement("button", {
-        className: "adm-page-del",
-        onClick: e => {
-          e.stopPropagation();
-          deletePage(page.id);
-        }
-      }, "✕"))))));
+      }, cat.key === 'global' ? 'Žádné globální prvky' : cat.key === 'new' ? 'Zatím žádné nové stránky. Vytvoř v záložce „Tvorba".' : 'Žádné stránky'), catPages.map(renderItem))));
     });
   })()), /*#__PURE__*/React.createElement("div", {
     style: {
@@ -1139,8 +1191,21 @@ function App() {
     className: "adm-btn adm-btn-primary adm-btn-sm",
     onClick: () => exportPage(activePage)
   }, "↓ Export HTML")), /*#__PURE__*/React.createElement("div", {
-    className: "adm-editor-body"
-  }, activeTab === 'blocks' && /*#__PURE__*/React.createElement(React.Fragment, null, activePage.blocks.length === 0 && /*#__PURE__*/React.createElement("div", {
+    className: `adm-editor-body ${isLocked(activePage) ? 'adm-locked' : ''}`
+  }, isLocked(activePage) && /*#__PURE__*/React.createElement("div", {
+    className: "adm-lock-banner"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "adm-lock-banner-icon"
+  }, "🔒"), /*#__PURE__*/React.createElement("div", {
+    className: "adm-lock-banner-text"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "adm-lock-banner-title"
+  }, "Tato stránka je součástí živého webu"), /*#__PURE__*/React.createElement("div", {
+    className: "adm-lock-banner-desc"
+  }, "Je uzamčená proti náhodným úpravám. Pro editaci ji nejprve odemkněte.")), /*#__PURE__*/React.createElement("button", {
+    className: "adm-btn adm-btn-primary adm-btn-sm",
+    onClick: () => unlockPage(activePage)
+  }, "🔓 Odemknout editaci")), activeTab === 'blocks' && /*#__PURE__*/React.createElement(React.Fragment, null, activePage.blocks.length === 0 && /*#__PURE__*/React.createElement("div", {
     className: "adm-blocks-empty"
   }, "Stránka je prázdná. Přidejte první blok."), activePage.blocks.map((block, i) => /*#__PURE__*/React.createElement(BlockItem, {
     key: block.id,
