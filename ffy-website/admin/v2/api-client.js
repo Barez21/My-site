@@ -163,6 +163,21 @@ var FFYApi = (function () {
     });
   }
 
+  // ── Publikace (deploy změněných stránek) ──
+  function publish(pagesPayload) {
+    return checkAvailable().then(function (ok) {
+      if (ok) {
+        return fetch(BASE + '/publish', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ pages: pagesPayload })
+        }).then(function (r) { return r.json(); })
+          .catch(function () { return { ok: false, local: true }; });
+      }
+      return { ok: false, local: true };
+    });
+  }
+
   return {
     checkAvailable: checkAvailable,
     listFiles: listFiles,
@@ -173,6 +188,7 @@ var FFYApi = (function () {
     getGA4: getGA4,
     saveGA4: saveGA4,
     login: login,
+    publish: publish,
     isLocal: function () { return available === false; },
   };
 })();

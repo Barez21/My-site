@@ -329,24 +329,65 @@ function Canvas({
   selectedId,
   onSelect,
   onInlineEdit,
-  device
+  device,
+  locked
 }) {
   const iframeRef = useRef(null);
   const [ready, setReady] = useState(false);
+  const [mode, setMode] = useState('blocks'); // 'live' | 'blocks'
+  const [loadErr, setLoadErr] = useState(false);
 
-  // Vyrenderuj stránku do iframe
+  // Rozhodnutí: existující stránky webu → načti SKUTEČNÉ HTML (věrné).
+  // Nové stránky a globální prvky → renderuj z bloků.
+  const isLive = page && page.source !== 'new' && page.meta.slug !== '_header' && page.meta.slug !== '_footer' && page.meta.slug !== 'index';
   useEffect(() => {
     if (!iframeRef.current || !page) return;
-    // base = ROOT webu (o dvě úrovně výš než admin/v2/), aby styly a embed iframy fungovaly
     const baseHref = new URL('../../', window.location.href).href;
-    const html = renderEditorPage(page, selectedId, baseHref);
-    iframeRef.current.srcdoc = html;
     setReady(false);
-  }, [page && page.id, page && JSON.stringify(page.blocks), page && page.customCss]);
+    setLoadErr(false);
+    if (isLive) {
+      // Načti skutečný živý HTML soubor stránky
+      const fileUrl = baseHref + page.meta.slug + '.html';
+      fetch(fileUrl).then(r => {
+        if (!r.ok) throw new Error('not found');
+        return r.text();
+      }).then(html => {
+        iframeRef.current.srcdoc = injectEditorIntoLiveHTML(html, baseHref);
+        setMode('live');
+      }).catch(() => {
+        // Fallback: když soubor nejde načíst (lokální náhled), renderuj z bloků
+        iframeRef.current.srcdoc = renderEditorPage(page, selectedId, baseHref);
+        setMode('blocks');
+        setLoadErr(true);
+      });
+    } else {
+      iframeRef.current.srcdoc = renderEditorPage(page, selectedId, baseHref);
+      setMode('blocks');
+    }
+  }, [page && page.id]);
 
-  // Zvýrazni vybraný blok (bez re-renderu iframe)
+  // Re-render z bloků při editaci (jen v block módu)
   useEffect(() => {
-    if (!iframeRef.current || !ready) return;
+    if (!iframeRef.current || !page || mode !== 'blocks') return;
+    const baseHref = new URL('../../', window.location.href).href;
+    iframeRef.current.srcdoc = renderEditorPage(page, selectedId, baseHref);
+    setReady(false);
+  }, [page && JSON.stringify(page.blocks), page && page.customCss]);
+
+  // Předej info o zamčení do živého iframe
+  useEffect(() => {
+    if (!iframeRef.current || mode !== 'live' || !ready) return;
+    try {
+      iframeRef.current.contentWindow.postMessage({
+        type: 'ffy-set-unlocked',
+        value: !locked
+      }, '*');
+    } catch (e) {}
+  }, [locked, mode, ready]);
+
+  // Zvýrazni vybraný blok (block mód)
+  useEffect(() => {
+    if (!iframeRef.current || !ready || mode !== 'blocks') return;
     const doc = iframeRef.current.contentDocument;
     if (!doc) return;
     doc.querySelectorAll('.ffy-ed-selected').forEach(el => el.classList.remove('ffy-ed-selected'));
@@ -354,7 +395,7 @@ function Canvas({
       const el = doc.querySelector(`[data-ffy-block="${selectedId}"]`);
       if (el) el.classList.add('ffy-ed-selected');
     }
-  }, [selectedId, ready]);
+  }, [selectedId, ready, mode]);
 
   // Komunikace s iframe
   useEffect(() => {
@@ -362,7 +403,6 @@ function Canvas({
       const d = e.data;
       if (!d || !d.type) return;
       if (d.type === 'ffy-loaded') {
-        // Pošli mapu bloků pro injekci editovatelných polí
         const blocks = page.blocks.map(b => ({
           id: b.id,
           type: b.type
@@ -373,12 +413,21 @@ function Canvas({
         }, '*');
       }
       if (d.type === 'ffy-ready') setReady(true);
+      if (d.type === 'ffy-live-loaded') {
+        setReady(true);
+        try {
+          iframeRef.current.contentWindow.postMessage({
+            type: 'ffy-set-unlocked',
+            value: !locked
+          }, '*');
+        } catch (e) {}
+      }
       if (d.type === 'ffy-select') onSelect(d.id);
       if (d.type === 'ffy-edit') onInlineEdit(d.id, d.field, d.value);
     }
     window.addEventListener('message', onMsg);
     return () => window.removeEventListener('message', onMsg);
-  }, [page, onSelect, onInlineEdit]);
+  }, [page, onSelect, onInlineEdit, locked]);
   const widths = {
     desktop: '100%',
     tablet: '768px',
@@ -387,6 +436,14 @@ function Canvas({
   return /*#__PURE__*/React.createElement("div", {
     className: "v2-canvas-wrap"
   }, /*#__PURE__*/React.createElement("div", {
+    className: "v2-canvas-topinfo"
+  }, mode === 'live' && /*#__PURE__*/React.createElement("span", {
+    className: "v2-canvas-badge live"
+  }, "● Živá stránka — přesně jako na webu"), mode === 'blocks' && !isLive && /*#__PURE__*/React.createElement("span", {
+    className: "v2-canvas-badge blocks"
+  }, "Blokový editor"), loadErr && /*#__PURE__*/React.createElement("span", {
+    className: "v2-canvas-badge warn"
+  }, "⚠ Živé HTML nešlo načíst (lokální náhled) — zobrazen blokový render")), /*#__PURE__*/React.createElement("div", {
     className: "v2-canvas-scroll"
   }, /*#__PURE__*/React.createElement("div", {
     className: "v2-canvas-frame",
@@ -974,44 +1031,84 @@ function NewPageModal({
 // ─────────────────────────────────────────────
 function StagingModal({
   pages,
-  onClose
+  isChanged,
+  onClose,
+  onPublished
 }) {
   const [selectedSlug, setSelectedSlug] = useState(null);
   const [publishing, setPublishing] = useState(false);
   const [msg, setMsg] = useState('');
   const iframeRef = useRef(null);
 
-  // Stránky rozdělené na živé a nové
-  const livePages = pages.filter(p => p.source !== 'new' && p.meta.slug !== '_header' && p.meta.slug !== '_footer');
-  const newPages = pages.filter(p => p.source === 'new');
-  const firstSlug = selectedSlug || newPages[0] && newPages[0].meta.slug || livePages[0] && livePages[0].meta.slug;
+  // Rozděl stránky: nové / změněné / beze změny
+  const realPages = pages.filter(p => p.meta.slug !== '_header' && p.meta.slug !== '_footer');
+  const newPages = realPages.filter(p => p.source === 'new');
+  const changedPages = realPages.filter(p => p.source !== 'new' && isChanged(p));
+  const unchangedPages = realPages.filter(p => p.source !== 'new' && !isChanged(p));
+  const toPublish = newPages.length + changedPages.length;
+  const firstSlug = selectedSlug || changedPages[0] && changedPages[0].meta.slug || newPages[0] && newPages[0].meta.slug || unchangedPages[0] && unchangedPages[0].meta.slug;
   const previewPage = pages.find(p => p.meta.slug === firstSlug);
   useEffect(() => {
     if (!iframeRef.current || !previewPage) return;
     const baseHref = new URL('../../', window.location.href).href;
-    const html = renderEditorPage(previewPage, null, baseHref);
-    // Odstraň editorní prvky (výběr/hover) pro čistý náhled
-    const clean = html.replace(/class="ffy-ed-block[^"]*"/g, 'class="ffy-ed-static"');
-    iframeRef.current.srcdoc = clean;
+    // Pro věrný náhled: nové stránky z bloků, existující ze živého HTML
+    const isLive = previewPage.source !== 'new';
+    if (isLive) {
+      fetch(baseHref + previewPage.meta.slug + '.html').then(r => {
+        if (!r.ok) throw new Error();
+        return r.text();
+      }).then(html => {
+        // Base pro relativní cesty
+        let out = html;
+        if (out.indexOf('<base') === -1) out = out.replace(/<head[^>]*>/i, m => m + '<base href="' + baseHref + '">');
+        iframeRef.current.srcdoc = out;
+      }).catch(() => {
+        iframeRef.current.srcdoc = renderEditorPage(previewPage, null, baseHref).replace(/class="ffy-ed-block[^"]*"/g, 'class="ffy-ed-static"');
+      });
+    } else {
+      const html = renderEditorPage(previewPage, null, baseHref).replace(/class="ffy-ed-block[^"]*"/g, 'class="ffy-ed-static"');
+      iframeRef.current.srcdoc = html;
+    }
   }, [firstSlug]);
   function publish() {
+    if (toPublish === 0) {
+      setMsg('Není co publikovat — žádné změny.');
+      setTimeout(() => setMsg(''), 3000);
+      return;
+    }
+    if (!confirm('Publikovat ' + toPublish + ' stránek (' + changedPages.length + ' změněných, ' + newPages.length + ' nových)?\n\nNezměněné stránky zůstanou beze změny.')) return;
     setPublishing(true);
-    // Uloží aktuální stav jako publikovaný (na serveru by to byl deploy)
-    FFYApi.checkAvailable().then(ok => {
+    const payload = [...changedPages, ...newPages].map(p => ({
+      slug: p.meta.slug,
+      html: renderPageHTML(p, null)
+    }));
+    FFYApi.publish ? FFYApi.publish(payload).then(handleResult) : FFYApi.checkAvailable().then(ok => handleResult({
+      ok,
+      local: !ok
+    }));
+    function handleResult(res) {
       setPublishing(false);
-      if (ok) {
-        setMsg('Publikováno na server ✓');
+      if (res.local) {
+        setMsg('Backend neběží — použij „Export" a nahraj změněné soubory ručně.');
+        setTimeout(() => setMsg(''), 5000);
       } else {
-        setMsg('Backend neběží — export níže vygeneruje soubory k nahrání na server.');
+        setMsg('Publikováno ' + toPublish + ' stránek ✓');
+        setTimeout(() => {
+          if (onPublished) onPublished();
+        }, 1500);
       }
-      setTimeout(() => setMsg(''), 5000);
-    });
+    }
   }
-  function exportSite() {
-    // Vygeneruje HTML všech stránek jako stažitelný přehled
-    let combined = '<!-- FFY export — nahraj jednotlivé stránky na server -->\n\n';
-    pages.filter(p => p.meta.slug !== '_header' && p.meta.slug !== '_footer').forEach(p => {
-      combined += '=== ' + p.meta.slug + '.html ===\n';
+  function exportChanged() {
+    const list = [...changedPages, ...newPages];
+    if (list.length === 0) {
+      setMsg('Žádné změny k exportu.');
+      setTimeout(() => setMsg(''), 3000);
+      return;
+    }
+    let combined = '<!-- FFY export — POUZE změněné a nové stránky. Nahraj tyto soubory na server. -->\n\n';
+    list.forEach(p => {
+      combined += '========================================\n=== ' + p.meta.slug + '.html ' + (p.source === 'new' ? '(NOVÁ)' : '(ZMĚNĚNÁ)') + '\n========================================\n';
       combined += renderPageHTML(p, null) + '\n\n';
     });
     const blob = new Blob([combined], {
@@ -1019,8 +1116,26 @@ function StagingModal({
     });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'staging-export.txt';
+    a.download = 'staging-zmeny.txt';
     a.click();
+  }
+  function renderList(title, list, cls, badge) {
+    if (list.length === 0) return null;
+    return /*#__PURE__*/React.createElement("div", {
+      className: "v2-staging-group"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "v2-staging-group-label"
+    }, title, " (", list.length, ")"), list.map(p => /*#__PURE__*/React.createElement("button", {
+      key: p.id,
+      className: `v2-staging-item ${cls} ${firstSlug === p.meta.slug ? 'active' : ''}`,
+      onClick: () => setSelectedSlug(p.meta.slug)
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "v2-staging-item-top"
+    }, badge && /*#__PURE__*/React.createElement("span", {
+      className: `v2-staging-badge ${cls}`
+    }, badge), p.meta.title.split('—')[0].trim()), /*#__PURE__*/React.createElement("span", {
+      className: "v2-staging-slug"
+    }, p.meta.slug, ".html"))));
   }
   return /*#__PURE__*/React.createElement("div", {
     className: "v2-modal-backdrop",
@@ -1040,28 +1155,12 @@ function StagingModal({
   }, /*#__PURE__*/React.createElement("div", {
     className: "v2-staging-list"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "v2-staging-note"
-  }, "Takhle bude web vypadat po publikaci. Nic se zatím nezveřejnilo."), newPages.length > 0 && /*#__PURE__*/React.createElement("div", {
-    className: "v2-staging-group"
+    className: "v2-staging-summary"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "v2-staging-group-label"
-  }, "✨ Nové stránky (přibydou)"), newPages.map(p => /*#__PURE__*/React.createElement("button", {
-    key: p.id,
-    className: `v2-staging-item new ${firstSlug === p.meta.slug ? 'active' : ''}`,
-    onClick: () => setSelectedSlug(p.meta.slug)
-  }, p.meta.title.split('—')[0].trim(), /*#__PURE__*/React.createElement("span", {
-    className: "v2-staging-slug"
-  }, p.meta.slug, ".html")))), /*#__PURE__*/React.createElement("div", {
-    className: "v2-staging-group"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "v2-staging-group-label"
-  }, "Živé stránky"), livePages.map(p => /*#__PURE__*/React.createElement("button", {
-    key: p.id,
-    className: `v2-staging-item ${firstSlug === p.meta.slug ? 'active' : ''}`,
-    onClick: () => setSelectedSlug(p.meta.slug)
-  }, p.meta.title.split('—')[0].trim(), /*#__PURE__*/React.createElement("span", {
-    className: "v2-staging-slug"
-  }, p.meta.slug, ".html"))))), /*#__PURE__*/React.createElement("div", {
+    className: "v2-staging-summary-num"
+  }, toPublish), /*#__PURE__*/React.createElement("div", {
+    className: "v2-staging-summary-txt"
+  }, "stránek k publikaci", /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("span", null, changedPages.length, " změněných · ", newPages.length, " nových"))), renderList('✎ Změněné', changedPages, 'changed', 'změna'), renderList('✨ Nové', newPages, 'new', 'nová'), renderList('Beze změny', unchangedPages, 'unchanged', null)), /*#__PURE__*/React.createElement("div", {
     className: "v2-staging-preview"
   }, /*#__PURE__*/React.createElement("div", {
     className: "v2-staging-bar"
@@ -1071,12 +1170,12 @@ function StagingModal({
     className: "v2-staging-actions"
   }, /*#__PURE__*/React.createElement("button", {
     className: "v2-btn v2-btn-ghost v2-btn-sm",
-    onClick: exportSite
-  }, "Export webu"), /*#__PURE__*/React.createElement("button", {
+    onClick: exportChanged
+  }, "Export změn"), /*#__PURE__*/React.createElement("button", {
     className: "v2-btn v2-btn-primary v2-btn-sm",
     onClick: publish,
-    disabled: publishing
-  }, publishing ? 'Publikuji…' : '⬆ Publikovat na web'))), msg && /*#__PURE__*/React.createElement("div", {
+    disabled: publishing || toPublish === 0
+  }, publishing ? 'Publikuji…' : '⬆ Publikovat změny (' + toPublish + ')'))), msg && /*#__PURE__*/React.createElement("div", {
     className: "v2-staging-msg"
   }, msg), /*#__PURE__*/React.createElement("iframe", {
     ref: iframeRef,
@@ -1121,6 +1220,27 @@ function AppV2({
   onLogout
 }) {
   const [pages, setPages] = useState(() => loadPages());
+  // Baseline = původní (publikovaný) stav pro detekci změn ve stagingu
+  const [baseline] = useState(() => {
+    try {
+      var saved = localStorage.getItem('ffy-baseline');
+      if (saved) return JSON.parse(saved);
+    } catch (e) {}
+    // Poprvé: ulož aktuální stav jako baseline
+    var initial = loadPages();
+    var snap = {};
+    initial.forEach(function (p) {
+      snap[p.id] = JSON.stringify({
+        blocks: p.blocks,
+        meta: p.meta,
+        customCss: p.customCss
+      });
+    });
+    try {
+      localStorage.setItem('ffy-baseline', JSON.stringify(snap));
+    } catch (e) {}
+    return snap;
+  });
   const [activeId, setActiveId] = useState(null);
   const [selectedBlock, setSelectedBlock] = useState(null);
   const [device, setDevice] = useState('desktop');
@@ -1144,6 +1264,19 @@ function AppV2({
     if (page.meta.slug && page.meta.slug.indexOf('blog/') === 0) return 'blog';
     if (page.meta.slug === '_header' || page.meta.slug === '_footer') return 'global';
     return 'html';
+  }
+
+  // Změnila se stránka oproti publikovanému stavu?
+  function isChanged(page) {
+    if (page.source === 'new') return false; // nová = zvlášť kategorie
+    const base = baseline[page.id];
+    if (!base) return true; // není v baseline = nová/změněná
+    const current = JSON.stringify({
+      blocks: page.blocks,
+      meta: page.meta,
+      customCss: page.customCss
+    });
+    return current !== base;
   }
   const isLocked = useCallback(page => {
     if (!page) return false;
@@ -1446,7 +1579,8 @@ function AppV2({
     selectedId: selectedBlock,
     onSelect: setSelectedBlock,
     onInlineEdit: updateBlockProp,
-    device: device
+    device: device,
+    locked: locked
   }) : /*#__PURE__*/React.createElement("div", {
     className: "v2-canvas-empty"
   }, /*#__PURE__*/React.createElement("div", {
@@ -1510,7 +1644,23 @@ function AppV2({
     onClose: () => setShowNewPage(false)
   }), showStaging && /*#__PURE__*/React.createElement(StagingModal, {
     pages: pages,
-    onClose: () => setShowStaging(false)
+    isChanged: isChanged,
+    onClose: () => setShowStaging(false),
+    onPublished: () => {
+      // Po publikaci: aktualizuj baseline na aktuální stav
+      const snap = {};
+      pages.forEach(p => {
+        snap[p.id] = JSON.stringify({
+          blocks: p.blocks,
+          meta: p.meta,
+          customCss: p.customCss
+        });
+      });
+      try {
+        localStorage.setItem('ffy-baseline', JSON.stringify(snap));
+      } catch (e) {}
+      window.location.reload();
+    }
   }));
 }
 

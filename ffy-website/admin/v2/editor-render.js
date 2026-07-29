@@ -81,6 +81,57 @@ function renderEditorPage(page, selectedId, baseHref) {
     body + '\n<script>' + editorJS + '</scr' + 'ipt>\n</body>\n</html>';
 }
 
+// Vezme skutečné živé HTML stránky a injektuje editor overlay
+// (výběr + inline editace), aby editor ukazoval PŘESNĚ to co je na webu
+function injectEditorIntoLiveHTML(liveHTML, baseHref) {
+  var editorCSS = getEditorCanvasCSS();
+  var editorJS = getLiveEditorJS();
+  var html = liveHTML;
+  if (baseHref && html.indexOf('<base') === -1) {
+    html = html.replace(/<head[^>]*>/i, function (m) { return m + '\n<base href="' + baseHref + '">'; });
+  }
+  html = html.replace(/<\/head>/i, '<style>' + editorCSS + '</style>\n</head>');
+  html = html.replace(/<\/body>/i, '<script>' + editorJS + '</scr' + 'ipt>\n</body>');
+  return html;
+}
+
+// JS pro živé HTML: klik-výběr sekcí + inline editace textu
+function getLiveEditorJS() {
+  return '(function(){' +
+    'var editing=null;' +
+    'function markBlocks(){' +
+      'var main=document.querySelector(".subpage-main")||document.body;' +
+      'var sel="section, .sdileni-block, .kontakt-channel, .kontakt-card, .tarify-card, .eb-feature, .slevy-step, .faq-item, .doc-row, .cenik-card";' +
+      'main.querySelectorAll(sel).forEach(function(s,i){if(!s.hasAttribute("data-ffy-live"))s.setAttribute("data-ffy-live",i);});' +
+    '}' +
+    'markBlocks();' +
+    'document.addEventListener("click",function(e){' +
+      'if(e.target.closest("[contenteditable=true]"))return;' +
+      'if(e.target.closest("a")){e.preventDefault();}' +
+      'var b=e.target.closest("[data-ffy-live]");' +
+      'if(b){e.stopPropagation();' +
+        'document.querySelectorAll(".ffy-ed-selected").forEach(function(x){x.classList.remove("ffy-ed-selected");});' +
+        'b.classList.add("ffy-ed-selected");' +
+        'parent.postMessage({type:"ffy-live-select"},"*");}' +
+    '},true);' +
+    'document.addEventListener("dblclick",function(e){' +
+      'if(!window.__ffyUnlocked)return;' +
+      'var t=e.target;if(t.children.length>0)return;if(t.closest("a"))return;' +
+      'startEdit(t);' +
+    '});' +
+    'function startEdit(el){if(editing)stopEdit();editing=el;' +
+      'el.setAttribute("contenteditable","true");el.focus();' +
+      'var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);' +
+      'el.addEventListener("blur",stopEdit,{once:true});}' +
+    'function stopEdit(){if(!editing)return;editing.removeAttribute("contenteditable");' +
+      'parent.postMessage({type:"ffy-live-edit",text:editing.textContent},"*");editing=null;}' +
+    'window.addEventListener("message",function(e){' +
+      'if(e.data&&e.data.type==="ffy-set-unlocked"){window.__ffyUnlocked=e.data.value;}' +
+    '});' +
+    'parent.postMessage({type:"ffy-live-loaded"},"*");' +
+  '})();';
+}
+
 // CSS injektované do plátna (výběr, hover, editace)
 function getEditorCanvasCSS() {
   return [
