@@ -1026,7 +1026,20 @@ function App() {
       setTopMode('create');
       setActivePageId(null);
     }
-  }, "Tvorba nové stránky"))), topMode === 'create' ? /*#__PURE__*/React.createElement(CreateMode, {
+  }, "Tvorba nové stránky")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1
+    }
+  }), /*#__PURE__*/React.createElement("a", {
+    href: "v2/index.html",
+    className: "adm-btn adm-btn-sm",
+    style: {
+      textDecoration: 'none',
+      background: 'rgba(68,230,163,0.12)',
+      color: '#44e6a3',
+      border: '1px solid rgba(68,230,163,0.3)'
+    }
+  }, "✨ Vyzkoušet editor v2")), topMode === 'create' ? /*#__PURE__*/React.createElement(CreateMode, {
     onCreate: tpl => {
       createFromTemplate(tpl);
       setTopMode('web');
