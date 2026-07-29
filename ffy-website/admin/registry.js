@@ -524,22 +524,33 @@ var BLOCK_REGISTRY = {
     schema: [
       { key: 'cta_text', label: 'Text CTA tlačítka', type: 'text' },
       { key: 'cta_url', label: 'Odkaz CTA', type: 'url' },
-      { key: 'columns', label: 'Sloupce mega menu', type: 'array', arrayFields: [
+      { key: 'columns', label: 'Sloupce mega menu', type: 'array', itemName: 'sloupec', arrayFields: [
         { key: 'title', label: 'Nadpis sloupce', type: 'text' },
-        { key: 'links', label: 'Odkazy', type: 'textarea', hint: 'Formát na řádek: Nadpis|Popis|stranka.html' },
+        { key: 'items', label: 'Odkazy', type: 'array', itemName: 'odkaz', arrayFields: [
+          { key: 'title', label: 'Nadpis', type: 'text' },
+          { key: 'desc', label: 'Popis', type: 'text' },
+          { key: 'url', label: 'Odkaz (URL)', type: 'text', hint: 'např. ceny-aktualni-nabidka.html' },
+        ]},
       ]},
     ],
     defaults: { cta_text: 'Chci to vyzkoušet', cta_url: '#', columns: [] },
     render: function(p) {
+      function linkHTML(title, desc, url) {
+        return '<a href="'+(url||'#')+'" class="mega-link"><span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/></svg></span><span class="mega-link-body"><strong>'+(title||'')+'</strong>'+(desc?'<span>'+desc+'</span>':'')+'</span></a>';
+      }
       var cols = (p.columns||[]).map(function(c){
-        var links = (c.links||'').split('\n').filter(function(l){return l.trim();}).map(function(l){
-          var parts = l.split('|');
-          var title = (parts[0]||'').trim();
-          var desc = (parts[1]||'').trim();
-          var url = (parts[2]||parts[1]||'#').trim();
-          return '<a href="'+url+'" class="mega-link"><span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/></svg></span><span class="mega-link-body"><strong>'+title+'</strong>'+(desc?'<span>'+desc+'</span>':'')+'</span></a>';
-        }).join('');
-        return '<div class="mega-col"><div class="mega-col-label">'+c.title+'</div>'+links+'</div>';
+        var links = '';
+        if (c.items && c.items.length) {
+          // Nový formát: pole objektů
+          links = c.items.map(function(it){ return linkHTML(it.title, it.desc, it.url); }).join('');
+        } else if (typeof c.links === 'string') {
+          // Starý formát: řádky Nadpis|Popis|url
+          links = c.links.split('\n').filter(function(l){return l.trim();}).map(function(l){
+            var parts = l.split('|');
+            return linkHTML((parts[0]||'').trim(), (parts[1]||'').trim(), (parts[2]||parts[1]||'#').trim());
+          }).join('');
+        }
+        return '<div class="mega-col"><div class="mega-col-label">'+(c.title||'')+'</div>'+links+'</div>';
       }).join('');
       return '<nav id="main-nav"><div class="nav-bar"><div class="nav-logo">FREE for YOU</div>'+
         '<a href="'+(p.cta_url||'#')+'" class="nav-cta">'+(p.cta_text||'')+'</a></div>'+
@@ -550,20 +561,28 @@ var BLOCK_REGISTRY = {
   site_footer: {
     label: 'Patička webu', description: 'Spodní část se sloupci odkazů',
     schema: [
-      { key: 'columns', label: 'Sloupce', type: 'array', arrayFields: [
+      { key: 'columns', label: 'Sloupce', type: 'array', itemName: 'sloupec', arrayFields: [
         { key: 'title', label: 'Nadpis sloupce', type: 'text' },
-        { key: 'links', label: 'Odkazy', type: 'textarea', hint: 'Formát na řádek: Text|stranka.html' },
+        { key: 'items', label: 'Odkazy', type: 'array', itemName: 'odkaz', arrayFields: [
+          { key: 'title', label: 'Text odkazu', type: 'text' },
+          { key: 'url', label: 'Odkaz (URL)', type: 'text', hint: 'např. proc-nas-pribeh.html' },
+        ]},
       ]},
       { key: 'copyright', label: 'Copyright text', type: 'text' },
     ],
     defaults: { columns: [], copyright: '© 2026 FREE for YOU s.r.o.' },
     render: function(p) {
       var cols = (p.columns||[]).map(function(c){
-        var links = (c.links||'').split('\n').filter(function(l){return l.trim();}).map(function(l){
-          var parts = l.split('|');
-          return '<a href="'+(parts[1]||'#').trim()+'">'+(parts[0]||'').trim()+'</a>';
-        }).join('');
-        return '<div class="footer-col"><div class="footer-col-title">'+c.title+'</div>'+links+'</div>';
+        var links = '';
+        if (c.items && c.items.length) {
+          links = c.items.map(function(it){ return '<a href="'+(it.url||'#')+'">'+(it.title||'')+'</a>'; }).join('');
+        } else if (typeof c.links === 'string') {
+          links = c.links.split('\n').filter(function(l){return l.trim();}).map(function(l){
+            var parts = l.split('|');
+            return '<a href="'+(parts[1]||'#').trim()+'">'+(parts[0]||'').trim()+'</a>';
+          }).join('');
+        }
+        return '<div class="footer-col"><div class="footer-col-title">'+(c.title||'')+'</div>'+links+'</div>';
       }).join('');
       return '<footer class="site-footer"><div class="footer-inner"><div class="footer-cols">'+cols+'</div>'+
         '<div class="footer-bottom"><div class="footer-copy">'+(p.copyright||'')+'</div></div></div></footer>';
@@ -619,7 +638,7 @@ function renderPageHTML(page, inlineCss) {
 // ═══════════════════════════════════
 
 var STORE_KEY = 'ffy-cms-pages';
-var SEED_VERSION = '2026-06-17-v10';
+var SEED_VERSION = '2026-06-17-v11';
 var VERSION_KEY = 'ffy-cms-seed-version';
 
 function loadPages() {
@@ -672,14 +691,14 @@ var SEED_PAGES = {
     title: 'Hlavní menu', desc: '',
     h1: 'Hlavní menu', lead: '', wrapper: 'sdileni',
     blocks: [
-      { type: 'nav_menu', props: { cta_text: 'Chci to vyzkoušet', cta_url: '#', columns: [{ title: 'Naše ceny', links: 'Aktuální nabídka|Platné ceny elektřiny a plynu|ceny-aktualni-nabidka.html\nKalkulačka|Spočítejte si svoji úsporu|ceny-kalkulacka.html\nCeníky|Ke stažení ve formátu PDF|ceny-ceniky.html' }, { title: 'Proč FREE for YOU?', links: 'Slevy za doporučení|Přiveďte přítele a ušetříte oba|proc-slevy-za-doporuceni.html\nInvestice do OZE|50 % zisku jde zpět do zdrojů|proc-investice-oze.html\nNáš příběh|Kdo jsme a proč to děláme|proc-nas-pribeh.html\nReference|Co říkají naši zákazníci|proc-reference.html' }, { title: 'Jak to funguje?', links: 'Sdílení elektřiny|Komunitní výroba a spotřeba|jak-sdileni-elektriny.html\nProdej elektřiny|Prodejte přebytky ze svého zdroje|jak-vykup-elektriny.html\nProudíky|Věrnostní program FREE for YOU|jak-proudiky.html' }, { title: 'Podpora', links: 'Časté dotazy|Odpovědi na vaše otázky|podpora-faq.html\nDokumenty|Smlouvy, faktury, plné moci|podpora-dokumenty.html\nKontakty|Zavolejte nebo napište|podpora-kontakty.html\nBlog|Novinky a tipy ze světa energií|podpora-blog.html' }] } },
+      { type: 'nav_menu', props: { cta_text: 'Chci to vyzkoušet', cta_url: '#', columns: [{ title: 'Naše ceny', items: [{ title: 'Aktuální nabídka', desc: 'Platné ceny elektřiny a plynu', url: 'ceny-aktualni-nabidka.html' }, { title: 'Kalkulačka', desc: 'Spočítejte si svoji úsporu', url: 'ceny-kalkulacka.html' }, { title: 'Ceníky', desc: 'Ke stažení ve formátu PDF', url: 'ceny-ceniky.html' }] }, { title: 'Proč FREE for YOU?', items: [{ title: 'Slevy za doporučení', desc: 'Přiveďte přítele a ušetříte oba', url: 'proc-slevy-za-doporuceni.html' }, { title: 'Investice do OZE', desc: '50 % zisku jde zpět do zdrojů', url: 'proc-investice-oze.html' }, { title: 'Náš příběh', desc: 'Kdo jsme a proč to děláme', url: 'proc-nas-pribeh.html' }, { title: 'Reference', desc: 'Co říkají naši zákazníci', url: 'proc-reference.html' }] }, { title: 'Jak to funguje?', items: [{ title: 'Sdílení elektřiny', desc: 'Komunitní výroba a spotřeba', url: 'jak-sdileni-elektriny.html' }, { title: 'Prodej elektřiny', desc: 'Prodejte přebytky ze svého zdroje', url: 'jak-vykup-elektriny.html' }, { title: 'Proudíky', desc: 'Věrnostní program FREE for YOU', url: 'jak-proudiky.html' }] }, { title: 'Podpora', items: [{ title: 'Časté dotazy', desc: 'Odpovědi na vaše otázky', url: 'podpora-faq.html' }, { title: 'Dokumenty', desc: 'Smlouvy, faktury, plné moci', url: 'podpora-dokumenty.html' }, { title: 'Kontakty', desc: 'Zavolejte nebo napište', url: 'podpora-kontakty.html' }, { title: 'Blog', desc: 'Novinky a tipy ze světa energií', url: 'podpora-blog.html' }] }] } },
     ]
   },
   '_footer': {
     title: 'Patička webu', desc: '',
     h1: 'Patička', lead: '', wrapper: 'sdileni',
     blocks: [
-      { type: 'site_footer', props: { columns: [{ title: 'Pro zákazníky', links: 'Elektřina|ceny-aktualni-nabidka.html\nPlyn|ceny-aktualni-nabidka.html\nSlevy na energie|proc-slevy-za-doporuceni.html' }, { title: 'Fotovoltaika', links: 'Prodej přebytků|jak-vykup-elektriny.html\nSdílení elektřiny|jak-sdileni-elektriny.html' }, { title: 'O nás', links: 'Naše vize|proc-nas-pribeh.html\nNáš tým|proc-nas-pribeh.html\nReference zákazníků|proc-reference.html\nPro média|pro-media.html\nPřípadové studie|#\nObchodní podmínky|docs/op/vseobecne-obchodni-podminky.pdf' }, { title: 'Zákaznická podpora', links: 'Kontakt|podpora-kontakty.html\nČasté dotazy|podpora-faq.html\nDokumenty ke stažení|podpora-dokumenty.html\nJak funguje Energobanking|jak-energobanking.html\nBlog|podpora-blog.html\ninfo@freeforyou.cz|mailto:info@freeforyou.cz\n+420 227 072 290|tel:+420227072290' }], copyright: '© 2026 FREE for YOU s.r.o. — Dodáváme elektřinu od roku 2016.' } },
+      { type: 'site_footer', props: { columns: [{ title: 'Pro zákazníky', items: [{ title: 'Elektřina', url: 'ceny-aktualni-nabidka.html' }, { title: 'Plyn', url: 'ceny-aktualni-nabidka.html' }, { title: 'Slevy na energie', url: 'proc-slevy-za-doporuceni.html' }] }, { title: 'Fotovoltaika', items: [{ title: 'Prodej přebytků', url: 'jak-vykup-elektriny.html' }, { title: 'Sdílení elektřiny', url: 'jak-sdileni-elektriny.html' }] }, { title: 'O nás', items: [{ title: 'Naše vize', url: 'proc-nas-pribeh.html' }, { title: 'Náš tým', url: 'proc-nas-pribeh.html' }, { title: 'Reference zákazníků', url: 'proc-reference.html' }, { title: 'Pro média', url: 'pro-media.html' }, { title: 'Případové studie', url: '#' }, { title: 'Obchodní podmínky', url: 'docs/op/vseobecne-obchodni-podminky.pdf' }] }, { title: 'Zákaznická podpora', items: [{ title: 'Kontakt', url: 'podpora-kontakty.html' }, { title: 'Časté dotazy', url: 'podpora-faq.html' }, { title: 'Dokumenty ke stažení', url: 'podpora-dokumenty.html' }, { title: 'Jak funguje Energobanking', url: 'jak-energobanking.html' }, { title: 'Blog', url: 'podpora-blog.html' }, { title: 'info@freeforyou.cz', url: 'mailto:info@freeforyou.cz' }, { title: '+420 227 072 290', url: 'tel:+420227072290' }] }], copyright: '© 2026 FREE for YOU s.r.o. — Dodáváme elektřinu od roku 2016.' } },
     ]
   },
   'blog/co-se-deje-s-prebytkovou-elektricinou': {

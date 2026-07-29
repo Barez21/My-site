@@ -1,0 +1,30 @@
+# ════════════════════════════════════════════
+# FREE for YOU — ochrana admin složky
+# Umísti tento soubor do složky admin/ na serveru.
+# ════════════════════════════════════════════
+#
+# TENTO SOUBOR JE ŠABLONA — IT musí:
+#   1. Vygenerovat .htpasswd soubor s hesly (viz níže)
+#   2. Upravit cestu k .htpasswd (musí být ABSOLUTNÍ)
+#   3. Umístit .htpasswd MIMO veřejnou složku webu
+#
+# Bez tohoto je admin/ i /v2/ editor veřejně přístupný komukoliv!
+
+# ── HTTP Basic Auth (serverová ochrana) ──
+AuthType Basic
+AuthName "FREE for YOU — Editor webu (přístup jen pro správce)"
+AuthUserFile /absolutni/cesta/mimo/web/.htpasswd
+Require valid-user
+
+# Vygenerování .htpasswd (na serveru přes SSH):
+#   htpasswd -c /cesta/mimo/web/.htpasswd admin
+# Přidání dalšího uživatele (bez -c):
+#   htpasswd /cesta/mimo/web/.htpasswd druhy-uzivatel
+
+# ── Zákaz výpisu složky ──
+Options -Indexes
+
+# ── Ochrana citlivých souborů ──
+<FilesMatch "\.(jsx|md|htpasswd)$">
+  Require all denied
+</FilesMatch>

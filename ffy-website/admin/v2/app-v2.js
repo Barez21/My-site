@@ -146,7 +146,7 @@ function ArrayField({
   }
   function addItem() {
     const empty = {};
-    (field.arrayFields || []).forEach(f => empty[f.key] = '');
+    (field.arrayFields || []).forEach(f => empty[f.key] = f.type === 'array' ? [] : '');
     onChange([...value, empty]);
   }
   function removeItem(i) {
@@ -172,7 +172,7 @@ function ArrayField({
     className: "v2-array-head"
   }, /*#__PURE__*/React.createElement("span", {
     className: "v2-array-num"
-  }, "#", i + 1), /*#__PURE__*/React.createElement("div", {
+  }, item.title || item.label || '#' + (i + 1)), /*#__PURE__*/React.createElement("div", {
     className: "v2-array-ctrl"
   }, /*#__PURE__*/React.createElement("button", {
     className: "v2-icon-btn",
@@ -190,7 +190,11 @@ function ArrayField({
     className: "v2-array-field"
   }, /*#__PURE__*/React.createElement("label", {
     className: "v2-array-label"
-  }, f.label), f.type === 'textarea' ? /*#__PURE__*/React.createElement("textarea", {
+  }, f.label), f.type === 'array' ? /*#__PURE__*/React.createElement(ArrayField, {
+    field: f,
+    value: item[f.key] || [],
+    onChange: val => updateItem(i, f.key, val)
+  }) : f.type === 'textarea' ? /*#__PURE__*/React.createElement("textarea", {
     className: "v2-input v2-textarea-sm",
     value: item[f.key] || '',
     onChange: e => updateItem(i, f.key, e.target.value),
@@ -199,11 +203,12 @@ function ArrayField({
     className: "v2-input",
     type: "text",
     value: item[f.key] || '',
-    onChange: e => updateItem(i, f.key, e.target.value)
+    onChange: e => updateItem(i, f.key, e.target.value),
+    placeholder: f.hint || ''
   }))))), /*#__PURE__*/React.createElement("button", {
     className: "v2-btn v2-btn-sm v2-btn-add",
     onClick: addItem
-  }, "+ Přidat položku")));
+  }, "+ Přidat ", field.itemName || 'položku')));
 }
 
 // ─────────────────────────────────────────────
@@ -465,95 +470,130 @@ function AddBlockModal({
 // ─────────────────────────────────────────────
 //  MÉDIA / DOKUMENTY / CSS PANELY
 // ─────────────────────────────────────────────
-function MediaPanel() {
-  const [media, setMedia] = useState(() => loadMedia());
+function FilePanel({
+  dir,
+  accept,
+  kind
+}) {
+  const [files, setFiles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isLocal, setIsLocal] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const fileRef = useRef(null);
-  function handleFiles(e) {
-    const files = Array.from(e.target.files);
-    let pending = files.length;
-    const added = [];
-    files.forEach(file => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        added.push({
-          id: generateId(),
-          name: file.name,
-          type: file.type,
-          data: reader.result,
-          date: Date.now()
-        });
-        if (--pending === 0) {
-          const next = [...media, ...added];
-          setMedia(next);
-          saveMedia(next);
-        }
-      };
-      reader.readAsDataURL(file);
+  function reload() {
+    setLoading(true);
+    FFYApi.listFiles(dir).then(list => {
+      setFiles(list || []);
+      setIsLocal(FFYApi.isLocal());
+      setLoading(false);
     });
   }
-  function remove(id) {
-    const next = media.filter(m => m.id !== id);
-    setMedia(next);
-    saveMedia(next);
+  useEffect(() => {
+    reload();
+  }, [dir]);
+  function handleFiles(e) {
+    const chosen = Array.from(e.target.files);
+    if (!chosen.length) return;
+    setUploading(true);
+    let pending = chosen.length;
+    chosen.forEach(file => {
+      FFYApi.uploadFile(dir, file).then(() => {
+        if (--pending === 0) {
+          setUploading(false);
+          reload();
+        }
+      });
+    });
   }
-  function copyUrl(m) {
-    navigator.clipboard && navigator.clipboard.writeText(m.data);
+  function remove(name) {
+    if (!confirm('Smazat „' + name + '"?')) return;
+    FFYApi.deleteFile(dir, name).then(reload);
+  }
+  function copyUrl(url) {
+    navigator.clipboard && navigator.clipboard.writeText(url);
   }
   return /*#__PURE__*/React.createElement("div", {
     className: "v2-asset"
   }, /*#__PURE__*/React.createElement("button", {
     className: "v2-btn v2-btn-primary v2-btn-block",
-    onClick: () => fileRef.current.click()
-  }, "+ Nahrát obrázky"), /*#__PURE__*/React.createElement("input", {
+    onClick: () => fileRef.current.click(),
+    disabled: uploading
+  }, uploading ? 'Nahrávám…' : '+ Nahrát ' + (kind === 'img' ? 'obrázky' : 'dokumenty')), /*#__PURE__*/React.createElement("input", {
     ref: fileRef,
     type: "file",
-    accept: "image/*",
+    accept: accept,
     multiple: true,
     style: {
       display: 'none'
     },
     onChange: handleFiles
-  }), /*#__PURE__*/React.createElement("div", {
+  }), isLocal && /*#__PURE__*/React.createElement("div", {
+    className: "v2-asset-warn"
+  }, "⚠ Backend neběží — soubory se ukládají lokálně do prohlížeče. Na serveru s API se budou ukládat do ", /*#__PURE__*/React.createElement("code", null, dir, "/"), "."), !isLocal && /*#__PURE__*/React.createElement("div", {
     className: "v2-asset-note"
-  }, "Uloženo lokálně (localStorage). Pro velkou knihovnu bude potřeba backend."), /*#__PURE__*/React.createElement("div", {
-    className: "v2-media-grid"
-  }, media.length === 0 && /*#__PURE__*/React.createElement("div", {
+  }, "Načteno ze složky ", /*#__PURE__*/React.createElement("code", null, dir, "/"), " na serveru."), loading ? /*#__PURE__*/React.createElement("div", {
     className: "v2-asset-empty"
-  }, "Zatím žádné obrázky"), media.map(m => /*#__PURE__*/React.createElement("div", {
-    key: m.id,
+  }, "Načítám…") : kind === 'img' ? /*#__PURE__*/React.createElement("div", {
+    className: "v2-media-grid"
+  }, files.length === 0 && /*#__PURE__*/React.createElement("div", {
+    className: "v2-asset-empty"
+  }, "Zatím žádné obrázky"), files.map((f, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
     className: "v2-media-item"
   }, /*#__PURE__*/React.createElement("img", {
-    src: m.data,
-    alt: m.name,
+    src: f.url,
+    alt: f.name,
     className: "v2-media-thumb"
   }), /*#__PURE__*/React.createElement("div", {
     className: "v2-media-overlay"
   }, /*#__PURE__*/React.createElement("button", {
     className: "v2-icon-btn",
-    onClick: () => copyUrl(m),
-    title: "Kopírovat URL"
+    onClick: () => copyUrl(f.url),
+    title: "Kopírovat cestu"
   }, "📋"), /*#__PURE__*/React.createElement("button", {
     className: "v2-icon-btn v2-del",
-    onClick: () => remove(m.id),
+    onClick: () => remove(f.name),
     title: "Smazat"
   }, "✕")), /*#__PURE__*/React.createElement("div", {
     className: "v2-media-name"
-  }, m.name)))));
+  }, f.name)))) : /*#__PURE__*/React.createElement("div", {
+    className: "v2-doc-list"
+  }, files.length === 0 && /*#__PURE__*/React.createElement("div", {
+    className: "v2-asset-empty"
+  }, "Zatím žádné dokumenty"), files.map((f, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "v2-doc-item"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "v2-doc-icon"
+  }, "📄"), /*#__PURE__*/React.createElement("div", {
+    className: "v2-doc-body"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "v2-doc-name"
+  }, f.name), f.url && /*#__PURE__*/React.createElement("div", {
+    className: "v2-doc-url"
+  }, f.url)), /*#__PURE__*/React.createElement("button", {
+    className: "v2-icon-btn",
+    onClick: () => copyUrl(f.url),
+    title: "Kopírovat cestu"
+  }, "📋"), /*#__PURE__*/React.createElement("button", {
+    className: "v2-icon-btn v2-del",
+    onClick: () => remove(f.name),
+    title: "Smazat"
+  }, "✕")))));
+}
+function MediaPanel() {
+  return /*#__PURE__*/React.createElement(FilePanel, {
+    dir: "media",
+    accept: "image/*",
+    kind: "img"
+  });
 }
 function DocsPanel() {
-  return /*#__PURE__*/React.createElement("div", {
-    className: "v2-asset"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "v2-asset-note"
-  }, "Dokumenty (PDF, ceníky) se spravují jako soubory ve složce ", /*#__PURE__*/React.createElement("code", null, "docs/"), " na serveru."), /*#__PURE__*/React.createElement("div", {
-    className: "v2-docs-info"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "v2-docs-info-title"
-  }, "Jak přidat dokument"), /*#__PURE__*/React.createElement("ol", {
-    className: "v2-docs-steps"
-  }, /*#__PURE__*/React.createElement("li", null, "Nahraj PDF do složky ", /*#__PURE__*/React.createElement("code", null, "docs/"), " na serveru (přes FTP nebo správce souborů)."), /*#__PURE__*/React.createElement("li", null, "V bloku „Dokumenty ke stažení\" nebo „Ceníky\" přidej položku."), /*#__PURE__*/React.createElement("li", null, "Do pole odkazu zadej cestu, např. ", /*#__PURE__*/React.createElement("code", null, "docs/smlouvy/smlouva.pdf"), ".")), /*#__PURE__*/React.createElement("div", {
-    className: "v2-asset-note"
-  }, "Správa souborů přímo z editoru bude možná až s backendem (upload endpoint).")));
+  return /*#__PURE__*/React.createElement(FilePanel, {
+    dir: "docs",
+    accept: ".pdf,.xlsx,.docx,.zip",
+    kind: "doc"
+  });
 }
 function CssPanel({
   page,
@@ -579,10 +619,507 @@ function CssPanel({
   }));
 }
 
+// ── Globální nastavení (CSS webu, GA4, metadata) ──
+function GlobalCssPanel() {
+  const [css, setCss] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [isLocal, setIsLocal] = useState(false);
+  const [msg, setMsg] = useState('');
+  useEffect(() => {
+    FFYApi.getGlobalCss().then(c => {
+      setCss(c);
+      setIsLocal(FFYApi.isLocal());
+      setLoading(false);
+    });
+  }, []);
+  function save() {
+    setSaving(true);
+    FFYApi.saveGlobalCss(css).then(r => {
+      setSaving(false);
+      setMsg(r.local ? 'Uloženo lokálně (backend neběží)' : 'Uloženo na server ✓');
+      setTimeout(() => setMsg(''), 3000);
+    });
+  }
+  function exportFile() {
+    const blob = new Blob([css], {
+      type: 'text/css'
+    });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'styles.css';
+    a.click();
+  }
+  if (loading) return /*#__PURE__*/React.createElement("div", {
+    className: "v2-asset-empty"
+  }, "Načítám styles.css…");
+  return /*#__PURE__*/React.createElement("div", {
+    className: "v2-asset"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "v2-asset-note"
+  }, "Globální CSS celého webu (", /*#__PURE__*/React.createElement("code", null, "styles.css"), "). Změny se projeví na ", /*#__PURE__*/React.createElement("strong", null, "všech stránkách"), "."), isLocal && /*#__PURE__*/React.createElement("div", {
+    className: "v2-asset-warn"
+  }, "⚠ Backend neběží. Uprav a stáhni soubor tlačítkem „Export\", pak ho nahraj na server."), /*#__PURE__*/React.createElement("textarea", {
+    className: "v2-input v2-css-editor v2-css-global",
+    value: css,
+    onChange: e => setCss(e.target.value),
+    spellCheck: false
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "v2-asset-actions"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "v2-btn v2-btn-primary v2-btn-sm",
+    onClick: save,
+    disabled: saving
+  }, saving ? 'Ukládám…' : 'Uložit'), /*#__PURE__*/React.createElement("button", {
+    className: "v2-btn v2-btn-ghost v2-btn-sm",
+    onClick: exportFile
+  }, "Export souboru"), msg && /*#__PURE__*/React.createElement("span", {
+    className: "v2-save-msg"
+  }, msg)));
+}
+function GA4Panel() {
+  const [gtmId, setGtmId] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [isLocal, setIsLocal] = useState(false);
+  const [msg, setMsg] = useState('');
+  useEffect(() => {
+    FFYApi.getGA4().then(d => {
+      setGtmId(d.gtm_id || '');
+      setIsLocal(FFYApi.isLocal());
+      setLoading(false);
+    });
+  }, []);
+  function save() {
+    setSaving(true);
+    FFYApi.saveGA4(gtmId).then(r => {
+      setSaving(false);
+      setMsg(r.local ? 'Uloženo lokálně (backend neběží)' : 'Uloženo na server ✓');
+      setTimeout(() => setMsg(''), 3000);
+    });
+  }
+  if (loading) return /*#__PURE__*/React.createElement("div", {
+    className: "v2-asset-empty"
+  }, "Načítám…");
+  return /*#__PURE__*/React.createElement("div", {
+    className: "v2-asset"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "v2-asset-note"
+  }, "Google Tag Manager ID pro měření (GA4). Vloží se do ", /*#__PURE__*/React.createElement("code", null, "analytics.js"), "."), isLocal && /*#__PURE__*/React.createElement("div", {
+    className: "v2-asset-warn"
+  }, "⚠ Backend neběží — ukládá se lokálně. Na serveru přepíše GTM ID v analytics.js."), /*#__PURE__*/React.createElement("div", {
+    className: "v2-field"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "v2-field-label"
+  }, "GTM Container ID"), /*#__PURE__*/React.createElement("input", {
+    className: "v2-input",
+    value: gtmId,
+    onChange: e => setGtmId(e.target.value),
+    placeholder: "GTM-XXXXXXX"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "v2-hint"
+  }, "Najdeš v Google Tag Manageru vlevo nahoře (formát GTM-XXXXXXX).")), /*#__PURE__*/React.createElement("div", {
+    className: "v2-asset-actions"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "v2-btn v2-btn-primary v2-btn-sm",
+    onClick: save,
+    disabled: saving
+  }, saving ? 'Ukládám…' : 'Uložit'), msg && /*#__PURE__*/React.createElement("span", {
+    className: "v2-save-msg"
+  }, msg)), /*#__PURE__*/React.createElement("div", {
+    className: "v2-ga4-events"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "v2-ga4-events-title"
+  }, "Měřené události (automaticky)"), /*#__PURE__*/React.createElement("div", {
+    className: "v2-ga4-event"
+  }, "cta_klik · stazeni_dokumentu · odeslani_formulare"), /*#__PURE__*/React.createElement("div", {
+    className: "v2-ga4-event"
+  }, "scroll · kalkulacka_pouzita · kalkulacka_dokoncena"), /*#__PURE__*/React.createElement("div", {
+    className: "v2-ga4-event v2-ga4-conv"
+  }, "Konverze: kalkulačka start/dokončení, kontakt")));
+}
+function MetaPanel({
+  page,
+  onUpdate,
+  locked
+}) {
+  if (!page) return /*#__PURE__*/React.createElement("div", {
+    className: "v2-inspector-empty"
+  }, "Vyber stránku");
+  const m = page.meta;
+  function set(key, val) {
+    onUpdate({
+      ...m,
+      [key]: val
+    });
+  }
+  return /*#__PURE__*/React.createElement("div", {
+    className: "v2-asset"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "v2-asset-note"
+  }, "SEO metadata stránky ", /*#__PURE__*/React.createElement("strong", null, m.slug), ". Zobrazují se ve vyhledávačích a při sdílení."), locked && /*#__PURE__*/React.createElement("div", {
+    className: "v2-lock-note"
+  }, "🔒 Odemkni stránku pro editaci."), /*#__PURE__*/React.createElement("fieldset", {
+    disabled: locked,
+    style: {
+      border: 'none'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "v2-field"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "v2-field-label"
+  }, "Titulek stránky (title)"), /*#__PURE__*/React.createElement("input", {
+    className: "v2-input",
+    value: m.title || '',
+    onChange: e => set('title', e.target.value)
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "v2-hint"
+  }, (m.title || '').length, " znaků (ideál 50–60)")), /*#__PURE__*/React.createElement("div", {
+    className: "v2-field"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "v2-field-label"
+  }, "Popis (meta description)"), /*#__PURE__*/React.createElement("textarea", {
+    className: "v2-input v2-textarea",
+    value: m.description || '',
+    onChange: e => set('description', e.target.value),
+    rows: 3
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "v2-hint"
+  }, (m.description || '').length, " znaků (ideál 120–160)")), /*#__PURE__*/React.createElement("div", {
+    className: "v2-field"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "v2-field-label"
+  }, "URL adresa (slug)"), /*#__PURE__*/React.createElement("input", {
+    className: "v2-input",
+    value: m.slug || '',
+    onChange: e => set('slug', e.target.value)
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "v2-field"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "v2-field-label"
+  }, "Kanonická URL (canonical)"), /*#__PURE__*/React.createElement("input", {
+    className: "v2-input",
+    value: m.canonical || '',
+    onChange: e => set('canonical', e.target.value)
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "v2-field"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "v2-field-label"
+  }, "Indexace (robots)"), /*#__PURE__*/React.createElement("select", {
+    className: "v2-input",
+    value: m.robots || 'index, follow',
+    onChange: e => set('robots', e.target.value)
+  }, /*#__PURE__*/React.createElement("option", {
+    value: "index, follow"
+  }, "index, follow (viditelná)"), /*#__PURE__*/React.createElement("option", {
+    value: "noindex, follow"
+  }, "noindex, follow (skrytá z výsledků)"), /*#__PURE__*/React.createElement("option", {
+    value: "noindex, nofollow"
+  }, "noindex, nofollow (úplně skrytá)")))));
+}
+
+// ─────────────────────────────────────────────
+//  ŠABLONY STRÁNEK + TVORBA
+// ─────────────────────────────────────────────
+var V2_TEMPLATES = [{
+  id: 'blank',
+  name: 'Prázdná stránka',
+  icon: '□',
+  desc: 'Jen záhlaví, zbytek postavíš sám.',
+  category: 'html',
+  blocks: []
+}, {
+  id: 'content',
+  name: 'Obsahová stránka',
+  icon: '▤',
+  desc: 'Záhlaví, dvě sekce, CTA.',
+  category: 'html',
+  blocks: [{
+    type: 'content_section',
+    props: {
+      label: 'Sekce 1',
+      content: 'Text první sekce…'
+    }
+  }, {
+    type: 'content_section',
+    props: {
+      label: 'Sekce 2',
+      content: 'Text druhé sekce…'
+    }
+  }, {
+    type: 'cta_block',
+    props: {
+      title: 'Výzva k akci',
+      description: '',
+      btn1_text: 'Tlačítko →',
+      btn1_url: '#',
+      btn2_text: '',
+      btn2_url: '#'
+    }
+  }]
+}, {
+  id: 'landing',
+  name: 'Landing page',
+  icon: '◆',
+  desc: 'Hero, výhody, FAQ, CTA.',
+  category: 'html',
+  blocks: [{
+    type: 'content_section',
+    props: {
+      label: '',
+      content: 'Hlavní sdělení stránky…'
+    }
+  }, {
+    type: 'features_grid',
+    props: {
+      section_label: 'Výhody',
+      columns: '2',
+      items: [{
+        title: 'Výhoda 1',
+        desc: 'Popis'
+      }, {
+        title: 'Výhoda 2',
+        desc: 'Popis'
+      }]
+    }
+  }, {
+    type: 'faq_block',
+    props: {
+      title: 'Časté dotazy',
+      items: [{
+        q: 'Otázka?',
+        a: 'Odpověď.'
+      }]
+    }
+  }, {
+    type: 'cta_block',
+    props: {
+      title: 'Začněte ještě dnes',
+      description: '',
+      btn1_text: 'Chci to →',
+      btn1_url: '#',
+      btn2_text: '',
+      btn2_url: '#'
+    }
+  }]
+}, {
+  id: 'article',
+  name: 'Článek / blog',
+  icon: '▦',
+  desc: 'Text, citát, závěr.',
+  category: 'blog',
+  blocks: [{
+    type: 'content_section',
+    props: {
+      label: '',
+      content: 'Úvodní odstavec článku…'
+    }
+  }, {
+    type: 'quote_block',
+    props: {
+      text: 'Zajímavý citát z článku.',
+      style: 'large'
+    }
+  }, {
+    type: 'content_section',
+    props: {
+      label: '',
+      content: 'Pokračování textu…'
+    }
+  }]
+}];
+function NewPageModal({
+  onCreate,
+  onClose
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "v2-modal-backdrop",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "v2-modal",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "v2-modal-head"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "v2-modal-title"
+  }, "Vytvořit novou stránku"), /*#__PURE__*/React.createElement("button", {
+    className: "v2-icon-btn",
+    onClick: onClose
+  }, "✕")), /*#__PURE__*/React.createElement("div", {
+    className: "v2-modal-body"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "v2-asset-note",
+    style: {
+      margin: '0 0 1rem'
+    }
+  }, "Vyber šablonu. Stránka se vytvoří jako ", /*#__PURE__*/React.createElement("strong", null, "nová (nepublikovaná)"), " — nezasáhne živý web, dokud ji nepublikuješ přes Staging."), /*#__PURE__*/React.createElement("div", {
+    className: "v2-tpl-grid"
+  }, V2_TEMPLATES.map(tpl => /*#__PURE__*/React.createElement("button", {
+    key: tpl.id,
+    className: "v2-tpl-card",
+    onClick: () => onCreate(tpl)
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "v2-tpl-icon"
+  }, tpl.icon), /*#__PURE__*/React.createElement("div", {
+    className: "v2-tpl-name"
+  }, tpl.name), /*#__PURE__*/React.createElement("div", {
+    className: "v2-tpl-desc"
+  }, tpl.desc), /*#__PURE__*/React.createElement("div", {
+    className: "v2-tpl-cat"
+  }, tpl.category === 'blog' ? 'Blog' : 'HTML stránka')))))));
+}
+
+// ─────────────────────────────────────────────
+//  STAGING (oddělený náhled + publikace)
+// ─────────────────────────────────────────────
+function StagingModal({
+  pages,
+  onClose
+}) {
+  const [selectedSlug, setSelectedSlug] = useState(null);
+  const [publishing, setPublishing] = useState(false);
+  const [msg, setMsg] = useState('');
+  const iframeRef = useRef(null);
+
+  // Stránky rozdělené na živé a nové
+  const livePages = pages.filter(p => p.source !== 'new' && p.meta.slug !== '_header' && p.meta.slug !== '_footer');
+  const newPages = pages.filter(p => p.source === 'new');
+  const firstSlug = selectedSlug || newPages[0] && newPages[0].meta.slug || livePages[0] && livePages[0].meta.slug;
+  const previewPage = pages.find(p => p.meta.slug === firstSlug);
+  useEffect(() => {
+    if (!iframeRef.current || !previewPage) return;
+    const baseHref = new URL('../../', window.location.href).href;
+    const html = renderEditorPage(previewPage, null, baseHref);
+    // Odstraň editorní prvky (výběr/hover) pro čistý náhled
+    const clean = html.replace(/class="ffy-ed-block[^"]*"/g, 'class="ffy-ed-static"');
+    iframeRef.current.srcdoc = clean;
+  }, [firstSlug]);
+  function publish() {
+    setPublishing(true);
+    // Uloží aktuální stav jako publikovaný (na serveru by to byl deploy)
+    FFYApi.checkAvailable().then(ok => {
+      setPublishing(false);
+      if (ok) {
+        setMsg('Publikováno na server ✓');
+      } else {
+        setMsg('Backend neběží — export níže vygeneruje soubory k nahrání na server.');
+      }
+      setTimeout(() => setMsg(''), 5000);
+    });
+  }
+  function exportSite() {
+    // Vygeneruje HTML všech stránek jako stažitelný přehled
+    let combined = '<!-- FFY export — nahraj jednotlivé stránky na server -->\n\n';
+    pages.filter(p => p.meta.slug !== '_header' && p.meta.slug !== '_footer').forEach(p => {
+      combined += '=== ' + p.meta.slug + '.html ===\n';
+      combined += renderPageHTML(p, null) + '\n\n';
+    });
+    const blob = new Blob([combined], {
+      type: 'text/plain'
+    });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'staging-export.txt';
+    a.click();
+  }
+  return /*#__PURE__*/React.createElement("div", {
+    className: "v2-modal-backdrop",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "v2-modal v2-modal-full",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "v2-modal-head"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "v2-modal-title"
+  }, "◔ Staging — náhled před publikací"), /*#__PURE__*/React.createElement("button", {
+    className: "v2-icon-btn",
+    onClick: onClose
+  }, "✕")), /*#__PURE__*/React.createElement("div", {
+    className: "v2-staging"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "v2-staging-list"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "v2-staging-note"
+  }, "Takhle bude web vypadat po publikaci. Nic se zatím nezveřejnilo."), newPages.length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "v2-staging-group"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "v2-staging-group-label"
+  }, "✨ Nové stránky (přibydou)"), newPages.map(p => /*#__PURE__*/React.createElement("button", {
+    key: p.id,
+    className: `v2-staging-item new ${firstSlug === p.meta.slug ? 'active' : ''}`,
+    onClick: () => setSelectedSlug(p.meta.slug)
+  }, p.meta.title.split('—')[0].trim(), /*#__PURE__*/React.createElement("span", {
+    className: "v2-staging-slug"
+  }, p.meta.slug, ".html")))), /*#__PURE__*/React.createElement("div", {
+    className: "v2-staging-group"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "v2-staging-group-label"
+  }, "Živé stránky"), livePages.map(p => /*#__PURE__*/React.createElement("button", {
+    key: p.id,
+    className: `v2-staging-item ${firstSlug === p.meta.slug ? 'active' : ''}`,
+    onClick: () => setSelectedSlug(p.meta.slug)
+  }, p.meta.title.split('—')[0].trim(), /*#__PURE__*/React.createElement("span", {
+    className: "v2-staging-slug"
+  }, p.meta.slug, ".html"))))), /*#__PURE__*/React.createElement("div", {
+    className: "v2-staging-preview"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "v2-staging-bar"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "v2-staging-url"
+  }, "🔒 náhled: ", firstSlug, ".html"), /*#__PURE__*/React.createElement("div", {
+    className: "v2-staging-actions"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "v2-btn v2-btn-ghost v2-btn-sm",
+    onClick: exportSite
+  }, "Export webu"), /*#__PURE__*/React.createElement("button", {
+    className: "v2-btn v2-btn-primary v2-btn-sm",
+    onClick: publish,
+    disabled: publishing
+  }, publishing ? 'Publikuji…' : '⬆ Publikovat na web'))), msg && /*#__PURE__*/React.createElement("div", {
+    className: "v2-staging-msg"
+  }, msg), /*#__PURE__*/React.createElement("iframe", {
+    ref: iframeRef,
+    className: "v2-staging-iframe",
+    title: "Staging náhled"
+  })))));
+}
+function GlobalSettingsModal({
+  onClose
+}) {
+  const [tab, setTab] = useState('css');
+  return /*#__PURE__*/React.createElement("div", {
+    className: "v2-modal-backdrop",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "v2-modal v2-modal-lg",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "v2-modal-head"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "v2-modal-title"
+  }, "⚙ Globální nastavení webu"), /*#__PURE__*/React.createElement("button", {
+    className: "v2-icon-btn",
+    onClick: onClose
+  }, "✕")), /*#__PURE__*/React.createElement("div", {
+    className: "v2-modal-tabs"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: `v2-panel-tab ${tab === 'css' ? 'active' : ''}`,
+    onClick: () => setTab('css')
+  }, "Globální CSS"), /*#__PURE__*/React.createElement("button", {
+    className: `v2-panel-tab ${tab === 'ga4' ? 'active' : ''}`,
+    onClick: () => setTab('ga4')
+  }, "Google Analytics")), /*#__PURE__*/React.createElement("div", {
+    className: "v2-modal-body"
+  }, tab === 'css' ? /*#__PURE__*/React.createElement(GlobalCssPanel, null) : /*#__PURE__*/React.createElement(GA4Panel, null))));
+}
+
 // ─────────────────────────────────────────────
 //  HLAVNÍ APLIKACE
 // ─────────────────────────────────────────────
-function AppV2() {
+function AppV2({
+  onLogout
+}) {
   const [pages, setPages] = useState(() => loadPages());
   const [activeId, setActiveId] = useState(null);
   const [selectedBlock, setSelectedBlock] = useState(null);
@@ -593,7 +1130,10 @@ function AppV2() {
   const [leftW, setLeftW] = useState(260);
   const [rightW, setRightW] = useState(320);
   const [assetPanel, setAssetPanel] = useState(null); // 'media' | 'docs' | 'css' | null
-
+  const [showGlobal, setShowGlobal] = useState(false);
+  const [metaMode, setMetaMode] = useState(false); // pravý panel: metadata místo inspektoru
+  const [showNewPage, setShowNewPage] = useState(false);
+  const [showStaging, setShowStaging] = useState(false);
   const activePage = pages.find(p => p.id === activeId);
   const selected = activePage ? activePage.blocks.find(b => b.id === selectedBlock) : null;
   useEffect(() => {
@@ -686,6 +1226,61 @@ function AppV2() {
     setShowAdd(false);
   }
 
+  // ── Správa stránek ──
+  function createPage(tpl) {
+    const blocks = [];
+    const isBlog = tpl.category === 'blog';
+    if (!isBlog) {
+      blocks.push({
+        id: generateId(),
+        type: 'page_header',
+        props: {
+          ...BLOCK_REGISTRY.page_header.defaults
+        }
+      });
+    }
+    (tpl.blocks || []).forEach(b => {
+      blocks.push({
+        id: generateId(),
+        type: b.type,
+        props: JSON.parse(JSON.stringify(b.props))
+      });
+    });
+    const rnd = Math.random().toString(36).substr(2, 4);
+    const slug = isBlog ? 'blog/novy-clanek-' + rnd : 'nova-stranka-' + rnd;
+    const page = {
+      id: generateId(),
+      source: 'new',
+      wrapper: 'sdileni',
+      meta: {
+        title: (isBlog ? 'Nový článek' : 'Nová stránka') + ' — FREE for YOU',
+        description: '',
+        slug: slug,
+        canonical: '',
+        robots: 'index, follow'
+      },
+      blocks: blocks
+    };
+    setPages([...pages, page]);
+    setActiveId(page.id);
+    setSelectedBlock(null);
+    setShowNewPage(false);
+  }
+  function deletePage(id) {
+    const page = pages.find(p => p.id === id);
+    if (!page) return;
+    if (page.source !== 'new') {
+      alert('Živé stránky webu nelze mazat z editoru — jsou chráněné. Smazat jde jen nové (nepublikované) stránky.');
+      return;
+    }
+    if (!confirm('Opravdu smazat stránku „' + page.meta.title.split('—')[0].trim() + '"?')) return;
+    setPages(pages.filter(p => p.id !== id));
+    if (activeId === id) {
+      setActiveId(null);
+      setSelectedBlock(null);
+    }
+  }
+
   // Skupiny stránek pro přepínač
   const groups = [{
     key: 'html',
@@ -752,7 +1347,7 @@ function AppV2() {
       className: "v2-page-menu-group"
     }, /*#__PURE__*/React.createElement("div", {
       className: "v2-page-menu-label"
-    }, g.label), gp.map(p => /*#__PURE__*/React.createElement("button", {
+    }, g.label), gp.map(p => /*#__PURE__*/React.createElement("div", {
       key: p.id,
       className: `v2-page-menu-item ${p.id === activeId ? 'active' : ''}`,
       onClick: () => {
@@ -762,8 +1357,23 @@ function AppV2() {
       }
     }, isLocked(p) && /*#__PURE__*/React.createElement("span", {
       className: "v2-lock-mini"
-    }, "🔒"), p.meta.title.split('—')[0].split('|')[0].trim())));
-  }))), /*#__PURE__*/React.createElement("div", {
+    }, "🔒"), /*#__PURE__*/React.createElement("span", {
+      className: "v2-page-menu-name"
+    }, p.meta.title.split('—')[0].split('|')[0].trim()), p.source === 'new' && /*#__PURE__*/React.createElement("button", {
+      className: "v2-icon-btn v2-del v2-page-del",
+      onClick: e => {
+        e.stopPropagation();
+        deletePage(p.id);
+      },
+      title: "Smazat stránku"
+    }, "✕"))));
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "v2-page-menu-new",
+    onClick: () => {
+      setShowNewPage(true);
+      setPageMenuOpen(false);
+    }
+  }, "+ Vytvořit novou stránku"))), /*#__PURE__*/React.createElement("div", {
     className: "v2-topbar-spacer"
   }), /*#__PURE__*/React.createElement("div", {
     className: "v2-device-switch"
@@ -779,16 +1389,28 @@ function AppV2() {
     className: device === 'mobile' ? 'active' : '',
     onClick: () => setDevice('mobile'),
     title: "Mobil"
-  }, "▮")), activePage && locked && /*#__PURE__*/React.createElement("button", {
+  }, "▮")), /*#__PURE__*/React.createElement("button", {
+    className: "v2-btn v2-btn-stage",
+    onClick: () => setShowStaging(true),
+    title: "Náhled celého webu před publikací"
+  }, "◔ Staging"), activePage && locked && /*#__PURE__*/React.createElement("button", {
     className: "v2-btn v2-btn-warn",
     onClick: () => unlockPage(activePage)
   }, "🔓 Odemknout"), activePage && !locked && /*#__PURE__*/React.createElement("button", {
     className: "v2-btn v2-btn-primary",
     onClick: () => setShowAdd(true)
-  }, "+ Přidat blok"), /*#__PURE__*/React.createElement("a", {
+  }, "+ Přidat blok"), /*#__PURE__*/React.createElement("button", {
+    className: "v2-btn v2-btn-ghost",
+    onClick: () => setShowGlobal(true),
+    title: "Globální nastavení"
+  }, "⚙ Nastavení"), /*#__PURE__*/React.createElement("a", {
     className: "v2-btn v2-btn-ghost",
     href: "../index.html"
-  }, "← Stará verze")), /*#__PURE__*/React.createElement("div", {
+  }, "← Stará verze"), onLogout && /*#__PURE__*/React.createElement("button", {
+    className: "v2-btn v2-btn-ghost",
+    onClick: onLogout,
+    title: "Odhlásit"
+  }, "⏻")), /*#__PURE__*/React.createElement("div", {
     className: "v2-main",
     style: {
       gridTemplateColumns: `${leftW}px 6px 1fr 6px ${rightW}px`
@@ -837,12 +1459,34 @@ function AppV2() {
   }, /*#__PURE__*/React.createElement("div", {
     className: "v2-panel-tabs"
   }, /*#__PURE__*/React.createElement("button", {
-    className: `v2-panel-tab ${assetPanel !== 'css' ? 'active' : ''}`,
-    onClick: () => setAssetPanel(null)
+    className: `v2-panel-tab ${!metaMode && assetPanel !== 'css' ? 'active' : ''}`,
+    onClick: () => {
+      setMetaMode(false);
+      setAssetPanel(null);
+    }
   }, "Vlastnosti"), /*#__PURE__*/React.createElement("button", {
+    className: `v2-panel-tab ${metaMode ? 'active' : ''}`,
+    onClick: () => {
+      setMetaMode(true);
+      setAssetPanel(null);
+    }
+  }, "Metadata"), /*#__PURE__*/React.createElement("button", {
     className: `v2-panel-tab ${assetPanel === 'css' ? 'active' : ''}`,
-    onClick: () => setAssetPanel('css')
-  }, "CSS stránky")), assetPanel === 'css' ? /*#__PURE__*/React.createElement(CssPanel, {
+    onClick: () => {
+      setAssetPanel('css');
+      setMetaMode(false);
+    }
+  }, "CSS")), metaMode ? /*#__PURE__*/React.createElement(MetaPanel, {
+    page: activePage,
+    locked: locked,
+    onUpdate: meta => {
+      if (!activePage || isLocked(activePage)) return;
+      setPages(pages.map(p => p.id === activeId ? {
+        ...p,
+        meta
+      } : p));
+    }
+  }) : assetPanel === 'css' ? /*#__PURE__*/React.createElement(CssPanel, {
     page: activePage,
     onUpdate: css => {
       if (!activePage || isLocked(activePage)) return;
@@ -859,6 +1503,77 @@ function AppV2() {
   }))), showAdd && /*#__PURE__*/React.createElement(AddBlockModal, {
     onAdd: addBlock,
     onClose: () => setShowAdd(false)
+  }), showGlobal && /*#__PURE__*/React.createElement(GlobalSettingsModal, {
+    onClose: () => setShowGlobal(false)
+  }), showNewPage && /*#__PURE__*/React.createElement(NewPageModal, {
+    onCreate: createPage,
+    onClose: () => setShowNewPage(false)
+  }), showStaging && /*#__PURE__*/React.createElement(StagingModal, {
+    pages: pages,
+    onClose: () => setShowStaging(false)
   }));
 }
-ReactDOM.createRoot(document.getElementById('v2-root')).render(/*#__PURE__*/React.createElement(AppV2, null));
+
+// ─────────────────────────────────────────────
+//  LOGIN (klientská vrstva + příprava pro server)
+// ─────────────────────────────────────────────
+function LoginGate() {
+  const [authed, setAuthed] = useState(() => {
+    // Session token v sessionStorage (vydrží do zavření karty)
+    return sessionStorage.getItem('ffy-auth') === '1';
+  });
+  const [pwd, setPwd] = useState('');
+  const [err, setErr] = useState('');
+  const [checking, setChecking] = useState(false);
+  function submit(e) {
+    e.preventDefault();
+    setChecking(true);
+    setErr('');
+    // Zkus server login (IT dodá /api/login), jinak lokální heslo
+    FFYApi.login(pwd).then(res => {
+      setChecking(false);
+      if (res.ok) {
+        sessionStorage.setItem('ffy-auth', '1');
+        setAuthed(true);
+      } else {
+        setErr(res.message || 'Nesprávné heslo');
+        setPwd('');
+      }
+    });
+  }
+  function logout() {
+    sessionStorage.removeItem('ffy-auth');
+    setAuthed(false);
+  }
+  if (authed) {
+    return /*#__PURE__*/React.createElement(AppV2, {
+      onLogout: logout
+    });
+  }
+  return /*#__PURE__*/React.createElement("div", {
+    className: "v2-login"
+  }, /*#__PURE__*/React.createElement("form", {
+    className: "v2-login-box",
+    onSubmit: submit
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "v2-login-brand"
+  }, "FFY Builder"), /*#__PURE__*/React.createElement("div", {
+    className: "v2-login-sub"
+  }, "Editor webu — přihlášení"), /*#__PURE__*/React.createElement("input", {
+    className: "v2-login-input",
+    type: "password",
+    value: pwd,
+    onChange: e => setPwd(e.target.value),
+    placeholder: "Heslo",
+    autoFocus: true
+  }), err && /*#__PURE__*/React.createElement("div", {
+    className: "v2-login-err"
+  }, err), /*#__PURE__*/React.createElement("button", {
+    className: "v2-btn v2-btn-primary v2-login-btn",
+    type: "submit",
+    disabled: checking
+  }, checking ? 'Ověřuji…' : 'Přihlásit se'), /*#__PURE__*/React.createElement("div", {
+    className: "v2-login-note"
+  }, "Přístup je chráněný. Skutečné zabezpečení zajišťuje server — viz poznámky pro IT.")));
+}
+ReactDOM.createRoot(document.getElementById('v2-root')).render(/*#__PURE__*/React.createElement(LoginGate, null));
