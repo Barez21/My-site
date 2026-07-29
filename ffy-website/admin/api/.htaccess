@@ -1,0 +1,20 @@
+# ════════════════════════════════════════════
+# FFY API router — mapuje /api/xxx na xxx.php
+# ════════════════════════════════════════════
+RewriteEngine On
+
+# /api/global/css → global/css.php
+RewriteRule ^global/css$ global/css.php [L,QSA]
+RewriteRule ^global/ga4$ global/ga4.php [L,QSA]
+
+# /api/health → health.php, /api/files → files.php, atd.
+RewriteRule ^health$ health.php [L,QSA]
+RewriteRule ^login$ login.php [L,QSA]
+RewriteRule ^files$ files.php [L,QSA]
+RewriteRule ^upload$ upload.php [L,QSA]
+RewriteRule ^publish$ publish.php [L,QSA]
+
+# Zákaz přímého přístupu ke config.php
+<Files "config.php">
+  Require all denied
+</Files>

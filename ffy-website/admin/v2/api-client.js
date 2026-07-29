@@ -18,13 +18,22 @@
    ════════════════════════════════════════════ */
 
 var FFYApi = (function () {
-  var BASE = '/api';
+  // Backend leží v admin/api/. Editor je v admin/v2/, takže relativně '../api'.
+  // (Relativní cesta funguje bez ohledu na to, kam je web nasazený.)
+  var BASE = '../api';
+
+  // Obal nad fetch — posílá session cookie (PHP login) na stejné doméně
+  function apiFetch(url, opts) {
+    opts = opts || {};
+    opts.credentials = 'same-origin';
+    return fetch(url, opts);
+  }
   var available = null; // null = neznámo, true/false = zjištěno
 
   // Zjisti, zda backend běží (health check)
   function checkAvailable() {
     if (available !== null) return Promise.resolve(available);
-    return fetch(BASE + '/health', { method: 'GET' })
+    return apiFetch(BASE + '/health', { method: 'GET' })
       .then(function (r) { available = r.ok; return available; })
       .catch(function () { available = false; return false; });
   }
@@ -33,7 +42,7 @@ var FFYApi = (function () {
   function listFiles(dir) {
     return checkAvailable().then(function (ok) {
       if (ok) {
-        return fetch(BASE + '/files?dir=' + encodeURIComponent(dir))
+        return apiFetch(BASE + '/files?dir=' + encodeURIComponent(dir))
           .then(function (r) { return r.json(); })
           .catch(function () { return localList(dir); });
       }
@@ -47,7 +56,7 @@ var FFYApi = (function () {
         var fd = new FormData();
         fd.append('file', file);
         fd.append('dir', dir);
-        return fetch(BASE + '/upload', { method: 'POST', body: fd })
+        return apiFetch(BASE + '/upload', { method: 'POST', body: fd })
           .then(function (r) { return r.json(); });
       }
       // Lokální fallback: ulož jako base64 do localStorage
@@ -58,7 +67,7 @@ var FFYApi = (function () {
   function deleteFile(dir, name) {
     return checkAvailable().then(function (ok) {
       if (ok) {
-        return fetch(BASE + '/files?dir=' + encodeURIComponent(dir) + '&name=' + encodeURIComponent(name), { method: 'DELETE' })
+        return apiFetch(BASE + '/files?dir=' + encodeURIComponent(dir) + '&name=' + encodeURIComponent(name), { method: 'DELETE' })
           .then(function (r) { return r.json(); });
       }
       return localDelete(dir, name);
@@ -69,7 +78,7 @@ var FFYApi = (function () {
   function getGlobalCss() {
     return checkAvailable().then(function (ok) {
       if (ok) {
-        return fetch(BASE + '/global/css').then(function (r) { return r.text(); })
+        return apiFetch(BASE + '/global/css').then(function (r) { return r.text(); })
           .catch(function () { return localGetCss(); });
       }
       return localGetCss();
@@ -79,7 +88,7 @@ var FFYApi = (function () {
   function saveGlobalCss(css) {
     return checkAvailable().then(function (ok) {
       if (ok) {
-        return fetch(BASE + '/global/css', { method: 'PUT', headers: { 'Content-Type': 'text/css' }, body: css })
+        return apiFetch(BASE + '/global/css', { method: 'PUT', headers: { 'Content-Type': 'text/css' }, body: css })
           .then(function (r) { return r.json(); });
       }
       localStorage.setItem('ffy-global-css', css);
@@ -91,7 +100,7 @@ var FFYApi = (function () {
   function getGA4() {
     return checkAvailable().then(function (ok) {
       if (ok) {
-        return fetch(BASE + '/global/ga4').then(function (r) { return r.json(); })
+        return apiFetch(BASE + '/global/ga4').then(function (r) { return r.json(); })
           .catch(function () { return localGetGA4(); });
       }
       return localGetGA4();
@@ -101,7 +110,7 @@ var FFYApi = (function () {
   function saveGA4(gtmId) {
     return checkAvailable().then(function (ok) {
       if (ok) {
-        return fetch(BASE + '/global/ga4', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ gtm_id: gtmId }) })
+        return apiFetch(BASE + '/global/ga4', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ gtm_id: gtmId }) })
           .then(function (r) { return r.json(); });
       }
       localStorage.setItem('ffy-ga4-id', gtmId);
@@ -145,7 +154,7 @@ var FFYApi = (function () {
   function login(pwd) {
     return checkAvailable().then(function (ok) {
       if (ok) {
-        return fetch(BASE + '/login', {
+        return apiFetch(BASE + '/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ password: pwd })
@@ -167,7 +176,7 @@ var FFYApi = (function () {
   function publish(pagesPayload) {
     return checkAvailable().then(function (ok) {
       if (ok) {
-        return fetch(BASE + '/publish', {
+        return apiFetch(BASE + '/publish', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ pages: pagesPayload })
