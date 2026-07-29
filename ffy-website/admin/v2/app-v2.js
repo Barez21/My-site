@@ -332,7 +332,8 @@ function Canvas({
   // Vyrenderuj stránku do iframe
   useEffect(() => {
     if (!iframeRef.current || !page) return;
-    const baseHref = new URL('.', window.location.href).href;
+    // base = ROOT webu (o dvě úrovně výš než admin/v2/), aby styly a embed iframy fungovaly
+    const baseHref = new URL('../../', window.location.href).href;
     const html = renderEditorPage(page, selectedId, baseHref);
     iframeRef.current.srcdoc = html;
     setReady(false);
@@ -462,6 +463,123 @@ function AddBlockModal({
 }
 
 // ─────────────────────────────────────────────
+//  MÉDIA / DOKUMENTY / CSS PANELY
+// ─────────────────────────────────────────────
+function MediaPanel() {
+  const [media, setMedia] = useState(() => loadMedia());
+  const fileRef = useRef(null);
+  function handleFiles(e) {
+    const files = Array.from(e.target.files);
+    let pending = files.length;
+    const added = [];
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        added.push({
+          id: generateId(),
+          name: file.name,
+          type: file.type,
+          data: reader.result,
+          date: Date.now()
+        });
+        if (--pending === 0) {
+          const next = [...media, ...added];
+          setMedia(next);
+          saveMedia(next);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+  function remove(id) {
+    const next = media.filter(m => m.id !== id);
+    setMedia(next);
+    saveMedia(next);
+  }
+  function copyUrl(m) {
+    navigator.clipboard && navigator.clipboard.writeText(m.data);
+  }
+  return /*#__PURE__*/React.createElement("div", {
+    className: "v2-asset"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "v2-btn v2-btn-primary v2-btn-block",
+    onClick: () => fileRef.current.click()
+  }, "+ Nahrát obrázky"), /*#__PURE__*/React.createElement("input", {
+    ref: fileRef,
+    type: "file",
+    accept: "image/*",
+    multiple: true,
+    style: {
+      display: 'none'
+    },
+    onChange: handleFiles
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "v2-asset-note"
+  }, "Uloženo lokálně (localStorage). Pro velkou knihovnu bude potřeba backend."), /*#__PURE__*/React.createElement("div", {
+    className: "v2-media-grid"
+  }, media.length === 0 && /*#__PURE__*/React.createElement("div", {
+    className: "v2-asset-empty"
+  }, "Zatím žádné obrázky"), media.map(m => /*#__PURE__*/React.createElement("div", {
+    key: m.id,
+    className: "v2-media-item"
+  }, /*#__PURE__*/React.createElement("img", {
+    src: m.data,
+    alt: m.name,
+    className: "v2-media-thumb"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "v2-media-overlay"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "v2-icon-btn",
+    onClick: () => copyUrl(m),
+    title: "Kopírovat URL"
+  }, "📋"), /*#__PURE__*/React.createElement("button", {
+    className: "v2-icon-btn v2-del",
+    onClick: () => remove(m.id),
+    title: "Smazat"
+  }, "✕")), /*#__PURE__*/React.createElement("div", {
+    className: "v2-media-name"
+  }, m.name)))));
+}
+function DocsPanel() {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "v2-asset"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "v2-asset-note"
+  }, "Dokumenty (PDF, ceníky) se spravují jako soubory ve složce ", /*#__PURE__*/React.createElement("code", null, "docs/"), " na serveru."), /*#__PURE__*/React.createElement("div", {
+    className: "v2-docs-info"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "v2-docs-info-title"
+  }, "Jak přidat dokument"), /*#__PURE__*/React.createElement("ol", {
+    className: "v2-docs-steps"
+  }, /*#__PURE__*/React.createElement("li", null, "Nahraj PDF do složky ", /*#__PURE__*/React.createElement("code", null, "docs/"), " na serveru (přes FTP nebo správce souborů)."), /*#__PURE__*/React.createElement("li", null, "V bloku „Dokumenty ke stažení\" nebo „Ceníky\" přidej položku."), /*#__PURE__*/React.createElement("li", null, "Do pole odkazu zadej cestu, např. ", /*#__PURE__*/React.createElement("code", null, "docs/smlouvy/smlouva.pdf"), ".")), /*#__PURE__*/React.createElement("div", {
+    className: "v2-asset-note"
+  }, "Správa souborů přímo z editoru bude možná až s backendem (upload endpoint).")));
+}
+function CssPanel({
+  page,
+  onUpdate,
+  locked
+}) {
+  if (!page) return /*#__PURE__*/React.createElement("div", {
+    className: "v2-inspector-empty"
+  }, "Vyber stránku");
+  return /*#__PURE__*/React.createElement("div", {
+    className: "v2-asset"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "v2-asset-note"
+  }, "Vlastní CSS pro tuto stránku. Přidá se za globální styly — přepíše je jen pro ", /*#__PURE__*/React.createElement("strong", null, page.meta.slug), "."), locked && /*#__PURE__*/React.createElement("div", {
+    className: "v2-lock-note"
+  }, "🔒 Odemkni stránku pro editaci."), /*#__PURE__*/React.createElement("textarea", {
+    className: "v2-input v2-css-editor",
+    value: page.customCss || '',
+    onChange: e => onUpdate(e.target.value),
+    disabled: locked,
+    placeholder: '.sdileni-block {\n  /* vlastní styly */\n}',
+    spellCheck: false
+  }));
+}
+
+// ─────────────────────────────────────────────
 //  HLAVNÍ APLIKACE
 // ─────────────────────────────────────────────
 function AppV2() {
@@ -472,6 +590,10 @@ function AppV2() {
   const [showAdd, setShowAdd] = useState(false);
   const [unlocked, setUnlocked] = useState({});
   const [pageMenuOpen, setPageMenuOpen] = useState(false);
+  const [leftW, setLeftW] = useState(260);
+  const [rightW, setRightW] = useState(320);
+  const [assetPanel, setAssetPanel] = useState(null); // 'media' | 'docs' | 'css' | null
+
   const activePage = pages.find(p => p.id === activeId);
   const selected = activePage ? activePage.blocks.find(b => b.id === selectedBlock) : null;
   useEffect(() => {
@@ -579,6 +701,31 @@ function AppV2() {
     label: 'Nové stránky'
   }];
   const locked = isLocked(activePage);
+
+  // Resize panelů
+  function startResize(side, e) {
+    e.preventDefault();
+    const startX = e.clientX;
+    const startLeft = leftW,
+      startRight = rightW;
+    function onMove(ev) {
+      if (side === 'left') {
+        setLeftW(Math.max(180, Math.min(420, startLeft + (ev.clientX - startX))));
+      } else {
+        setRightW(Math.max(240, Math.min(500, startRight - (ev.clientX - startX))));
+      }
+    }
+    function onUp() {
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    }
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+  }
   return /*#__PURE__*/React.createElement("div", {
     className: "v2-app"
   }, /*#__PURE__*/React.createElement("div", {
@@ -642,12 +789,24 @@ function AppV2() {
     className: "v2-btn v2-btn-ghost",
     href: "../index.html"
   }, "← Stará verze")), /*#__PURE__*/React.createElement("div", {
-    className: "v2-main"
+    className: "v2-main",
+    style: {
+      gridTemplateColumns: `${leftW}px 6px 1fr 6px ${rightW}px`
+    }
   }, /*#__PURE__*/React.createElement("div", {
     className: "v2-panel v2-panel-left"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "v2-panel-head"
-  }, "Struktura stránky"), /*#__PURE__*/React.createElement(BlockTree, {
+    className: "v2-panel-tabs"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: `v2-panel-tab ${!assetPanel ? 'active' : ''}`,
+    onClick: () => setAssetPanel(null)
+  }, "Struktura"), /*#__PURE__*/React.createElement("button", {
+    className: `v2-panel-tab ${assetPanel === 'media' ? 'active' : ''}`,
+    onClick: () => setAssetPanel(assetPanel === 'media' ? null : 'media')
+  }, "Obrázky"), /*#__PURE__*/React.createElement("button", {
+    className: `v2-panel-tab ${assetPanel === 'docs' ? 'active' : ''}`,
+    onClick: () => setAssetPanel(assetPanel === 'docs' ? null : 'docs')
+  }, "Dokumenty")), assetPanel === 'media' ? /*#__PURE__*/React.createElement(MediaPanel, null) : assetPanel === 'docs' ? /*#__PURE__*/React.createElement(DocsPanel, null) : /*#__PURE__*/React.createElement(BlockTree, {
     page: activePage,
     selectedId: selectedBlock,
     onSelect: setSelectedBlock,
@@ -656,6 +815,9 @@ function AppV2() {
     onDuplicate: duplicateBlock,
     locked: locked
   })), /*#__PURE__*/React.createElement("div", {
+    className: "v2-resizer",
+    onMouseDown: e => startResize('left', e)
+  }), /*#__PURE__*/React.createElement("div", {
     className: "v2-panel v2-panel-center"
   }, activePage ? /*#__PURE__*/React.createElement(Canvas, {
     page: activePage,
@@ -668,10 +830,29 @@ function AppV2() {
   }, /*#__PURE__*/React.createElement("div", {
     className: "v2-canvas-empty-icon"
   }, "◲"), /*#__PURE__*/React.createElement("div", null, "Vyber stránku nahoře"))), /*#__PURE__*/React.createElement("div", {
+    className: "v2-resizer",
+    onMouseDown: e => startResize('right', e)
+  }), /*#__PURE__*/React.createElement("div", {
     className: "v2-panel v2-panel-right"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "v2-panel-head"
-  }, "Vlastnosti"), /*#__PURE__*/React.createElement(Inspector, {
+    className: "v2-panel-tabs"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: `v2-panel-tab ${assetPanel !== 'css' ? 'active' : ''}`,
+    onClick: () => setAssetPanel(null)
+  }, "Vlastnosti"), /*#__PURE__*/React.createElement("button", {
+    className: `v2-panel-tab ${assetPanel === 'css' ? 'active' : ''}`,
+    onClick: () => setAssetPanel('css')
+  }, "CSS stránky")), assetPanel === 'css' ? /*#__PURE__*/React.createElement(CssPanel, {
+    page: activePage,
+    onUpdate: css => {
+      if (!activePage || isLocked(activePage)) return;
+      setPages(pages.map(p => p.id === activeId ? {
+        ...p,
+        customCss: css
+      } : p));
+    },
+    locked: locked
+  }) : /*#__PURE__*/React.createElement(Inspector, {
     block: selected,
     onUpdate: updateBlockProp,
     locked: locked

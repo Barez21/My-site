@@ -36,6 +36,11 @@ function renderEditorBlock(block, index, isSelected) {
       if (!inner || !inner.trim()) {
         inner = '<div style="padding:1rem;background:rgba(255,200,50,0.08);border:1px dashed rgba(255,200,50,0.3);border-radius:8px;text-align:center;font-size:0.8rem;color:rgba(255,200,50,0.6)">' + (reg.label || block.type) + ' — prázdný blok</div>';
       }
+      // Oprav embed/interaktivní iframy: '../stranka.html' → 'stranka.html'
+      // (base href v editoru ukazuje na root, takže ../ by mířilo mimo)
+      inner = inner.replace(/(<iframe[^>]*\ssrc=")\.\.\//g, '$1');
+      // Skripty vložené blokem (např. price-chart.js) se v srcdoc iframe nespustí
+      // automaticky — necháme je být, funkční jsou až na živém webu
     } catch (e) {
       inner = '<div style="padding:1rem;background:rgba(224,85,85,0.1);border-radius:8px;text-align:center;color:#e05555">Chyba: ' + e.message + '</div>';
     }
@@ -55,7 +60,8 @@ function renderEditorPage(page, selectedId, baseHref) {
   var isGlobal = (page.meta.slug === '_header' || page.meta.slug === '_footer');
   var body;
   if (isGlobal) {
-    body = '<main class="subpage-main">' + blocksHTML + '</main>';
+    // Globální prvky (menu/patička) potřebují subpage-main obal pro autentické zobrazení
+    body = '<main class="subpage-main ffy-ed-global">' + blocksHTML + '</main>';
   } else {
     body = '<main class="subpage-main"><section class="' + wrap + '-section"><div class="' + wrap + '-inner">' + blocksHTML + '</div></section></main>';
   }
@@ -63,10 +69,12 @@ function renderEditorPage(page, selectedId, baseHref) {
   var editorCSS = getEditorCanvasCSS();
   var editorJS = getEditorCanvasJS(JSON.stringify(INLINE_FIELDS));
 
+  // baseHref ukazuje na ROOT webu (o dvě úrovně výš než v2/), aby ../../styles.css
+  // i embed iframy (ceny-kalkulacka.html) fungovaly správně
   return '<!DOCTYPE html>\n<html lang="cs">\n<head>\n<meta charset="UTF-8">\n' +
     '<meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
     (baseHref ? '<base href="' + baseHref + '">\n' : '') +
-    '<link rel="stylesheet" href="../../styles.css">\n' +
+    '<link rel="stylesheet" href="styles.css">\n' +
     (page.customCss ? '<style>' + page.customCss + '</style>\n' : '') +
     '<style>' + editorCSS + '</style>\n</head>\n<body>\n' +
     '<div class="nebula" aria-hidden="true"><div class="nebula-blob nebula-blob-1"></div><div class="nebula-blob nebula-blob-2"></div></div>\n' +
@@ -88,6 +96,16 @@ function getEditorCanvasCSS() {
       'background:#44e6a3;color:#0a0f18;font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px 0 4px 0;' +
       'font-family:Ubuntu,sans-serif;opacity:0;transform:translateY(-100%);transition:opacity .1s;pointer-events:none}',
     '.ffy-ed-block:hover::before,.ffy-ed-selected::before{opacity:1}',
+    // Globální prvky: zobraz mega-panel rozbalený (jako na živém webu)
+    '.ffy-ed-global{padding:2rem}',
+    '.ffy-ed-global #main-nav{position:relative !important;transform:none !important;opacity:1 !important;visibility:visible !important}',
+    '.ffy-ed-global #main-nav .mega-panel{position:static !important;opacity:1 !important;visibility:visible !important;transform:none !important;pointer-events:auto !important;display:block !important;max-height:none !important;height:auto !important}',
+    '.ffy-ed-global .site-footer{position:relative !important;display:block !important}',
+    // Interaktivní embed iframy: povol pointer events až po výběru, jinak klik vybírá blok
+    '.embed-widget{position:relative}',
+    '.embed-widget iframe{pointer-events:none}',
+    '.ffy-ed-selected .embed-widget iframe{pointer-events:auto}',
+    '.embed-widget-note{margin-top:0.5rem;padding:0.5rem 0.85rem;background:rgba(68,230,163,0.06);border:1px solid rgba(68,230,163,0.15);border-radius:8px;font-size:0.75rem;color:rgba(68,230,163,0.7)}',
   ].join('');
 }
 
