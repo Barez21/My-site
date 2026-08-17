@@ -58,233 +58,266 @@
 <style>
 /* ============================================================
    FFY — inline vylepšení pro nový index (doplňuje styles.css)
-   Používá schválenou FFY paletu 2025.
+   Používá stávající proměnné (--primary, --accent, --muted, --navy-dark,
+   --slate-light, --bronze, --ink, --green-dark, --green-mid, --bg, --border).
+   NEZAVÁDÍ nové palety — jen komponenty pro nové sekce.
 ============================================================ */
-:root{
-  --ffy-blue:   #214571;
-  --ffy-green:  #45e7a3;
-  --ffy-green-2:#31c587;
-  --ffy-bronze: #e8af46;
-  --ffy-ink:    #0a141e;
-  --ffy-white:  #ffffff;
-  --ffy-bg:     #eff4fa;
-  --ffy-muted:  #548bc9;
-  --ffy-border: #b1cae7;
-  --ffy-soft:   #f4f8fc;
+
+/* --- Zjištěné mobilní úpravy nav (zachováno) --- */
+@media (max-width: 860px) {
+  .nav-cta       { display: none !important; }
+  .nav-hamburger { display: flex !important; }
+  .nav-tabs      { display: none !important; }
 }
 
-/* --- HERO nová verze --- */
-#hero .hero-headline em{ color: var(--ffy-green-2); font-style: normal; }
+/* ============ HERO — badge řádek, žárovka, connector ============ */
 .hero-badge-row{
-  display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:1.25rem;
+  display:flex; flex-wrap:wrap; gap:.5rem;
+  margin-bottom:1.25rem;
 }
 .hero-badge{
   display:inline-flex; align-items:center; gap:.4rem;
-  padding:.35rem .7rem; border-radius:999px;
-  background: rgba(69,231,163,.14);
-  color: var(--ffy-green-2);
-  font-size:.78rem; font-weight:600; letter-spacing:.02em;
-  border:1px solid rgba(69,231,163,.35);
+  padding:.35rem .75rem; border-radius:999px;
+  background: rgba(69,231,163,.12);
+  color: var(--accent);
+  font-size:.75rem; font-weight:500; letter-spacing:.02em;
+  border:1px solid rgba(69,231,163,.3);
 }
-.hero-badge svg{ width:14px; height:14px; }
+.hero-badge svg{ width:14px; height:14px; flex-shrink:0; }
 
-/* Ležící žárovka s videem */
+/* Ležící žárovka s videem — kontejner respektuje flex-center v .hero-visual */
 .hero-bulb-wrap{
   position:relative;
   width:100%;
-  max-width:560px;
-  aspect-ratio: 16/11;
-  margin-left:auto;
+  max-width:520px;
+  aspect-ratio: 520 / 360;
 }
 .hero-bulb-svg{
-  position:absolute; inset:0; width:100%; height:100%;
-  filter: drop-shadow(0 30px 60px rgba(33,69,113,.18));
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  filter: drop-shadow(0 30px 60px rgba(0,0,0,.35));
 }
+/* Video výřez uvnitř skla — přesně vycentrovaný na ellipse 180/192 v 560×385 */
 .hero-bulb-video{
   position:absolute;
-  /* výřez uvnitř skla žárovky, kde bude video */
-  top: 18%; left: 8%;
-  width: 46%; height: 64%;
-  border-radius: 50% / 42%;
+  top: 22%;
+  left: 9%;
+  width: 44%;
+  height: 56%;
+  border-radius: 50% / 45%;
   overflow:hidden;
-  background: linear-gradient(135deg, #0a141e 0%, #214571 100%);
+  background: linear-gradient(135deg, #0a141e 0%, #18314E 100%);
   display:flex; align-items:center; justify-content:center;
   cursor:pointer;
   transition: transform .3s ease;
+  z-index:2;
 }
 .hero-bulb-video:hover{ transform: scale(1.02); }
 .hero-bulb-video::before{
-  /* jemný "žhavý" glow uvnitř skla */
   content:""; position:absolute; inset:0;
-  background: radial-gradient(circle at 40% 45%, rgba(255,220,120,.28), transparent 60%);
+  background: radial-gradient(circle at 40% 45%, rgba(255,220,120,.22), transparent 60%);
   pointer-events:none;
 }
 .hero-bulb-play{
-  width:64px; height:64px; border-radius:50%;
+  width:58px; height:58px; border-radius:50%;
   background: rgba(255,255,255,.95);
   display:flex; align-items:center; justify-content:center;
-  box-shadow: 0 12px 30px rgba(0,0,0,.35);
+  box-shadow: 0 12px 26px rgba(0,0,0,.4);
   z-index:2;
   transition: transform .2s ease;
 }
 .hero-bulb-video:hover .hero-bulb-play{ transform: scale(1.08); }
-.hero-bulb-play svg{ margin-left:4px; color: var(--ffy-blue); }
+.hero-bulb-play svg{ margin-left:3px; color: var(--primary); }
 .hero-bulb-video-label{
-  position:absolute; bottom:10px; left:0; right:0;
-  text-align:center; color:#fff; font-size:.78rem; font-weight:500;
-  z-index:2; text-shadow: 0 2px 8px rgba(0,0,0,.5);
+  position:absolute; bottom:8%; left:0; right:0;
+  text-align:center; color:#fff;
+  font-size:.72rem; font-weight:500;
+  z-index:2;
+  text-shadow: 0 2px 6px rgba(0,0,0,.6);
 }
 
-/* Grafický "connector" mezi textem a žárovkou */
+/* Grafický connector — jemný oblouk od textu k žárovce (jen desktop) */
 .hero-connector{
+  display:none;
   position:absolute;
-  left:-90px; top:38%;
-  width:120px; height:80px;
+  left:-70px; top:38%;
+  width:100px; height:70px;
   pointer-events:none;
-  display:none; /* jen na desktopu */
+  z-index:1;
 }
-@media (min-width: 980px){
+@media (min-width: 981px){
   .hero-connector{ display:block; }
 }
 .hero-connector path{
-  stroke: var(--ffy-green);
-  stroke-width: 2.2;
+  stroke: var(--accent);
+  stroke-width: 2;
   fill:none;
-  stroke-dasharray: 6 6;
-  animation: dash 20s linear infinite;
+  stroke-dasharray: 5 5;
+  animation: dashMove 22s linear infinite;
+  opacity:.75;
 }
-.hero-connector circle{ fill: var(--ffy-green); }
-@keyframes dash{ to{ stroke-dashoffset: -240; } }
+.hero-connector circle{ fill: var(--accent); }
+@keyframes dashMove{ to{ stroke-dashoffset: -240; } }
 
-/* --- 4 BENEFIT STRIP pod hero (jak na obrázku) --- */
-.hero-strip{
-  margin-top: 3rem;
-  padding: 2rem 0 0;
-  border-top: 1px solid var(--ffy-border);
+/* ============ BENEFITY strip — samostatná sekce pod hero ============ */
+#benefity-hero{
+  background: #fff;
+  padding: 3.5rem 2rem;
+  border-bottom: 1px solid var(--border);
 }
-.hero-strip-grid{
+[data-theme="light"] #benefity-hero{ background: #fff; }
+.benefity-grid{
+  max-width: 1100px;
+  margin: 0 auto;
   display:grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
 }
 @media (max-width: 900px){
-  .hero-strip-grid{ grid-template-columns: repeat(2, 1fr); gap: 2rem 1rem; }
+  .benefity-grid{ grid-template-columns: repeat(2, 1fr); gap: 2rem 1rem; }
+  #benefity-hero{ padding: 2.5rem 1.5rem; }
 }
 @media (max-width: 520px){
-  .hero-strip-grid{ grid-template-columns: 1fr; }
+  .benefity-grid{ grid-template-columns: 1fr; }
 }
-.hero-strip-item{ text-align:center; padding: 0 .5rem; }
-.hero-strip-icon{
+.benefity-item{ text-align:center; padding: 0 .5rem; }
+.benefity-ico{
   width:56px; height:56px; margin: 0 auto 1rem;
   border-radius:50%;
-  background: var(--ffy-green);
+  background: var(--accent);
   display:flex; align-items:center; justify-content:center;
-  color:#fff;
-  box-shadow: 0 8px 20px rgba(69,231,163,.35);
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(69,231,163,.35);
 }
-.hero-strip-icon svg{ width:26px; height:26px; }
-.hero-strip-title{
-  color: var(--ffy-blue);
-  font-weight:700; font-size:1.02rem; margin-bottom:.5rem;
+.benefity-ico svg{ width:26px; height:26px; }
+.benefity-title{
+  color: var(--navy-dark);
+  font-weight:700; font-size:1rem; margin-bottom:.5rem;
+  line-height:1.3;
 }
-.hero-strip-desc{
-  color: var(--ffy-muted);
-  font-size:.88rem; line-height:1.55; font-weight:400;
+.benefity-desc{
+  color: var(--muted);
+  font-size:.87rem; line-height:1.55; font-weight:400;
 }
-[data-theme="light"] .hero-strip{ border-color: rgba(33,69,113,.12); }
-[data-theme="light"] .hero-strip-title{ color:#0a141e; }
 
-/* --- CENY sekce --- */
-#ceny{ padding: 5rem 0; }
-.price-hero{
-  max-width: 900px; margin: 0 auto; text-align:center;
+/* ============ CENY ============ */
+#ceny{
+  background: var(--bg);
+  padding: 80px 2rem;
+}
+.price-wrap{
+  max-width: 1000px; margin: 0 auto; text-align:center;
 }
 .price-badge{
   display:inline-flex; align-items:center; gap:.5rem;
-  background: linear-gradient(135deg, var(--ffy-green) 0%, var(--ffy-green-2) 100%);
-  color:#0a141e;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--green-dark) 100%);
+  color: #fff;
   padding:.5rem 1rem; border-radius:999px;
-  font-weight:700; font-size:.85rem;
+  font-weight:700; font-size:.82rem;
   margin-bottom:1.5rem;
   box-shadow: 0 10px 24px rgba(69,231,163,.35);
 }
 .price-badge svg{ width:16px; height:16px; }
 .price-headline{
-  color: var(--ffy-blue);
+  color: var(--navy-dark);
   font-size: clamp(1.9rem, 3.4vw, 2.6rem);
-  font-weight:800; line-height:1.15; margin-bottom:1rem;
+  font-weight:700; line-height:1.15;
+  margin-bottom:1rem;
   letter-spacing:-.01em;
 }
+.price-headline em{ font-style:normal; color: var(--green-dark); }
 .price-sub{
-  color: var(--ffy-muted);
-  font-size:1.05rem; line-height:1.65; font-weight:400;
-  max-width: 680px; margin: 0 auto 2rem;
+  color: var(--muted);
+  font-size:1.05rem; line-height:1.65; font-weight:300;
+  max-width: 700px; margin: 0 auto 2.5rem;
 }
+.price-sub strong{ color: var(--green-dark); font-weight:700; }
+
 .price-pillars{
   display:grid; grid-template-columns: repeat(3, 1fr); gap:1rem;
   margin: 2rem 0 2.5rem;
 }
 @media (max-width: 800px){ .price-pillars{ grid-template-columns: 1fr; } }
 .price-pillar{
-  background: var(--ffy-soft);
-  border: 1px solid var(--ffy-border);
-  border-radius:16px;
-  padding: 1.25rem 1.25rem;
+  background: var(--slate-light);
+  border: 1px solid var(--border);
+  border-radius:14px;
+  padding: 1.25rem;
   display:flex; gap:.85rem; align-items:flex-start;
   text-align:left;
 }
 .price-pillar-ico{
   flex-shrink:0;
-  width:38px; height:38px; border-radius:10px;
-  background: rgba(69,231,163,.15);
-  color: var(--ffy-green-2);
+  width:40px; height:40px; border-radius:10px;
+  background: rgba(69,231,163,.18);
+  color: var(--green-dark);
   display:flex; align-items:center; justify-content:center;
 }
 .price-pillar-ico svg{ width:20px; height:20px; }
 .price-pillar-title{
-  color: var(--ffy-blue); font-weight:700; font-size:.95rem; margin-bottom:.2rem;
+  color: var(--navy-dark); font-weight:700;
+  font-size:.95rem; margin-bottom:.25rem;
 }
 .price-pillar-desc{
-  color: var(--ffy-muted); font-size:.83rem; line-height:1.5;
+  color: var(--muted); font-size:.83rem; line-height:1.5;
 }
 .price-cta-row{
   display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;
 }
-[data-theme="light"] .price-pillar{ background: rgba(33,69,113,.04); border-color: rgba(33,69,113,.1); }
-[data-theme="light"] .price-pillar-title{ color:#0a141e; }
-[data-theme="light"] .price-pillar-desc,
-[data-theme="light"] .price-sub{ color:#4a5a6a; }
 
-/* --- RECENZE --- */
-#recenze{ padding: 5rem 0; background: linear-gradient(180deg, transparent 0%, rgba(69,231,163,.04) 100%); }
-.reviews-topline{
-  display:flex; align-items:center; gap: 2rem;
-  flex-wrap: wrap; justify-content:center;
-  margin-bottom: 2.5rem;
-  padding: 1.5rem 2rem;
-  background: var(--ffy-white);
-  border: 1px solid var(--ffy-border);
-  border-radius: 20px;
-  max-width: 720px; margin-left:auto; margin-right:auto;
-  box-shadow: 0 12px 30px rgba(33,69,113,.06);
+/* --- Sekundární tlačítko pro světlé pozadí (btn-outline z global je bílé) --- */
+.btn-outline-dark{
+  background: transparent;
+  color: var(--navy-dark);
+  border: 1.5px solid var(--border);
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  display: inline-block;
+  transition: border-color .2s, background .2s, color .2s;
 }
-[data-theme="dark"] .reviews-topline{ background: rgba(255,255,255,.03); }
+.btn-outline-dark:hover{
+  border-color: var(--accent);
+  background: rgba(69,231,163,.08);
+  color: var(--primary);
+}
+
+/* ============ RECENZE ============ */
+#recenze{
+  background: #fff;
+  padding: 80px 2rem;
+}
+.recenze-inner{ max-width: 1100px; margin: 0 auto; }
+.recenze-head{ text-align:center; margin-bottom: 2.5rem; }
+
+.reviews-topline{
+  display:flex; align-items:center; gap: 1.5rem 2rem;
+  flex-wrap: wrap; justify-content:center;
+  margin: 0 auto 2.5rem;
+  padding: 1.25rem 1.75rem;
+  background: var(--slate-light);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  max-width: 720px;
+  box-shadow: 0 12px 30px rgba(33,69,113,.05);
+}
 .reviews-google-logo{
   display:flex; align-items:center; gap:.5rem;
-  font-weight:700; color: var(--ffy-blue); font-size:1.1rem;
+  font-weight:700; color: var(--navy-dark); font-size:1.05rem;
 }
-.reviews-google-logo svg{ width: 28px; height:28px; }
+.reviews-google-logo svg{ width: 26px; height:26px; }
 .reviews-rating{
   display:flex; align-items:center; gap:.75rem;
 }
 .reviews-rating-num{
-  font-size: 2.2rem; font-weight:800; color: var(--ffy-blue);
+  font-size: 2.2rem; font-weight:800; color: var(--navy-dark);
   line-height:1;
+  font-variant-numeric: tabular-nums;
 }
-.reviews-stars{ color: var(--ffy-bronze); font-size:1.1rem; letter-spacing:.05em; }
-.reviews-count{ color: var(--ffy-muted); font-size:.85rem; margin-top:.15rem; }
-[data-theme="light"] .reviews-rating-num,
-[data-theme="light"] .reviews-google-logo{ color: #0a141e; }
+.reviews-stars{ color: var(--bronze); font-size:1.05rem; letter-spacing:.05em; }
+.reviews-count{ color: var(--muted); font-size:.85rem; margin-top:.15rem; }
 
 .reviews-grid{
   display:grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
@@ -292,30 +325,28 @@
 }
 @media (max-width: 900px){ .reviews-grid{ grid-template-columns: 1fr; } }
 .review-card{
-  background: var(--ffy-white);
-  border: 1px solid var(--ffy-border);
+  background: var(--slate-light);
+  border: 1px solid var(--border);
   border-radius: 16px; padding: 1.25rem;
   display:flex; flex-direction:column; gap:.75rem;
   transition: transform .2s ease, box-shadow .2s ease;
 }
 .review-card:hover{ transform: translateY(-3px); box-shadow: 0 16px 30px rgba(33,69,113,.08); }
-[data-theme="dark"] .review-card{ background: rgba(255,255,255,.03); }
 .review-head{ display:flex; align-items:center; gap:.75rem; }
 .review-avatar{
   width:40px; height:40px; border-radius:50%;
-  background: linear-gradient(135deg, var(--ffy-blue), var(--ffy-green-2));
+  background: linear-gradient(135deg, var(--primary), var(--green-dark));
   color:#fff; display:flex; align-items:center; justify-content:center;
   font-weight:700; font-size:.9rem;
+  flex-shrink:0;
 }
-.review-author{ font-weight:600; color: var(--ffy-blue); font-size:.9rem; }
-[data-theme="light"] .review-author{ color:#0a141e; }
-.review-date{ font-size:.75rem; color: var(--ffy-muted); }
-.review-stars-row{ color: var(--ffy-bronze); font-size:.9rem; letter-spacing:.05em; }
-.review-text{ color: var(--ffy-blue); font-size:.9rem; line-height:1.6; font-weight:400; }
-[data-theme="light"] .review-text{ color:#2a3a4a; }
+.review-author{ font-weight:600; color: var(--navy-dark); font-size:.9rem; line-height:1.2; }
+.review-date{ font-size:.75rem; color: var(--muted); margin-top:.15rem; }
+.review-stars-row{ color: var(--bronze); font-size:.9rem; letter-spacing:.05em; }
+.review-text{ color: var(--navy-dark); font-size:.9rem; line-height:1.6; font-weight:400; }
 
 .reviews-ask{
-  background: var(--ffy-blue);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--slate-dark) 100%);
   color:#fff;
   border-radius: 20px;
   padding: 2rem;
@@ -327,52 +358,63 @@
 }
 @media (max-width: 800px){ .reviews-ask{ grid-template-columns: 1fr; text-align:center; } }
 .reviews-ask h3{
-  font-size:1.5rem; font-weight:700; margin-bottom:.5rem;
+  font-size:1.4rem; font-weight:700; margin-bottom:.5rem; color:#fff;
 }
-.reviews-ask p{ font-size:.95rem; line-height:1.6; opacity:.85; font-weight:300; }
+.reviews-ask p{ font-size:.95rem; line-height:1.6; color: rgba(255,255,255,.75); font-weight:300; }
 .reviews-ask-buttons{ display:flex; flex-direction:column; gap:.6rem; }
 .reviews-ask-btn{
   display:flex; align-items:center; gap:.6rem;
   padding: .85rem 1.25rem;
-  background: rgba(255,255,255,.1);
-  border: 1px solid rgba(255,255,255,.25);
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.2);
   border-radius: 12px;
   color:#fff; text-decoration:none;
   font-weight:600; font-size:.9rem;
   transition: all .2s ease;
 }
-.reviews-ask-btn:hover{ background: rgba(255,255,255,.2); transform: translateX(3px); }
-.reviews-ask-btn svg{ width:18px; height:18px; }
+.reviews-ask-btn:hover{ background: rgba(255,255,255,.18); transform: translateX(3px); }
+.reviews-ask-btn svg{ width:18px; height:18px; flex-shrink:0; }
 .reviews-ask-btn.primary{
-  background: var(--ffy-green);
-  color: var(--ffy-ink);
-  border-color: var(--ffy-green);
+  background: var(--accent);
+  color: var(--navy-dark);
+  border-color: var(--accent);
 }
-.reviews-ask-btn.primary:hover{ background: var(--ffy-green-2); }
+.reviews-ask-btn.primary:hover{ background: #6bf0b7; }
 
-/* --- LICENCE & ASOCIACE --- */
-#licence{ padding: 5rem 0; }
-.trust-hero{ max-width: 780px; margin: 0 auto 3rem; text-align:center; }
+/* ============ LICENCE & ASOCIACE ============ */
+#licence{
+  background: var(--bg);
+  padding: 80px 2rem;
+}
+.licence-inner{ max-width: 1100px; margin: 0 auto; }
+.licence-head{ text-align:center; max-width: 780px; margin: 0 auto 2.5rem; }
+
 .licence-highlight{
-  background: linear-gradient(135deg, var(--ffy-green-2) 0%, var(--ffy-green) 100%);
-  color: var(--ffy-ink);
+  background: linear-gradient(135deg, var(--green-dark) 0%, var(--accent) 100%);
+  color: var(--navy-dark);
   border-radius: 20px;
   padding: 2rem;
   display:flex; align-items:center; gap: 1.5rem;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
   box-shadow: 0 20px 40px rgba(69,231,163,.25);
 }
 @media (max-width: 700px){ .licence-highlight{ flex-direction:column; text-align:center; } }
 .licence-highlight-icon{
   flex-shrink:0;
   width:64px; height:64px; border-radius:16px;
-  background: rgba(255,255,255,.85);
+  background: rgba(255,255,255,.9);
   display:flex; align-items:center; justify-content:center;
-  color: var(--ffy-green-2);
+  color: var(--green-dark);
 }
 .licence-highlight-icon svg{ width:32px; height:32px; }
-.licence-highlight-title{ font-size:1.35rem; font-weight:800; margin-bottom:.35rem; }
-.licence-highlight-desc{ font-size:.95rem; line-height:1.55; font-weight:500; opacity:.9; }
+.licence-highlight-title{
+  font-size:1.3rem; font-weight:700; margin-bottom:.35rem;
+  color: var(--navy-dark);
+}
+.licence-highlight-desc{
+  font-size:.95rem; line-height:1.55; font-weight:500;
+  color: rgba(14,30,47,.8);
+}
 
 .licence-grid{
   display:grid;
@@ -380,36 +422,52 @@
   gap: 1rem;
 }
 .licence-item{
-  background: var(--ffy-white);
-  border: 1px solid var(--ffy-border);
+  background: #fff;
+  border: 1px solid var(--border);
   border-radius: 14px;
   padding: 1.25rem 1rem;
   text-align:center;
-  transition: transform .2s ease;
+  transition: transform .2s ease, box-shadow .2s ease;
 }
-.licence-item:hover{ transform: translateY(-3px); }
-[data-theme="dark"] .licence-item{ background: rgba(255,255,255,.03); }
+.licence-item:hover{ transform: translateY(-3px); box-shadow: 0 12px 24px rgba(33,69,113,.08); }
 .licence-ico{
   width:44px; height:44px; margin: 0 auto .75rem;
   border-radius:50%;
   background: rgba(69,231,163,.15);
-  color: var(--ffy-green-2);
+  color: var(--green-dark);
   display:flex; align-items:center; justify-content:center;
 }
 .licence-ico svg{ width:22px; height:22px; }
-.licence-item-title{ color: var(--ffy-blue); font-weight:700; font-size:.9rem; margin-bottom:.2rem; }
-[data-theme="light"] .licence-item-title{ color:#0a141e; }
-.licence-item-desc{ color: var(--ffy-muted); font-size:.78rem; line-height:1.5; }
+.licence-item-title{
+  color: var(--navy-dark); font-weight:700;
+  font-size:.9rem; margin-bottom:.2rem;
+}
+.licence-item-desc{
+  color: var(--muted); font-size:.78rem; line-height:1.5;
+}
 
-/* --- VELKÁ ČÍSLA --- */
-#velka-cisla{ padding: 5rem 0; }
+/* ============ ZDROJE — používá existující model-* třídy, jen wrapper ============ */
+#zdroje{
+  background: #fff;
+  padding: 80px 2rem;
+}
+#zdroje .section-title em{ font-style:normal; color: var(--green-dark); }
+
+/* ============ VELKÁ ČÍSLA ============ */
+#velka-cisla{
+  background: var(--bg);
+  padding: 80px 2rem;
+}
+.velka-inner{ max-width: 1100px; margin: 0 auto; }
+.velka-head{ text-align:center; margin-bottom:2rem; }
+
 .big-numbers{
   display:grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 2rem;
   text-align:center;
   padding: 3rem 2rem;
-  background: linear-gradient(135deg, var(--ffy-blue) 0%, #1a3a63 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--slate-dark) 100%);
   border-radius: 24px;
   color:#fff;
   position:relative;
@@ -420,27 +478,34 @@
   top:-50%; right:-20%;
   width:600px; height:600px;
   background: radial-gradient(circle, rgba(69,231,163,.15) 0%, transparent 60%);
+  pointer-events:none;
 }
-@media (max-width: 800px){ .big-numbers{ grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 800px){ .big-numbers{ grid-template-columns: repeat(2, 1fr); gap: 1.5rem; padding: 2rem 1.25rem; } }
 @media (max-width: 480px){ .big-numbers{ grid-template-columns: 1fr; } }
 .big-num{ position:relative; z-index:1; }
 .big-num-val{
-  font-size: clamp(2.5rem, 5vw, 3.6rem);
+  font-size: clamp(2.4rem, 5vw, 3.5rem);
   font-weight: 800;
-  color: var(--ffy-green);
+  color: var(--accent);
   line-height:1;
   margin-bottom:.5rem;
   letter-spacing:-.02em;
+  font-variant-numeric: tabular-nums;
 }
 .big-num-lbl{
-  font-size:.9rem; font-weight:500; opacity:.9;
+  font-size:.88rem; font-weight:500;
+  color: rgba(255,255,255,.85);
   line-height:1.4;
 }
 
-/* --- ENERGOBANKING sekce --- */
-#energobanking-section{ padding: 5rem 0; }
+/* ============ ENERGOBANKING ============ */
+#energobanking-section{
+  background: #fff;
+  padding: 80px 2rem;
+}
 .energo-wrap{
-  background: var(--ffy-ink);
+  max-width: 1100px; margin: 0 auto;
+  background: var(--ink);
   color:#fff;
   border-radius: 28px;
   padding: 3rem;
@@ -448,29 +513,33 @@
   grid-template-columns: 1.2fr 1fr;
   gap: 3rem;
   align-items:center;
-  overflow:hidden; position:relative;
+  overflow:hidden;
+  position:relative;
 }
 @media (max-width: 900px){ .energo-wrap{ grid-template-columns: 1fr; padding: 2rem; } }
 .energo-wrap::before{
   content:""; position:absolute;
   bottom:-40%; left:-10%; width:500px; height:500px;
   background: radial-gradient(circle, rgba(69,231,163,.12) 0%, transparent 60%);
+  pointer-events:none;
 }
 .energo-content{ position:relative; z-index:1; }
 .energo-badge{
   display:inline-block;
   background: rgba(69,231,163,.15);
-  color: var(--ffy-green);
+  color: var(--accent);
   padding:.35rem .8rem; border-radius:999px;
-  font-size:.75rem; font-weight:700; letter-spacing:.05em;
+  font-size:.72rem; font-weight:700; letter-spacing:.05em;
   text-transform:uppercase; margin-bottom:1rem;
 }
 .energo-title{
-  font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight:800;
-  margin-bottom:1rem; line-height:1.15;
+  font-size: clamp(1.8rem, 3vw, 2.3rem); font-weight:700;
+  margin-bottom:1rem; line-height:1.2; color:#fff;
 }
 .energo-desc{
-  font-size:1rem; line-height:1.65; opacity:.85; margin-bottom:1.5rem; font-weight:300;
+  font-size:1rem; line-height:1.65;
+  color: rgba(255,255,255,.75);
+  margin-bottom:1.5rem; font-weight:300;
 }
 .energo-features{
   list-style:none; padding:0; margin: 0 0 1.75rem;
@@ -479,81 +548,88 @@
   display:flex; align-items:center; gap:.6rem;
   padding:.4rem 0;
   font-size:.92rem; font-weight:400;
+  color: rgba(255,255,255,.88);
 }
-.energo-features li svg{ color: var(--ffy-green); flex-shrink:0; }
+.energo-features li svg{ color: var(--accent); flex-shrink:0; }
 .energo-cta{ display:flex; gap:.75rem; flex-wrap:wrap; }
 .energo-btn-primary{
   display:inline-flex; align-items:center; gap:.4rem;
   padding: .85rem 1.5rem;
-  background: var(--ffy-green);
-  color: var(--ffy-ink);
-  border-radius:12px;
+  background: var(--accent);
+  color: var(--navy-dark);
+  border-radius:10px;
   font-weight:700; font-size:.95rem;
   text-decoration:none;
   transition: all .2s ease;
 }
-.energo-btn-primary:hover{ background:#fff; transform: translateY(-2px); }
+.energo-btn-primary:hover{ background: #6bf0b7; transform: translateY(-2px); }
 .energo-btn-secondary{
   display:inline-flex; align-items:center; gap:.4rem;
   padding: .85rem 1.5rem;
   border: 1px solid rgba(255,255,255,.25);
   color:#fff;
-  border-radius:12px;
-  font-weight:600; font-size:.95rem;
+  border-radius:10px;
+  font-weight:500; font-size:.95rem;
   text-decoration:none;
 }
 .energo-btn-secondary:hover{ background: rgba(255,255,255,.1); }
-.energo-mockup{
+
+.energo-preview{
   position:relative; z-index:1;
   background: linear-gradient(135deg, #1a2a3a 0%, #0a141e 100%);
-  border-radius:20px;
+  border-radius:18px;
   padding:1.5rem;
   border: 1px solid rgba(69,231,163,.2);
-  box-shadow: 0 30px 60px rgba(0,0,0,.4);
+  box-shadow: 0 30px 60px rgba(0,0,0,.45);
 }
-.energo-mockup-head{
+.energo-preview-head{
   display:flex; justify-content:space-between; align-items:center;
-  padding-bottom:1rem; border-bottom:1px solid rgba(255,255,255,.1);
+  padding-bottom:1rem; border-bottom:1px solid rgba(255,255,255,.08);
   margin-bottom:1rem;
 }
-.energo-mockup-title{ font-size:.85rem; opacity:.6; }
-.energo-mockup-dots{ display:flex; gap:.3rem; }
-.energo-mockup-dots span{
+.energo-preview-title{ font-size:.82rem; color: rgba(255,255,255,.55); }
+.energo-preview-dots{ display:flex; gap:.3rem; }
+.energo-preview-dots span{
   width:8px; height:8px; border-radius:50%;
   background: rgba(255,255,255,.2);
 }
-.energo-mockup-row{
+.energo-preview-row{
   display:flex; justify-content:space-between; align-items:center;
-  padding:.75rem 0; border-bottom: 1px solid rgba(255,255,255,.05);
+  padding:.7rem 0;
+  border-bottom: 1px solid rgba(255,255,255,.05);
 }
-.energo-mockup-label{ font-size:.85rem; opacity:.7; }
-.energo-mockup-val{ font-weight:700; color: var(--ffy-green); }
-.energo-mockup-chart{
+.energo-preview-row:last-of-type{ border-bottom:none; }
+.energo-preview-label{ font-size:.85rem; color: rgba(255,255,255,.65); }
+.energo-preview-val{ font-weight:700; color: var(--accent); font-size:.95rem; }
+.energo-preview-chart{
   margin-top:1rem;
-  display:flex; align-items:flex-end; gap:.4rem;
-  height: 60px;
+  display:flex; align-items:flex-end; gap:.35rem;
+  height: 56px;
 }
-.energo-mockup-bar{
+.energo-preview-bar{
   flex:1;
-  background: linear-gradient(180deg, var(--ffy-green) 0%, var(--ffy-green-2) 100%);
-  border-radius: 4px 4px 0 0;
+  background: linear-gradient(180deg, var(--accent) 0%, var(--green-dark) 100%);
+  border-radius: 3px 3px 0 0;
   opacity:.85;
 }
 
-/* --- PŘEPIS ONLINE --- */
-#prepis{ padding: 5rem 0; }
+/* ============ PŘEPIS ONLINE ============ */
+#prepis{
+  background: var(--bg);
+  padding: 80px 2rem;
+}
 .prepis-grid{
   display:grid; grid-template-columns: 1fr 1fr; gap: 3rem;
   align-items:center; max-width: 1100px; margin: 0 auto;
 }
 @media (max-width: 900px){ .prepis-grid{ grid-template-columns: 1fr; } }
 .prepis-title{
-  font-size: clamp(1.7rem, 3vw, 2.3rem); font-weight:800;
-  color: var(--ffy-blue); line-height:1.15; margin-bottom:1rem;
+  font-size: clamp(1.7rem, 3vw, 2.3rem); font-weight:700;
+  color: var(--navy-dark); line-height:1.2; margin-bottom:1rem;
 }
 .prepis-desc{
-  font-size:1rem; line-height:1.65; color: var(--ffy-muted);
-  margin-bottom:1.5rem; font-weight:400;
+  font-size:1rem; line-height:1.65; color: var(--muted);
+  margin-bottom:1.5rem; font-weight:300;
 }
 .prepis-list{
   list-style:none; padding:0; margin: 0 0 1.75rem;
@@ -565,59 +641,65 @@
 .prepis-check{
   flex-shrink:0;
   width:24px; height:24px; border-radius:50%;
-  background: var(--ffy-green);
-  color: var(--ffy-ink);
+  background: var(--accent);
+  color: var(--navy-dark);
   display:flex; align-items:center; justify-content:center;
-  font-size:.7rem;
+  font-size:.72rem; font-weight:700;
 }
-.prepis-list li strong{ color: var(--ffy-blue); font-weight:700; display:block; margin-bottom:.15rem; }
-.prepis-list li span{ color: var(--ffy-muted); font-size:.88rem; line-height:1.55; font-weight:400; }
-[data-theme="light"] .prepis-title,
-[data-theme="light"] .prepis-list li strong{ color:#0a141e; }
-[data-theme="light"] .prepis-desc,
-[data-theme="light"] .prepis-list li span{ color:#4a5a6a; }
+.prepis-list li strong{
+  color: var(--navy-dark); font-weight:700;
+  display:block; margin-bottom:.15rem;
+}
+.prepis-list li span{
+  color: var(--muted); font-size:.88rem; line-height:1.55; font-weight:400;
+}
 
 .prepis-visual{
-  background: var(--ffy-soft);
-  border: 1px solid var(--ffy-border);
+  background: #fff;
+  border: 1px solid var(--border);
   border-radius: 20px;
   padding: 2rem;
   text-align:center;
+  box-shadow: 0 12px 30px rgba(33,69,113,.05);
 }
-[data-theme="dark"] .prepis-visual{ background: rgba(255,255,255,.03); }
 .prepis-timer{
   font-size: 4rem; font-weight:800;
-  color: var(--ffy-green-2); line-height:1;
+  color: var(--green-dark); line-height:1;
   margin-bottom:.5rem;
+  font-variant-numeric: tabular-nums;
 }
-.prepis-timer-label{ color: var(--ffy-muted); font-size:.9rem; margin-bottom:1.5rem; }
+.prepis-timer-label{
+  color: var(--muted); font-size:.9rem; margin-bottom:1.5rem;
+}
 .prepis-steps-mini{ text-align:left; }
 .prepis-step-mini{
   display:flex; align-items:center; gap:.75rem;
   padding:.65rem .85rem;
-  background: var(--ffy-white);
+  background: var(--slate-light);
   border-radius: 10px;
   margin-bottom:.5rem;
-  border-left: 3px solid var(--ffy-green);
+  border-left: 3px solid var(--accent);
   font-size:.88rem;
-  color: var(--ffy-blue);
+  color: var(--navy-dark);
   font-weight:500;
 }
-[data-theme="dark"] .prepis-step-mini{ background: rgba(255,255,255,.05); color:#fff; }
 .prepis-step-mini-num{
   width:24px; height:24px; border-radius:50%;
-  background: var(--ffy-green);
-  color: var(--ffy-ink);
+  background: var(--accent);
+  color: var(--navy-dark);
   display:flex; align-items:center; justify-content:center;
-  font-weight:800; font-size:.75rem; flex-shrink:0;
+  font-weight:700; font-size:.75rem; flex-shrink:0;
 }
 
-/* --- NADACE --- */
-#nadace{ padding: 4rem 0; }
+/* ============ NADACE ============ */
+#nadace{
+  background: #fff;
+  padding: 60px 2rem;
+}
 .nadace-card{
   max-width: 900px; margin: 0 auto;
-  background: linear-gradient(135deg, rgba(232,175,70,.1) 0%, rgba(232,175,70,.03) 100%);
-  border: 1px solid rgba(232,175,70,.3);
+  background: linear-gradient(135deg, rgba(232,175,70,.12) 0%, rgba(232,175,70,.03) 100%);
+  border: 1px solid rgba(232,175,70,.35);
   border-radius: 20px;
   padding: 2rem 2.5rem;
   display:flex; align-items:center; gap:1.75rem;
@@ -625,20 +707,26 @@
 @media (max-width: 700px){ .nadace-card{ flex-direction:column; text-align:center; padding:1.75rem; } }
 .nadace-icon{
   flex-shrink:0;
-  width:72px; height:72px; border-radius:50%;
-  background: var(--ffy-bronze);
+  width:64px; height:64px; border-radius:50%;
+  background: var(--bronze);
   color:#fff;
   display:flex; align-items:center; justify-content:center;
   box-shadow: 0 12px 24px rgba(232,175,70,.35);
 }
-.nadace-icon svg{ width:34px; height:34px; }
-.nadace-title{ color: var(--ffy-blue); font-weight:700; font-size:1.15rem; margin-bottom:.4rem; }
-.nadace-desc{ color: var(--ffy-muted); font-size:.92rem; line-height:1.6; font-weight:400; }
-[data-theme="light"] .nadace-title{ color:#0a141e; }
-[data-theme="light"] .nadace-desc{ color:#4a5a6a; }
+.nadace-icon svg{ width:32px; height:32px; }
+.nadace-title{
+  color: var(--navy-dark); font-weight:700;
+  font-size:1.1rem; margin-bottom:.4rem;
+}
+.nadace-desc{
+  color: var(--muted); font-size:.92rem; line-height:1.6; font-weight:300;
+}
 
-/* --- TÝM --- */
-#tym{ padding: 5rem 0; }
+/* ============ TÝM ============ */
+#tym{
+  background: var(--bg);
+  padding: 80px 2rem;
+}
 .tym-wrap{
   max-width: 1100px; margin: 0 auto;
   display:grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items:center;
@@ -649,61 +737,60 @@
   border-radius:20px;
   overflow:hidden;
   background:
-    linear-gradient(135deg, rgba(69,231,163,.85) 0%, rgba(33,69,113,.9) 100%),
+    linear-gradient(135deg, rgba(69,231,163,.75) 0%, rgba(33,69,113,.9) 100%),
     linear-gradient(135deg, #4a5a6a 0%, #2a3a4a 100%);
   display:flex; align-items:center; justify-content:center;
   color:#fff;
   position:relative;
   box-shadow: 0 24px 50px rgba(33,69,113,.15);
+  text-decoration:none;
 }
 .tym-photo-placeholder{
-  text-align:center; padding: 2rem; opacity:.9;
+  text-align:center; padding: 2rem;
 }
-.tym-photo-placeholder svg{ width:64px; height:64px; margin-bottom:1rem; opacity:.6; }
-.tym-photo-placeholder p{ font-size:.85rem; font-weight:300; }
+.tym-photo-placeholder svg{
+  width:64px; height:64px; margin-bottom:1rem; opacity:.7;
+}
+.tym-photo-placeholder p{
+  font-size:.85rem; font-weight:400;
+  color: rgba(255,255,255,.85);
+}
 .tym-title{
-  font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight:800;
-  color: var(--ffy-blue); line-height:1.15; margin-bottom:1rem;
+  font-size: clamp(1.8rem, 3vw, 2.3rem); font-weight:700;
+  color: var(--navy-dark); line-height:1.2; margin-bottom:1rem;
 }
 .tym-desc{
-  color: var(--ffy-muted); font-size:1rem; line-height:1.65;
-  margin-bottom:1.5rem; font-weight:400;
+  color: var(--muted); font-size:1rem; line-height:1.65;
+  margin-bottom:1.5rem; font-weight:300;
 }
-[data-theme="light"] .tym-title{ color:#0a141e; }
-[data-theme="light"] .tym-desc{ color:#4a5a6a; }
 
-/* --- Utilita: section-inner (pokud styles.css chybí) --- */
-.section-inner-fallback{ max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
-
-/* --- Footer doplňky --- */
+/* ============ FOOTER doplňky ============ */
 .footer-legal-row{
   display:flex; flex-wrap:wrap; gap:.75rem 1.25rem;
   align-items:center;
 }
 .footer-legal-row a{
-  color: rgba(255,255,255,.8);
+  color: rgba(255,255,255,.7);
   text-decoration:none;
   font-size:.82rem;
   transition: color .2s ease;
 }
-.footer-legal-row a:hover{ color: var(--ffy-green); }
+.footer-legal-row a:hover{ color: var(--accent); }
 .footer-izo-badge{
   display:inline-flex; align-items:center; gap:.4rem;
   background: rgba(69,231,163,.15);
-  color: var(--ffy-green);
+  color: var(--accent) !important;
   padding:.35rem .7rem; border-radius:999px;
-  font-size:.78rem; font-weight:700;
+  font-size:.76rem; font-weight:700;
   border: 1px solid rgba(69,231,163,.3);
+  transition: background .2s ease;
 }
-.footer-izo-badge:hover{ background: rgba(69,231,163,.25); }
-
-/* Mobilní úpravy nav */
-@media (max-width: 860px) {
-  .nav-cta       { display: none !important; }
-  .nav-hamburger { display: flex !important; }
-  .nav-tabs      { display: none !important; }
+.footer-izo-badge:hover{
+  background: rgba(69,231,163,.25);
+  color: var(--accent) !important;
 }
 </style>
+
 </head>
 <body>
 <div class="nebula" aria-hidden="true">
@@ -808,6 +895,7 @@
 <!-- ============ HERO — Stabilní dodavatel energií ============ -->
 <section id="hero">
   <div class="hero-inner">
+
     <div class="hero-content">
       <div class="hero-badge-row">
         <span class="hero-badge">
@@ -820,7 +908,7 @@
         </span>
       </div>
 
-      <h1 class="hero-headline">Stabilní dodavatel<br>energií, <em>na kterého se spolehnete.</em></h1>
+      <h1 class="hero-headline">Stabilní dodavatel energií, <em>na kterého se spolehnete.</em></h1>
 
       <p class="hero-sub">Jsme na trhu deset let a společně tvoříme lepší energetickou budoucnost. Dodávky vám garantujeme přes ČEZ, EG.D i PRE — s podmínkami, ve kterých se vyznáte.</p>
 
@@ -831,27 +919,27 @@
 
       <div class="hero-trust">
         <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Bez sankcí a pokut</span>
-        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Ukončení smlouvy kdykoli</span>
-        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Přechod vyřídíme za Vás</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Ukončení kdykoli</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Přechod vyřídíme za vás</span>
       </div>
     </div>
 
     <div class="hero-visual">
       <div class="hero-bulb-wrap">
 
-        <!-- Grafický connector od textu k žárovce -->
-        <svg class="hero-connector" viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M 5 40 C 40 15, 70 65, 115 40" />
-          <circle cx="115" cy="40" r="4" />
+        <!-- Grafický connector — jemný oblouk od textu k žárovce -->
+        <svg class="hero-connector" viewBox="0 0 100 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M 2 35 C 30 10, 60 60, 96 35" />
+          <circle cx="96" cy="35" r="3.5" />
         </svg>
 
         <!-- Ležící žárovka SVG -->
         <svg class="hero-bulb-svg" viewBox="0 0 560 385" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
             <linearGradient id="bulbGlass" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#eff4fa" stop-opacity="0.95"/>
-              <stop offset="60%" stop-color="#b1cae7" stop-opacity="0.55"/>
-              <stop offset="100%" stop-color="#548bc9" stop-opacity="0.4"/>
+              <stop offset="0%" stop-color="#eff4fa" stop-opacity="0.9"/>
+              <stop offset="60%" stop-color="#b1cae7" stop-opacity="0.35"/>
+              <stop offset="100%" stop-color="#548bc9" stop-opacity="0.25"/>
             </linearGradient>
             <linearGradient id="bulbBase" x1="0%" y1="0%" x2="100%" y2="0%">
               <stop offset="0%" stop-color="#8a9bad"/>
@@ -859,45 +947,44 @@
               <stop offset="100%" stop-color="#6c7d90"/>
             </linearGradient>
             <radialGradient id="bulbGlow" cx="35%" cy="45%" r="55%">
-              <stop offset="0%" stop-color="#45e7a3" stop-opacity="0.25"/>
+              <stop offset="0%" stop-color="#45e7a3" stop-opacity="0.3"/>
               <stop offset="100%" stop-color="#45e7a3" stop-opacity="0"/>
             </radialGradient>
           </defs>
 
-          <!-- Glow -->
+          <!-- Zelený glow za žárovkou -->
           <ellipse cx="180" cy="192" rx="240" ry="180" fill="url(#bulbGlow)"/>
 
           <!-- Sklo žárovky (elipsa naležato) -->
           <ellipse cx="180" cy="192" rx="180" ry="140"
                    fill="url(#bulbGlass)"
-                   stroke="#214571" stroke-width="2.5" stroke-opacity="0.35"/>
+                   stroke="#45e7a3" stroke-width="2" stroke-opacity="0.4"/>
 
           <!-- Krček žárovky mezi sklem a paticí -->
           <path d="M 355 155 Q 385 165 385 192 Q 385 220 355 230 Z"
                 fill="url(#bulbGlass)"
-                stroke="#214571" stroke-width="2.5" stroke-opacity="0.35"/>
+                stroke="#45e7a3" stroke-width="2" stroke-opacity="0.4"/>
 
           <!-- Kovová patice E27 -->
           <rect x="385" y="155" width="90" height="75" rx="6"
                 fill="url(#bulbBase)"
-                stroke="#214571" stroke-width="2" stroke-opacity="0.4"/>
-          <!-- závity patice -->
+                stroke="#0a141e" stroke-width="1.5" stroke-opacity="0.35"/>
           <path d="M 385 172 L 475 172 M 385 185 L 475 185 M 385 198 L 475 198 M 385 211 L 475 211"
-                stroke="#214571" stroke-width="1.5" stroke-opacity="0.5"/>
+                stroke="#0a141e" stroke-width="1" stroke-opacity="0.45"/>
 
           <!-- Kontakt (špička patice) -->
           <path d="M 475 175 L 505 185 Q 515 192 505 200 L 475 210 Z"
-                fill="#8a9bad" stroke="#214571" stroke-width="2" stroke-opacity="0.4"/>
-          <circle cx="500" cy="192" r="7" fill="#0a141e" opacity="0.65"/>
+                fill="#8a9bad" stroke="#0a141e" stroke-width="1.5" stroke-opacity="0.4"/>
+          <circle cx="500" cy="192" r="7" fill="#0a141e" opacity="0.7"/>
 
-          <!-- Highlight reflex ve skle -->
-          <ellipse cx="100" cy="120" rx="45" ry="20" fill="#ffffff" opacity="0.4" transform="rotate(-20 100 120)"/>
+          <!-- Reflex ve skle -->
+          <ellipse cx="100" cy="120" rx="45" ry="20" fill="#ffffff" opacity="0.35" transform="rotate(-20 100 120)"/>
         </svg>
 
         <!-- Video overlay uvnitř žárovky -->
-        <div class="hero-bulb-video" role="button" tabindex="0" aria-label="Přehrát video Jak to funguje">
+        <div class="hero-bulb-video" role="button" tabindex="0" aria-label="Přehrát video Kdo jsme">
           <div class="hero-bulb-play">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
               <polygon points="6,3 20,12 6,21"/>
             </svg>
           </div>
@@ -905,55 +992,53 @@
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- 4 benefity strip pod hero (jak na screenshotu) -->
-  <div class="hero-inner">
-    <div class="hero-strip">
-      <div class="hero-strip-grid">
-        <div class="hero-strip-item">
-          <div class="hero-strip-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20V10M12 20V4M18 20v-7"/><path d="M2 20h20"/></svg>
-          </div>
-          <div class="hero-strip-title">Přes 25 let zkušeností</div>
-          <p class="hero-strip-desc">Na trhu s energiemi jsme nepřetržitě od roku 1997.</p>
-        </div>
-        <div class="hero-strip-item">
-          <div class="hero-strip-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/><circle cx="12" cy="15" r="3"/><path d="m10.5 13.5 3 3"/></svg>
-          </div>
-          <div class="hero-strip-title">Ukončení smlouvy kdykoli</div>
-          <p class="hero-strip-desc">Bez zbytečných omezení. Stačí nám zavolat nebo napsat.</p>
-        </div>
-        <div class="hero-strip-item">
-          <div class="hero-strip-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="m4 4 16 16" stroke-width="2.5"/></svg>
-          </div>
-          <div class="hero-strip-title">Žádné sankce ani pokuty</div>
-          <p class="hero-strip-desc">Za ukončení smlouvy ani upomínky nic neplatíte.</p>
-        </div>
-        <div class="hero-strip-item">
-          <div class="hero-strip-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16M3 21v-5h5"/></svg>
-          </div>
-          <div class="hero-strip-title">50 % zisku investujeme zpět</div>
-          <p class="hero-strip-desc">Investujeme ho do vlastních zdrojů, abyste měli levnější energii.</p>
-        </div>
+  </div>
+</section>
+
+<!-- ============ 4 BENEFITY strip (samostatná světlá sekce, jak na screenshotu) ============ -->
+<section id="benefity-hero">
+  <div class="benefity-grid">
+    <div class="benefity-item">
+      <div class="benefity-ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20V10M12 20V4M18 20v-7"/><path d="M2 20h20"/></svg>
       </div>
+      <div class="benefity-title">Přes 25 let zkušeností</div>
+      <p class="benefity-desc">Na trhu s energiemi jsme nepřetržitě od roku 1997.</p>
+    </div>
+    <div class="benefity-item">
+      <div class="benefity-ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg>
+      </div>
+      <div class="benefity-title">Ukončení smlouvy kdykoli</div>
+      <p class="benefity-desc">Bez zbytečných omezení. Stačí nám zavolat nebo napsat.</p>
+    </div>
+    <div class="benefity-item">
+      <div class="benefity-ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M4.93 4.93l14.14 14.14"/></svg>
+      </div>
+      <div class="benefity-title">Žádné sankce ani pokuty</div>
+      <p class="benefity-desc">Za ukončení smlouvy ani upomínky nic neplatíte.</p>
+    </div>
+    <div class="benefity-item">
+      <div class="benefity-ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16M3 21v-5h5"/></svg>
+      </div>
+      <div class="benefity-title">50 % zisku investujeme zpět</div>
+      <p class="benefity-desc">Do vlastních zdrojů, abyste měli levnější energii.</p>
     </div>
   </div>
 </section>
 
 <!-- ============ CENY ============ -->
 <section id="ceny">
-  <div class="section-inner section-inner-fallback">
-    <div class="price-hero">
+  <div class="price-wrap">
       <span class="price-badge">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
         Cena, kterou nemusíte hlídat
       </span>
       <h2 class="price-headline">Cena vždy na prvním místě.</h2>
-      <p class="price-sub">Tu výhodnou vám držíme automaticky. Pomáhají nám nízké provozní náklady, chytrý obchodní model a také to, že <strong style="color:var(--ffy-green-2);">50 % zisku investujeme do nových zdrojů energie</strong>.</p>
+      <p class="price-sub">Tu výhodnou vám držíme automaticky. Pomáhají nám nízké provozní náklady, chytrý obchodní model a také to, že <strong style="color:var(--green-dark);">50 % zisku investujeme do nových zdrojů energie</strong>.</p>
 
       <div class="price-pillars">
         <div class="price-pillar">
@@ -985,20 +1070,19 @@
         </div>
       </div>
 
-      <div class="price-cta-row">
-        <a href="ceny-aktualni-nabidka.html" class="btn-primary">Aktuální cena</a>
-        <a href="ceny-kalkulacka.html" class="btn-outline">Otevřít kalkulačku</a>
-      </div>
+    <div class="price-cta-row">
+      <a href="ceny-aktualni-nabidka.html" class="btn-primary">Aktuální cena</a>
+      <a href="ceny-kalkulacka.html" class="btn-outline-dark">Otevřít kalkulačku</a>
     </div>
   </div>
 </section>
 
 <!-- ============ RECENZE ============ -->
 <section id="recenze">
-  <div class="section-inner section-inner-fallback">
-    <div style="text-align:center; margin-bottom:2rem;">
+  <div class="recenze-inner">
+    <div class="recenze-head">
       <div class="section-label" style="display:inline-block;">Recenze zákazníků</div>
-      <h2 class="section-title" style="text-align:center;">Reální lidé, reálné zkušenosti.</h2>
+      <h2 class="section-title">Reální lidé, reálné zkušenosti.</h2>
     </div>
 
     <!-- Souhrn hodnocení -->
@@ -1019,7 +1103,7 @@
           <div class="reviews-count">z 500+ recenzí</div>
         </div>
       </div>
-      <a href="https://www.google.com/search?q=FREE+for+YOU+s.r.o.+Praha+recenze" target="_blank" rel="noopener" class="btn-outline" style="padding:.6rem 1.1rem; font-size:.85rem;">Zobrazit na Googlu →</a>
+      <a href="https://www.google.com/search?q=FREE+for+YOU+s.r.o.+Praha+recenze" target="_blank" rel="noopener" class="btn-outline-dark" style="padding:.6rem 1.1rem; font-size:.85rem;">Zobrazit na Googlu →</a>
     </div>
 
     <!-- Grid recenzí — nahradit reálnými přes Google Places API / embed widget -->
@@ -1082,11 +1166,11 @@
 
 <!-- ============ LICENCE & ASOCIACE ============ -->
 <section id="licence">
-  <div class="section-inner section-inner-fallback">
-    <div class="trust-hero">
-      <div class="section-label" style="display:inline-block;">Regulace &amp; asociace</div>
+  <div class="licence-inner">
+    <div class="licence-head">
+      <div class="section-label" style="display:inline-block;">Regulace a asociace</div>
       <h2 class="section-title">Regulovaný obchodník s energiemi.</h2>
-      <p class="section-sub">Podléháme dohledu ERÚ a jsme zapojeni do klíčových oborových asociací. Nejsme jednomu doma — patříme do sítě partnerů, kteří tvoří českou energetiku.</p>
+      <p class="section-sub" style="margin-left:auto; margin-right:auto;">Podléháme dohledu ERÚ a jsme zapojeni do klíčových oborových asociací. Patříme do sítě partnerů, kteří tvoří českou energetiku.</p>
     </div>
 
     <!-- Highlight: prvenství -->
@@ -1142,9 +1226,9 @@
 
 <!-- ============ ZDROJE — kam jde 50 % zisku ============ -->
 <section id="zdroje">
-  <div class="section-inner section-inner-fallback">
+  <div class="section-inner">
     <div class="section-label">Vlastní zdroje energie</div>
-    <h2 class="section-title">Reinvestujeme 50 % zisku,<br>abychom byli <em style="color:var(--ffy-green-2); font-style:normal;">stabilnější</em>.</h2>
+    <h2 class="section-title">Reinvestujeme 50 % zisku,<br>abychom byli <em style="color:var(--green-dark); font-style:normal;">stabilnější</em>.</h2>
     <p class="section-sub">Každá koruna, kterou nevyplatíme v dividendách, jde do stavby vlastních solárních elektráren, střešních FVE a bateriových úložišť. Čím víc energie vyrobíme sami, tím méně nás zajímá tržní cena — a tím stabilnější je vaše faktura.</p>
 
     <div class="model-grid">
@@ -1176,8 +1260,8 @@
 
       <div class="model-note">
         <div class="model-note-head">Dlouhodobě</div>
-        <h3 style="font-size:1.25rem; font-weight:700; color:var(--ffy-blue); margin-bottom:0.75rem;">Stabilita se buduje. Ne slibuje.</h3>
-        <p style="font-size:0.92rem; color:var(--ffy-muted); font-weight:400; line-height:1.7; margin-bottom:1.5rem;">Elektrárna, kterou postavíme dnes, dodává 25+ let. Rozhodnutí, které dnes uděláme, vám dodává cenu i za deset let.</p>
+        <h3 style="font-size:1.25rem; font-weight:700; color:var(--navy-dark); margin-bottom:0.75rem;">Stabilita se buduje. Ne slibuje.</h3>
+        <p style="font-size:0.92rem; color:var(--muted); font-weight:300; line-height:1.7; margin-bottom:1.5rem;">Elektrárna, kterou postavíme dnes, dodává 25+ let. Rozhodnutí, které dnes uděláme, vám dodává cenu i za deset let.</p>
         <a href="proc-investice-oze.html" class="btn-green">Detail investic →</a>
       </div>
     </div>
@@ -1186,10 +1270,10 @@
 
 <!-- ============ VELKÁ ČÍSLA ============ -->
 <section id="velka-cisla">
-  <div class="section-inner section-inner-fallback">
-    <div style="text-align:center; margin-bottom:2rem;">
+  <div class="velka-inner">
+    <div class="velka-head">
       <div class="section-label" style="display:inline-block;">Čísla, ne přívlastky</div>
-      <h2 class="section-title" style="text-align:center;">Co jsme dosud dokázali.</h2>
+      <h2 class="section-title">Co jsme dosud dokázali.</h2>
     </div>
 
     <div class="big-numbers">
@@ -1215,7 +1299,7 @@
 
 <!-- ============ DOKUMENTY (zachováno + rozšířeno) ============ -->
 <section id="dokumenty">
-  <div class="section-inner section-inner-fallback">
+  <div class="section-inner">
     <div class="section-label">Transparentnost</div>
     <h2 class="section-title">Nic neskrýváme. Prohlédněte si dokumenty.</h2>
     <p class="section-sub">Smlouvu, fakturu, plnou moc i výkupní podmínky — vše najdete zde k prohlédnutí ještě před podpisem.</p>
@@ -1258,8 +1342,7 @@
 
 <!-- ============ ENERGOBANKING ============ -->
 <section id="energobanking-section">
-  <div class="section-inner section-inner-fallback">
-    <div class="energo-wrap">
+  <div class="energo-wrap">
       <div class="energo-content">
         <span class="energo-badge">Váš zákaznický portál</span>
         <h2 class="energo-title">Energobanking — vaše energie jako u banky.</h2>
@@ -1277,31 +1360,31 @@
       </div>
 
       <!-- Vizuální mockup portálu -->
-      <div class="energo-mockup">
-        <div class="energo-mockup-head">
-          <div class="energo-mockup-title">energobanking.cz</div>
-          <div class="energo-mockup-dots"><span></span><span></span><span></span></div>
+      <div class="energo-preview">
+        <div class="energo-preview-head">
+          <div class="energo-preview-title">energobanking.cz</div>
+          <div class="energo-preview-dots"><span></span><span></span><span></span></div>
         </div>
-        <div class="energo-mockup-row">
-          <span class="energo-mockup-label">Aktuální spotřeba</span>
-          <span class="energo-mockup-val">2,4 kWh</span>
+        <div class="energo-preview-row">
+          <span class="energo-preview-label">Aktuální spotřeba</span>
+          <span class="energo-preview-val">2,4 kWh</span>
         </div>
-        <div class="energo-mockup-row">
-          <span class="energo-mockup-label">Tento měsíc</span>
-          <span class="energo-mockup-val">312 kWh</span>
+        <div class="energo-preview-row">
+          <span class="energo-preview-label">Tento měsíc</span>
+          <span class="energo-preview-val">312 kWh</span>
         </div>
-        <div class="energo-mockup-row">
-          <span class="energo-mockup-label">Reinvestováno díky vám</span>
-          <span class="energo-mockup-val">148 Kč</span>
+        <div class="energo-preview-row">
+          <span class="energo-preview-label">Reinvestováno díky vám</span>
+          <span class="energo-preview-val">148 Kč</span>
         </div>
-        <div class="energo-mockup-chart">
-          <div class="energo-mockup-bar" style="height:40%"></div>
-          <div class="energo-mockup-bar" style="height:65%"></div>
-          <div class="energo-mockup-bar" style="height:50%"></div>
-          <div class="energo-mockup-bar" style="height:80%"></div>
-          <div class="energo-mockup-bar" style="height:70%"></div>
-          <div class="energo-mockup-bar" style="height:95%"></div>
-          <div class="energo-mockup-bar" style="height:60%"></div>
+        <div class="energo-preview-chart">
+          <div class="energo-preview-bar" style="height:40%"></div>
+          <div class="energo-preview-bar" style="height:65%"></div>
+          <div class="energo-preview-bar" style="height:50%"></div>
+          <div class="energo-preview-bar" style="height:80%"></div>
+          <div class="energo-preview-bar" style="height:70%"></div>
+          <div class="energo-preview-bar" style="height:95%"></div>
+          <div class="energo-preview-bar" style="height:60%"></div>
         </div>
       </div>
     </div>
@@ -1310,8 +1393,7 @@
 
 <!-- ============ PŘEPIS ONLINE ============ -->
 <section id="prepis">
-  <div class="section-inner section-inner-fallback">
-    <div class="prepis-grid">
+  <div class="prepis-grid">
       <div>
         <div class="section-label">Přepis online</div>
         <h2 class="prepis-title">Přepis proběhne online. Bez papírování.</h2>
@@ -1357,7 +1439,6 @@
           <div class="prepis-step-mini"><span class="prepis-step-mini-num">2</span>Ověříme údaje a pošleme smlouvu</div>
           <div class="prepis-step-mini"><span class="prepis-step-mini-num">3</span>Vyřídíme přechod u distributora</div>
           <div class="prepis-step-mini"><span class="prepis-step-mini-num">4</span>Od data přepisu odebíráte od nás</div>
-        </div>
       </div>
     </div>
   </div>
@@ -1365,7 +1446,7 @@
 
 <!-- ============ JAK SE STANE NAŠÍM ZÁKAZNÍKEM ============ -->
 <section id="jak">
-  <div class="section-inner section-inner-fallback">
+  <div class="section-inner">
     <div class="section-label">Jak se stanete naším zákazníkem</div>
     <h2 class="section-title light">Tři kroky. A hotovo.</h2>
     <p class="section-sub light">Celý přechod zvládnete za pár minut. Zbytek zařídíme my.</p>
@@ -1399,23 +1480,20 @@
 
 <!-- ============ NADACE ============ -->
 <section id="nadace">
-  <div class="section-inner section-inner-fallback">
-    <div class="nadace-card">
+  <div class="nadace-card">
       <div class="nadace-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
       </div>
       <div>
         <div class="nadace-title">Přispíváme na programy pro dětské domovy.</div>
         <p class="nadace-desc">Část našeho hospodaření směřuje do nadace, která provozuje vzdělávací a volnočasové programy pro děti z dětských domovů. Nejen kvůli hezkému pocitu — protože je to správné.</p>
-      </div>
     </div>
   </div>
 </section>
 
 <!-- ============ TÝM ============ -->
 <section id="tym">
-  <div class="section-inner section-inner-fallback">
-    <div class="tym-wrap">
+  <div class="tym-wrap">
       <a href="proc-nas-pribeh.html" class="tym-photo" aria-label="Přečíst náš příběh">
         <div class="tym-photo-placeholder">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
@@ -1424,17 +1502,16 @@
       </a>
       <div>
         <div class="section-label">Lidé za FREE for YOU</div>
-        <h2 class="tym-title">Nejsme faceless korporát. Jsme parta lidí.</h2>
+        <h2 class="tym-title">Nejsme bezejmenný korporát. Jsme parta lidí.</h2>
         <p class="tym-desc">Když nám zavoláte, telefon zvedne někdo z týmu, kterého vidíte na fotce vedle. Žádná outsourcovaná infolinka, žádný script. Jen lidi, kteří vědí, o čem energie jsou — a proč u nás dělají to, co dělají.</p>
         <a href="proc-nas-pribeh.html" class="btn-primary">Přečíst náš příběh →</a>
-      </div>
     </div>
   </div>
 </section>
 
 <!-- ============ KONTAKTNÍ FORMULÁŘ ============ -->
 <section id="kontakt">
-  <div class="section-inner section-inner-fallback">
+  <div class="section-inner">
     <div class="contact-wrapper">
       <div class="contact-left">
         <div class="section-label">Nezodpověděli jsme vás?</div>
