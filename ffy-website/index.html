@@ -813,6 +813,101 @@
 /* V light módu tmavší zelená pro kontrast */
 [data-theme="light"] .footer-izo-badge{ color: var(--green-dark) !important; }
 [data-theme="light"] .footer-izo-badge:hover{ color: var(--green-dark) !important; }
+
+
+/* ============ FLOATING CTA + absorb animace ============ */
+.floating-cta{
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 90;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: 14px 22px;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--green-dark) 100%);
+  color: var(--navy-dark);
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: .95rem;
+  text-decoration: none;
+  box-shadow:
+    0 12px 32px rgba(69,231,163,.45),
+    0 0 0 1px rgba(255,255,255,.08) inset;
+  opacity: 0;
+  transform: translateY(24px) scale(.9);
+  pointer-events: none;
+  will-change: transform, opacity;
+  transition:
+    opacity .35s ease,
+    transform .5s cubic-bezier(.34, 1.56, .64, 1),
+    box-shadow .25s ease,
+    background .25s ease;
+}
+.floating-cta.is-visible{
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+.floating-cta:hover{
+  transform: translateY(-3px) scale(1.02);
+  box-shadow:
+    0 18px 40px rgba(69,231,163,.55),
+    0 0 0 1px rgba(255,255,255,.15) inset;
+}
+/* Fáze letu — přesunutí k cíli */
+.floating-cta.is-flying{
+  transition:
+    transform .65s cubic-bezier(.5, 0, .2, 1),
+    opacity .3s ease .45s,
+    background .3s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+.floating-cta-icon{
+  display:inline-flex; align-items:center; justify-content:center;
+  color: var(--navy-dark);
+  flex-shrink:0;
+}
+@media (max-width: 640px){
+  .floating-cta{
+    bottom: 1rem;
+    right: 1rem;
+    padding: 12px 18px;
+    font-size: .88rem;
+  }
+}
+
+/* Cílové tlačítko musí být position:relative aby ::after fungoval */
+#prepis-cta-target,
+#hero-cta-primary,
+#final-cta-primary{
+  position: relative;
+  overflow: visible;
+}
+
+/* Puls kolem cílového tlačítka při absorbování */
+@keyframes ctaAbsorbPulse{
+  0%{
+    box-shadow:
+      0 0 0 0 rgba(69,231,163,.85),
+      0 0 20px 0 rgba(69,231,163,.6);
+    transform: scale(1);
+  }
+  40%{
+    transform: scale(1.06);
+  }
+  100%{
+    box-shadow:
+      0 0 0 32px rgba(69,231,163,0),
+      0 0 40px 20px rgba(69,231,163,0);
+    transform: scale(1);
+  }
+}
+.cta-target-pulse{
+  animation: ctaAbsorbPulse .9s cubic-bezier(.25, .8, .3, 1) both;
+}
+
 </style>
 
 </head>
@@ -937,7 +1032,7 @@
       <p class="hero-sub">Firma existuje od roku 1997, elektřinu dodáváme od roku 2016. Společně tvoříme lepší energetickou budoucnost — s podmínkami, ve kterých se vyznáte.</p>
 
       <div class="hero-cta-group">
-        <a href="#ceny" class="btn-primary">Chci nabídku</a>
+        <a href="#ceny" class="btn-primary" id="hero-cta-primary" data-cta-source="hero">Chci výhodnější energii</a>
         <a href="#prepis" class="btn-outline">Jak to funguje?</a>
       </div>
 
@@ -1456,7 +1551,7 @@
             </div>
           </li>
         </ul>
-        <a href="podpora-kontakty.html" class="btn-primary">Chci přepsat odběr →</a>
+        <a href="podpora-kontakty.html" class="btn-primary" id="prepis-cta-target" data-cta-target="true">Chci přepsat odběr →</a>
       </div>
 
       <div class="prepis-visual">
@@ -1580,7 +1675,7 @@
     <div class="section-label">Připraveni začít?</div>
     <h2 class="final-headline">Vyzkoušejte na 1 měsíc.</h2>
     <p class="final-sub">Bez závazků. Bez výpadků. Jen energie za férovějších podmínek — a pak se rozhodněte sami.</p>
-    <a href="ceny-kalkulacka.html" class="btn-primary" style="font-size:1.05rem; padding: 16px 36px;">Chci to vyzkoušet →</a>
+    <a href="#ceny" class="btn-primary" id="final-cta-primary" style="font-size:1.05rem; padding: 16px 36px;">Chci výhodnější energii</a>
     <p class="final-cta-note">Celý přechod zařídíme za vás. Formulář zabere 3 minuty.</p>
   </div>
 </section>
@@ -1673,6 +1768,14 @@
     </div>
   </div>
 </footer>
+
+<!-- ============ Floating CTA (objeví se po opuštění hero) ============ -->
+<a href="#ceny" id="floating-cta" class="floating-cta" aria-label="Chci výhodnější energii" data-cta-source="floating">
+  <span class="floating-cta-icon">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></svg>
+  </span>
+  <span class="floating-cta-label">Chci výhodnější energii</span>
+</a>
 
 <!-- PDF Modal -->
 <div class="pdf-modal" id="pdf-modal">
@@ -1781,13 +1884,144 @@
   // ── Hero video placeholder klik (do budoucna otevřít YouTube/Vimeo modal) ──
   document.querySelectorAll('.hero-bulb-video').forEach(el => {
     el.addEventListener('click', () => {
-      // TODO: nahradit reálným videem — např. openVideoModal('https://youtube.com/embed/...')
       console.log('Hero video click — připojit reálné video.');
     });
     el.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); }
     });
   });
+
+  // ══════════════════════════════════════════════════════════
+  // FLOATING CTA — objeví se po opuštění hero, letí na cíl,
+  // absorbuje se s pulzem kolem "Chci přepsat odběr"
+  // ══════════════════════════════════════════════════════════
+  (function initFloatingCta(){
+    const floating = document.getElementById('floating-cta');
+    const heroBtn  = document.getElementById('hero-cta-primary');
+    const target   = document.getElementById('prepis-cta-target');
+    if (!floating || !heroBtn || !target) return;
+
+    let hasAbsorbed = false;
+    let isFlying    = false;
+    let ticking     = false;
+
+    // Uživatel klikne na plovoucí CTA — prostě funguje jako normální link
+    // (target = #ceny), NEspouští absorb animaci
+
+    function inViewport(el, topBuffer, bottomBuffer){
+      const r = el.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      return r.bottom > topBuffer && r.top < vh - bottomBuffer;
+    }
+
+    function targetAbsorbZone(){
+      // "Cílová zóna" — cílové tlačítko je v horní polovině viewportu
+      const r = target.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      // Aktivace když je střed tlačítka mezi 25%–65% viewportu
+      const centerY = r.top + r.height / 2;
+      return centerY > vh * 0.25 && centerY < vh * 0.65;
+    }
+
+    function showFloating(){
+      if (isFlying) return;
+      floating.classList.remove('is-flying');
+      floating.classList.add('is-visible');
+      // Reset transform po předchozí letové fázi
+      floating.style.transform = '';
+    }
+
+    function hideFloating(){
+      floating.classList.remove('is-visible', 'is-flying');
+      floating.style.transform = '';
+    }
+
+    function absorb(){
+      if (hasAbsorbed || isFlying) return;
+      isFlying = true;
+      hasAbsorbed = true;
+
+      // Spočti rozdíl pozic — od aktuálního centra floating CTA k centru cílového btn
+      const fRect = floating.getBoundingClientRect();
+      const tRect = target.getBoundingClientRect();
+
+      const dx = (tRect.left + tRect.width / 2) - (fRect.left + fRect.width / 2);
+      const dy = (tRect.top  + tRect.height / 2) - (fRect.top  + fRect.height / 2);
+
+      // Spusť letovou animaci
+      floating.classList.remove('is-visible');
+      floating.classList.add('is-flying');
+      floating.style.transform =
+        `translate(${dx}px, ${dy}px) scale(0.35)`;
+
+      // Po dokončení letu — spusť puls na cíli a resetuj floating
+      setTimeout(function(){
+        target.classList.add('cta-target-pulse');
+        setTimeout(function(){
+          target.classList.remove('cta-target-pulse');
+        }, 900);
+
+        // Skryj floating úplně (transform reset uděláme až po fade)
+        setTimeout(function(){
+          floating.classList.remove('is-flying');
+          floating.style.transform = '';
+          isFlying = false;
+        }, 350);
+      }, 650);
+    }
+
+    function onScroll(){
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function(){
+        ticking = false;
+
+        // Hero button viditelný? → skryj floating a povolí reset absorbce
+        const heroVisible = inViewport(heroBtn, 60, 60);
+        if (heroVisible) {
+          hasAbsorbed = false;
+          hideFloating();
+          return;
+        }
+
+        // Uživatel dosáhl cílové zóny?
+        if (targetAbsorbZone() && !hasAbsorbed) {
+          // Jen pokud je floating aktuálně viditelný — jinak není co absorbovat
+          if (floating.classList.contains('is-visible')) {
+            absorb();
+          } else {
+            // Uživatel scrollnul přímo na cíl bez zobrazení floating —
+            // dej rychlý puls jen aby bylo cílové CTA vidět
+            hasAbsorbed = true;
+            target.classList.add('cta-target-pulse');
+            setTimeout(function(){
+              target.classList.remove('cta-target-pulse');
+            }, 900);
+          }
+          return;
+        }
+
+        // Uživatel je pod cílovým btn (target odscrolloval nahoru mimo zónu)?
+        const tRect = target.getBoundingClientRect();
+        const belowTarget = tRect.bottom < 60;
+        if (belowTarget) {
+          // Necháme floating skrytý (už bylo absorbováno)
+          hideFloating();
+          return;
+        }
+
+        // Standardní stav — hero pryč, cíl ještě nedosažen → zobraz floating
+        if (!hasAbsorbed) showFloating();
+        else hideFloating();
+      });
+    }
+
+    // První kalibrace + listener
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    // Malý delay aby se stránka srovnala
+    setTimeout(onScroll, 250);
+  })();
 </script>
 
 <script src="analytics.js" defer></script>
