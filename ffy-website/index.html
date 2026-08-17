@@ -415,6 +415,26 @@
   font-size:.95rem; line-height:1.55; font-weight:500;
   color: rgba(14,30,47,.8);
 }
+.licence-highlight-body{ flex:1 1 auto; }
+.licence-highlight-cta{
+  flex-shrink:0;
+  display:inline-flex; align-items:center; gap:.5rem;
+  padding:.75rem 1.25rem;
+  background: rgba(14,30,47,.9);
+  color:#fff !important;
+  border-radius:10px;
+  font-weight:700; font-size:.9rem;
+  text-decoration:none;
+  transition: background .2s ease, transform .2s ease;
+  white-space:nowrap;
+}
+.licence-highlight-cta:hover{
+  background: #0a141e;
+  transform: translateY(-2px);
+}
+@media (max-width: 700px){
+  .licence-highlight-cta{ margin-top:.5rem; }
+}
 
 .licence-grid{
   display:grid;
@@ -505,7 +525,7 @@
 }
 .energo-wrap{
   max-width: 1100px; margin: 0 auto;
-  background: var(--ink);
+  background: #0a141e;
   color:#fff;
   border-radius: 28px;
   padding: 3rem;
@@ -765,30 +785,34 @@
 }
 
 /* ============ FOOTER doplňky ============ */
+/* Legal řádek v patičce — flex-wrap kvůli IZO badge a delším textům */
 .footer-legal-row{
-  display:flex; flex-wrap:wrap; gap:.75rem 1.25rem;
+  display:flex; flex-wrap:wrap; gap:.6rem 1.25rem;
   align-items:center;
+  justify-content:flex-end;
 }
-.footer-legal-row a{
-  color: rgba(255,255,255,.7);
-  text-decoration:none;
-  font-size:.82rem;
-  transition: color .2s ease;
-}
-.footer-legal-row a:hover{ color: var(--accent); }
+/* Odkazy dědí barvu z .footer-bottom-right a — respektuje light/dark theme */
+
+/* IZO badge — zelená kapsle, čitelná v obou režimech */
 .footer-izo-badge{
-  display:inline-flex; align-items:center; gap:.4rem;
+  display:inline-flex !important; align-items:center; gap:.4rem;
   background: rgba(69,231,163,.15);
-  color: var(--accent) !important;
+  color: var(--green-dark) !important;
   padding:.35rem .7rem; border-radius:999px;
-  font-size:.76rem; font-weight:700;
-  border: 1px solid rgba(69,231,163,.3);
-  transition: background .2s ease;
+  font-size:.76rem !important; font-weight:700 !important;
+  border: 1px solid rgba(69,231,163,.35);
+  transition: background .2s ease, color .2s ease;
 }
 .footer-izo-badge:hover{
-  background: rgba(69,231,163,.25);
-  color: var(--accent) !important;
+  background: rgba(69,231,163,.28);
+  color: var(--green-dark) !important;
 }
+/* V dark módu srozumitelně zelená na tmavém */
+:root .footer-izo-badge{ color: var(--accent) !important; }
+:root .footer-izo-badge:hover{ color: var(--accent) !important; }
+/* V light módu tmavší zelená pro kontrast */
+[data-theme="light"] .footer-izo-badge{ color: var(--green-dark) !important; }
+[data-theme="light"] .footer-izo-badge:hover{ color: var(--green-dark) !important; }
 </style>
 
 </head>
@@ -910,11 +934,11 @@
 
       <h1 class="hero-headline">Stabilní dodavatel energií, <em>na kterého se spolehnete.</em></h1>
 
-      <p class="hero-sub">Jsme na trhu deset let a společně tvoříme lepší energetickou budoucnost. Dodávky vám garantujeme přes ČEZ, EG.D i PRE — s podmínkami, ve kterých se vyznáte.</p>
+      <p class="hero-sub">Firma existuje od roku 1997, elektřinu dodáváme od roku 2016. Společně tvoříme lepší energetickou budoucnost — s podmínkami, ve kterých se vyznáte.</p>
 
       <div class="hero-cta-group">
         <a href="#ceny" class="btn-primary">Chci nabídku</a>
-        <a href="#jak" class="btn-outline">Jak to funguje?</a>
+        <a href="#prepis" class="btn-outline">Jak to funguje?</a>
       </div>
 
       <div class="hero-trust">
@@ -1004,7 +1028,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20V10M12 20V4M18 20v-7"/><path d="M2 20h20"/></svg>
       </div>
       <div class="benefity-title">Přes 25 let zkušeností</div>
-      <p class="benefity-desc">Na trhu s energiemi jsme nepřetržitě od roku 1997.</p>
+      <p class="benefity-desc">Firma funguje od roku 1997, elektřinu dodáváme od roku 2016.</p>
     </div>
     <div class="benefity-item">
       <div class="benefity-ico">
@@ -1178,10 +1202,14 @@
       <div class="licence-highlight-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v18M18 3v18"/><path d="M6 8h12M6 16h12"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/></svg>
       </div>
-      <div>
+      <div class="licence-highlight-body">
         <div class="licence-highlight-title">Jako první v ČR jsme spustili sdílení elektřiny.</div>
         <div class="licence-highlight-desc">Pomohli jsme vytvořit funkční model komunitního sdílení energie — dnes ho využívají desítky domácností a firem po celé republice.</div>
       </div>
+      <a href="https://www.elektrinaodsouseda.cz/" target="_blank" rel="noopener" class="licence-highlight-cta">
+        elektrinaodsouseda.cz
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+      </a>
     </div>
 
     <div class="licence-grid">
@@ -1279,19 +1307,19 @@
     <div class="big-numbers">
       <div class="big-num">
         <div class="big-num-val">1997</div>
-        <div class="big-num-lbl">Rok založení společnosti</div>
+        <div class="big-num-lbl">Rok založení<br>společnosti</div>
       </div>
       <div class="big-num">
-        <div class="big-num-val">12 000+</div>
-        <div class="big-num-lbl">Odběrných míst v ČR</div>
+        <div class="big-num-val">2016</div>
+        <div class="big-num-lbl">Začátek dodávek<br>elektřiny</div>
       </div>
       <div class="big-num">
         <div class="big-num-val">50 %</div>
-        <div class="big-num-lbl">Zisku zpět do OZE</div>
+        <div class="big-num-lbl">Zisku zpět<br>do vlastních OZE</div>
       </div>
       <div class="big-num">
         <div class="big-num-val">4,8 ★</div>
-        <div class="big-num-lbl">Průměr z 500+ recenzí</div>
+        <div class="big-num-lbl">Průměr<br>z 500+ recenzí</div>
       </div>
     </div>
   </div>
@@ -1439,40 +1467,6 @@
           <div class="prepis-step-mini"><span class="prepis-step-mini-num">2</span>Ověříme údaje a pošleme smlouvu</div>
           <div class="prepis-step-mini"><span class="prepis-step-mini-num">3</span>Vyřídíme přechod u distributora</div>
           <div class="prepis-step-mini"><span class="prepis-step-mini-num">4</span>Od data přepisu odebíráte od nás</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ JAK SE STANE NAŠÍM ZÁKAZNÍKEM ============ -->
-<section id="jak">
-  <div class="section-inner">
-    <div class="section-label">Jak se stanete naším zákazníkem</div>
-    <h2 class="section-title light">Tři kroky. A hotovo.</h2>
-    <p class="section-sub light">Celý přechod zvládnete za pár minut. Zbytek zařídíme my.</p>
-
-    <div class="steps-grid">
-      <div class="step-card">
-        <div class="step-num">01</div>
-        <div class="step-title">Vyplníte krátký formulář</div>
-        <p class="step-desc">Pár základních údajů — adresa odběrného místa, aktuální dodavatel a kontakt. A nahrajete potřebné dokumenty. Trvá to asi 3 minuty.</p>
-      </div>
-      <div class="step-card">
-        <div class="step-num">02</div>
-        <div class="step-title">Připravíme smlouvu a vyřídíme změnu</div>
-        <p class="step-desc">Připravíme smlouvu, vypovíme stávající dodávku a domluvíme se s distributorem. Vše za vás.</p>
-      </div>
-      <div class="step-card">
-        <div class="step-num">03</div>
-        <div class="step-title">Odebíráte energii za férových podmínek</div>
-        <p class="step-desc">Od prvního dne odebíráte elektřinu nebo plyn za transparentní cenu. Bez skrytých poplatků, bez sankcí.</p>
-      </div>
-    </div>
-
-    <div class="how-note">
-      <div class="how-note-text">
-        <strong>Nic nepřerušujeme. Nic neinstalujete. Jen změníte dodavatele.</strong><br>
-        Jednoduché. Žádné boxy navíc. Elektřina dál teče do vaší zásuvky přesně tak, jak jste zvyklí — jen od dodavatele, který ji neprodražuje zbytečnou marží.
       </div>
     </div>
   </div>
