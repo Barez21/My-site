@@ -8,6 +8,248 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,300;0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<!-- Theme setup — MUSÍ běžet dřív než CSS, jinak flash -->
+<script>
+  (function(){
+    try{
+      var t = localStorage.getItem('ffy-theme');
+      if (t !== 'dark' && t !== 'light') t = 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+    } catch(e){
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+</script>
+<!-- Critical inline CSS proti FOUC — barva pozadí se aplikuje před stažením styles.css -->
+<style>
+  html{ background: #0a141e; }
+  html[data-theme="light"]{ background: #EFF4FA; }
+  html[data-theme="dark"]{ background: #0a141e; }
+  html.theme-switching *,
+  html.theme-switching *::before,
+  html.theme-switching *::after{
+    transition: none !important;
+    animation-duration: 0s !important;
+  }
+
+
+/* ============================================================
+   PRAVÝ DARK MODE — doplňuje styles.css (který má jen [light])
+   Přepíše pozadí sekcí i barvy textu v mých i existujících sekcích.
+   ============================================================ */
+[data-theme="dark"] body{
+  background: #0a141e;
+  color: #e8eef7;
+}
+
+/* ── Existující "světlé" sekce z styles.css → v dark ztmavené ── */
+[data-theme="dark"] #benefits,
+[data-theme="dark"] #model,
+[data-theme="dark"] #trust,
+[data-theme="dark"] #dokumenty,
+[data-theme="dark"] #faq{
+  background: #0a141e;
+}
+
+/* ── Moje sekce ── */
+[data-theme="dark"] #benefity-hero{
+  background: #0f1c2b;
+  border-bottom-color: #1a2f47;
+}
+[data-theme="dark"] #ceny,
+[data-theme="dark"] #licence,
+[data-theme="dark"] #velka-cisla,
+[data-theme="dark"] #prepis,
+[data-theme="dark"] #tym{
+  background: #0f1c2b;
+}
+[data-theme="dark"] #recenze,
+[data-theme="dark"] #zdroje,
+[data-theme="dark"] #energobanking-section,
+[data-theme="dark"] #nadace{
+  background: #0a141e;
+}
+
+/* ── Nadpisy sekcí ── */
+[data-theme="dark"] .section-title,
+[data-theme="dark"] .section-title.light,
+[data-theme="dark"] .price-headline,
+[data-theme="dark"] .prepis-title,
+[data-theme="dark"] .tym-title,
+[data-theme="dark"] .benefity-title,
+[data-theme="dark"] .price-pillar-title,
+[data-theme="dark"] .licence-item-title,
+[data-theme="dark"] .nadace-title,
+[data-theme="dark"] .review-author,
+[data-theme="dark"] .review-text,
+[data-theme="dark"] .reviews-google-logo,
+[data-theme="dark"] .reviews-rating-num{
+  color: #e8eef7 !important;
+}
+[data-theme="dark"] .section-sub,
+[data-theme="dark"] .section-sub.light,
+[data-theme="dark"] .price-sub,
+[data-theme="dark"] .prepis-desc,
+[data-theme="dark"] .tym-desc,
+[data-theme="dark"] .benefity-desc,
+[data-theme="dark"] .price-pillar-desc,
+[data-theme="dark"] .licence-item-desc,
+[data-theme="dark"] .nadace-desc,
+[data-theme="dark"] .review-date,
+[data-theme="dark"] .reviews-count,
+[data-theme="dark"] .prepis-timer-label{
+  color: #8ba7c8 !important;
+}
+[data-theme="dark"] .prepis-list li strong{ color: #e8eef7; }
+[data-theme="dark"] .prepis-list li span{ color: #8ba7c8; }
+
+/* ── Karty v mých sekcích ── */
+[data-theme="dark"] .price-pillar,
+[data-theme="dark"] .review-card,
+[data-theme="dark"] .reviews-topline,
+[data-theme="dark"] .licence-item,
+[data-theme="dark"] .prepis-visual,
+[data-theme="dark"] .prepis-step-mini{
+  background: #16283d;
+  border-color: #2a3f5a;
+}
+[data-theme="dark"] .prepis-step-mini{ color: #e8eef7; }
+[data-theme="dark"] .price-pillar-ico{ background: rgba(69,231,163,.12); }
+[data-theme="dark"] .licence-ico{ background: rgba(69,231,163,.12); }
+
+/* ── Existující karty a boxy ── */
+[data-theme="dark"] .benefit-card{
+  background: #16283d;
+  border-left-color: var(--accent);
+}
+[data-theme="dark"] .benefit-title{ color: #e8eef7; }
+[data-theme="dark"] .benefit-desc{ color: #8ba7c8; }
+
+[data-theme="dark"] .doc-card{
+  background: #16283d;
+  border-color: #2a3f5a;
+  color: #e8eef7;
+}
+[data-theme="dark"] .doc-card:hover{ border-color: var(--accent); }
+[data-theme="dark"] .doc-title{ color: #e8eef7; }
+[data-theme="dark"] .doc-desc{ color: #8ba7c8; }
+[data-theme="dark"] .doc-icon,
+[data-theme="dark"] .doc-arrow{ color: #8ba7c8; }
+
+[data-theme="dark"] .stat-box{
+  background: #16283d;
+  border-color: #2a3f5a;
+}
+[data-theme="dark"] .stat-box-num{ color: var(--accent); }
+[data-theme="dark"] .stat-box-label{ color: #8ba7c8; }
+
+[data-theme="dark"] .trust-note{
+  background: #16283d;
+  border-color: #2a3f5a;
+}
+[data-theme="dark"] .trust-note-title{ color: #e8eef7; }
+[data-theme="dark"] .trust-note-text{ color: #8ba7c8; }
+[data-theme="dark"] .trust-tag{
+  background: #1e3450;
+  border-color: #2a3f5a;
+  color: var(--accent);
+}
+
+[data-theme="dark"] .model-note{
+  background: transparent;
+}
+[data-theme="dark"] .model-note-head{ color: var(--accent); }
+[data-theme="dark"] .model-note blockquote,
+[data-theme="dark"] .model-note h3{ color: #e8eef7 !important; }
+[data-theme="dark"] .model-note p{ color: #8ba7c8 !important; }
+[data-theme="dark"] .flow-title{ color: #e8eef7; }
+[data-theme="dark"] .flow-desc{ color: #8ba7c8; }
+[data-theme="dark"] .flow-line{ background: #2a3f5a; }
+
+[data-theme="dark"] .faq-item{
+  background: #16283d;
+  border-color: #2a3f5a;
+}
+[data-theme="dark"] .faq-item.open{ border-color: rgba(69,231,163,.4); }
+[data-theme="dark"] .faq-q{ color: #e8eef7 !important; }
+[data-theme="dark"] .faq-a{ color: #8ba7c8; }
+[data-theme="dark"] .faq-arrow{ background: rgba(255,255,255,.06); color: var(--accent); }
+[data-theme="dark"] .faq-item.open .faq-arrow{ background: var(--accent); color: var(--navy-dark); }
+[data-theme="dark"] .faq-group-title{ color: var(--accent); border-bottom-color: #2a3f5a; }
+
+/* ── Formulářové prvky ── */
+[data-theme="dark"] .form-input,
+[data-theme="dark"] .form-textarea{
+  background: rgba(255,255,255,.05);
+  border-color: rgba(255,255,255,.15);
+  color: #e8eef7;
+}
+[data-theme="dark"] .form-input::placeholder{ color: rgba(255,255,255,.4); }
+[data-theme="dark"] .form-label{ color: #e8eef7; }
+
+/* ── Section label (mint zelená) v dark ── */
+[data-theme="dark"] .section-label{ color: var(--accent); }
+
+/* ── Btn outline dark → v tmavém režimu potřebuje jiný kontrast ── */
+[data-theme="dark"] .btn-outline-dark{
+  color: #e8eef7;
+  border-color: rgba(255,255,255,.25);
+}
+[data-theme="dark"] .btn-outline-dark:hover{
+  border-color: var(--accent);
+  background: rgba(69,231,163,.1);
+  color: var(--accent);
+}
+
+/* ── Recenze — grid pozadí gradient v dark ── */
+[data-theme="dark"] #recenze{
+  background: linear-gradient(180deg, #0a141e 0%, #0d1a27 100%);
+}
+
+/* ── Big numbers v dark — trošku tmavší gradient aby vyniknul ── */
+[data-theme="dark"] .big-numbers{
+  background: linear-gradient(135deg, #16283d 0%, #0a141e 100%);
+  border: 1px solid #2a3f5a;
+}
+
+/* ── Nadace v dark — bronzová karta na tmavém ── */
+[data-theme="dark"] .nadace-card{
+  background: linear-gradient(135deg, rgba(232,175,70,.14) 0%, rgba(232,175,70,.04) 100%);
+  border-color: rgba(232,175,70,.3);
+}
+
+/* ── Tym photo v dark — jemně upravit overlay ── */
+[data-theme="dark"] .tym-photo{
+  background:
+    linear-gradient(135deg, rgba(69,231,163,.65) 0%, rgba(14,30,47,.95) 100%),
+    linear-gradient(135deg, #4a5a6a 0%, #2a3a4a 100%);
+}
+
+/* ── Licence highlight — zelený box, ponechat světlé pozadí ── */
+/* (funguje v obou režimech, není třeba upravovat) */
+
+/* ── Doc arrow — hover ── */
+[data-theme="dark"] .doc-card:hover .doc-arrow{ color: var(--accent); }
+
+/* ── Steps grid ── */
+[data-theme="dark"] .step-card{
+  background: #16283d;
+  border-color: #2a3f5a;
+}
+[data-theme="dark"] .step-num{ color: var(--accent); }
+[data-theme="dark"] .step-title{ color: #e8eef7; }
+[data-theme="dark"] .step-desc{ color: #8ba7c8; }
+
+/* ── How-note ── */
+[data-theme="dark"] .how-note{
+  background: rgba(69,231,163,.08);
+  border-color: rgba(69,231,163,.25);
+}
+[data-theme="dark"] .how-note-text{ color: #e8eef7; }
+[data-theme="dark"] .how-note-text strong{ color: var(--accent); }
+
+</style>
+<link rel="preload" as="style" href="styles.css">
 <link rel="stylesheet" href="styles.css">
 
 <meta name="description" content="Stabilní dodavatel energií od roku 1997. 50 % zisku investujeme zpět do vlastních zdrojů, abyste měli levnější a stabilnější energii. Bez sankcí, ukončení kdykoli.">
@@ -815,54 +1057,69 @@
 [data-theme="light"] .footer-izo-badge:hover{ color: var(--green-dark) !important; }
 
 
-/* ============ FLOATING CTA + absorb animace ============ */
+/* ============ FLOATING CTA + fly/absorb animace ============ */
 .floating-cta{
   position: fixed;
-  bottom: 1.5rem;
-  right: 1.5rem;
+  bottom: 1.75rem;
+  right: 1.75rem;
   z-index: 90;
   display: inline-flex;
   align-items: center;
-  gap: .5rem;
-  padding: 14px 22px;
+  gap: .55rem;
+  padding: 15px 24px;
   background: linear-gradient(135deg, var(--accent) 0%, var(--green-dark) 100%);
   color: var(--navy-dark);
   border-radius: 999px;
   font-weight: 700;
   font-size: .95rem;
   text-decoration: none;
+  border: 2px solid rgba(255,255,255,.35);
   box-shadow:
-    0 12px 32px rgba(69,231,163,.45),
-    0 0 0 1px rgba(255,255,255,.08) inset;
+    0 14px 36px rgba(69,231,163,.55),
+    0 0 0 0 rgba(69,231,163,.55),
+    0 4px 12px rgba(0,0,0,.15);
   opacity: 0;
-  transform: translateY(24px) scale(.9);
+  transform: scale(.85);
   pointer-events: none;
-  will-change: transform, opacity;
+  will-change: transform, opacity, box-shadow;
   transition:
     opacity .35s ease,
-    transform .5s cubic-bezier(.34, 1.56, .64, 1),
-    box-shadow .25s ease,
+    transform .55s cubic-bezier(.34, 1.56, .64, 1),
+    box-shadow .3s ease,
     background .25s ease;
 }
 .floating-cta.is-visible{
   opacity: 1;
-  transform: translateY(0) scale(1);
+  transform: scale(1);
   pointer-events: auto;
+  animation: floatingPulseBreath 2.4s ease-in-out infinite;
 }
 .floating-cta:hover{
-  transform: translateY(-3px) scale(1.02);
+  transform: scale(1.06);
   box-shadow:
-    0 18px 40px rgba(69,231,163,.55),
-    0 0 0 1px rgba(255,255,255,.15) inset;
+    0 20px 44px rgba(69,231,163,.65),
+    0 0 0 8px rgba(69,231,163,.15),
+    0 4px 12px rgba(0,0,0,.15);
+  animation-play-state: paused;
 }
-/* Fáze letu — přesunutí k cíli */
-.floating-cta.is-flying{
+/* Instantní snap na výchozí pozici (bez tranzice) — použito při flyFrom */
+.floating-cta.is-snap{
+  transition: none !important;
+  animation: none !important;
+}
+/* Letová fáze (příchod od zdroje nebo odchod k cíli) */
+.floating-cta.is-flying-in,
+.floating-cta.is-flying-out{
+  transition:
+    transform .7s cubic-bezier(.32, .72, .35, 1),
+    opacity .35s ease;
+  animation: none;
+}
+.floating-cta.is-flying-out{
+  opacity: 0;
   transition:
     transform .65s cubic-bezier(.5, 0, .2, 1),
-    opacity .3s ease .45s,
-    background .3s ease;
-  opacity: 0;
-  pointer-events: none;
+    opacity .35s ease .35s;
 }
 .floating-cta-icon{
   display:inline-flex; align-items:center; justify-content:center;
@@ -878,7 +1135,23 @@
   }
 }
 
-/* Cílové tlačítko musí být position:relative aby ::after fungoval */
+/* Jemné pulzování / "dýchání" — dělá tlačítko výraznější */
+@keyframes floatingPulseBreath{
+  0%, 100%{
+    box-shadow:
+      0 14px 36px rgba(69,231,163,.55),
+      0 0 0 0 rgba(69,231,163,.55),
+      0 4px 12px rgba(0,0,0,.15);
+  }
+  50%{
+    box-shadow:
+      0 16px 40px rgba(69,231,163,.6),
+      0 0 0 12px rgba(69,231,163,.0),
+      0 4px 12px rgba(0,0,0,.15);
+  }
+}
+
+/* Cílová a zdrojová tlačítka musí být position:relative */
 #prepis-cta-target,
 #hero-cta-primary,
 #final-cta-primary{
@@ -886,7 +1159,7 @@
   overflow: visible;
 }
 
-/* Puls kolem cílového tlačítka při absorbování */
+/* Puls kolem cílového tlačítka při absorpci */
 @keyframes ctaAbsorbPulse{
   0%{
     box-shadow:
@@ -899,7 +1172,7 @@
   }
   100%{
     box-shadow:
-      0 0 0 32px rgba(69,231,163,0),
+      0 0 0 36px rgba(69,231,163,0),
       0 0 40px 20px rgba(69,231,163,0);
     transform: scale(1);
   }
@@ -1413,8 +1686,8 @@
         <div class="big-num-lbl">Zisku zpět<br>do vlastních OZE</div>
       </div>
       <div class="big-num">
-        <div class="big-num-val">4,8 ★</div>
-        <div class="big-num-lbl">Průměr<br>z 500+ recenzí</div>
+        <div class="big-num-val">1.</div>
+        <div class="big-num-lbl">Dodavatel v ČR<br>se sdílením elektřiny</div>
       </div>
     </div>
   </div>
@@ -1854,16 +2127,22 @@
   overlay.addEventListener('click', closeDrawer);
   drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeDrawer));
 
-  // ── Theme toggle ──
+  // ── Theme toggle (dark/light) ──
+  // Theme atribut je už nastavený z head-scriptu, tady jen řešíme klik
   const root = document.documentElement;
   const themeBtn = document.getElementById('theme-toggle');
-  const saved = localStorage.getItem('ffy-theme');
-  if (saved === 'light') root.setAttribute('data-theme', 'light');
   if (themeBtn) {
     themeBtn.addEventListener('click', () => {
-      const isLight = root.getAttribute('data-theme') === 'light';
-      root.setAttribute('data-theme', isLight ? 'dark' : 'light');
-      localStorage.setItem('ffy-theme', isLight ? 'dark' : 'light');
+      const cur = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+      const next = cur === 'light' ? 'dark' : 'light';
+      // Krátce vypnout animace, aby přepnutí neproblesklo tranzicemi
+      root.classList.add('theme-switching');
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('ffy-theme', next); } catch(e){}
+      // Po jednom framu tranzice zas povolit
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => root.classList.remove('theme-switching'));
+      });
     });
   }
 
@@ -1892,8 +2171,8 @@
   });
 
   // ══════════════════════════════════════════════════════════
-  // FLOATING CTA — objeví se po opuštění hero, letí na cíl,
-  // absorbuje se s pulzem kolem "Chci přepsat odběr"
+  // FLOATING CTA — letí z hero do rohu, absorbuje se do "Přepsat
+  // odběr" s pulzem. Při scrollu nahoru přes cíl znovu vylétá.
   // ══════════════════════════════════════════════════════════
   (function initFloatingCta(){
     const floating = document.getElementById('floating-cta');
@@ -1901,73 +2180,112 @@
     const target   = document.getElementById('prepis-cta-target');
     if (!floating || !heroBtn || !target) return;
 
-    let hasAbsorbed = false;
-    let isFlying    = false;
+    // Stavy floatingu: 'hidden' | 'visible' | 'flying-in' | 'flying-out'
+    let state       = 'hidden';
+    let lastScrollY = window.scrollY;
+    let inZone      = false;   // Byl cíl v absorb zóně v minulém cyklu?
     let ticking     = false;
 
-    // Uživatel klikne na plovoucí CTA — prostě funguje jako normální link
-    // (target = #ceny), NEspouští absorb animaci
+    // Získá diff mezi finální pozicí floating (bottom-right) a středem daného elementu
+    function diffToElement(el){
+      // Pro spolehlivou finální pozici floating musíme mít is-visible bez transformu
+      const wasHidden = !floating.classList.contains('is-visible');
+      if (wasHidden){
+        floating.classList.add('is-snap', 'is-visible');
+      }
+      const prevTransform = floating.style.transform;
+      floating.style.transform = '';
+      // Force reflow
+      void floating.offsetWidth;
+      const fRect = floating.getBoundingClientRect();
+      const eRect = el.getBoundingClientRect();
+      const dx = (eRect.left + eRect.width/2) - (fRect.left + fRect.width/2);
+      const dy = (eRect.top  + eRect.height/2) - (fRect.top  + fRect.height/2);
+      // Vrátíme stav
+      floating.style.transform = prevTransform;
+      if (wasHidden){
+        floating.classList.remove('is-visible', 'is-snap');
+      }
+      return { dx, dy };
+    }
 
-    function inViewport(el, topBuffer, bottomBuffer){
+    // Ukaž floating letem z daného zdrojového elementu
+    function flyIn(sourceEl){
+      if (state === 'visible' || state === 'flying-in') return;
+      state = 'flying-in';
+
+      const { dx, dy } = diffToElement(sourceEl);
+
+      // 1) Instantně přesuň floating do pozice zdroje (bez tranzice)
+      floating.classList.remove('is-flying-out');
+      floating.classList.add('is-snap', 'is-visible');
+      floating.style.transform = `translate(${dx}px, ${dy}px) scale(0.45)`;
+      // Force reflow — bez toho by prohlížeč spojil oba style setry do jednoho paintu
+      void floating.offsetWidth;
+
+      // 2) Zapni tranzici (flying-in) a přepni transform na finální pozici
+      floating.classList.remove('is-snap');
+      floating.classList.add('is-flying-in');
+      floating.style.transform = '';
+
+      // 3) Po dokončení letu — zapni "visible" (spustí breath pulse)
+      setTimeout(function(){
+        floating.classList.remove('is-flying-in');
+        state = 'visible';
+      }, 720);
+    }
+
+    // Skryj floating letem k cílovému elementu (absorb)
+    function flyOut(targetEl, thenPulseTarget){
+      if (state === 'hidden' || state === 'flying-out') return;
+      state = 'flying-out';
+
+      const { dx, dy } = diffToElement(targetEl);
+
+      floating.classList.remove('is-flying-in', 'is-snap');
+      floating.classList.add('is-flying-out');
+      // Odstraníme breath tím, že vypneme is-visible až po transformu
+      floating.style.transform = `translate(${dx}px, ${dy}px) scale(0.35)`;
+
+      setTimeout(function(){
+        if (thenPulseTarget){
+          targetEl.classList.add('cta-target-pulse');
+          setTimeout(function(){
+            targetEl.classList.remove('cta-target-pulse');
+          }, 900);
+        }
+      }, 500);
+
+      setTimeout(function(){
+        floating.classList.remove('is-visible', 'is-flying-out');
+        floating.style.transform = '';
+        state = 'hidden';
+      }, 900);
+    }
+
+    // Rychlá skrytí (bez animace) — pro reset situace
+    function hideInstant(){
+      floating.classList.add('is-snap');
+      floating.classList.remove('is-visible', 'is-flying-in', 'is-flying-out');
+      floating.style.transform = '';
+      void floating.offsetWidth;
+      floating.classList.remove('is-snap');
+      state = 'hidden';
+    }
+
+    // Vrátí true pokud je element viditelný (i částečně) ve viewportu
+    function isInViewport(el, topBuffer, bottomBuffer){
       const r = el.getBoundingClientRect();
       const vh = window.innerHeight || document.documentElement.clientHeight;
-      return r.bottom > topBuffer && r.top < vh - bottomBuffer;
+      return r.bottom > (topBuffer || 0) && r.top < vh - (bottomBuffer || 0);
     }
 
-    function targetAbsorbZone(){
-      // "Cílová zóna" — cílové tlačítko je v horní polovině viewportu
+    // Vrátí true pokud je cíl v absorb zóně (střed mezi 25–65 % viewportu)
+    function isTargetInAbsorbZone(){
       const r = target.getBoundingClientRect();
       const vh = window.innerHeight || document.documentElement.clientHeight;
-      // Aktivace když je střed tlačítka mezi 25%–65% viewportu
       const centerY = r.top + r.height / 2;
-      return centerY > vh * 0.25 && centerY < vh * 0.65;
-    }
-
-    function showFloating(){
-      if (isFlying) return;
-      floating.classList.remove('is-flying');
-      floating.classList.add('is-visible');
-      // Reset transform po předchozí letové fázi
-      floating.style.transform = '';
-    }
-
-    function hideFloating(){
-      floating.classList.remove('is-visible', 'is-flying');
-      floating.style.transform = '';
-    }
-
-    function absorb(){
-      if (hasAbsorbed || isFlying) return;
-      isFlying = true;
-      hasAbsorbed = true;
-
-      // Spočti rozdíl pozic — od aktuálního centra floating CTA k centru cílového btn
-      const fRect = floating.getBoundingClientRect();
-      const tRect = target.getBoundingClientRect();
-
-      const dx = (tRect.left + tRect.width / 2) - (fRect.left + fRect.width / 2);
-      const dy = (tRect.top  + tRect.height / 2) - (fRect.top  + fRect.height / 2);
-
-      // Spusť letovou animaci
-      floating.classList.remove('is-visible');
-      floating.classList.add('is-flying');
-      floating.style.transform =
-        `translate(${dx}px, ${dy}px) scale(0.35)`;
-
-      // Po dokončení letu — spusť puls na cíli a resetuj floating
-      setTimeout(function(){
-        target.classList.add('cta-target-pulse');
-        setTimeout(function(){
-          target.classList.remove('cta-target-pulse');
-        }, 900);
-
-        // Skryj floating úplně (transform reset uděláme až po fade)
-        setTimeout(function(){
-          floating.classList.remove('is-flying');
-          floating.style.transform = '';
-          isFlying = false;
-        }, 350);
-      }, 650);
+      return centerY > vh * 0.25 && centerY < vh * 0.7;
     }
 
     function onScroll(){
@@ -1976,50 +2294,66 @@
       requestAnimationFrame(function(){
         ticking = false;
 
-        // Hero button viditelný? → skryj floating a povolí reset absorbce
-        const heroVisible = inViewport(heroBtn, 60, 60);
-        if (heroVisible) {
-          hasAbsorbed = false;
-          hideFloating();
+        const y = window.scrollY;
+        const dir = y > lastScrollY ? 'down' : (y < lastScrollY ? 'up' : 'same');
+        lastScrollY = y;
+
+        const heroVisible = isInViewport(heroBtn, 40, 60);
+        const targetInZone = isTargetInAbsorbZone();
+        const targetRect = target.getBoundingClientRect();
+        const targetAbove = targetRect.bottom < 40;  // Cíl je nad viewportem (užvatel je dál dolů)
+
+        // ── HERO je pořád viditelný ──
+        if (heroVisible){
+          // Zrušit vše
+          if (state !== 'hidden') hideInstant();
+          inZone = false;
           return;
         }
 
-        // Uživatel dosáhl cílové zóny?
-        if (targetAbsorbZone() && !hasAbsorbed) {
-          // Jen pokud je floating aktuálně viditelný — jinak není co absorbovat
-          if (floating.classList.contains('is-visible')) {
-            absorb();
-          } else {
-            // Uživatel scrollnul přímo na cíl bez zobrazení floating —
-            // dej rychlý puls jen aby bylo cílové CTA vidět
-            hasAbsorbed = true;
-            target.classList.add('cta-target-pulse');
-            setTimeout(function(){
-              target.classList.remove('cta-target-pulse');
-            }, 900);
+        // ── Cíl je právě v absorb zóně ──
+        if (targetInZone){
+          if (!inZone){
+            // Právě jsme vstoupili do zóny
+            inZone = true;
+            if (dir === 'down' && state === 'visible'){
+              // Scroll dolů → absorb do cíle
+              flyOut(target, true);
+            } else if (dir === 'up' && (state === 'hidden' || state === 'flying-out')){
+              // Scroll nahoru přes cíl → floating znovu vyletí z cíle
+              flyIn(target);
+            } else if (dir === 'down' && state === 'hidden'){
+              // Uživatel scrolloval příliš rychle a floating ještě nebyl visible
+              // Jen dej puls, ať cíl vidí
+              target.classList.add('cta-target-pulse');
+              setTimeout(function(){
+                target.classList.remove('cta-target-pulse');
+              }, 900);
+            }
+          }
+          return;
+        } else {
+          inZone = false;
+        }
+
+        // ── Cíl je nad viewportem (užuž dole pod cílem) ──
+        if (targetAbove){
+          // Floating má zůstat skrytý (už byl absorbován)
+          if (state === 'visible' || state === 'flying-in'){
+            hideInstant();
           }
           return;
         }
 
-        // Uživatel je pod cílovým btn (target odscrolloval nahoru mimo zónu)?
-        const tRect = target.getBoundingClientRect();
-        const belowTarget = tRect.bottom < 60;
-        if (belowTarget) {
-          // Necháme floating skrytý (už bylo absorbováno)
-          hideFloating();
-          return;
+        // ── Mezi hero a cílem — floating má být viditelný ──
+        if (state === 'hidden'){
+          flyIn(heroBtn);
         }
-
-        // Standardní stav — hero pryč, cíl ještě nedosažen → zobraz floating
-        if (!hasAbsorbed) showFloating();
-        else hideFloating();
       });
     }
 
-    // První kalibrace + listener
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll, { passive: true });
-    // Malý delay aby se stránka srovnala
     setTimeout(onScroll, 250);
   })();
 </script>
