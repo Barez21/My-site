@@ -101,6 +101,7 @@
   color: #8ba7c8 !important;
 }
 [data-theme="dark"] .prepis-list li strong{ color: #e8eef7; }
+[data-theme="dark"] .nadace-desc strong{ color: #e8eef7; }
 [data-theme="dark"] .prepis-list li span{ color: #8ba7c8; }
 
 /* ── Karty v mých sekcích ── */
@@ -997,12 +998,29 @@
   box-shadow: 0 12px 24px rgba(232,175,70,.35);
 }
 .nadace-icon svg{ width:32px; height:32px; }
+.nadace-body{ flex:1 1 auto; }
 .nadace-title{
   color: var(--navy-dark); font-weight:700;
-  font-size:1.1rem; margin-bottom:.4rem;
+  font-size:1.15rem; margin-bottom:.5rem;
 }
 .nadace-desc{
-  color: var(--muted); font-size:.92rem; line-height:1.6; font-weight:300;
+  color: var(--muted); font-size:.94rem; line-height:1.65; font-weight:400;
+  margin-bottom:1rem;
+}
+.nadace-desc strong{ color: var(--navy-dark); font-weight:700; }
+.nadace-cta{
+  display:inline-flex; align-items:center; gap:.4rem;
+  padding:.55rem 1rem;
+  background: var(--bronze);
+  color: #fff !important;
+  border-radius: 8px;
+  font-weight: 700; font-size: .85rem;
+  text-decoration: none;
+  transition: transform .2s ease, background .2s ease;
+}
+.nadace-cta:hover{
+  background: #d69a2c;
+  transform: translateY(-2px);
 }
 
 /* ============ TÝM ============ */
@@ -1685,8 +1703,8 @@
         <div class="big-num-lbl">Zisku zpět<br>do vlastních OZE</div>
       </div>
       <div class="big-num">
-        <div class="big-num-val">0 %</div>
-        <div class="big-num-lbl">Index zajištění<br>obchodníka (IZO)</div>
+        <div class="big-num-val" data-live-metric="nadace-kc">122&nbsp;663 Kč</div>
+        <div class="big-num-lbl">Přispěno Nadačnímu fondu<br>Veroniky Kašákové</div>
       </div>
     </div>
   </div>
