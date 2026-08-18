@@ -1839,12 +1839,16 @@
 <!-- ============ NADACE ============ -->
 <section id="nadace">
   <div class="nadace-card">
-      <div class="nadace-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-      </div>
-      <div>
-        <div class="nadace-title">Přispíváme na programy pro dětské domovy.</div>
-        <p class="nadace-desc">Část našeho hospodaření směřuje do nadace, která provozuje vzdělávací a volnočasové programy pro děti z dětských domovů. Nejen kvůli hezkému pocitu — protože je to správné.</p>
+    <div class="nadace-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    </div>
+    <div class="nadace-body">
+      <div class="nadace-title">Podporujeme Nadační fond Veroniky Kašákové.</div>
+      <p class="nadace-desc">Od roku 2018 přispíváme <strong>1 Kč za každou dodanou MWh</strong> na programy pro děti z dětských domovů. Zatím se nasbíralo <strong data-live-metric="nadace-kc">122&nbsp;663 Kč</strong>. Není to charitativní gesto — je to pravidelný standard, který škáluje s objemem naší dodávky.</p>
+      <a href="https://www.nfvk.cz/" target="_blank" rel="noopener" class="nadace-cta">
+        nfvk.cz
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+      </a>
     </div>
   </div>
 </section>
@@ -2204,14 +2208,33 @@
       }, 720);
     }
 
-    // Instantně skryj floating (pro reset při návratu k hero)
+    // Instantně skryj floating (pouze pro první load nebo edge cases)
     function hideInstant(){
       floating.classList.add('is-snap');
-      floating.classList.remove('is-visible', 'is-flying-in');
+      floating.classList.remove('is-visible', 'is-flying-in', 'is-flying-out');
       floating.style.transform = '';
       void floating.offsetWidth;
       floating.classList.remove('is-snap');
       state = 'hidden';
+    }
+
+    // Reverzní animace — floating letí zpět z rohu do hero tlačítka a zmizí
+    function flyBackToHero(){
+      if (state === 'hidden' || state === 'flying-out') return;
+      state = 'flying-out';
+
+      const { dx, dy } = diffToElement(heroBtn);
+
+      floating.classList.remove('is-flying-in', 'is-snap');
+      floating.classList.add('is-flying-out');
+      // Odstranit breath pulse a odletět k hero
+      floating.style.transform = `translate(${dx}px, ${dy}px) scale(0.45)`;
+
+      setTimeout(function(){
+        floating.classList.remove('is-visible', 'is-flying-out');
+        floating.style.transform = '';
+        state = 'hidden';
+      }, 900);
     }
 
     function isInViewport(el, topBuffer, bottomBuffer){
@@ -2251,9 +2274,13 @@
         const heroVisible = isInViewport(heroBtn, 40, 60);
         const inPulseZone = isTargetInPulseZone();
 
-        // ── HERO viditelný — floating skrytý ──
+        // ── HERO viditelný — floating má "letět zpět" do hero ──
         if (heroVisible){
-          if (state !== 'hidden') hideInstant();
+          if (state === 'visible' || state === 'flying-in'){
+            flyBackToHero();
+          } else if (state === 'flying-out'){
+            // Už letí — nech ho doletět
+          }
           wasInPulseZone = false;
           return;
         }
