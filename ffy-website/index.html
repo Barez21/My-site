@@ -252,12 +252,12 @@
 <link rel="preload" as="style" href="styles.css">
 <link rel="stylesheet" href="styles.css">
 
-<meta name="description" content="Stabilní dodavatel energií od roku 1997. 50 % zisku investujeme zpět do vlastních zdrojů, abyste měli levnější a stabilnější energii. Bez sankcí, ukončení kdykoli.">
+<meta name="description" content="Stabilní dodavatel energií. 50 % zisku investujeme zpět do vlastních zdrojů, abyste měli levnější a stabilnější energii. Bez sankcí, ukončení kdykoli.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://www.freeforyou.cz/index.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="FREE for YOU energie — Stabilní dodavatel energií">
-<meta property="og:description" content="Na trhu od roku 1997. Společně tvoříme lepší energetickou budoucnost.">
+<meta property="og:description" content="Společně tvoříme lepší energetickou budoucnost.">
 <meta property="og:url" content="https://www.freeforyou.cz/index.html">
 <meta property="og:image" content="https://www.freeforyou.cz/logo.svg">
 <meta property="og:locale" content="cs_CZ">
@@ -271,7 +271,6 @@
   "url": "https://www.freeforyou.cz",
   "logo": "https://www.freeforyou.cz/logo.svg",
   "description": "Český dodavatel elektřiny a plynu budující vlastní obnovitelné zdroje energie.",
-  "foundingDate": "1997",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "Českomoravská 2255/12a",
@@ -875,6 +874,28 @@
   opacity:.85;
 }
 
+/* ============ ENERGO PLACEHOLDER (dokud nebude screenshot) ============ */
+.energo-placeholder{
+  position: relative; z-index: 1;
+  aspect-ratio: 4 / 3;
+  background: linear-gradient(135deg, #1a2a3a 0%, #0a141e 100%);
+  border: 1px dashed rgba(69,231,163,.35);
+  border-radius: 18px;
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,.55);
+  padding: 2rem;
+}
+.energo-placeholder-inner{
+  text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: .75rem;
+}
+.energo-placeholder-inner svg{ opacity: .6; }
+.energo-placeholder-inner p{
+  font-size: .85rem; font-weight: 400;
+  color: rgba(255,255,255,.55);
+  max-width: 220px;
+}
+
 /* ============ PŘEPIS ONLINE ============ */
 #prepis{
   background: var(--bg);
@@ -1060,22 +1081,24 @@
 /* ============ FLOATING CTA + fly/absorb animace ============ */
 .floating-cta{
   position: fixed;
-  bottom: 1.75rem;
-  right: 1.75rem;
+  bottom: 2rem;
+  right: 2rem;
   z-index: 90;
   display: inline-flex;
   align-items: center;
-  gap: .55rem;
-  padding: 15px 24px;
+  gap: .65rem;
+  /* +20 % oproti původní velikosti — padding 18/29 (bylo 15/24) */
+  padding: 18px 29px;
   background: linear-gradient(135deg, var(--accent) 0%, var(--green-dark) 100%);
   color: var(--navy-dark);
   border-radius: 999px;
   font-weight: 700;
-  font-size: .95rem;
+  font-size: 1.05rem;  /* bylo .95 → +10 % + váha řeší zbytek */
+  letter-spacing: .005em;
   text-decoration: none;
   border: 2px solid rgba(255,255,255,.35);
   box-shadow:
-    0 14px 36px rgba(69,231,163,.55),
+    0 16px 40px rgba(69,231,163,.55),
     0 0 0 0 rgba(69,231,163,.55),
     0 4px 12px rgba(0,0,0,.15);
   opacity: 0;
@@ -1088,6 +1111,7 @@
     box-shadow .3s ease,
     background .25s ease;
 }
+.floating-cta-icon svg{ width: 20px; height: 20px; }
 .floating-cta.is-visible{
   opacity: 1;
   transform: scale(1);
@@ -1130,9 +1154,12 @@
   .floating-cta{
     bottom: 1rem;
     right: 1rem;
-    padding: 12px 18px;
-    font-size: .88rem;
+    /* proporcionálně menší (~70 %) — vejde se s obsahem */
+    padding: 12px 20px;
+    font-size: .9rem;
+    gap: .5rem;
   }
+  .floating-cta-icon svg{ width: 16px; height: 16px; }
 }
 
 /* Jemné pulzování / "dýchání" — dělá tlačítko výraznější */
@@ -1153,8 +1180,7 @@
 
 /* Cílová a zdrojová tlačítka musí být position:relative */
 #prepis-cta-target,
-#hero-cta-primary,
-#final-cta-primary{
+#hero-cta-primary{
   position: relative;
   overflow: visible;
 }
@@ -1294,15 +1320,12 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4Z"/></svg>
           Licence ERÚ · Regulovaný obchodník
         </span>
-        <span class="hero-badge">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-          Na trhu od roku 1997
-        </span>
+
       </div>
 
       <h1 class="hero-headline">Stabilní dodavatel energií, <em>na kterého se spolehnete.</em></h1>
 
-      <p class="hero-sub">Firma existuje od roku 1997, elektřinu dodáváme od roku 2016. Společně tvoříme lepší energetickou budoucnost — s podmínkami, ve kterých se vyznáte.</p>
+      <p class="hero-sub">Elektřinu dodáváme od roku 2016. Společně tvoříme lepší energetickou budoucnost — s podmínkami, ve kterých se vyznáte.</p>
 
       <div class="hero-cta-group">
         <a href="#ceny" class="btn-primary" id="hero-cta-primary" data-cta-source="hero">Chci výhodnější energii</a>
@@ -1395,8 +1418,8 @@
       <div class="benefity-ico">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20V10M12 20V4M18 20v-7"/><path d="M2 20h20"/></svg>
       </div>
-      <div class="benefity-title">Přes 25 let zkušeností</div>
-      <p class="benefity-desc">Firma funguje od roku 1997, elektřinu dodáváme od roku 2016.</p>
+      <div class="benefity-title">Dodavatel od roku 2016</div>
+      <p class="benefity-desc">Za tu dobu jsme si vybudovali stabilní pozici na trhu.</p>
     </div>
     <div class="benefity-item">
       <div class="benefity-ico">
@@ -1536,23 +1559,6 @@
       </div>
     </div>
 
-    <!-- Žádost o recenzi -->
-    <div class="reviews-ask">
-      <div>
-        <h3>Byli jste u nás spokojeni? Řekněte to dál.</h3>
-        <p>Díky vaší zpětné vazbě rosteme a můžeme dělat lepší službu i pro ostatní. Napsání recenze zabere minutu — a nám znamená obrovský rozdíl.</p>
-      </div>
-      <div class="reviews-ask-buttons">
-        <a href="https://g.page/r/FreeForYou/review" target="_blank" rel="noopener" class="reviews-ask-btn primary">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/></svg>
-          Napsat recenzi na Google
-        </a>
-        <a href="https://www.firmy.cz/detail/13169716-free-for-you-s-r-o-praha-liben.html" target="_blank" rel="noopener" class="reviews-ask-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          Přidat na Firmy.cz
-        </a>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -1608,13 +1614,6 @@
         </div>
         <div class="licence-item-title">OTE — Operátor trhu</div>
         <div class="licence-item-desc">Registrovaný účastník trhu</div>
-      </div>
-      <div class="licence-item">
-        <div class="licence-ico">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-        </div>
-        <div class="licence-item-title">Solární asociace</div>
-        <div class="licence-item-desc">Podpora rozvoje OZE</div>
       </div>
     </div>
   </div>
@@ -1674,20 +1673,20 @@
 
     <div class="big-numbers">
       <div class="big-num">
-        <div class="big-num-val">1997</div>
-        <div class="big-num-lbl">Rok založení<br>společnosti</div>
+        <div class="big-num-val">2016</div>
+        <div class="big-num-lbl">Rok začátku<br>dodávek elektřiny</div>
       </div>
       <div class="big-num">
-        <div class="big-num-val">2016</div>
-        <div class="big-num-lbl">Začátek dodávek<br>elektřiny</div>
+        <div class="big-num-val" data-live-metric="odberna-mista">2&nbsp;263</div>
+        <div class="big-num-lbl">Odběrných míst<br>v ČR</div>
       </div>
       <div class="big-num">
         <div class="big-num-val">50 %</div>
         <div class="big-num-lbl">Zisku zpět<br>do vlastních OZE</div>
       </div>
       <div class="big-num">
-        <div class="big-num-val">1.</div>
-        <div class="big-num-lbl">Dodavatel v ČR<br>se sdílením elektřiny</div>
+        <div class="big-num-val">0 %</div>
+        <div class="big-num-lbl">Index zajištění<br>obchodníka (IZO)</div>
       </div>
     </div>
   </div>
@@ -1755,32 +1754,11 @@
         </div>
       </div>
 
-      <!-- Vizuální mockup portálu -->
-      <div class="energo-preview">
-        <div class="energo-preview-head">
-          <div class="energo-preview-title">energobanking.cz</div>
-          <div class="energo-preview-dots"><span></span><span></span><span></span></div>
-        </div>
-        <div class="energo-preview-row">
-          <span class="energo-preview-label">Aktuální spotřeba</span>
-          <span class="energo-preview-val">2,4 kWh</span>
-        </div>
-        <div class="energo-preview-row">
-          <span class="energo-preview-label">Tento měsíc</span>
-          <span class="energo-preview-val">312 kWh</span>
-        </div>
-        <div class="energo-preview-row">
-          <span class="energo-preview-label">Reinvestováno díky vám</span>
-          <span class="energo-preview-val">148 Kč</span>
-        </div>
-        <div class="energo-preview-chart">
-          <div class="energo-preview-bar" style="height:40%"></div>
-          <div class="energo-preview-bar" style="height:65%"></div>
-          <div class="energo-preview-bar" style="height:50%"></div>
-          <div class="energo-preview-bar" style="height:80%"></div>
-          <div class="energo-preview-bar" style="height:70%"></div>
-          <div class="energo-preview-bar" style="height:95%"></div>
-          <div class="energo-preview-bar" style="height:60%"></div>
+      <!-- Placeholder pro screenshot Energobankingu -->
+      <div class="energo-placeholder" aria-label="Zde bude náhled portálu Energobanking">
+        <div class="energo-placeholder-inner">
+          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="15" x2="10" y2="15"/></svg>
+          <p>[ Zde bude náhled portálu Energobanking ]</p>
         </div>
       </div>
     </div>
@@ -1942,17 +1920,6 @@
   </div>
 </section>
 
-<!-- ============ FINAL CTA ============ -->
-<section id="final-cta">
-  <div class="final-cta-inner">
-    <div class="section-label">Připraveni začít?</div>
-    <h2 class="final-headline">Vyzkoušejte na 1 měsíc.</h2>
-    <p class="final-sub">Bez závazků. Bez výpadků. Jen energie za férovějších podmínek — a pak se rozhodněte sami.</p>
-    <a href="#ceny" class="btn-primary" id="final-cta-primary" style="font-size:1.05rem; padding: 16px 36px;">Chci výhodnější energii</a>
-    <p class="final-cta-note">Celý přechod zařídíme za vás. Formulář zabere 3 minuty.</p>
-  </div>
-</section>
-
 <!-- ============ FOOTER ============ -->
 <footer class="site-footer">
   <div class="footer-main">
@@ -1961,7 +1928,7 @@
         <a href="index.html" class="footer-logo">
           <img src="logo-white.svg" alt="FREE for YOU energie" class="footer-logo-img">
         </a>
-        <p class="footer-tagline">Stabilní dodavatel energií od roku 1997.<br>Budujeme vlastní zdroje, aby cena dlouhodobě klesala.</p>
+        <p class="footer-tagline">Stabilní dodavatel energií.<br>Budujeme vlastní zdroje, aby cena dlouhodobě klesala.</p>
         <div class="footer-social">
           <a href="#" class="footer-social-link" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
           <a href="#" class="footer-social-link" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
@@ -2171,8 +2138,9 @@
   });
 
   // ══════════════════════════════════════════════════════════
-  // FLOATING CTA — letí z hero do rohu, absorbuje se do "Přepsat
-  // odběr" s pulzem. Při scrollu nahoru přes cíl znovu vylétá.
+  // FLOATING CTA — vyletí z hero do rohu a zůstane až do
+  // konce stránky. Při přejezdu přes "Chci přepsat odběr"
+  // (v obou směrech scrollu) cílové tlačítko zapulzuje.
   // ══════════════════════════════════════════════════════════
   (function initFloatingCta(){
     const floating = document.getElementById('floating-cta');
@@ -2180,112 +2148,77 @@
     const target   = document.getElementById('prepis-cta-target');
     if (!floating || !heroBtn || !target) return;
 
-    // Stavy floatingu: 'hidden' | 'visible' | 'flying-in' | 'flying-out'
-    let state       = 'hidden';
+    let state       = 'hidden';   // 'hidden' | 'visible' | 'flying-in'
     let lastScrollY = window.scrollY;
-    let inZone      = false;   // Byl cíl v absorb zóně v minulém cyklu?
+    let wasInPulseZone = false;   // Byl cíl v puls zóně minule?
     let ticking     = false;
 
-    // Získá diff mezi finální pozicí floating (bottom-right) a středem daného elementu
+    // Získá diff mezi finální pozicí floating a středem daného elementu
     function diffToElement(el){
-      // Pro spolehlivou finální pozici floating musíme mít is-visible bez transformu
       const wasHidden = !floating.classList.contains('is-visible');
-      if (wasHidden){
-        floating.classList.add('is-snap', 'is-visible');
-      }
+      if (wasHidden) floating.classList.add('is-snap', 'is-visible');
       const prevTransform = floating.style.transform;
       floating.style.transform = '';
-      // Force reflow
       void floating.offsetWidth;
       const fRect = floating.getBoundingClientRect();
       const eRect = el.getBoundingClientRect();
       const dx = (eRect.left + eRect.width/2) - (fRect.left + fRect.width/2);
       const dy = (eRect.top  + eRect.height/2) - (fRect.top  + fRect.height/2);
-      // Vrátíme stav
       floating.style.transform = prevTransform;
-      if (wasHidden){
-        floating.classList.remove('is-visible', 'is-snap');
-      }
+      if (wasHidden) floating.classList.remove('is-visible', 'is-snap');
       return { dx, dy };
     }
 
-    // Ukaž floating letem z daného zdrojového elementu
-    function flyIn(sourceEl){
+    // Ukaž floating letem z hero tlačítka
+    function flyInFromHero(){
       if (state === 'visible' || state === 'flying-in') return;
       state = 'flying-in';
-
-      const { dx, dy } = diffToElement(sourceEl);
-
-      // 1) Instantně přesuň floating do pozice zdroje (bez tranzice)
-      floating.classList.remove('is-flying-out');
+      const { dx, dy } = diffToElement(heroBtn);
       floating.classList.add('is-snap', 'is-visible');
       floating.style.transform = `translate(${dx}px, ${dy}px) scale(0.45)`;
-      // Force reflow — bez toho by prohlížeč spojil oba style setry do jednoho paintu
       void floating.offsetWidth;
-
-      // 2) Zapni tranzici (flying-in) a přepni transform na finální pozici
       floating.classList.remove('is-snap');
       floating.classList.add('is-flying-in');
       floating.style.transform = '';
-
-      // 3) Po dokončení letu — zapni "visible" (spustí breath pulse)
       setTimeout(function(){
         floating.classList.remove('is-flying-in');
         state = 'visible';
       }, 720);
     }
 
-    // Skryj floating letem k cílovému elementu (absorb)
-    function flyOut(targetEl, thenPulseTarget){
-      if (state === 'hidden' || state === 'flying-out') return;
-      state = 'flying-out';
-
-      const { dx, dy } = diffToElement(targetEl);
-
-      floating.classList.remove('is-flying-in', 'is-snap');
-      floating.classList.add('is-flying-out');
-      // Odstraníme breath tím, že vypneme is-visible až po transformu
-      floating.style.transform = `translate(${dx}px, ${dy}px) scale(0.35)`;
-
-      setTimeout(function(){
-        if (thenPulseTarget){
-          targetEl.classList.add('cta-target-pulse');
-          setTimeout(function(){
-            targetEl.classList.remove('cta-target-pulse');
-          }, 900);
-        }
-      }, 500);
-
-      setTimeout(function(){
-        floating.classList.remove('is-visible', 'is-flying-out');
-        floating.style.transform = '';
-        state = 'hidden';
-      }, 900);
-    }
-
-    // Rychlá skrytí (bez animace) — pro reset situace
+    // Instantně skryj floating (pro reset při návratu k hero)
     function hideInstant(){
       floating.classList.add('is-snap');
-      floating.classList.remove('is-visible', 'is-flying-in', 'is-flying-out');
+      floating.classList.remove('is-visible', 'is-flying-in');
       floating.style.transform = '';
       void floating.offsetWidth;
       floating.classList.remove('is-snap');
       state = 'hidden';
     }
 
-    // Vrátí true pokud je element viditelný (i částečně) ve viewportu
     function isInViewport(el, topBuffer, bottomBuffer){
       const r = el.getBoundingClientRect();
       const vh = window.innerHeight || document.documentElement.clientHeight;
       return r.bottom > (topBuffer || 0) && r.top < vh - (bottomBuffer || 0);
     }
 
-    // Vrátí true pokud je cíl v absorb zóně (střed mezi 25–65 % viewportu)
-    function isTargetInAbsorbZone(){
+    function isTargetInPulseZone(){
+      // Puls zóna = cíl (jeho střed) je uvnitř viewportu s 15 % okrajem
       const r = target.getBoundingClientRect();
       const vh = window.innerHeight || document.documentElement.clientHeight;
       const centerY = r.top + r.height / 2;
-      return centerY > vh * 0.25 && centerY < vh * 0.7;
+      return centerY > vh * 0.15 && centerY < vh * 0.85;
+    }
+
+    function pulseTarget(){
+      // Restart animace — odstranit a znovu přidat třídu
+      target.classList.remove('cta-target-pulse');
+      // Force reflow, aby CSS animace pořádně restartovala
+      void target.offsetWidth;
+      target.classList.add('cta-target-pulse');
+      setTimeout(function(){
+        target.classList.remove('cta-target-pulse');
+      }, 900);
     }
 
     function onScroll(){
@@ -2295,59 +2228,27 @@
         ticking = false;
 
         const y = window.scrollY;
-        const dir = y > lastScrollY ? 'down' : (y < lastScrollY ? 'up' : 'same');
         lastScrollY = y;
 
         const heroVisible = isInViewport(heroBtn, 40, 60);
-        const targetInZone = isTargetInAbsorbZone();
-        const targetRect = target.getBoundingClientRect();
-        const targetAbove = targetRect.bottom < 40;  // Cíl je nad viewportem (užvatel je dál dolů)
+        const inPulseZone = isTargetInPulseZone();
 
-        // ── HERO je pořád viditelný ──
+        // ── HERO viditelný — floating skrytý ──
         if (heroVisible){
-          // Zrušit vše
           if (state !== 'hidden') hideInstant();
-          inZone = false;
+          wasInPulseZone = false;
           return;
         }
 
-        // ── Cíl je právě v absorb zóně ──
-        if (targetInZone){
-          if (!inZone){
-            // Právě jsme vstoupili do zóny
-            inZone = true;
-            if (dir === 'down' && state === 'visible'){
-              // Scroll dolů → absorb do cíle
-              flyOut(target, true);
-            } else if (dir === 'up' && (state === 'hidden' || state === 'flying-out')){
-              // Scroll nahoru přes cíl → floating znovu vyletí z cíle
-              flyIn(target);
-            } else if (dir === 'down' && state === 'hidden'){
-              // Uživatel scrolloval příliš rychle a floating ještě nebyl visible
-              // Jen dej puls, ať cíl vidí
-              target.classList.add('cta-target-pulse');
-              setTimeout(function(){
-                target.classList.remove('cta-target-pulse');
-              }, 900);
-            }
-          }
-          return;
-        } else {
-          inZone = false;
-        }
+        // ── Hero pryč — floating má být vidět ──
+        if (state === 'hidden') flyInFromHero();
 
-        // ── Cíl je nad viewportem (užuž dole pod cílem) ──
-        if (targetAbove){
-          // Floating má zůstat skrytý (už byl absorbován)
-          if (state === 'visible' || state === 'flying-in'){
-            hideInstant();
-          }
-          return;
-        }
-
-        // ── Mezi hero a cílem — floating má být viditelný ──
-        if (state === 'hidden'){
-          flyIn(heroBtn);
+        // ── Puls cíle při vstupu/výstupu ze zóny (oba směry) ──
+        if (inPulseZone && !wasInPulseZone){
+          pulseTarget();
+          wasInPulseZone = true;
+        } else if (!inPulseZone && wasInPulseZone){
+          wasInPulseZone = false;
         }
       });
     }

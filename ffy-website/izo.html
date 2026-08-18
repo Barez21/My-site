@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Index zajištění obchodníka (IZO) — FREE for YOU energie</title>
+<meta name="theme-color" content="#214571">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,300;0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
+<meta name="description" content="Index zajištění obchodníka (IZO) FREE for YOU je 0 %. Vysvětlujeme, co IZO znamená a proč je pro naši firmu zásadní.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.freeforyou.cz/izo.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Index zajištění obchodníka (IZO) — FREE for YOU energie">
+<meta property="og:description" content="Náš IZO je 0 %. Vysvětlujeme, co index znamená a jak ho reportujeme ERÚ.">
+<meta property="og:url" content="https://www.freeforyou.cz/izo.html">
+<meta property="og:image" content="https://www.freeforyou.cz/logo.svg">
+<meta property="og:locale" content="cs_CZ">
+<meta property="og:site_name" content="FREE for YOU energie">
+
+<!-- Theme setup — MUSÍ běžet dřív než CSS -->
+<script>
+  (function(){
+    try{
+      var t = localStorage.getItem('ffy-theme');
+      if (t !== 'dark' && t !== 'light') t = 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+    } catch(e){
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+</script>
+<!-- Critical inline CSS proti FOUC -->
+<style>
+  html{ background: #0a141e; }
+  html[data-theme="light"]{ background: #EFF4FA; }
+  html[data-theme="dark"]{ background: #0a141e; }
+  html.theme-switching *,
+  html.theme-switching *::before,
+  html.theme-switching *::after{
+    transition: none !important;
+    animation-duration: 0s !important;
+  }
+</style>
+<link rel="preload" as="style" href="styles.css">
+<link rel="stylesheet" href="styles.css">
+
+<style>
+/* ============================================================
+   IZO stránka — používá FFY brand paletu ze styles.css
+============================================================ */
+
+/* Hlavní kontejner nad footerem */
+main.izo-page{
+  padding: 130px 2rem 80px;
+  min-height: 60vh;
+}
+[data-theme="dark"] body{ background: #0a141e; color: #e8eef7; }
+
+.izo-inner{
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+/* Breadcrumb */
+.izo-crumb{
+  display: inline-flex; align-items: center; gap: .4rem;
+  color: var(--muted);
+  font-size: .85rem;
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+  transition: color .2s ease;
+}
+.izo-crumb:hover{ color: var(--accent); }
+.izo-crumb svg{ width: 14px; height: 14px; }
+
+/* Label + nadpis */
+.izo-label{
+  display: inline-block;
+  color: var(--accent);
+  font-size: .78rem; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+.izo-title{
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 800;
+  color: var(--navy-dark);
+  line-height: 1.15;
+  letter-spacing: -.01em;
+  margin-bottom: 1rem;
+}
+[data-theme="dark"] .izo-title{ color: #e8eef7; }
+
+.izo-lead{
+  font-size: 1.15rem;
+  color: var(--muted);
+  line-height: 1.65;
+  font-weight: 400;
+  margin-bottom: 3rem;
+  max-width: 720px;
+}
+[data-theme="dark"] .izo-lead{ color: #8ba7c8; }
+
+/* Naše hodnota IZO — velký "hero" panel */
+.izo-hero-value{
+  background: linear-gradient(135deg, var(--accent) 0%, #3dd090 100%);
+  color: var(--navy-dark);
+  border-radius: 24px;
+  padding: 3rem 2.5rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2.5rem;
+  align-items: center;
+  margin-bottom: 3rem;
+  box-shadow: 0 24px 50px rgba(69,231,163,.35);
+  position: relative;
+  overflow: hidden;
+}
+.izo-hero-value::before{
+  content: ""; position: absolute;
+  top: -30%; right: -10%;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(255,255,255,.25) 0%, transparent 60%);
+  pointer-events: none;
+}
+@media (max-width: 640px){
+  .izo-hero-value{
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 2rem 1.5rem;
+    gap: 1.5rem;
+  }
+}
+.izo-value-number{
+  font-size: clamp(4.5rem, 12vw, 7rem);
+  font-weight: 900;
+  line-height: 1;
+  color: var(--navy-dark);
+  letter-spacing: -.03em;
+  font-variant-numeric: tabular-nums;
+  position: relative; z-index: 1;
+}
+.izo-value-body{ position: relative; z-index: 1; }
+.izo-value-tag{
+  display: inline-block;
+  background: rgba(14,30,47,.15);
+  color: var(--navy-dark);
+  padding: .3rem .8rem; border-radius: 999px;
+  font-size: .78rem; font-weight: 700;
+  letter-spacing: .05em; text-transform: uppercase;
+  margin-bottom: .75rem;
+}
+.izo-value-headline{
+  font-size: 1.5rem; font-weight: 800;
+  color: var(--navy-dark);
+  margin-bottom: .5rem;
+  line-height: 1.25;
+}
+.izo-value-desc{
+  font-size: 1.02rem;
+  color: var(--navy-dark);
+  line-height: 1.65;
+  font-weight: 600;
+}
+
+/* Body sekce s výkladem */
+.izo-section-intro{ margin-bottom: 2rem; margin-top: 1rem; }
+.izo-section{
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+[data-theme="dark"] .izo-section-intro{ margin-bottom: 2rem; margin-top: 1rem; }
+.izo-section{
+  background: #16283d;
+  border-color: #2a3f5a;
+}
+.izo-section h2{
+  font-size: 1.5rem; font-weight: 700;
+  color: var(--navy-dark);
+  margin-bottom: 1rem;
+  letter-spacing: -.005em;
+}
+[data-theme="dark"] .izo-section h2{ color: #e8eef7; }
+
+.izo-section p{
+  font-size: 1rem;
+  color: var(--muted);
+  line-height: 1.75;
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+[data-theme="dark"] .izo-section p{ color: #b8c9dd; }
+
+.izo-section p:last-child{ margin-bottom: 0; }
+
+.izo-section a{
+  color: var(--green-dark);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgba(16,126,81,.4);
+  text-underline-offset: 3px;
+  transition: color .2s ease, text-decoration-color .2s ease;
+}
+.izo-section a:hover{
+  color: var(--accent);
+  text-decoration-color: currentColor;
+}
+[data-theme="dark"] .izo-section a{ color: var(--accent); text-decoration-color: rgba(69,231,163,.4); }
+
+/* Zákonná citace box */
+.izo-law{
+  background: var(--slate-light);
+  border-left: 4px solid var(--accent);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+  font-size: .95rem;
+  color: var(--navy-dark);
+  line-height: 1.65;
+}
+[data-theme="dark"] .izo-law{
+  background: rgba(69,231,163,.05);
+  color: #e8eef7;
+}
+.izo-law strong{ color: var(--green-dark); font-weight: 700; }
+[data-theme="dark"] .izo-law strong{ color: var(--accent); }
+
+/* Odkaz zpět */
+.izo-back{
+  display: inline-flex; align-items: center; gap: .5rem;
+  margin-top: 2rem;
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color .2s ease, gap .2s ease;
+}
+.izo-back:hover{ color: var(--accent); gap: .75rem; }
+.izo-back svg{ width: 18px; height: 18px; }
+
+/* Mobilní úpravy */
+@media (max-width: 640px){
+  main.izo-page{ padding: 100px 1.25rem 60px; }
+  .izo-section-intro{ margin-bottom: 2rem; margin-top: 1rem; }
+.izo-section{ padding: 1.75rem 1.5rem; }
+}
+
+/* Mobilní nav (podle stávající konvence) */
+@media (max-width: 860px) {
+  .nav-cta       { display: none !important; }
+  .nav-hamburger { display: flex !important; }
+  .nav-tabs      { display: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="nebula" aria-hidden="true">
+  <div class="nebula-blob nebula-blob-1"></div>
+  <div class="nebula-blob nebula-blob-2"></div>
+</div>
+
+<!-- ============ NAV (zjednodušená verze — jen logo a CTA) ============ -->
+<nav id="main-nav">
+  <div class="nav-bar">
+    <button class="theme-toggle" id="theme-toggle" aria-label="Přepnout světlý / tmavý režim">
+      <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="icon-sun"  width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </button>
+    <a class="nav-logo" href="index.html">
+      <img src="logo-white.svg" alt="FREE for YOU energie" class="nav-logo-img logo-dark-mode">
+      <img src="logo-light.svg" alt="FREE for YOU energie" class="nav-logo-img logo-light-mode">
+    </a>
+    <a class="nav-cta" href="index.html#ceny">Chci výhodnější energii</a>
+  </div>
+</nav>
+
+<!-- ============ HLAVNÍ OBSAH ============ -->
+<main class="izo-page">
+  <div class="izo-inner">
+
+    <a href="index.html" class="izo-crumb">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Zpět na hlavní stránku
+    </a>
+
+    <div class="izo-label">Transparentnost dodavatele</div>
+    <h1 class="izo-title">Index zajištění obchodníka</h1>
+
+    <!-- Vysvětlující text hned pod nadpisem -->
+    <div class="izo-section izo-section-intro">
+      <p>Index zajištění obchodníka ukazuje, nakolik má dodavatel energií předem zajištěné dodávky elektřiny a plynu pro své zákazníky. Tedy jestli má nakoupené energie, které vám slíbil dodat, nebo sází na to, že je nakoupí později na trhu.</p>
+      <p>Index zajištění dokládáme Energetickému regulačnímu úřadu (ERÚ).</p>
+
+      <div class="izo-law">
+        <strong>Právní základ:</strong> Tato povinnost vyplývá z <a href="https://www.e-sbirka.cz/sb/2000/458?zalozka=text" target="_blank" rel="noopener">energetického zákona</a> (§ 30 odst. 2 písm. s; § 61 odst. 2 písm. q).
+      </div>
+    </div>
+
+    <!-- Naše hodnota IZO -->
+    <div class="izo-hero-value">
+      <div class="izo-value-number">0 %</div>
+      <div class="izo-value-body">
+        <span class="izo-value-tag">Náš aktuální index</span>
+        <div class="izo-value-headline">FREE for YOU má IZO 0 %.</div>
+        <div class="izo-value-desc">Znamená to, že energii kupujeme podle aktuální situace na trhu, ne roky dopředu. Nakoupit ve velkém předem si malí dodavatelé jako my nemůžou dovolit — a poslední energetická krize navíc ukázala, že právě takové předplacené kontrakty srazily i řadu velkých hráčů.</div>
+      </div>
+    </div>
+
+    <a href="index.html" class="izo-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Zpět na hlavní stránku
+    </a>
+  </div>
+</main>
+
+<!-- ============ FOOTER (identický s indexem) ============ -->
+<footer class="site-footer">
+  <div class="footer-main">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">
+          <img src="logo-white.svg" alt="FREE for YOU energie" class="footer-logo-img">
+        </a>
+        <p class="footer-tagline">Stabilní dodavatel energií.<br>Budujeme vlastní zdroje, aby cena dlouhodobě klesala.</p>
+      </div>
+
+      <div class="footer-nav">
+        <div class="footer-col">
+          <div class="footer-col-title">Pro zákazníky</div>
+          <ul class="footer-links">
+            <li><a href="index.html#ceny">Elektřina</a></li>
+            <li><a href="index.html#ceny">Plyn</a></li>
+            <li><a href="ceny-kalkulacka.html">Kalkulačka úspor</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Podpora</div>
+          <ul class="footer-links">
+            <li><a href="podpora-kontakty.html">Kontakt</a></li>
+            <li><a href="podpora-faq.html">Časté dotazy</a></li>
+            <li><a href="podpora-dokumenty.html">Dokumenty ke stažení</a></li>
+          </ul>
+        </div>
+        <div class="footer-col footer-col-contact">
+          <div class="footer-col-title">Kontakt</div>
+          <ul class="footer-contact-list">
+            <li><span class="footer-contact-label">E-mail</span><a href="mailto:info@freeforyou.cz">info@freeforyou.cz</a></li>
+            <li><span class="footer-contact-label">Telefon</span><a href="tel:+420227072290">+420 227 072 290</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner">
+      <div class="footer-bottom-left">
+        © FREE for YOU s.r.o. — Regulovaný obchodník s energiemi, licence ERÚ
+      </div>
+      <div class="footer-bottom-right">
+        <a href="izo.html" style="display:inline-flex;align-items:center;gap:.4rem;background:rgba(69,231,163,.15);color:var(--accent);padding:.35rem .7rem;border-radius:999px;font-size:.76rem;font-weight:700;border:1px solid rgba(69,231,163,.35);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          IZO 0 %
+        </a>
+        <a href="docs/op/vseobecne-obchodni-podminky.pdf" target="_blank">Obchodní podmínky</a>
+        <a href="ochrana-osobnich-udaju.html">Ochrana osobních údajů</a>
+        <a href="#" onclick="if(window.openCookieSettings){openCookieSettings();return false;}">Nastavení cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Theme toggle (dark/light)
+  const root = document.documentElement;
+  const themeBtn = document.getElementById('theme-toggle');
+  if (themeBtn) {
+    themeBtn.addEventListener('click', () => {
+      const cur = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+      const next = cur === 'light' ? 'dark' : 'light';
+      root.classList.add('theme-switching');
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('ffy-theme', next); } catch(e){}
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => root.classList.remove('theme-switching'));
+      });
+    });
+  }
+</script>
+
+<script src="analytics.js" defer></script>
+<script src="cookie-consent.js" defer></script>
+</body>
+</html>
