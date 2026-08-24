@@ -118,23 +118,6 @@
 [data-theme="dark"] .price-pillar-ico{ background: rgba(69,231,163,.12); }
 [data-theme="dark"] .licence-ico{ background: rgba(69,231,163,.12); }
 
-/* Dark mode overrides pro zdroje-step */
-[data-theme="dark"] .zdroje-step{
-  background: #16283d;
-  border-color: #2a3f5a;
-}
-[data-theme="dark"] .zdroje-step-title{ color: #e8eef7; }
-[data-theme="dark"] .zdroje-step-desc{ color: #8ba7c8; }
-[data-theme="dark"] .zdroje-step-ico{ background: rgba(69,231,163,.14); color: var(--accent); }
-[data-theme="dark"] .zdroje-step-num{ background: var(--accent); color: var(--navy-dark); border-color: #16283d; }
-[data-theme="dark"] .zdroje-step-highlight{
-  background: linear-gradient(135deg, var(--accent) 0%, var(--green-dark) 100%);
-  border-color: var(--accent);
-}
-[data-theme="dark"] .zdroje-step-highlight .zdroje-step-title,
-[data-theme="dark"] .zdroje-step-highlight .zdroje-step-desc{ color: var(--navy-dark); }
-[data-theme="dark"] .zdroje-step-highlight .zdroje-step-ico{ background: rgba(14,30,47,.15); color: var(--navy-dark); }
-
 /* ── Existující karty a boxy ── */
 [data-theme="dark"] .benefit-card{
   background: #16283d;
@@ -562,103 +545,6 @@
   max-width: 720px;
   box-shadow: 0 12px 30px rgba(33,69,113,.05);
 }
-
-/* Nové karty platforem hodnocení — Google + Firmy vedle sebe */
-.reviews-platforms{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.25rem;
-  margin: 0 auto 2.5rem;
-  max-width: 900px;
-}
-@media (max-width: 720px){
-  .reviews-platforms{ grid-template-columns: 1fr; }
-}
-.review-platform{
-  display: block;
-  background: var(--slate-light);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 1.5rem 1.75rem;
-  text-decoration: none;
-  color: inherit;
-  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
-  box-shadow: 0 8px 20px rgba(33,69,113,.05);
-}
-.review-platform:hover{
-  transform: translateY(-3px);
-  border-color: var(--accent);
-  box-shadow: 0 18px 36px rgba(33,69,113,.1);
-}
-.review-platform-head{
-  display: flex;
-  align-items: center;
-  gap: .65rem;
-  margin-bottom: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--border);
-}
-.review-platform-logo{
-  width: 28px;
-  height: 28px;
-  flex-shrink: 0;
-}
-.review-platform-logo-firmy{
-  background: #c8102e;
-  border-radius: 6px;
-  padding: 4px;
-  color: #fff;
-}
-.review-platform-name{
-  font-weight: 700;
-  color: var(--navy-dark);
-  font-size: 1rem;
-}
-.review-platform-score{
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-.review-platform-num{
-  font-size: 2.4rem;
-  font-weight: 800;
-  color: var(--navy-dark);
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-}
-.review-platform-stars-block{ display: flex; flex-direction: column; gap: .2rem; }
-.review-platform-stars{
-  font-size: 1.15rem;
-  letter-spacing: .05em;
-  color: #d5d9df;      /* šedé pozadí hvězdiček */
-  position: relative;
-  display: inline-block;
-}
-.review-platform-stars::before{
-  content: attr(data-stars);
-  display: none;         /* jen držák dat, hodnotu čte JS */
-}
-/* Zbarvené hvězdičky přes ::after s clip-path — nastavuje se JS podle data-stars */
-.review-platform-stars-fill{
-  position: absolute;
-  top: 0; left: 0;
-  color: var(--bronze);
-  overflow: hidden;
-  white-space: nowrap;
-}
-.review-platform-count{
-  color: var(--muted);
-  font-size: .82rem;
-}
-.review-platform-cta{
-  color: var(--green-dark);
-  font-size: .85rem;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: .3rem;
-}
 .reviews-google-logo{
   display:flex; align-items:center; gap:.5rem;
   font-weight:700; color: var(--navy-dark); font-size:1.05rem;
@@ -828,119 +714,6 @@
   padding: 80px 2rem;
 }
 #zdroje .section-title em{ font-style:normal; color: var(--green-dark); }
-
-/* Nová infografika 4 kroků */
-.zdroje-flow{
-  display: grid;
-  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
-  gap: 1rem;
-  align-items: stretch;
-  margin: 3rem 0 2.5rem;
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-}
-@media (max-width: 900px){
-  .zdroje-flow{
-    grid-template-columns: 1fr;
-    gap: .75rem;
-  }
-  .zdroje-arrow{ transform: rotate(90deg); justify-self: center; }
-}
-.zdroje-step{
-  background: var(--slate-light);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 1.5rem 1.25rem;
-  text-align: center;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: .75rem;
-  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
-}
-.zdroje-step:hover{
-  transform: translateY(-3px);
-  box-shadow: 0 12px 26px rgba(33,69,113,.08);
-  border-color: rgba(69,231,163,.4);
-}
-.zdroje-step-highlight{
-  background: linear-gradient(135deg, var(--accent) 0%, #3dd090 100%);
-  border-color: var(--accent);
-  color: var(--navy-dark);
-}
-.zdroje-step-highlight:hover{
-  border-color: var(--green-dark);
-}
-.zdroje-step-num{
-  position: absolute;
-  top: -14px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 28px;
-  height: 28px;
-  background: var(--navy-dark);
-  color: var(--accent);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: .82rem;
-  border: 2px solid #fff;
-}
-.zdroje-step-highlight .zdroje-step-num{
-  background: var(--navy-dark);
-  color: var(--accent);
-}
-.zdroje-step-ico{
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  background: rgba(69,231,163,.14);
-  color: var(--green-dark);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: .35rem;
-}
-.zdroje-step-highlight .zdroje-step-ico{
-  background: rgba(14,30,47,.15);
-  color: var(--navy-dark);
-}
-.zdroje-step-ico svg{ width: 26px; height: 26px; }
-.zdroje-step-title{
-  color: var(--navy-dark);
-  font-weight: 700;
-  font-size: 1rem;
-  line-height: 1.25;
-}
-.zdroje-step-desc{
-  color: var(--muted);
-  font-size: .84rem;
-  line-height: 1.5;
-  font-weight: 400;
-  margin: 0;
-}
-.zdroje-step-highlight .zdroje-step-title{ color: var(--navy-dark); }
-.zdroje-step-highlight .zdroje-step-desc{ color: rgba(14,30,47,.8); font-weight: 500; }
-
-.zdroje-arrow{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--accent);
-}
-.zdroje-arrow svg{ width: 26px; height: 26px; }
-
-.zdroje-cta-row{
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-  margin-top: 1rem;
-}
 
 /* ============ VELKÁ ČÍSLA ============ */
 #velka-cisla{
@@ -1124,120 +897,6 @@
   max-width: 220px;
 }
 
-/* ============ DOC FAKTURA — sub-links pro přeplatek/nedoplatek ============ */
-.doc-card-faktura{
-  cursor: default;
-}
-.doc-card-faktura .doc-body{ flex: 1 1 auto; }
-.doc-faktura-links{
-  display: flex;
-  gap: .5rem;
-  margin-top: 1rem;
-  flex-wrap: wrap;
-}
-.doc-faktura-link{
-  display: inline-flex;
-  align-items: center;
-  gap: .35rem;
-  padding: .45rem .8rem;
-  background: rgba(69,231,163,.14);
-  color: var(--green-dark);
-  border: 1px solid rgba(69,231,163,.3);
-  border-radius: 8px;
-  font-size: .82rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all .2s ease;
-}
-.doc-faktura-link:hover{
-  background: var(--accent);
-  color: var(--navy-dark);
-  border-color: var(--accent);
-  transform: translateY(-1px);
-}
-[data-theme="dark"] .doc-faktura-link{
-  color: var(--accent);
-  background: rgba(69,231,163,.1);
-}
-[data-theme="dark"] .doc-faktura-link:hover{
-  color: var(--navy-dark);
-  background: var(--accent);
-}
-
-/* ============ PŘEPIS — highlight box "bez papírování" + note "kdykoli" ============ */
-.prepis-highlight{
-  background: linear-gradient(135deg, var(--accent) 0%, #3dd090 100%);
-  color: var(--navy-dark);
-  padding: 1rem 1.5rem;
-  border-radius: 12px;
-  font-weight: 700;
-  font-size: 1.05rem;
-  margin-bottom: 1.5rem;
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
-  box-shadow: 0 10px 24px rgba(69,231,163,.3);
-}
-.prepis-highlight svg{ flex-shrink: 0; }
-.prepis-note{
-  margin: 2.5rem auto 0;
-  max-width: 900px;
-  background: rgba(69,231,163,.08);
-  border: 1px solid rgba(69,231,163,.3);
-  border-radius: 14px;
-  padding: 1.5rem 1.75rem;
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-  flex-wrap: wrap;
-}
-[data-theme="dark"] .prepis-note{
-  background: rgba(69,231,163,.06);
-  border-color: rgba(69,231,163,.25);
-}
-.prepis-note-ico{
-  flex-shrink: 0;
-  width: 44px; height: 44px;
-  border-radius: 50%;
-  background: var(--accent);
-  color: var(--navy-dark);
-  display: flex; align-items: center; justify-content: center;
-}
-.prepis-note-ico svg{ width: 22px; height: 22px; }
-.prepis-note-body{ flex: 1 1 300px; }
-.prepis-note-body strong{
-  display: block;
-  color: var(--navy-dark);
-  font-weight: 700;
-  font-size: 1rem;
-  margin-bottom: .2rem;
-}
-[data-theme="dark"] .prepis-note-body strong{ color: #e8eef7; }
-.prepis-note-body span{
-  color: var(--muted);
-  font-size: .9rem;
-  line-height: 1.55;
-}
-[data-theme="dark"] .prepis-note-body span{ color: #b8c9dd; }
-.prepis-note-cta{
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  gap: .4rem;
-  padding: .7rem 1.2rem;
-  background: var(--navy-dark);
-  color: #fff !important;
-  border-radius: 10px;
-  font-weight: 700;
-  font-size: .9rem;
-  text-decoration: none;
-  transition: transform .2s ease, background .2s ease;
-}
-.prepis-note-cta:hover{
-  background: #0a141e;
-  transform: translateY(-2px);
-}
-
 /* ============ PŘEPIS ONLINE ============ */
 #prepis{
   background: var(--bg);
@@ -1369,42 +1028,11 @@
   background: var(--bg);
   padding: 80px 2rem;
 }
-.tym-head{
-  text-align: center;
-  max-width: 700px;
-  margin: 0 auto 2.5rem;
-}
 .tym-wrap{
   max-width: 1100px; margin: 0 auto;
   display:grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items:center;
 }
 @media (max-width: 900px){ .tym-wrap{ grid-template-columns: 1fr; } }
-
-/* Verze na celou šířku (nová) */
-.tym-photo-full{
-  max-width: 900px;
-  margin: 0 auto 2rem;
-  aspect-ratio: 16 / 9;
-  border-radius: 20px;
-  overflow: hidden;
-  background:
-    linear-gradient(135deg, rgba(69,231,163,.75) 0%, rgba(33,69,113,.9) 100%),
-    linear-gradient(135deg, #4a5a6a 0%, #2a3a4a 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  position: relative;
-  box-shadow: 0 24px 50px rgba(33,69,113,.15);
-  text-decoration: none;
-}
-
-/* NFVK karta uvnitř týmové sekce — celá šířka, bez samostatné sekce */
-.nadace-card-inline{
-  max-width: 900px;
-  margin: 0 auto;
-}
-
 .tym-photo{
   aspect-ratio: 4/3;
   border-radius:20px;
@@ -1717,13 +1345,13 @@
 
       </div>
 
-      <h1 class="hero-headline">Stejná záloha &ndash; <em>jiný výsledek.</em></h1>
+      <h1 class="hero-headline">Vaše energie. <em>Naše zodpovědnost.</em></h1>
 
-      <p class="hero-sub">Ryze český dodavatel energií, už 10 let na Vaší straně. Hlídáme Vaši cenu a polovinu zisku investujeme do nových zdrojů, aby pro Vás byly energie výhodné dnes i za deset let.</p>
+      <p class="hero-sub">Ryze český dodavatel, už deset let na Vaší straně. Polovinu zisku vracíme do vlastních obnovitelných zdrojů, abychom Vám mohli držet výhodnou cenu i za dalších deset let.</p>
 
       <div class="hero-cta-group">
-        <a href="#prepis" class="btn-primary" id="hero-cta-primary" data-cta-source="hero">Připojit na FREE for YOU</a>
-        <a href="#ceny" class="btn-outline">Podívat se na cenu</a>
+        <a href="#ceny" class="btn-primary" id="hero-cta-primary" data-cta-source="hero">Chci výhodnější energii</a>
+        <a href="#prepis" class="btn-outline">Jak to funguje?</a>
       </div>
 
       <div class="hero-trust">
@@ -1805,15 +1433,49 @@
   </div>
 </section>
 
+<!-- ============ 4 BENEFITY strip (samostatná světlá sekce, jak na screenshotu) ============ -->
+<section id="benefity-hero">
+  <div class="benefity-grid">
+    <div class="benefity-item">
+      <div class="benefity-ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4Z"/></svg>
+      </div>
+      <div class="benefity-title">Ryze český dodavatel</div>
+      <p class="benefity-desc">Peníze z Vašich plateb neputují do zahraničí. Zůstávají doma.</p>
+    </div>
+    <div class="benefity-item">
+      <div class="benefity-ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg>
+      </div>
+      <div class="benefity-title">Ukončení smlouvy kdykoli</div>
+      <p class="benefity-desc">Bez zbytečných omezení. Stačí nám zavolat nebo napsat.</p>
+    </div>
+    <div class="benefity-item">
+      <div class="benefity-ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M4.93 4.93l14.14 14.14"/></svg>
+      </div>
+      <div class="benefity-title">Žádné sankce ani pokuty</div>
+      <p class="benefity-desc">Za ukončení smlouvy ani upomínky nic neplatíte.</p>
+    </div>
+    <div class="benefity-item">
+      <div class="benefity-ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16M3 21v-5h5"/></svg>
+      </div>
+      <div class="benefity-title">50 % zisku investujeme zpět</div>
+      <p class="benefity-desc">Do vlastních zdrojů, abyste měli levnější energii.</p>
+    </div>
+  </div>
+</section>
+
 <!-- ============ CENY ============ -->
 <section id="ceny">
   <div class="price-wrap">
       <span class="price-badge">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
-        U nás máte garanci výhodné ceny
+        Bez cenových overhead a překvapení
       </span>
-      <h2 class="price-headline">Dobrá cena začíná<br><em>nízkými náklady.</em></h2>
-      <p class="price-sub">Držíme naše náklady nízko a budujeme vlastní zdroje. Díky tomu můžeme dlouhodobě nabízet <strong>stabilně nízké ceny</strong> každý rok.</p>
+      <h2 class="price-headline">Levnější ne proto, že šetříme na Vás.<br>Ale proto, že <em>šetříme na sobě.</em></h2>
+      <p class="price-sub">Nemáme drahou reklamu, žádný sportovní sponzoring, ani zahraniční akcionáře, kterým bychom museli posílat dividendy. Všechno, co takhle ušetříme, jde <strong>do Vaší ceny</strong>.</p>
 
       <div class="price-pillars">
         <div class="price-pillar">
@@ -1821,17 +1483,17 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
           </div>
           <div>
-            <div class="price-pillar-title">Držíme nízké náklady</div>
-            <div class="price-pillar-desc">Malý tým, žádné drahé kampaně, žádné dividendy pryč z Česka. Šetříme na sobě, ne na Vás.</div>
+            <div class="price-pillar-title">Šetříme na sobě, ne na Vás</div>
+            <div class="price-pillar-desc">Malý tým, žádné billboardy, žádné dividendy pryč z Česka. Ušetřené peníze vidíte v ceně.</div>
           </div>
         </div>
         <div class="price-pillar">
           <div class="price-pillar-ico">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16M3 21v-5h5"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg>
           </div>
           <div>
-            <div class="price-pillar-title">Nakupujeme co nejvýhodněji</div>
-            <div class="price-pillar-desc">Elektřinu i plyn tahám přímo, bez zbytečných mezičlánků. Míň rukou, které si berou marži.</div>
+            <div class="price-pillar-title">Nakupujeme přímo</div>
+            <div class="price-pillar-desc">Elektřinu tahám sám bez mezičlánků. Míň rukou, které si berou marži = nižší cena pro Vás.</div>
           </div>
         </div>
         <div class="price-pillar">
@@ -1840,7 +1502,7 @@
           </div>
           <div>
             <div class="price-pillar-title">Stavíme vlastní zdroje</div>
-            <div class="price-pillar-desc">Polovina zisku jde do nových obnovitelných zdrojů. Vlastní výroba nás dělá nezávislejšími na burze.</div>
+            <div class="price-pillar-desc">Polovinu zisku dáváme do vlastních obnovitelných zdrojů. Čím víc si vyrobíme sami, tím míň nás rozhodí burza.</div>
           </div>
         </div>
       </div>
@@ -1852,55 +1514,37 @@
   </div>
 </section>
 
-<!-- ============ REFERENCE — hodnocení Google + Firmy + velká čísla ============ -->
+<!-- ============ RECENZE ============ -->
 <section id="recenze">
   <div class="recenze-inner">
     <div class="recenze-head">
-      <div class="section-label" style="display:inline-block;">Reference</div>
-      <h2 class="section-title">Co říkají zákazníci a čísla.</h2>
+      <div class="section-label" style="display:inline-block;">Co říkají zákazníci</div>
+      <h2 class="section-title">Reální lidé, reálné zkušenosti.</h2>
     </div>
 
-    <!-- Dvě karty hodnocení vedle sebe: Google + Firmy.cz -->
-    <div class="reviews-platforms">
-      <a href="https://www.google.com/search?q=FREE+for+YOU+s.r.o.+Praha+recenze" target="_blank" rel="noopener" class="review-platform">
-        <div class="review-platform-head">
-          <svg class="review-platform-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-          </svg>
-          <div class="review-platform-name">Google Reviews</div>
+    <!-- Souhrn hodnocení -->
+    <div class="reviews-topline">
+      <div class="reviews-google-logo">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+        </svg>
+        Google Reviews
+      </div>
+      <div class="reviews-rating">
+        <div class="reviews-rating-num">4,8</div>
+        <div>
+          <div class="reviews-stars">★★★★★</div>
+          <div class="reviews-count">z 500+ recenzí</div>
         </div>
-        <div class="review-platform-score">
-          <div class="review-platform-num" data-live-metric="google-rating">3,5</div>
-          <div class="review-platform-stars-block">
-            <div class="review-platform-stars" data-stars="3.5">★★★★★</div>
-            <div class="review-platform-count"><span data-live-metric="google-count">200+</span> hodnocení</div>
-          </div>
-        </div>
-        <div class="review-platform-cta">Otevřít na Googlu →</div>
-      </a>
-
-      <a href="https://www.firmy.cz/detail/13169716-free-for-you-s-r-o-praha-liben.html" target="_blank" rel="noopener" class="review-platform">
-        <div class="review-platform-head">
-          <div class="review-platform-logo review-platform-logo-firmy">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          </div>
-          <div class="review-platform-name">Firmy.cz</div>
-        </div>
-        <div class="review-platform-score">
-          <div class="review-platform-num" data-live-metric="firmy-rating">4,2</div>
-          <div class="review-platform-stars-block">
-            <div class="review-platform-stars" data-stars="4.2">★★★★★</div>
-            <div class="review-platform-count"><span data-live-metric="firmy-count">80+</span> hodnocení</div>
-          </div>
-        </div>
-        <div class="review-platform-cta">Otevřít na Firmy.cz →</div>
-      </a>
+      </div>
+      <a href="https://www.google.com/search?q=FREE+for+YOU+s.r.o.+Praha+recenze" target="_blank" rel="noopener" class="btn-outline-dark" style="padding:.6rem 1.1rem; font-size:.85rem;">Zobrazit na Googlu →</a>
     </div>
 
-    <!-- Grid recenzí (mock — pro produkci Trustindex/Elfsight nebo Places API) -->
+    <!-- Grid recenzí — nahradit reálnými přes Google Places API / embed widget -->
+    <!-- Doporučené řešení pro produkci: Trustindex, Elfsight, nebo přímé Google Places API napojení. -->
     <div class="reviews-grid">
       <div class="review-card">
         <div class="review-head">
@@ -1937,137 +1581,171 @@
       </div>
     </div>
 
-    <!-- Velká čísla — přímo v Referencích -->
-    <div class="big-numbers">
-      <div class="big-num">
-        <div class="big-num-val">10 let</div>
-        <div class="big-num-lbl">dodáváme<br>energie</div>
-      </div>
-      <div class="big-num">
-        <div class="big-num-val" data-live-metric="mwh-plyn">62&nbsp;000 MWh</div>
-        <div class="big-num-lbl">dodáno<br>plynu</div>
-      </div>
-      <div class="big-num">
-        <div class="big-num-val" data-live-metric="mwh-elektrina">65&nbsp;000 MWh</div>
-        <div class="big-num-lbl">dodáno<br>elektřiny</div>
-      </div>
-      <div class="big-num">
-        <div class="big-num-val" data-live-metric="zakaznici">1&nbsp;400+</div>
-        <div class="big-num-lbl">spokojených<br>zákazníků</div>
-      </div>
-    </div>
-
   </div>
 </section>
 
-<!-- ============ ZDROJE — 50 % zisku + infografika 4 kroků ============ -->
+<!-- ============ LICENCE & ASOCIACE ============ -->
+<section id="licence">
+  <div class="licence-inner">
+    <div class="licence-head">
+      <div class="section-label" style="display:inline-block;">Kdo za námi stojí</div>
+      <h2 class="section-title">Nikdo si nás nevymyslel.</h2>
+      <p class="section-sub" style="margin-left:auto; margin-right:auto;">Máme licenci od ERÚ a smlouvy se všemi třemi českými distributory. Nejsme nová firma, co zítra zmizí — jsme součást české energetiky.</p>
+    </div>
+
+    <!-- Highlight: prvenství -->
+    <div class="licence-highlight">
+      <div class="licence-highlight-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v18M18 3v18"/><path d="M6 8h12M6 16h12"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/></svg>
+      </div>
+      <div class="licence-highlight-body">
+        <div class="licence-highlight-title">Jako první v ČR jsme spustili sdílení elektřiny.</div>
+        <div class="licence-highlight-desc">Pomohli jsme vytvořit funkční model komunitního sdílení energie — dnes ho využívají desítky domácností a firem po celé republice.</div>
+      </div>
+      <a href="https://www.elektrinaodsouseda.cz/" target="_blank" rel="noopener" class="licence-highlight-cta">
+        elektrinaodsouseda.cz
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+      </a>
+    </div>
+
+    <div class="licence-grid">
+      <div class="licence-item">
+        <div class="licence-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4Z"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <div class="licence-item-title">Licence ERÚ</div>
+        <div class="licence-item-desc">Obchod s elektřinou i plynem</div>
+      </div>
+      <div class="licence-item">
+        <div class="licence-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg>
+        </div>
+        <div class="licence-item-title">ČEZ · EG.D · PRE</div>
+        <div class="licence-item-desc">Smlouvy se všemi distributory</div>
+      </div>
+      <div class="licence-item">
+        <div class="licence-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4Z"/></svg>
+        </div>
+        <div class="licence-item-title">OTE — Operátor trhu</div>
+        <div class="licence-item-desc">Registrovaný účastník trhu</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ZDROJE — kam jde 50 % zisku ============ -->
 <section id="zdroje">
   <div class="section-inner">
     <div class="section-label">Vlastní zdroje energie</div>
-    <h2 class="section-title">50 % zisku vracíme<br>do <em style="color:var(--green-dark); font-style:normal;">nových zdrojů.</em></h2>
-    <p class="section-sub">Polovinu našeho zisku investujeme do nových obnovitelných zdrojů. Elektřinu, kterou v nich vyrobíme, chceme svým zákazníkům poskytovat <strong>za nákladovou cenu</strong>.</p>
+    <h2 class="section-title">Polovinu zisku dáváme<br>do <em style="color:var(--green-dark); font-style:normal;">vlastních obnovitelných zdrojů.</em></h2>
+    <p class="section-sub">Peníze, které bychom mohli poslat akcionářům, radši investujeme do dalších obnovitelných zdrojů. Každý rok jich přibývá, každý rok tak vyrobíme víc vlastní elektřiny. Když burza vyletí nahoru, my se míň lekáme — a to se propíše do Vaší faktury.</p>
 
-    <!-- Infografika: 4 kroky s propojujícími šipkami -->
-    <div class="zdroje-flow">
-      <div class="zdroje-step">
-        <div class="zdroje-step-num">1</div>
-        <div class="zdroje-step-ico">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 12 4-4 4 4 4-4"/></svg>
+    <div class="model-grid">
+      <div class="model-flow">
+        <div class="flow-item">
+          <div class="flow-line"></div>
+          <div class="flow-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+          <div class="flow-content">
+            <div class="flow-title">Platíte férovou cenu</div>
+            <p class="flow-desc">Nic z Vašich peněz nemíří do dividend zahraničním akcionářům. Jde to na energii a na náš provoz.</p>
+          </div>
         </div>
-        <div class="zdroje-step-title">Dnes nakupujeme energii</div>
-        <p class="zdroje-step-desc">Elektřinu a plyn tahám za nejlepších dostupných podmínek na trhu.</p>
-      </div>
-
-      <div class="zdroje-arrow" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </div>
-
-      <div class="zdroje-step">
-        <div class="zdroje-step-num">2</div>
-        <div class="zdroje-step-ico">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22h20"/><path d="M4 22V10l8-5 8 5v12"/><path d="M9 22v-6h6v6"/></svg>
+        <div class="flow-item">
+          <div class="flow-line"></div>
+          <div class="flow-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></div>
+          <div class="flow-content">
+            <div class="flow-title">Půlka zisku → nové zdroje</div>
+            <p class="flow-desc">Postavené fotovoltaiky, komunitní zdroje, baterie. Reálné projekty, ne slajdy v prezentaci.</p>
+          </div>
         </div>
-        <div class="zdroje-step-title">Stavíme vlastní zdroje</div>
-        <p class="zdroje-step-desc">Polovinu zisku dáváme do nových obnovitelných zdrojů. Fotovoltaiky, komunitní zdroje, baterie.</p>
-      </div>
-
-      <div class="zdroje-arrow" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </div>
-
-      <div class="zdroje-step">
-        <div class="zdroje-step-num">3</div>
-        <div class="zdroje-step-ico">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></svg>
+        <div class="flow-item">
+          <div class="flow-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5v14h18"/><path d="m7 15 4-4 3 3 4-6"/></svg></div>
+          <div class="flow-content">
+            <div class="flow-title">A Vaše faktura zůstává stabilní</div>
+            <p class="flow-desc">Čím víc energie máme z vlastního, tím míň nás rozhodí kotrmelce na trhu.</p>
+          </div>
         </div>
-        <div class="zdroje-step-title">Vyrábíme vlastní elektřinu</div>
-        <p class="zdroje-step-desc">Každý rok jich přibývá, každý rok vyrobíme víc energie sami — a jsme míň závislí na burze.</p>
       </div>
 
-      <div class="zdroje-arrow" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      <div class="model-note">
+        <div class="model-note-head">Na dlouhou trať</div>
+        <h3 style="font-size:1.25rem; font-weight:700; color:var(--navy-dark); margin-bottom:0.75rem;">Stabilita se buduje. Neslibuje.</h3>
+        <p style="font-size:0.92rem; color:var(--muted); font-weight:300; line-height:1.7; margin-bottom:1.5rem;">Zdroje, které dnes postavíme, budou dodávat energii dalších 25 let. Rozhodujeme se dnes, ale efekt uvidíte za deset let.</p>
+        <a href="proc-investice-oze.html" class="btn-green">Kam přesně jde &nbsp;→</a>
       </div>
-
-      <div class="zdroje-step zdroje-step-highlight">
-        <div class="zdroje-step-num">4</div>
-        <div class="zdroje-step-ico">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-        </div>
-        <div class="zdroje-step-title">Zákazníci získávají výhodu</div>
-        <p class="zdroje-step-desc">Vlastní výrobu dodáváme za nákladovou cenu. Vaše faktura je díky tomu stabilnější.</p>
-      </div>
-    </div>
-
-    <div class="zdroje-cta-row">
-      <a href="ceny-aktualni-nabidka.html" class="btn-primary">Aktuální ceník</a>
-      <a href="ceny-kalkulacka.html" class="btn-outline-dark">Otevřít kalkulačku</a>
     </div>
   </div>
 </section>
 
-<!-- ============ ŽÁDNÉ HÁČKY (Dokumenty) ============ -->
+<!-- ============ VELKÁ ČÍSLA ============ -->
+<section id="velka-cisla">
+  <div class="velka-inner">
+    <div class="velka-head">
+      <div class="section-label" style="display:inline-block;">Čísla, ne řeči</div>
+      <h2 class="section-title">Co jsme dosud dokázali.</h2>
+    </div>
+
+    <div class="big-numbers">
+      <div class="big-num">
+        <div class="big-num-val">2016</div>
+        <div class="big-num-lbl">Rok začátku<br>dodávek elektřiny</div>
+      </div>
+      <div class="big-num">
+        <div class="big-num-val" data-live-metric="odberna-mista">2&nbsp;263</div>
+        <div class="big-num-lbl">Odběrných míst<br>v ČR</div>
+      </div>
+      <div class="big-num">
+        <div class="big-num-val">50 %</div>
+        <div class="big-num-lbl">Zisku zpět<br>do vlastních OZE</div>
+      </div>
+      <div class="big-num">
+        <div class="big-num-val" data-live-metric="nadace-kc">122&nbsp;663 Kč</div>
+        <div class="big-num-lbl">Přispěno Nadačnímu fondu<br>Veroniky Kašákové</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DOKUMENTY (zachováno + rozšířeno) ============ -->
 <section id="dokumenty">
   <div class="section-inner">
-    <div class="section-label">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px; margin-right:.35rem;"><path d="M9 11V6a3 3 0 0 1 6 0v5"/><rect x="4" y="11" width="16" height="10" rx="2"/></svg>
-      Žádné háčky
-    </div>
-    <h2 class="section-title">Smlouvy a dokumenty,<br>kterým <em style="font-style:normal; color:var(--green-dark);">každý rozumí.</em></h2>
-    <p class="section-sub">Naše smlouvy a dokumenty píšeme tak, aby jim rozuměl každý. Bez sankcí. Spolupracovat s námi můžete tak dlouho, jak sami budete chtít.</p>
+    <div class="section-label">Transparentnost</div>
+    <h2 class="section-title">Nic neskrýváme. Prohlédněte si dokumenty.</h2>
+    <p class="section-sub">Smlouvu, fakturu, plnou moc i výkupní podmínky — vše najdete zde k prohlédnutí ještě před podpisem.</p>
     <div class="docs-grid">
-      <a href="javascript:void(0)" onclick="openPdfModal('docs/op/vseobecne-obchodni-podminky.pdf', 'Obchodní podmínky'); return false;" class="doc-card">
-        <div class="doc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg></div>
+      <a href="javascript:void(0)" onclick="openPdfModal('docs/smlouvy/smlouva-elektrina-fo.pdf', 'Smlouva o dodávce elektřiny'); return false;" class="doc-card">
+        <div class="doc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         <div class="doc-body">
-          <div class="doc-title">Obchodní podmínky</div>
-          <div class="doc-desc">Kompletní obchodní podmínky, srozumitelně a bez skrytých ustanovení.</div>
+          <div class="doc-title">Náhled smlouvy</div>
+          <div class="doc-desc">Vzorová smlouva o dodávce energie — přečtěte si podmínky ještě před podpisem.</div>
         </div>
         <div class="doc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
       </a>
-      <a href="javascript:void(0)" onclick="openPdfModal('docs/smlouvy/smlouva-elektrina-fo.pdf', 'Vzorová smlouva o dodávce'); return false;" class="doc-card">
-        <div class="doc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg></div>
-        <div class="doc-body">
-          <div class="doc-title">Smlouva o dodávce</div>
-          <div class="doc-desc">Podepíšete elektronicky. Ukončit můžete kdykoli, bez sankcí a bez pokut.</div>
-        </div>
-        <div class="doc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
-      </a>
-      <div class="doc-card doc-card-faktura">
+      <a href="javascript:void(0)" onclick="openPdfModal('docs/faktury/vzor-faktura-elektrina.pdf', 'Vzorová faktura — elektřina'); return false;" class="doc-card">
         <div class="doc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h4"/></svg></div>
         <div class="doc-body">
-          <div class="doc-title">Faktura za elektřinu</div>
-          <div class="doc-desc">Přesně jak Vám přijde do schránky. Vyberte si, který příklad chcete vidět:</div>
-          <div class="doc-faktura-links">
-            <a href="javascript:void(0)" onclick="openPdfModal('docs/faktury/vzor-faktura-nedoplatek.pdf', 'Faktura — nedoplatek'); return false;" class="doc-faktura-link">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-              Nedoplatek
-            </a>
-            <a href="javascript:void(0)" onclick="openPdfModal('docs/faktury/vzor-faktura-preplatek.pdf', 'Faktura — přeplatek'); return false;" class="doc-faktura-link">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>
-              Přeplatek
-            </a>
-          </div>
+          <div class="doc-title">Náhled faktury</div>
+          <div class="doc-desc">Ukázka faktury — přesně takovou dostanete. Žádné záhadné položky, vše čitelně.</div>
         </div>
-      </div>
+        <div class="doc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
+      </a>
+      <a href="podpora-dokumenty.html" class="doc-card">
+        <div class="doc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></div>
+        <div class="doc-body">
+          <div class="doc-title">Plná moc</div>
+          <div class="doc-desc">Zmocnění, na základě kterého vyřídíme změnu dodavatele za Vás — bez Vašeho běhání.</div>
+        </div>
+        <div class="doc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
+      </a>
+      <a href="podpora-dokumenty.html" class="doc-card">
+        <div class="doc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/><path d="M9 14l2 2 4-4"/></svg></div>
+        <div class="doc-body">
+          <div class="doc-title">Smlouva o výkupu</div>
+          <div class="doc-desc">Podmínky výkupu přebytků z Vaší vlastní výroby — například ze solárních panelů.</div>
+        </div>
+        <div class="doc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
+      </a>
     </div>
   </div>
 </section>
@@ -2102,43 +1780,44 @@
   </div>
 </section>
 
-<!-- ============ PŘEPIS — Přepojte se k českému dodavateli ============ -->
+<!-- ============ PŘEPIS ONLINE ============ -->
 <section id="prepis">
   <div class="prepis-grid">
       <div>
-        <div class="section-label">Připojte se k nám</div>
-        <h2 class="prepis-title">Přepojte se k českému dodavateli,<br>který myslí na Vaši cenu <em style="font-style:normal; color:var(--green-dark);">i dlouhodobě.</em></h2>
-        <p class="prepis-desc">Přechod je jednodušší, než si myslíte.</p>
-
-        <div class="prepis-highlight">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-          Bez zbytečného papírování. Bez obíhání. Bez starostí.
-        </div>
-
+        <div class="section-label">Přechod k nám</div>
+        <h2 class="prepis-title">Přechod k nám?<br>Ani se nemusíte hnout z domu.</h2>
+        <p class="prepis-desc">Ať se stěhujete, přebíráte odběrné místo po předchozím majiteli, nebo jen chcete jinam — celé to vyřídíte z pohovky. Elektronicky, s naší asistencí, obvykle do měsíce.</p>
         <ul class="prepis-list">
           <li>
-            <span class="prepis-check">1</span>
+            <span class="prepis-check">✓</span>
             <div>
-              <strong>Vyplníte formulář</strong>
-              <span>Krátký formulář a nahrání potřebných dokumentů online. Zabere pár minut.</span>
+              <strong>Bez papíru</strong>
+              <span>Podepíšete přes potvrzovací e-mail nebo SMS.</span>
             </div>
           </li>
           <li>
-            <span class="prepis-check">2</span>
+            <span class="prepis-check">✓</span>
             <div>
-              <strong>Zašleme smlouvu k podpisu</strong>
-              <span>Pošleme Vám smlouvu k náhledu. Podepíšete elektronicky, když souhlasíte.</span>
+              <strong>Bez výpadku proudu</strong>
+              <span>Elektřina teče pořád. Mění se jen to, komu platíte.</span>
             </div>
           </li>
           <li>
-            <span class="prepis-check">3</span>
+            <span class="prepis-check">✓</span>
             <div>
-              <strong>Vše následně řešíme za Vás</strong>
-              <span>Komunikaci s distributorem vyřídíme sami. O každém kroku Vás informujeme.</span>
+              <strong>Bez volání distributorům</strong>
+              <span>S ČEZem, EG.D i PRE si to vyřídíme sami.</span>
+            </div>
+          </li>
+          <li>
+            <span class="prepis-check">✓</span>
+            <div>
+              <strong>S přehledem</strong>
+              <span>Každý krok Vám oznámíme e-mailem. Nikdy nebudete tápat.</span>
             </div>
           </li>
         </ul>
-        <a href="podpora-kontakty.html" class="btn-primary" id="prepis-cta-target" data-cta-target="true">Přepojit bez čekání →</a>
+        <a href="podpora-kontakty.html" class="btn-primary" id="prepis-cta-target" data-cta-target="true">Chci přepsat odběr →</a>
       </div>
 
       <div class="prepis-visual">
@@ -2152,48 +1831,39 @@
       </div>
     </div>
   </div>
+</section>
 
-  <!-- Note "kdykoli bez sankcí" -->
-  <div class="prepis-note">
-    <div class="prepis-note-ico">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+<!-- ============ NADACE ============ -->
+<section id="nadace">
+  <div class="nadace-card">
+    <div class="nadace-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
     </div>
-    <div class="prepis-note-body">
-      <strong>Kdykoli si to rozmyslíte, můžete odejít.</strong>
-      <span>Smlouvu můžete <strong style="color:var(--green-dark); display:inline; margin:0;">kdykoli bez sankcí ukončit</strong>. Po celou dobu, od dneška až do vypršení. Žádné výpovědní lhůty na roky, žádné pokuty.</span>
+    <div class="nadace-body">
+      <div class="nadace-title">Podporujeme Nadační fond Veroniky Kašákové.</div>
+      <p class="nadace-desc">Od roku 2018 přispíváme <strong>1 Kč za každou dodanou MWh</strong> na programy pro děti z dětských domovů.</p>
+      <a href="https://www.nfvk.cz/" target="_blank" rel="noopener" class="nadace-cta">
+        nfvk.cz
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+      </a>
     </div>
-    <a href="podpora-kontakty.html" class="prepis-note-cta">Pokračovat na přepis →</a>
   </div>
 </section>
 
-<!-- ============ TÝM + NFVK ============ -->
+<!-- ============ TÝM ============ -->
 <section id="tym">
-  <div class="section-inner">
-    <div class="tym-head">
-      <div class="section-label" style="display:inline-block;">Lidé za FREE for YOU</div>
-      <h2 class="section-title">Tohle je náš tým.</h2>
-    </div>
-
-    <a href="proc-nas-pribeh.html" class="tym-photo tym-photo-full" aria-label="Přečíst náš příběh">
-      <div class="tym-photo-placeholder">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        <p>[ Sem přijde skupinová fotka celého týmu FREE for YOU ]</p>
-      </div>
-    </a>
-
-    <!-- NFVK karta pod týmem -->
-    <div class="nadace-card nadace-card-inline">
-      <div class="nadace-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-      </div>
-      <div class="nadace-body">
-        <div class="nadace-title">Podporujeme Nadační fond Veroniky Kašákové.</div>
-        <p class="nadace-desc">Od roku 2018 přispíváme <strong>1 Kč za každou dodanou MWh</strong> na programy pro děti z dětských domovů.</p>
-        <a href="https://www.nfvk.cz/" target="_blank" rel="noopener" class="nadace-cta">
-          nfvk.cz
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
-        </a>
-      </div>
+  <div class="tym-wrap">
+      <a href="proc-nas-pribeh.html" class="tym-photo" aria-label="Přečíst náš příběh">
+        <div class="tym-photo-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <p>[ Sem přijde skupinová fotka týmu FREE for YOU ]</p>
+        </div>
+      </a>
+      <div>
+        <div class="section-label">Lidé za FREE for YOU</div>
+        <h2 class="tym-title">Za Vaší energií<br>stojí konkrétní lidé.</h2>
+        <p class="tym-desc">Vidíte je na fotce vedle. Když nám zavoláte, telefon zvedne někdo z nich — ne outsourcovaná infolinka, ne script. Jen lidi, kteří ví, o čem energie jsou, a proč to dělají zrovna u nás.</p>
+        <a href="proc-nas-pribeh.html" class="btn-primary">Přečíst náš příběh →</a>
     </div>
   </div>
 </section>
@@ -2359,11 +2029,11 @@
 </footer>
 
 <!-- ============ Floating CTA (objeví se po opuštění hero) ============ -->
-<a href="#prepis" id="floating-cta" class="floating-cta" aria-label="Připojit na FREE for YOU" data-cta-source="floating">
+<a href="#ceny" id="floating-cta" class="floating-cta" aria-label="Chci výhodnější energii" data-cta-source="floating">
   <span class="floating-cta-icon">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></svg>
   </span>
-  <span class="floating-cta-label">Připojit na FREE for YOU</span>
+  <span class="floating-cta-label">Chci výhodnější energii</span>
 </a>
 
 <!-- PDF Modal -->
@@ -2484,22 +2154,6 @@
     el.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); }
     });
-  });
-
-  // ══════════════════════════════════════════════════════════
-  // REVIEW STARS — vybarvení hvězdiček podle data-stars (0–5)
-  // Pod pozadím jsou šedé, přes ně se položí zlaté clip-nuté
-  // podle procenta (3,5 = 70 %)
-  // ══════════════════════════════════════════════════════════
-  document.querySelectorAll('.review-platform-stars[data-stars]').forEach(el => {
-    const val = parseFloat(el.getAttribute('data-stars').replace(',', '.'));
-    if (isNaN(val) || val <= 0) return;
-    const pct = Math.max(0, Math.min(100, (val / 5) * 100));
-    const fill = document.createElement('span');
-    fill.className = 'review-platform-stars-fill';
-    fill.textContent = '★★★★★';
-    fill.style.width = pct + '%';
-    el.appendChild(fill);
   });
 
   // ══════════════════════════════════════════════════════════
