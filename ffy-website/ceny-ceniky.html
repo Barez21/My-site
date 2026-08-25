@@ -24,15 +24,17 @@
   padding: 1.5rem 1.75rem;
   margin-bottom: 2rem;
 }
-.cenik-lookup-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; }
+.cenik-lookup-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; color: #fff; }
+[data-theme="light"] .cenik-lookup-title { color: #0E1E2F; }
 .cenik-lookup-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
 .cenik-lookup-input {
   flex: 1; min-width: 220px;
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.14);
   border-radius: 10px; padding: 0.75rem 1rem;
-  color: inherit; font-family: inherit; font-size: 0.95rem;
+  color: #fff; font-family: inherit; font-size: 0.95rem;
 }
+.cenik-lookup-input::placeholder { color: rgba(255,255,255,0.4); }
 .cenik-lookup-input:focus { outline: none; border-color: var(--accent, #44e6a3); }
 .cenik-lookup-btn {
   background: var(--accent, #44e6a3); color: #0a0f18;
@@ -46,6 +48,7 @@
 .cenik-lookup-result.loading { color: rgba(255,255,255,0.5); }
 .cenik-lookup-result.ok { color: rgba(255,255,255,0.75); }
 [data-theme="light"] .cenik-lookup-input { background: #fff; color: #0E1E2F; }
+[data-theme="light"] .cenik-lookup-input::placeholder { color: #6B89A8; }
 [data-theme="light"] .cenik-lookup-result.ok { color: #3A5A7A; }
 [data-theme="light"] .cenik-lookup-result.loading { color: #6B89A8; }
 
