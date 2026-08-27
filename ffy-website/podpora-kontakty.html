@@ -15,6 +15,61 @@
   .nav-hamburger { display: flex !important; }
   .nav-tabs      { display: none !important; }
 }
+
+/* ── Větší telefon a e-mail ── */
+.ch-phone .ch-value,
+.ch-email .ch-value {
+  font-size: 1.3rem;
+  line-height: 1.25;
+}
+
+/* ── Tlačítko videonávodu pod mapou ── */
+.kontakt-video-btn {
+  display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+  width: 100%; margin-top: 0.85rem;
+  padding: 0.85rem 1.25rem;
+  background: rgba(68,230,163,0.1);
+  border: 1px solid rgba(68,230,163,0.3);
+  border-radius: 12px;
+  color: var(--accent, #44e6a3);
+  font-family: inherit; font-size: 0.95rem; font-weight: 600;
+  cursor: pointer; transition: all 0.15s;
+}
+.kontakt-video-btn:hover { background: rgba(68,230,163,0.18); border-color: rgba(68,230,163,0.5); }
+.kontakt-video-btn svg { flex-shrink: 0; }
+[data-theme="light"] .kontakt-video-btn { color: var(--green-dark, #1a8f5f); background: rgba(68,230,163,0.12); }
+
+/* ── Modal videonávodu ── */
+.video-modal { position: fixed; inset: 0; z-index: 2000; display: none; align-items: center; justify-content: center; padding: 1.5rem; }
+.video-modal.is-open { display: flex; }
+.video-modal-backdrop { position: absolute; inset: 0; background: rgba(5,10,18,0.8); backdrop-filter: blur(4px); }
+.video-modal-box {
+  position: relative; z-index: 1;
+  width: 100%; max-width: 900px;
+  background: #0d1420; border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 16px; overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+}
+.video-modal-close {
+  position: absolute; top: 0.75rem; right: 0.75rem; z-index: 3;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(0,0,0,0.5); border: none; color: #fff;
+  font-size: 1.05rem; cursor: pointer; transition: background 0.15s;
+  display: flex; align-items: center; justify-content: center;
+}
+.video-modal-close:hover { background: rgba(0,0,0,0.8); }
+.video-modal-frame {
+  position: relative; width: 100%; aspect-ratio: 16 / 9;
+  background: #060a12;
+}
+.video-modal-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+.video-modal-placeholder {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.6rem;
+  color: rgba(255,255,255,0.4); text-align: center; padding: 2rem;
+}
+.video-modal-placeholder-title { font-size: 1.05rem; font-weight: 600; color: rgba(255,255,255,0.7); }
+.video-modal-placeholder-text { font-size: 0.85rem; max-width: 300px; line-height: 1.5; }
 </style>
 <meta name="description" content="Kontaktujte FREE for YOU. Telefon +420 227 072 292, e-mail info@freeforyou.cz. Sídlo Českomoravská 2255/12a, Praha 9.">
 <meta name="robots" content="index, follow">
@@ -352,6 +407,22 @@
                 <span class="ki-val">CZ25336665</span>
               </div>
               <div class="kontakt-info-row">
+                <span class="ki-label">Spisová značka</span>
+                <span class="ki-val">C 260212 vedená u Městského soudu v Praze</span>
+              </div>
+              <div class="kontakt-info-row">
+                <span class="ki-label">Licence elektřina</span>
+                <span class="ki-val">141634108</span>
+              </div>
+              <div class="kontakt-info-row">
+                <span class="ki-label">Licence zemní plyn</span>
+                <span class="ki-val">241634109</span>
+              </div>
+              <div class="kontakt-info-row">
+                <span class="ki-label">Bankovní účet</span>
+                <span class="ki-val">2801022276/2010</span>
+              </div>
+              <div class="kontakt-info-row">
                 <span class="ki-label">Otevřeno</span>
                 <span class="ki-val">Po–Pá 8:00–16:30</span>
               </div>
@@ -381,6 +452,36 @@
                 <svg viewBox="0 0 32 32" width="14" height="14"><circle cx="16" cy="16" r="16" fill="#e4001a"/><path d="M16 6C11.6 6 8 9.6 8 14c0 6 8 14 8 14s8-8 8-14c0-4.4-3.6-8-8-8zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" fill="white"/></svg>
                 Mapy.cz
               </a>
+            </div>
+            <button type="button" class="kontakt-video-btn" id="kontakt-video-btn">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Jak se k nám dostat — videonávod
+            </button>
+          </div>
+
+          <!-- Modal s videonávodem -->
+          <div class="video-modal" id="video-modal" aria-hidden="true">
+            <div class="video-modal-backdrop" data-close-video></div>
+            <div class="video-modal-box" role="dialog" aria-modal="true" aria-label="Videonávod jak se k nám dostat">
+              <button type="button" class="video-modal-close" data-close-video aria-label="Zavřít">✕</button>
+              <div class="video-modal-frame" id="video-modal-frame">
+                <!-- ZDE DOPLŇ ODKAZ NA YOUTUBE VIDEO -->
+                <!-- Nahraď YOUTUBE_VIDEO_ID skutečným ID videa (část za watch?v= v odkazu),
+                     nebo celý iframe vlož z YouTube → Sdílet → Vložit. Příklad: -->
+                <!--
+                <iframe width="100%" height="100%"
+                  src="https://www.youtube-nocookie.com/embed/YOUTUBE_VIDEO_ID"
+                  title="Jak se k nám dostat"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen></iframe>
+                -->
+                <div class="video-modal-placeholder">
+                  <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                  <div class="video-modal-placeholder-title">Videonávod se připravuje</div>
+                  <div class="video-modal-placeholder-text">Video zatím není nahrané. Až bude, zobrazí se přímo zde.</div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -609,6 +710,28 @@
       root.setAttribute('data-theme', isLight ? 'dark' : 'light');
       localStorage.setItem('ffy-theme', isLight ? 'dark' : 'light');
     });
+  }
+
+  // ── Modal videonávodu ──
+  const videoBtn = document.getElementById('kontakt-video-btn');
+  const videoModal = document.getElementById('video-modal');
+  if (videoBtn && videoModal) {
+    function openVideo() {
+      videoModal.classList.add('is-open');
+      videoModal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeVideo() {
+      videoModal.classList.remove('is-open');
+      videoModal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      // Zastav přehrávání (reload iframe, pokud existuje)
+      const frame = videoModal.querySelector('iframe');
+      if (frame) { const s = frame.src; frame.src = s; }
+    }
+    videoBtn.addEventListener('click', openVideo);
+    videoModal.querySelectorAll('[data-close-video]').forEach(el => el.addEventListener('click', closeVideo));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && videoModal.classList.contains('is-open')) closeVideo(); });
   }
 
 </script>
