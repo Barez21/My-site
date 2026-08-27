@@ -3,146 +3,261 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Aktuální nabídka elektřiny — FREE for YOU energie</title>
+<title>Dodávka elektřiny a plynu — FREE for YOU energie</title>
 <meta name="theme-color" content="#214571">
 <link rel="icon" type="image/svg+xml" href="freeforyou-logo-favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,300;0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+
+<meta name="description" content="Dodáváme elektřinu a plyn domácnostem i firmám. Podívejte se na aktuální nabídku tarifů, ceníky ke stažení a spočítejte si úsporu s FREE for YOU.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.freeforyou.cz/dodavka-elektriny-a-plynu.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Dodávka elektřiny a plynu — FREE for YOU energie">
+<meta property="og:description" content="Dodáváme elektřinu a plyn. Aktuální nabídka a ceníky.">
+<meta property="og:url" content="https://www.freeforyou.cz/dodavka-elektriny-a-plynu.html">
+<meta property="og:image" content="https://www.freeforyou.cz/logo.svg">
+<meta property="og:locale" content="cs_CZ">
+<meta property="og:site_name" content="FREE for YOU energie">
+
+<!-- Theme setup — MUSÍ běžet dřív než CSS -->
+<script>
+  (function(){
+    try{
+      var t = localStorage.getItem('ffy-theme');
+      if (t !== 'dark' && t !== 'light') t = 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+    } catch(e){
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+</script>
+<!-- Critical inline CSS proti FOUC -->
 <style>
+  html{ background: #0a141e; }
+  html[data-theme="light"]{ background: #EFF4FA; }
+  html[data-theme="dark"]{ background: #0a141e; }
+  html.theme-switching *,
+  html.theme-switching *::before,
+  html.theme-switching *::after{
+    transition: none !important;
+    animation-duration: 0s !important;
+  }
+</style>
+<link rel="preload" as="style" href="styles.css">
+<link rel="stylesheet" href="styles.css">
+
+<style>
+/* ============================================================
+   IZO stránka — používá FFY brand paletu ze styles.css
+============================================================ */
+
+/* Hlavní kontejner nad footerem */
+main.izo-page{
+  padding: 130px 2rem 80px;
+  min-height: 60vh;
+}
+[data-theme="dark"] body{ background: #0a141e; color: #e8eef7; }
+
+.izo-inner{
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+/* Breadcrumb */
+.izo-crumb{
+  display: inline-flex; align-items: center; gap: .4rem;
+  color: var(--muted);
+  font-size: .85rem;
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+  transition: color .2s ease;
+}
+.izo-crumb:hover{ color: var(--accent); }
+.izo-crumb svg{ width: 14px; height: 14px; }
+
+/* Label + nadpis */
+.izo-label{
+  display: inline-block;
+  color: var(--accent);
+  font-size: .78rem; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+.izo-title{
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 800;
+  color: var(--navy-dark);
+  line-height: 1.15;
+  letter-spacing: -.01em;
+  margin-bottom: 1rem;
+}
+[data-theme="dark"] .izo-title{ color: #e8eef7; }
+
+.izo-lead{
+  font-size: 1.15rem;
+  color: var(--muted);
+  line-height: 1.65;
+  font-weight: 400;
+  margin-bottom: 3rem;
+  max-width: 720px;
+}
+[data-theme="dark"] .izo-lead{ color: #8ba7c8; }
+
+/* Naše hodnota IZO — velký "hero" panel */
+.izo-hero-value{
+  background: linear-gradient(135deg, var(--accent) 0%, #3dd090 100%);
+  color: var(--navy-dark);
+  border-radius: 24px;
+  padding: 3rem 2.5rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2.5rem;
+  align-items: center;
+  margin-bottom: 3rem;
+  box-shadow: 0 24px 50px rgba(69,231,163,.35);
+  position: relative;
+  overflow: hidden;
+}
+.izo-hero-value::before{
+  content: ""; position: absolute;
+  top: -30%; right: -10%;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(255,255,255,.25) 0%, transparent 60%);
+  pointer-events: none;
+}
+@media (max-width: 640px){
+  .izo-hero-value{
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 2rem 1.5rem;
+    gap: 1.5rem;
+  }
+}
+.izo-value-number{
+  font-size: clamp(4.5rem, 12vw, 7rem);
+  font-weight: 900;
+  line-height: 1;
+  color: var(--navy-dark);
+  letter-spacing: -.03em;
+  font-variant-numeric: tabular-nums;
+  position: relative; z-index: 1;
+}
+.izo-value-body{ position: relative; z-index: 1; }
+.izo-value-tag{
+  display: inline-block;
+  background: rgba(14,30,47,.15);
+  color: var(--navy-dark);
+  padding: .3rem .8rem; border-radius: 999px;
+  font-size: .78rem; font-weight: 700;
+  letter-spacing: .05em; text-transform: uppercase;
+  margin-bottom: .75rem;
+}
+.izo-value-headline{
+  font-size: 1.5rem; font-weight: 800;
+  color: var(--navy-dark);
+  margin-bottom: .5rem;
+  line-height: 1.25;
+}
+.izo-value-desc{
+  font-size: 1.02rem;
+  color: var(--navy-dark);
+  line-height: 1.65;
+  font-weight: 600;
+}
+
+/* Body sekce s výkladem */
+.izo-section-intro{ margin-bottom: 2rem; margin-top: 1rem; }
+.izo-section{
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+[data-theme="dark"] .izo-section-intro{ margin-bottom: 2rem; margin-top: 1rem; }
+.izo-section{
+  background: #16283d;
+  border-color: #2a3f5a;
+}
+.izo-section h2{
+  font-size: 1.5rem; font-weight: 700;
+  color: var(--navy-dark);
+  margin-bottom: 1rem;
+  letter-spacing: -.005em;
+}
+[data-theme="dark"] .izo-section h2{ color: #e8eef7; }
+
+.izo-section p{
+  font-size: 1rem;
+  color: var(--muted);
+  line-height: 1.75;
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+[data-theme="dark"] .izo-section p{ color: #b8c9dd; }
+
+.izo-section p:last-child{ margin-bottom: 0; }
+
+.izo-section a{
+  color: var(--green-dark);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgba(16,126,81,.4);
+  text-underline-offset: 3px;
+  transition: color .2s ease, text-decoration-color .2s ease;
+}
+.izo-section a:hover{
+  color: var(--accent);
+  text-decoration-color: currentColor;
+}
+[data-theme="dark"] .izo-section a{ color: var(--accent); text-decoration-color: rgba(69,231,163,.4); }
+
+/* Zákonná citace box */
+.izo-law{
+  background: var(--slate-light);
+  border-left: 4px solid var(--accent);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+  font-size: .95rem;
+  color: var(--navy-dark);
+  line-height: 1.65;
+}
+[data-theme="dark"] .izo-law{
+  background: rgba(69,231,163,.05);
+  color: #e8eef7;
+}
+.izo-law strong{ color: var(--green-dark); font-weight: 700; }
+[data-theme="dark"] .izo-law strong{ color: var(--accent); }
+
+/* Odkaz zpět */
+.izo-back{
+  display: inline-flex; align-items: center; gap: .5rem;
+  margin-top: 2rem;
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color .2s ease, gap .2s ease;
+}
+.izo-back:hover{ color: var(--accent); gap: .75rem; }
+.izo-back svg{ width: 18px; height: 18px; }
+
+/* Mobilní úpravy */
+@media (max-width: 640px){
+  main.izo-page{ padding: 100px 1.25rem 60px; }
+  .izo-section-intro{ margin-bottom: 2rem; margin-top: 1rem; }
+.izo-section{ padding: 1.75rem 1.5rem; }
+}
+
+/* Mobilní nav (podle stávající konvence) */
 @media (max-width: 860px) {
   .nav-cta       { display: none !important; }
   .nav-hamburger { display: flex !important; }
   .nav-tabs      { display: none !important; }
 }
-
-/* ── Přepínač komodity ── */
-.tarify-komodita-switch {
-  display: inline-flex; gap: 4px; padding: 4px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 12px; margin-bottom: 2.5rem;
-  align-self: flex-start;
-}
-.tk-tab {
-  background: none; border: none; color: rgba(255,255,255,0.55);
-  font-family: inherit; font-size: 0.9rem; font-weight: 600;
-  padding: 0.5rem 1.4rem; border-radius: 9px; cursor: pointer;
-  transition: all 0.15s;
-}
-.tk-tab:hover { color: rgba(255,255,255,0.85); }
-.tk-tab.active { background: var(--accent, #44e6a3); color: #0a0f18; }
-[data-theme="light"] .tarify-komodita-switch { background: #fff; border-color: rgba(33,69,113,0.12); }
-[data-theme="light"] .tk-tab { color: #6B89A8; }
-[data-theme="light"] .tk-tab.active { color: #0a0f18; }
-
-/* ── Zarovnání karet (stejná výška, footer dolů) ── */
-.tarif-card-header { min-height: 6.5rem; }
-.tarif-price-block { display: flex; flex-direction: column; }
-.tarif-card-footer { margin-top: auto; }
-
-/* ── Drobný popisek pod cenou ── */
-.tarif-price-note {
-  font-size: 0.75rem; color: rgba(255,255,255,0.4);
-  line-height: 1.45; margin-top: 0.6rem;
-}
-[data-theme="light"] .tarif-price-note { color: #6B89A8; }
-
-/* ── SPOT hlavní text místo ceny ── */
-.tarif-price-spot-main {
-  font-size: 1.05rem; font-weight: 600; line-height: 1.4;
-  color: #fff; min-height: 2.9rem;
-}
-[data-theme="light"] .tarif-price-spot-main { color: #0E1E2F; }
-
-/* ── Benefity s ✓ ── */
-.tarif-benefits {
-  list-style: none; padding: 0; margin: 1.25rem 0 0;
-  display: flex; flex-direction: column; gap: 0.6rem;
-}
-.tarif-benefits li {
-  position: relative; padding-left: 1.75rem;
-  font-size: 0.9rem; line-height: 1.4; color: rgba(255,255,255,0.8);
-}
-.tarif-benefits li::before {
-  content: ""; position: absolute; left: 0; top: 0.05em;
-  width: 1.2rem; height: 1.2rem; border-radius: 50%;
-  background: rgba(68,230,163,0.15);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2344e6a3' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
-  background-repeat: no-repeat; background-position: center;
-  background-size: 0.8rem;
-}
-[data-theme="light"] .tarif-benefits li { color: #3A5A7A; }
-
-/* ── Sekundární tlačítko (Zobrazit ceník) ── */
-.tarif-card-footer { display: flex; gap: 0.6rem; align-items: center; }
-.tarif-card-footer .tarif-cta { flex: 1; margin: 0; }
-.tarif-cta-secondary {
-  flex-shrink: 0; text-align: center;
-  padding: 11px 16px; border-radius: 8px;
-  font-size: 0.85rem; font-weight: 600; text-decoration: none;
-  color: rgba(255,255,255,0.6);
-  background: transparent;
-  border: 1px solid rgba(255,255,255,0.14);
-  transition: all 0.15s; white-space: nowrap;
-}
-.tarif-cta-secondary:hover { color: rgba(255,255,255,0.9); border-color: rgba(255,255,255,0.3); }
-[data-theme="light"] .tarif-cta-secondary { color: #3A6298; border-color: rgba(33,69,113,0.18); }
-[data-theme="light"] .tarif-cta-secondary:hover { color: var(--primary); border-color: rgba(33,69,113,0.35); }
-
-/* ── Proč energie od FREE for YOU ── */
-.tarify-why {
-  margin-top: 4rem; padding: 2.5rem;
-  background: rgba(68,230,163,0.05);
-  border: 1px solid rgba(68,230,163,0.15);
-  border-radius: 20px;
-}
-.tarify-why-title {
-  font-size: 1.5rem; font-weight: 700; color: #fff;
-  margin-bottom: 1.5rem; text-align: center;
-}
-.tarify-why-list {
-  list-style: none; padding: 0; margin: 0;
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem 2rem;
-  max-width: 780px; margin: 0 auto;
-}
-.tarify-why-list li {
-  position: relative; padding-left: 1.9rem;
-  font-size: 0.98rem; line-height: 1.4; color: rgba(255,255,255,0.85);
-}
-.tarify-why-list li::before {
-  content: ""; position: absolute; left: 0; top: 0.05em;
-  width: 1.3rem; height: 1.3rem; border-radius: 50%;
-  background: rgba(68,230,163,0.15);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2344e6a3' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
-  background-repeat: no-repeat; background-position: center;
-  background-size: 0.85rem;
-}
-[data-theme="light"] .tarify-why { background: rgba(68,230,163,0.07); border-color: rgba(68,230,163,0.2); }
-[data-theme="light"] .tarify-why-title { color: #0E1E2F; }
-[data-theme="light"] .tarify-why-list li { color: #3A5A7A; }
-@media (max-width: 720px) {
-  .tarify-why-list { grid-template-columns: 1fr 1fr; }
-  .tarify-why { padding: 1.75rem; }
-  .tarif-card-footer { flex-direction: column; align-items: stretch; }
-  .tarif-cta-secondary { width: 100%; }
-}
-@media (max-width: 480px) {
-  .tarify-why-list { grid-template-columns: 1fr; }
-}
 </style>
-<meta name="description" content="Aktuální ceny silové elektřiny FREE for YOU pro domácnosti. Tarify FIX 2025 pro distribuční území ČEZ, PRE a EG.D.">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://www.freeforyou.cz/ceny-aktualni-nabidka.html">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Aktuální nabídka elektřiny — FREE for YOU energie">
-<meta property="og:description" content="Aktuální ceny silové elektřiny FREE for YOU pro domácnosti. Tarify FIX 2025 pro distribuční území ČEZ, PRE a EG.D.">
-<meta property="og:url" content="https://www.freeforyou.cz/ceny-aktualni-nabidka.html">
-<meta property="og:image" content="https://www.freeforyou.cz/logo.svg">
-<meta property="og:locale" content="cs_CZ">
-<meta property="og:site_name" content="FREE for YOU energie">
-<meta name="twitter:card" content="summary">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -178,7 +293,7 @@
   <div class="nebula-blob nebula-blob-2"></div>
 </div>
 
-<!-- NAV -->
+<!-- ============ NAV (zjednodušená verze — jen logo a CTA) ============ -->
 <nav id="main-nav">
 
   <!-- Top bar -->
@@ -357,224 +472,29 @@
 </div>
 <div class="mobile-overlay" id="mobile-overlay"></div>
 
-<!-- SUBPAGE CONTENT -->
-<main class="subpage-main">
+<!-- ============ HLAVNÍ OBSAH ============ -->
+<main class="izo-page">
+  <div class="izo-inner">
 
-  <!-- PAGE HEADER -->
-  <section class="subpage-header">
-    <div class="subpage-header-inner">
-      <div class="subpage-breadcrumb">
-        <a href="index.html">Domů</a><span>/</span>Naše ceny
-      </div>
-      <h1 class="subpage-h1">Aktuální nabídka</h1>
-      <p class="subpage-lead">Zde vidíte naše aktuálně nabízené tarify. Vyberte si, co odpovídá vašemu způsobu odběru.</p>
+    <a href="index.html" class="izo-crumb">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Zpět na hlavní stránku
+    </a>
+
+    <div class="izo-label">Naše služby</div>
+    <h1 class="izo-title">Dodávka elektřiny a plynu</h1>
+
+    <div class="izo-section izo-section-intro">
+      <p>Dodáváme elektřinu a plyn. Aktuální nabídka je <a href="ceny-aktualni-nabidka.html">zde</a> a ceníky <a href="ceny-ceniky.html">zde</a>.</p>
     </div>
-  </section>
 
-  <!-- TARIFY -->
-  <section class="tarify-section">
-    <div class="tarify-inner">
-
-      <!-- Přepínač komodity -->
-      <div class="tarify-komodita-switch">
-        <button class="tk-tab active" data-komodita="elektrina">Elektřina</button>
-        <button class="tk-tab" data-komodita="plyn">Plyn</button>
-      </div>
-
-      <!-- FIX TARIFY -->
-      <div class="tarify-group">
-        <div class="tarify-group-label">
-          <div class="tarify-group-title">Fixní tarify</div>
-          <div class="tarify-group-desc">Víte přesně, za kolik platíte. Cena je dohodnutá předem a nemění se podle dění na trhu. Vhodné pro ty, kdo chtějí jistotu a klid při plánování výdajů domácnosti.</div>
-        </div>
-
-        <div class="tarify-cards">
-
-          <!-- FIX elektřina -->
-          <div class="tarif-card tarif-elektrina" data-komodita="elektrina">
-            <div class="tarif-card-header">
-              <div class="tarif-type-label">Elektřina</div>
-              <div class="tarif-name">FIX 2026</div>
-              <div class="tarif-subtitle">Fixní cena do 31. 12. 2026</div>
-            </div>
-            <div class="tarif-price-block">
-              <div class="tarif-price-main">
-                <span class="tarif-price-num">3,38</span>
-                <span class="tarif-price-unit">Kč / kWh s DPH</span>
-              </div>
-              <div class="tarif-price-sub">2,79 Kč / kWh bez DPH</div>
-              <div class="tarif-price-note">Cena silové elektřiny. Regulovanou část ceny stanovuje ERÚ.</div>
-              <ul class="tarif-benefits">
-                <li>Cena se během fixace nemění</li>
-                <li>Bez sankce za předčasné ukončení</li>
-                <li>Zákaznická podpora s člověkem</li>
-              </ul>
-            </div>
-            <div class="tarif-card-footer">
-              <a href="index.html#final-cta" class="tarif-cta">Zapojit tento tarif →</a>
-              <a href="ceny-ceniky.html" class="tarif-cta-secondary">Zobrazit ceník</a>
-            </div>
-          </div>
-
-          <!-- STANDART elektřina -->
-          <div class="tarif-card tarif-elektrina" data-komodita="elektrina">
-            <div class="tarif-card-header">
-              <div class="tarif-type-label">Elektřina</div>
-              <div class="tarif-name">Standart</div>
-              <div class="tarif-subtitle">Fixní cena bez časového omezení</div>
-            </div>
-            <div class="tarif-price-block">
-              <div class="tarif-price-main">
-                <span class="tarif-price-num">4,60</span>
-                <span class="tarif-price-unit">Kč / kWh s DPH</span>
-              </div>
-              <div class="tarif-price-sub">3,80 Kč / kWh bez DPH</div>
-              <div class="tarif-price-note">Cena silové elektřiny. Regulovanou část ceny stanovuje ERÚ.</div>
-              <ul class="tarif-benefits">
-                <li>Cena se během fixace nemění</li>
-                <li>Bez sankce za předčasné ukončení</li>
-                <li>Zákaznická podpora s člověkem</li>
-              </ul>
-            </div>
-            <div class="tarif-card-footer">
-              <a href="index.html#final-cta" class="tarif-cta">Zapojit tento tarif →</a>
-              <a href="ceny-ceniky.html" class="tarif-cta-secondary">Zobrazit ceník</a>
-            </div>
-          </div>
-
-          <!-- FIX plyn -->
-          <div class="tarif-card tarif-plyn" data-komodita="plyn" style="display:none">
-            <div class="tarif-card-header">
-              <div class="tarif-type-label">Plyn</div>
-              <div class="tarif-name">FIX 2026</div>
-              <div class="tarif-subtitle">Fixní cena do 31. 12. 2026</div>
-            </div>
-            <div class="tarif-price-block">
-              <div class="tarif-price-main">
-                <span class="tarif-price-num">X,XX</span>
-                <span class="tarif-price-unit">Kč / kWh s DPH</span>
-              </div>
-              <div class="tarif-price-sub">X,XX Kč / kWh bez DPH</div>
-              <div class="tarif-price-note">Cena silového plynu. Regulovanou část ceny stanovuje ERÚ.</div>
-              <ul class="tarif-benefits">
-                <li>Cena se během fixace nemění</li>
-                <li>Bez sankce za předčasné ukončení</li>
-                <li>Zákaznická podpora s člověkem</li>
-              </ul>
-            </div>
-            <div class="tarif-card-footer">
-              <a href="index.html#final-cta" class="tarif-cta">Zapojit tento tarif →</a>
-              <a href="ceny-ceniky.html" class="tarif-cta-secondary">Zobrazit ceník</a>
-            </div>
-          </div>
-
-          <!-- STANDART plyn -->
-          <div class="tarif-card tarif-plyn" data-komodita="plyn" style="display:none">
-            <div class="tarif-card-header">
-              <div class="tarif-type-label">Plyn</div>
-              <div class="tarif-name">Standart</div>
-              <div class="tarif-subtitle">Fixní cena bez časového omezení</div>
-            </div>
-            <div class="tarif-price-block">
-              <div class="tarif-price-main">
-                <span class="tarif-price-num">X,XX</span>
-                <span class="tarif-price-unit">Kč / kWh s DPH</span>
-              </div>
-              <div class="tarif-price-sub">X,XX Kč / kWh bez DPH</div>
-              <div class="tarif-price-note">Cena silového plynu. Regulovanou část ceny stanovuje ERÚ.</div>
-              <ul class="tarif-benefits">
-                <li>Cena se během fixace nemění</li>
-                <li>Bez sankce za předčasné ukončení</li>
-                <li>Zákaznická podpora s člověkem</li>
-              </ul>
-            </div>
-            <div class="tarif-card-footer">
-              <a href="index.html#final-cta" class="tarif-cta">Zapojit tento tarif →</a>
-              <a href="ceny-ceniky.html" class="tarif-cta-secondary">Zobrazit ceník</a>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- DIVIDER -->
-      <div class="tarify-divider"></div>
-
-      <!-- SPOT TARIFY -->
-      <div class="tarify-group">
-        <div class="tarify-group-label">
-          <div class="tarify-group-title">SPOT tarify</div>
-          <div class="tarify-group-desc">Cena se mění podle toho, kolik elektřina nebo plyn stojí na burzovním trhu. Když je trh levný — platíte méně. Vhodné pro ty, kdo sledují spotřebu a dokážou ji přizpůsobit době, kdy je energie nejlevnější.</div>
-        </div>
-
-        <div class="tarify-cards">
-
-          <!-- SPOT elektřina -->
-          <div class="tarif-card tarif-elektrina tarif-spot" data-komodita="elektrina">
-            <div class="tarif-card-header">
-              <div class="tarif-type-label">Elektřina</div>
-              <div class="tarif-name">SPOT</div>
-              <div class="tarif-subtitle">Cena podle burzovního trhu</div>
-            </div>
-            <div class="tarif-price-block">
-              <div class="tarif-price-spot-main">Cena SPOTu je určována cenami elektřiny na burze.</div>
-              <div class="tarif-price-note">Tento produkt je možné mít pouze pokud má klient elektroměr s průběhovým měřením, nebo jde o právnickou osobu.</div>
-              <ul class="tarif-benefits">
-                <li>Cena kopíruje burzu — platíte aktuální tržní cenu</li>
-                <li>Bez sankce za předčasné ukončení</li>
-                <li>Zákaznická podpora s člověkem</li>
-              </ul>
-            </div>
-            <div class="tarif-card-footer">
-              <a href="index.html#final-cta" class="tarif-cta">Zapojit tento tarif →</a>
-              <a href="ceny-ceniky.html" class="tarif-cta-secondary">Zobrazit ceník</a>
-            </div>
-          </div>
-
-          <!-- SPOT plyn -->
-          <div class="tarif-card tarif-plyn tarif-spot" data-komodita="plyn" style="display:none">
-            <div class="tarif-card-header">
-              <div class="tarif-type-label">Plyn</div>
-              <div class="tarif-name">SPOT</div>
-              <div class="tarif-subtitle">Cena podle burzovního trhu</div>
-            </div>
-            <div class="tarif-price-block">
-              <div class="tarif-price-spot-main">Cena SPOTu je určována cenami plynu na burze.</div>
-              <div class="tarif-price-note">Tento produkt je možné mít pouze pokud má klient měřidlo s průběhovým měřením, nebo jde o právnickou osobu.</div>
-              <ul class="tarif-benefits">
-                <li>Cena kopíruje burzu — platíte aktuální tržní cenu</li>
-                <li>Bez sankce za předčasné ukončení</li>
-                <li>Zákaznická podpora s člověkem</li>
-              </ul>
-            </div>
-            <div class="tarif-card-footer">
-              <a href="index.html#final-cta" class="tarif-cta">Zapojit tento tarif →</a>
-              <a href="ceny-ceniky.html" class="tarif-cta-secondary">Zobrazit ceník</a>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- Proč energie od FREE for YOU -->
-      <div class="tarify-why">
-        <div class="tarify-why-title">Proč energie od FREE for YOU</div>
-        <ul class="tarify-why-list">
-          <li>Český dodavatel</li>
-          <li>10 let zkušeností</li>
-          <li>Bez sankcí za ukončení</li>
-          <li>Telefon zvedá člověk</li>
-          <li>Hlídáme vaši cenu</li>
-          <li>50 % zisku investujeme do nových zdrojů</li>
-        </ul>
-      </div>
-
-    </div>
-  </section>
-
+    <a href="index.html" class="izo-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Zpět na hlavní stránku
+    </a>
+  </div>
 </main>
 
-<!-- FOOTER -->
 <footer class="site-footer">
   <div class="footer-main">
     <div class="footer-inner">
@@ -664,6 +584,7 @@
 </footer>
 
 <script>
+
 
   function toggleFaq(btn) {
     const item = btn.closest('.faq-item');
@@ -773,19 +694,6 @@
     });
   }
 
-  // ── Přepínač komodity (Elektřina / Plyn) ──
-  const tkTabs = document.querySelectorAll('.tk-tab');
-  const tarifCards = document.querySelectorAll('.tarif-card[data-komodita]');
-  tkTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      const k = tab.dataset.komodita;
-      tkTabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      tarifCards.forEach(card => {
-        card.style.display = card.dataset.komodita === k ? '' : 'none';
-      });
-    });
-  });
 
 </script>
 
