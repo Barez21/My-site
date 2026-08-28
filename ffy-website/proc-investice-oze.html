@@ -17,11 +17,10 @@
   .nav-tabs      { display: none !important; }
 }
 
-/* ── CTA sekce ── */
-.oze-cta-section { padding: 1rem 2rem 5rem; }
-.oze-cta-inner { max-width: 960px; margin: 0 auto; text-align: center; }
-.oze-cta-heading { font-size: 2rem; font-weight: 800; color: #fff; margin: 0 0 0.6rem; letter-spacing: -0.01em; }
-.oze-cta-sub { font-size: 1.05rem; color: rgba(255,255,255,0.6); margin: 0 auto 2.5rem; max-width: 620px; line-height: 1.6; }
+/* ── CTA blok (uvnitř oze-section, před 'Kde jsme teď') ── */
+.oze-cta-block { margin: 2.5rem 0; text-align: center; }
+.oze-cta-heading { font-size: 1.8rem; font-weight: 800; color: #fff; margin: 0 0 0.6rem; letter-spacing: -0.01em; }
+.oze-cta-sub { font-size: 1.02rem; color: rgba(255,255,255,0.6); margin: 0 auto 2rem; max-width: 620px; line-height: 1.6; }
 [data-theme="light"] .oze-cta-heading { color: #0E1E2F; }
 [data-theme="light"] .oze-cta-sub { color: #4A6B8A; }
 .oze-cta-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; text-align: left; }
@@ -394,6 +393,33 @@
           </div>
         </div>
 
+        <!-- CTA: zapojení do projektu (před 'Kde jsme teď') -->
+        <div class="oze-cta-block">
+          <h2 class="oze-cta-heading">Chcete být u toho?</h2>
+          <p class="oze-cta-sub">Máte vhodný pozemek nebo střechu? Nebo vlastníte elektrárnu, kterou zvažujete prodat? Ozvěte se nám.</p>
+          <div class="oze-cta-cards">
+
+            <div class="oze-cta-card">
+              <div class="oze-cta-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-3"/><path d="M9 9v0M9 12v0M9 15v0"/></svg>
+              </div>
+              <div class="oze-cta-card-title">Mám prostor pro elektrárnu</div>
+              <div class="oze-cta-card-text">Nabídněte nám pozemek nebo střechu. Posoudíme vhodnost lokality a ozveme se vám s dalším postupem.</div>
+              <button type="button" class="oze-cta-btn" id="oze-cta-prostor">Mám zájem poskytnout prostor →</button>
+            </div>
+
+            <div class="oze-cta-card">
+              <div class="oze-cta-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              </div>
+              <div class="oze-cta-card-title">Vlastním elektrárnu</div>
+              <div class="oze-cta-card-text">Zvažujete prodej své elektrárny? Dejte nám vědět základní údaje a my se vám ozveme.</div>
+              <button type="button" class="oze-cta-btn oze-cta-btn-alt" id="oze-cta-prodej">Prodám svou elektrárnu →</button>
+            </div>
+
+          </div>
+        </div>
+
         <div class="oze-block oze-block-status">
           <div class="oze-block-label">Kde jsme teď</div>
           <div class="oze-block-content">
@@ -408,35 +434,6 @@
 
       </div>
 
-    </div>
-  </section>
-
-  <!-- CTA SEKCE: zapojení do projektu -->
-  <section class="oze-cta-section">
-    <div class="oze-cta-inner">
-      <h2 class="oze-cta-heading">Chcete být u toho?</h2>
-      <p class="oze-cta-sub">Máte vhodný pozemek nebo střechu? Nebo vlastníte elektrárnu, kterou zvažujete prodat? Ozvěte se nám.</p>
-      <div class="oze-cta-cards">
-
-        <div class="oze-cta-card">
-          <div class="oze-cta-card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-3"/><path d="M9 9v0M9 12v0M9 15v0"/></svg>
-          </div>
-          <div class="oze-cta-card-title">Mám prostor pro elektrárnu</div>
-          <div class="oze-cta-card-text">Nabídněte nám pozemek nebo střechu. Posoudíme vhodnost lokality a ozveme se vám s dalším postupem.</div>
-          <button type="button" class="oze-cta-btn" id="oze-cta-prostor">Mám zájem poskytnout prostor →</button>
-        </div>
-
-        <div class="oze-cta-card">
-          <div class="oze-cta-card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-          </div>
-          <div class="oze-cta-card-title">Vlastním elektrárnu</div>
-          <div class="oze-cta-card-text">Zvažujete prodej své elektrárny? Dejte nám vědět základní údaje a my se vám ozveme.</div>
-          <button type="button" class="oze-cta-btn oze-cta-btn-alt" id="oze-cta-prodej">Prodám svou elektrárnu →</button>
-        </div>
-
-      </div>
     </div>
   </section>
 
