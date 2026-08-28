@@ -406,7 +406,7 @@
               </ul>
             </div>
             <div class="tarif-card-footer">
-              <a href="index.html#final-cta" class="tarif-cta">Zapojit tento tarif →</a>
+              <a href="prepis.html" class="tarif-cta">Zapojit tento tarif →</a>
               <a href="ceny-ceniky.html" class="tarif-cta-secondary">Zobrazit ceník</a>
             </div>
           </div>
@@ -432,7 +432,7 @@
               </ul>
             </div>
             <div class="tarif-card-footer">
-              <a href="index.html#final-cta" class="tarif-cta">Zapojit tento tarif →</a>
+              <a href="prepis.html" class="tarif-cta">Zapojit tento tarif →</a>
               <a href="ceny-ceniky.html" class="tarif-cta-secondary">Zobrazit ceník</a>
             </div>
           </div>
@@ -458,7 +458,7 @@
               </ul>
             </div>
             <div class="tarif-card-footer">
-              <a href="index.html#final-cta" class="tarif-cta">Zapojit tento tarif →</a>
+              <a href="prepis.html" class="tarif-cta">Zapojit tento tarif →</a>
               <a href="ceny-ceniky.html" class="tarif-cta-secondary">Zobrazit ceník</a>
             </div>
           </div>
@@ -484,7 +484,7 @@
               </ul>
             </div>
             <div class="tarif-card-footer">
-              <a href="index.html#final-cta" class="tarif-cta">Zapojit tento tarif →</a>
+              <a href="prepis.html" class="tarif-cta">Zapojit tento tarif →</a>
               <a href="ceny-ceniky.html" class="tarif-cta-secondary">Zobrazit ceník</a>
             </div>
           </div>
@@ -521,7 +521,7 @@
               </ul>
             </div>
             <div class="tarif-card-footer">
-              <a href="index.html#final-cta" class="tarif-cta">Zapojit tento tarif →</a>
+              <a href="prepis.html" class="tarif-cta">Zapojit tento tarif →</a>
               <a href="ceny-ceniky.html" class="tarif-cta-secondary">Zobrazit ceník</a>
             </div>
           </div>
@@ -543,7 +543,7 @@
               </ul>
             </div>
             <div class="tarif-card-footer">
-              <a href="index.html#final-cta" class="tarif-cta">Zapojit tento tarif →</a>
+              <a href="prepis.html" class="tarif-cta">Zapojit tento tarif →</a>
               <a href="ceny-ceniky.html" class="tarif-cta-secondary">Zobrazit ceník</a>
             </div>
           </div>
@@ -590,8 +590,8 @@
         <div class="footer-col">
           <div class="footer-col-title">Pro zákazníky</div>
           <ul class="footer-links">
-            <li><a href="ceny-aktualni-nabidka.html">Elektřina</a></li>
-            <li><a href="ceny-aktualni-nabidka.html">Plyn</a></li>
+            <li><a href="ceny-aktualni-nabidka.html?komodita=elektrina">Elektřina</a></li>
+            <li><a href="ceny-aktualni-nabidka.html?komodita=plyn">Plyn</a></li>
             <li><a href="ceny-kalkulacka.html">Kalkulačka úspor</a></li>
             <li><a href="proc-slevy-za-doporuceni.html">Slevy na energie</a></li>
           </ul>
@@ -770,16 +770,20 @@
   // ── Přepínač komodity (Elektřina / Plyn) ──
   const tkTabs = document.querySelectorAll('.tk-tab');
   const tarifCards = document.querySelectorAll('.tarif-card[data-komodita]');
-  tkTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      const k = tab.dataset.komodita;
-      tkTabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      tarifCards.forEach(card => {
-        card.style.display = card.dataset.komodita === k ? '' : 'none';
-      });
+  function switchKomodita(k) {
+    tkTabs.forEach(t => t.classList.toggle('active', t.dataset.komodita === k));
+    tarifCards.forEach(card => {
+      card.style.display = card.dataset.komodita === k ? '' : 'none';
     });
+  }
+  tkTabs.forEach(tab => {
+    tab.addEventListener('click', () => switchKomodita(tab.dataset.komodita));
   });
+  // Přepnutí podle URL parametru (?komodita=plyn) — např. z odkazu v patičce
+  const urlKomodita = new URLSearchParams(window.location.search).get('komodita');
+  if (urlKomodita === 'plyn' || urlKomodita === 'elektrina') {
+    switchKomodita(urlKomodita);
+  }
 
 </script>
 

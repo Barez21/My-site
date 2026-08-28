@@ -3,31 +3,261 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Prodej elektřiny — FREE for YOU energie</title>
+<title>Přepis / Přechod k nám — FREE for YOU energie</title>
 <meta name="theme-color" content="#214571">
 <link rel="icon" type="image/svg+xml" href="freeforyou-logo-favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,300;0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+
+<meta name="description" content="Přejděte k FREE for YOU. Přechod od stávajícího dodavatele vyřídíme za vás — jednoduše a bez starostí.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.freeforyou.cz/prepis.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Přepis / Přechod k nám — FREE for YOU energie">
+<meta property="og:description" content="Přejděte k FREE for YOU — přechod vyřídíme za vás.">
+<meta property="og:url" content="https://www.freeforyou.cz/prepis.html">
+<meta property="og:image" content="https://www.freeforyou.cz/logo.svg">
+<meta property="og:locale" content="cs_CZ">
+<meta property="og:site_name" content="FREE for YOU energie">
+
+<!-- Theme setup — MUSÍ běžet dřív než CSS -->
+<script>
+  (function(){
+    try{
+      var t = localStorage.getItem('ffy-theme');
+      if (t !== 'dark' && t !== 'light') t = 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+    } catch(e){
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+</script>
+<!-- Critical inline CSS proti FOUC -->
 <style>
+  html{ background: #0a141e; }
+  html[data-theme="light"]{ background: #EFF4FA; }
+  html[data-theme="dark"]{ background: #0a141e; }
+  html.theme-switching *,
+  html.theme-switching *::before,
+  html.theme-switching *::after{
+    transition: none !important;
+    animation-duration: 0s !important;
+  }
+</style>
+<link rel="preload" as="style" href="styles.css">
+<link rel="stylesheet" href="styles.css">
+
+<style>
+/* ============================================================
+   IZO stránka — používá FFY brand paletu ze styles.css
+============================================================ */
+
+/* Hlavní kontejner nad footerem */
+main.izo-page{
+  padding: 130px 2rem 80px;
+  min-height: 60vh;
+}
+[data-theme="dark"] body{ background: #0a141e; color: #e8eef7; }
+
+.izo-inner{
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+/* Breadcrumb */
+.izo-crumb{
+  display: inline-flex; align-items: center; gap: .4rem;
+  color: var(--muted);
+  font-size: .85rem;
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+  transition: color .2s ease;
+}
+.izo-crumb:hover{ color: var(--accent); }
+.izo-crumb svg{ width: 14px; height: 14px; }
+
+/* Label + nadpis */
+.izo-label{
+  display: inline-block;
+  color: var(--accent);
+  font-size: .78rem; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+.izo-title{
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 800;
+  color: var(--navy-dark);
+  line-height: 1.15;
+  letter-spacing: -.01em;
+  margin-bottom: 1rem;
+}
+[data-theme="dark"] .izo-title{ color: #e8eef7; }
+
+.izo-lead{
+  font-size: 1.15rem;
+  color: var(--muted);
+  line-height: 1.65;
+  font-weight: 400;
+  margin-bottom: 3rem;
+  max-width: 720px;
+}
+[data-theme="dark"] .izo-lead{ color: #8ba7c8; }
+
+/* Naše hodnota IZO — velký "hero" panel */
+.izo-hero-value{
+  background: linear-gradient(135deg, var(--accent) 0%, #3dd090 100%);
+  color: var(--navy-dark);
+  border-radius: 24px;
+  padding: 3rem 2.5rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2.5rem;
+  align-items: center;
+  margin-bottom: 3rem;
+  box-shadow: 0 24px 50px rgba(69,231,163,.35);
+  position: relative;
+  overflow: hidden;
+}
+.izo-hero-value::before{
+  content: ""; position: absolute;
+  top: -30%; right: -10%;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(255,255,255,.25) 0%, transparent 60%);
+  pointer-events: none;
+}
+@media (max-width: 640px){
+  .izo-hero-value{
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 2rem 1.5rem;
+    gap: 1.5rem;
+  }
+}
+.izo-value-number{
+  font-size: clamp(4.5rem, 12vw, 7rem);
+  font-weight: 900;
+  line-height: 1;
+  color: var(--navy-dark);
+  letter-spacing: -.03em;
+  font-variant-numeric: tabular-nums;
+  position: relative; z-index: 1;
+}
+.izo-value-body{ position: relative; z-index: 1; }
+.izo-value-tag{
+  display: inline-block;
+  background: rgba(14,30,47,.15);
+  color: var(--navy-dark);
+  padding: .3rem .8rem; border-radius: 999px;
+  font-size: .78rem; font-weight: 700;
+  letter-spacing: .05em; text-transform: uppercase;
+  margin-bottom: .75rem;
+}
+.izo-value-headline{
+  font-size: 1.5rem; font-weight: 800;
+  color: var(--navy-dark);
+  margin-bottom: .5rem;
+  line-height: 1.25;
+}
+.izo-value-desc{
+  font-size: 1.02rem;
+  color: var(--navy-dark);
+  line-height: 1.65;
+  font-weight: 600;
+}
+
+/* Body sekce s výkladem */
+.izo-section-intro{ margin-bottom: 2rem; margin-top: 1rem; }
+.izo-section{
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+[data-theme="dark"] .izo-section-intro{ margin-bottom: 2rem; margin-top: 1rem; }
+.izo-section{
+  background: #16283d;
+  border-color: #2a3f5a;
+}
+.izo-section h2{
+  font-size: 1.5rem; font-weight: 700;
+  color: var(--navy-dark);
+  margin-bottom: 1rem;
+  letter-spacing: -.005em;
+}
+[data-theme="dark"] .izo-section h2{ color: #e8eef7; }
+
+.izo-section p{
+  font-size: 1rem;
+  color: var(--muted);
+  line-height: 1.75;
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+[data-theme="dark"] .izo-section p{ color: #b8c9dd; }
+
+.izo-section p:last-child{ margin-bottom: 0; }
+
+.izo-section a{
+  color: var(--green-dark);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgba(16,126,81,.4);
+  text-underline-offset: 3px;
+  transition: color .2s ease, text-decoration-color .2s ease;
+}
+.izo-section a:hover{
+  color: var(--accent);
+  text-decoration-color: currentColor;
+}
+[data-theme="dark"] .izo-section a{ color: var(--accent); text-decoration-color: rgba(69,231,163,.4); }
+
+/* Zákonná citace box */
+.izo-law{
+  background: var(--slate-light);
+  border-left: 4px solid var(--accent);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+  font-size: .95rem;
+  color: var(--navy-dark);
+  line-height: 1.65;
+}
+[data-theme="dark"] .izo-law{
+  background: rgba(69,231,163,.05);
+  color: #e8eef7;
+}
+.izo-law strong{ color: var(--green-dark); font-weight: 700; }
+[data-theme="dark"] .izo-law strong{ color: var(--accent); }
+
+/* Odkaz zpět */
+.izo-back{
+  display: inline-flex; align-items: center; gap: .5rem;
+  margin-top: 2rem;
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color .2s ease, gap .2s ease;
+}
+.izo-back:hover{ color: var(--accent); gap: .75rem; }
+.izo-back svg{ width: 18px; height: 18px; }
+
+/* Mobilní úpravy */
+@media (max-width: 640px){
+  main.izo-page{ padding: 100px 1.25rem 60px; }
+  .izo-section-intro{ margin-bottom: 2rem; margin-top: 1rem; }
+.izo-section{ padding: 1.75rem 1.5rem; }
+}
+
+/* Mobilní nav (podle stávající konvence) */
 @media (max-width: 860px) {
   .nav-cta       { display: none !important; }
   .nav-hamburger { display: flex !important; }
   .nav-tabs      { display: none !important; }
 }
 </style>
-<meta name="description" content="Prodejte přebytky z fotovoltaiky za tržní cenu. FREE for YOU vykoupí vaši elektřinu s poplatkem 19 %, minimum 780 Kč.">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://www.freeforyou.cz/jak-vykup-elektriny.html">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Prodej elektřiny — FREE for YOU energie">
-<meta property="og:description" content="Prodejte přebytky z fotovoltaiky za tržní cenu. FREE for YOU vykoupí vaši elektřinu s poplatkem 19 %, minimum 780 Kč.">
-<meta property="og:url" content="https://www.freeforyou.cz/jak-vykup-elektriny.html">
-<meta property="og:image" content="https://www.freeforyou.cz/logo.svg">
-<meta property="og:locale" content="cs_CZ">
-<meta property="og:site_name" content="FREE for YOU energie">
-<meta name="twitter:card" content="summary">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -63,7 +293,7 @@
   <div class="nebula-blob nebula-blob-2"></div>
 </div>
 
-<!-- NAV -->
+<!-- ============ NAV (zjednodušená verze — jen logo a CTA) ============ -->
 <nav id="main-nav">
 
   <!-- Top bar -->
@@ -140,7 +370,7 @@
       <!-- Col 2: Naše služby -->
       <div class="mega-col" data-col="2">
         <div class="mega-col-label">Naše služby</div>
-        <a href="dodavka-elektriny-a-plynu.html" class="mega-link">
+        <a href="prepis.html" class="mega-link">
           <span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>
           <span class="mega-link-body"><strong>Dodávka elektřiny a plynu</strong><span>Naše hlavní služba</span></span>
         </a>
@@ -216,7 +446,7 @@
 
     <div class="mobile-section">
       <div class="mobile-section-title">Naše služby</div>
-      <a href="dodavka-elektriny-a-plynu.html" class="mobile-link">Dodávka elektřiny a plynu</a>
+      <a href="prepis.html" class="mobile-link">Dodávka elektřiny a plynu</a>
       <a href="jak-energobanking.html" class="mobile-link">Energobanking</a>
       <a href="jak-sdileni-elektriny.html" class="mobile-link">Sdílení elektřiny</a>
       <a href="jak-vykup-elektriny.html" class="mobile-link">Prodej elektřiny</a>
@@ -237,88 +467,38 @@
 </div>
 <div class="mobile-overlay" id="mobile-overlay"></div>
 
-<!-- SUBPAGE CONTENT -->
-<main class="subpage-main">
+<!-- ============ HLAVNÍ OBSAH ============ -->
+<main class="izo-page">
+  <div class="izo-inner">
 
-  <section class="subpage-header">
-    <div class="subpage-header-inner">
-      <div class="subpage-breadcrumb">
-        <a href="index.html">Domů</a><span>/</span>Jak to funguje?
+    <a href="index.html" class="izo-crumb">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Zpět na hlavní stránku
+    </a>
+
+    <div class="izo-label">Přechod k nám</div>
+    <h1 class="izo-title">Přejděte k FREE for YOU</h1>
+    <p class="izo-lead">Přechod od stávajícího dodavatele vyřídíme za vás. Stačí vyplnit formulář a o zbytek se postaráme — bez výpovědí, bez papírování, bez přerušení dodávky.</p>
+
+    <!-- ============================================================
+         TODO: Tady vložíme formulář 2, kopii funkčnosti z LP přepis.
+         Formulář se vytváří bokem, protože úzce souvisí s naším systémem.
+    ============================================================ -->
+    <div class="prepis-form-placeholder">
+      <div class="prepis-form-placeholder-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
       </div>
-      <h1 class="subpage-h1">Prodej elektřiny</h1>
-      <p class="subpage-lead">Když váš solár, větrník nebo vodní zdroj vyrobí víc, než spotřebujete, přebytky nemusí téct zadarmo do sítě. Můžete je prodat — a investici vrátit rychleji.</p>
-      <div class="sdileni-badges">
-        <span class="sdileni-badge">Tržní cena</span>
-        <span class="sdileni-badge">Přehled v Energobankingu</span>
-        <span class="sdileni-badge">Bez papírování</span>
-      </div>
+      <div class="prepis-form-placeholder-title">Tady vložíme formulář 2</div>
+      <div class="prepis-form-placeholder-text">Kopie funkčnosti z LP přepis. Formulář se vytváří bokem, protože úzce souvisí s naším systémem.</div>
     </div>
-  </section>
 
-  <section class="sdileni-section">
-    <div class="sdileni-inner">
-
-      <div class="sdileni-block">
-        <div class="sdileni-block-label">Co se děje s přebytky</div>
-        <div class="sdileni-block-content">
-          <p>Fotovoltaika, vítr ani voda nevyrábí podle toho, kolik zrovna spotřebujete. Přebytky jdou automaticky do sítě — bez náhrady, pokud nemáte sjednáno jinak.</p>
-          <p>Baterie jsou jedním řešením. Prodej přebytků FREE for YOU je druhé — a nevyžaduje žádnou investici navíc.</p>
-        </div>
-      </div>
-
-      <div class="sdileni-block">
-        <div class="sdileni-block-label">Jak to funguje</div>
-        <div class="sdileni-block-content">
-          <p>Uzavřete s námi smlouvu o výkupu přebytků. Přebytečná elektřina, kterou váš zdroj dodá do sítě, se automaticky zaúčtuje a proplatí za tržní cenu.</p>
-          <p>Z výkupní ceny odečítáme náš poplatek — <strong>19 % z tržní ceny, minimálně 780 Kč</strong>. Zbytek jde na váš účet. Vše vidíte v Energobankingu: kolik jste vyrobili, kolik prodali a kolik vám přijde.</p>
-        </div>
-      </div>
-
-      <div class="vykup-stat-row">
-        <div class="vykup-stat">
-          <div class="vykup-stat-num">19 %</div>
-          <div class="vykup-stat-label">poplatek z tržní ceny</div>
-        </div>
-        <div class="vykup-stat-divider"></div>
-        <div class="vykup-stat">
-          <div class="vykup-stat-num">780 Kč</div>
-          <div class="vykup-stat-label">minimum za zúčtovací období</div>
-        </div>
-      </div>
-
-      <div class="sdileni-block">
-        <div class="sdileni-block-label">Co z toho máte</div>
-        <div class="sdileni-block-content">
-          <p>Přebytky přestanou být ztráta a začnou být příjem. Návratnost investice do fotovoltaiky se tím zkracuje — bez toho, abyste museli cokoliv dalšího řešit.</p>
-          <p>Prodej přebytků a sdílení elektřiny přes službu Elektřina od souseda se navzájem nevylučují. Když sdílíte elektřinu přímo odběrateli, řídí se ta část jiným cenovým ujednáním. Co odběratel nestihne spotřebovat, jde do standardního výkupu.</p>
-        </div>
-      </div>
-
-      <div class="sdileni-block">
-        <div class="sdileni-block-label">Kde to sledujete</div>
-        <div class="sdileni-block-content">
-          <p>V Energobankingu máte přehled o výrobě, prodeji i výplatách. Vidíte historii po zúčtovacích obdobích a okamžitě víte, na kolik přebytky vyšly.</p>
-        </div>
-      </div>
-
-      <!-- CTA -->
-      <div class="sdileni-cta-wrap">
-        <div class="sdileni-cta-text">
-          <div class="sdileni-cta-title">Chcete začít prodávat přebytky?</div>
-          <div class="sdileni-cta-desc">Smlouvu o výkupu vyřídíme s vámi. Začít lze kdykoli — stačí nás kontaktovat.</div>
-        </div>
-        <div class="sdileni-cta-btns">
-          <a href="podpora-kontakty.html" class="sdileni-btn-primary">Kontaktujte nás →</a>
-          <a href="https://www.energobanking.cz/" target="_blank" class="sdileni-btn-secondary">Energobanking</a>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
+    <a href="index.html" class="izo-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Zpět na hlavní stránku
+    </a>
+  </div>
 </main>
 
-<!-- FOOTER -->
 <footer class="site-footer">
   <div class="footer-main">
     <div class="footer-inner">
@@ -407,6 +587,7 @@
 </footer>
 
 <script>
+
 
   function toggleFaq(btn) {
     const item = btn.closest('.faq-item');
@@ -515,6 +696,7 @@
       localStorage.setItem('ffy-theme', isLight ? 'dark' : 'light');
     });
   }
+
 
 </script>
 
