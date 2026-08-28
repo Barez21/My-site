@@ -120,11 +120,34 @@
 /* ── Výběr odběrných míst po zadání emailu ── */
 .cenik-om-box { margin-top: 1.25rem; display: none; }
 .cenik-om-box.is-visible { display: block; }
+.cenik-om-header {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 1rem; margin-bottom: 0.85rem; flex-wrap: wrap;
+}
+.cenik-om-header-text { flex: 1; min-width: 0; }
 .cenik-om-title { font-size: 0.9rem; font-weight: 700; color: #fff; margin-bottom: 0.25rem; }
-.cenik-om-sub { font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-bottom: 0.85rem; }
+.cenik-om-sub { font-size: 0.8rem; color: rgba(255,255,255,0.5); }
 [data-theme="light"] .cenik-om-title { color: #0E1E2F; }
 [data-theme="light"] .cenik-om-sub { color: #6B89A8; }
+.cenik-om-search-wrap { position: relative; flex-shrink: 0; width: 240px; max-width: 100%; }
+.cenik-om-search-icon {
+  position: absolute; left: 0.7rem; top: 50%; transform: translateY(-50%);
+  width: 15px; height: 15px; color: rgba(255,255,255,0.4); pointer-events: none;
+}
+.cenik-om-search {
+  width: 100%; padding: 0.55rem 0.8rem 0.55rem 2.1rem; border-radius: 9px;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.14);
+  color: #fff; font-family: inherit; font-size: 0.85rem;
+}
+.cenik-om-search::placeholder { color: rgba(255,255,255,0.35); }
+.cenik-om-search:focus { outline: none; border-color: var(--accent, #44e6a3); }
+[data-theme="light"] .cenik-om-search { background: #fff; color: #0E1E2F; border-color: rgba(33,69,113,0.15); }
+[data-theme="light"] .cenik-om-search::placeholder { color: #9DB2C8; }
+[data-theme="light"] .cenik-om-search-icon { color: #9DB2C8; }
+@media (max-width: 560px) { .cenik-om-search-wrap { width: 100%; } }
 .cenik-om-list { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
+.cenik-om-empty { font-size: 0.85rem; color: rgba(255,255,255,0.45); padding: 0.75rem 0; margin-bottom: 1rem; }
+[data-theme="light"] .cenik-om-empty { color: #6B89A8; }
 .cenik-om-item {
   display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.75rem 1rem;
   background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
@@ -133,8 +156,8 @@
 .cenik-om-item:hover { border-color: rgba(68,230,163,0.3); }
 .cenik-om-item input { margin-top: 0.2rem; accent-color: var(--accent, #44e6a3); width: 16px; height: 16px; flex-shrink: 0; }
 .cenik-om-item-body { flex: 1; }
-.cenik-om-item-name { font-size: 0.9rem; font-weight: 600; color: #fff; }
-.cenik-om-item-detail { font-size: 0.78rem; color: rgba(255,255,255,0.5); margin-top: 0.15rem; }
+.cenik-om-item-name { font-size: 0.9rem; font-weight: 600; color: #fff; display: block; margin-bottom: 0.3rem; }
+.cenik-om-item-detail { font-size: 0.78rem; color: rgba(255,255,255,0.5); display: block; }
 [data-theme="light"] .cenik-om-item { background: #fff; border-color: rgba(33,69,113,0.1); }
 [data-theme="light"] .cenik-om-item-name { color: #0E1E2F; }
 [data-theme="light"] .cenik-om-item-detail { color: #6B89A8; }
@@ -393,11 +416,20 @@
 
         <!-- Výpis odběrných míst (napojí IT na CRM: email → seznam OM) -->
         <div class="cenik-om-box" id="cenik-om-box">
-          <div class="cenik-om-title">Vaše odběrná místa</div>
-          <div class="cenik-om-sub">Zaškrtněte odběrná místa, pro která chcete zobrazit ceníky.</div>
+          <div class="cenik-om-header">
+            <div class="cenik-om-header-text">
+              <div class="cenik-om-title">Vaše odběrná místa</div>
+              <div class="cenik-om-sub">Zaškrtněte odběrná místa, pro která chcete zobrazit ceníky.</div>
+            </div>
+            <div class="cenik-om-search-wrap">
+              <svg class="cenik-om-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="cenik-om-search" class="cenik-om-search" placeholder="Hledat adresu nebo EAN/EIC…" autocomplete="off">
+            </div>
+          </div>
           <div class="cenik-om-list" id="cenik-om-list">
             <!-- TODO IT: naplnit reálnými odběrnými místy z CRM podle e-mailu -->
           </div>
+          <div class="cenik-om-empty" id="cenik-om-empty" style="display:none">Žádné odběrné místo neodpovídá hledání.</div>
           <button type="button" class="cenik-om-submit" id="cenik-om-submit" disabled>Zobrazit ceníky pro vybraná OM</button>
         </div>
       </div>
@@ -1052,35 +1084,60 @@
       // TODO IT: nahradit mock voláním na CRM — POST /api/odberna-mista { email } → seznam OM
       setTimeout(() => {
         // MOCKUP dat — reálně přijde ze systému podle e-mailu
+        // Formát OM: komodita (Elektřina/Plyn), adresa, kód (EAN pro elektřinu / EIC pro plyn)
         const mockOM = [
-          { id: 'OM1', name: 'Odběrné místo — elektřina', detail: 'EAN 859182400100000001 · Praha 9, Českomoravská 2255/12a' },
-          { id: 'OM2', name: 'Odběrné místo — plyn', detail: 'EIC 27ZG600Z00000001 · Praha 9, Českomoravská 2255/12a' },
-          { id: 'OM3', name: 'Odběrné místo — elektřina', detail: 'EAN 859182400100000042 · Brno, Veveří 111' }
+          { id: 'OM1', komodita: 'Elektřina', adresa: 'Praha 9, Českomoravská 2255/12a', kod: 'EAN 859182400100000001' },
+          { id: 'OM2', komodita: 'Plyn',      adresa: 'Praha 9, Českomoravská 2255/12a', kod: 'EIC 27ZG600Z00000001' },
+          { id: 'OM3', komodita: 'Elektřina', adresa: 'Brno, Veveří 111',                 kod: 'EAN 859182400100000042' }
         ];
         lookupResult.className = 'cenik-lookup-result ok';
         lookupResult.innerHTML = '<strong>Ukázka:</strong> po napojení na náš systém se zde zobrazí odběrná místa přiřazená k zadanému e-mailu. (Čeká na propojení s CRM.)';
 
         // Vykresli seznam OM s checkboxy
-        if (omList) {
-          omList.innerHTML = mockOM.map(om => (
-            '<label class="cenik-om-item">' +
+        function renderOM(items) {
+          if (!omList) return;
+          omList.innerHTML = items.map(om => (
+            '<label class="cenik-om-item" data-search="' +
+              (om.komodita + ' ' + om.adresa + ' ' + om.kod).toLowerCase().replace(/"/g, '') + '">' +
             '<input type="checkbox" class="cenik-om-check" value="' + om.id + '">' +
             '<span class="cenik-om-item-body">' +
-            '<span class="cenik-om-item-name">' + om.name + '</span>' +
-            '<span class="cenik-om-item-detail">' + om.detail + '</span>' +
+            '<span class="cenik-om-item-name">OM - ' + om.komodita + '</span>' +
+            '<span class="cenik-om-item-detail">' + om.adresa + ' &nbsp;·&nbsp; ' + om.kod + '</span>' +
             '</span></label>'
           )).join('');
+          bindChecks();
         }
-        if (omBox) omBox.classList.add('is-visible');
 
-        // Aktivuj submit jen když je něco zaškrtnuté
-        const checks = omList.querySelectorAll('.cenik-om-check');
+        function bindChecks() {
+          const checks = omList.querySelectorAll('.cenik-om-check');
+          checks.forEach(c => c.addEventListener('change', updateSubmit));
+          updateSubmit();
+        }
         function updateSubmit() {
-          const any = Array.from(checks).some(c => c.checked);
+          const any = Array.from(omList.querySelectorAll('.cenik-om-check')).some(c => c.checked);
           omSubmit.disabled = !any;
         }
-        checks.forEach(c => c.addEventListener('change', updateSubmit));
-        updateSubmit();
+
+        renderOM(mockOM);
+        if (omBox) omBox.classList.add('is-visible');
+
+        // ── Realtime filtrování podle adresy / EAN / EIC ──
+        const omSearch = document.getElementById('cenik-om-search');
+        const omEmpty = document.getElementById('cenik-om-empty');
+        if (omSearch) {
+          omSearch.value = '';
+          omSearch.addEventListener('input', () => {
+            const q = omSearch.value.trim().toLowerCase();
+            let visible = 0;
+            omList.querySelectorAll('.cenik-om-item').forEach(item => {
+              const hay = item.getAttribute('data-search') || '';
+              const show = !q || hay.indexOf(q) !== -1;
+              item.style.display = show ? '' : 'none';
+              if (show) visible++;
+            });
+            if (omEmpty) omEmpty.style.display = visible === 0 ? 'block' : 'none';
+          });
+        }
       }, 700);
     });
     lookupEmail.addEventListener('keydown', e => { if (e.key === 'Enter') lookupBtn.click(); });
