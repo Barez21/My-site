@@ -16,6 +16,95 @@
   .nav-hamburger { display: flex !important; }
   .nav-tabs      { display: none !important; }
 }
+
+/* ── CTA sekce ── */
+.oze-cta-section { padding: 1rem 2rem 5rem; }
+.oze-cta-inner { max-width: 960px; margin: 0 auto; text-align: center; }
+.oze-cta-heading { font-size: 2rem; font-weight: 800; color: #fff; margin: 0 0 0.6rem; letter-spacing: -0.01em; }
+.oze-cta-sub { font-size: 1.05rem; color: rgba(255,255,255,0.6); margin: 0 auto 2.5rem; max-width: 620px; line-height: 1.6; }
+[data-theme="light"] .oze-cta-heading { color: #0E1E2F; }
+[data-theme="light"] .oze-cta-sub { color: #4A6B8A; }
+.oze-cta-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; text-align: left; }
+@media (max-width: 720px) { .oze-cta-cards { grid-template-columns: 1fr; } }
+.oze-cta-card {
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px; padding: 2rem; display: flex; flex-direction: column; gap: 0.8rem;
+}
+[data-theme="light"] .oze-cta-card { background: #fff; border-color: rgba(33,69,113,0.1); }
+.oze-cta-card-icon {
+  width: 52px; height: 52px; border-radius: 14px;
+  background: rgba(68,230,163,0.12); display: flex; align-items: center; justify-content: center;
+  color: var(--accent, #44e6a3); margin-bottom: 0.3rem;
+}
+.oze-cta-card-icon svg { width: 26px; height: 26px; }
+.oze-cta-card-title { font-size: 1.3rem; font-weight: 700; color: #fff; }
+[data-theme="light"] .oze-cta-card-title { color: #0E1E2F; }
+.oze-cta-card-text { font-size: 0.95rem; color: rgba(255,255,255,0.6); line-height: 1.6; flex: 1; }
+[data-theme="light"] .oze-cta-card-text { color: #4A6B8A; }
+.oze-cta-btn {
+  margin-top: 0.5rem; padding: 0.85rem 1.4rem; border-radius: 12px; border: none;
+  background: var(--accent, #44e6a3); color: #0a0f18;
+  font-family: inherit; font-size: 0.98rem; font-weight: 700; cursor: pointer;
+  transition: all 0.15s; text-align: center;
+}
+.oze-cta-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.oze-cta-btn-alt { background: transparent; border: 1.5px solid var(--accent, #44e6a3); color: var(--accent, #44e6a3); }
+.oze-cta-btn-alt:hover { background: rgba(68,230,163,0.1); }
+[data-theme="light"] .oze-cta-btn-alt { color: var(--green-dark, #1a8f5f); border-color: var(--green-dark, #1a8f5f); }
+
+/* ── Modal ── */
+.oze-modal { position: fixed; inset: 0; z-index: 2000; display: none; align-items: center; justify-content: center; padding: 1.5rem; }
+.oze-modal.is-open { display: flex; }
+.oze-modal-backdrop { position: absolute; inset: 0; background: rgba(5,10,18,0.8); backdrop-filter: blur(4px); }
+.oze-modal-box {
+  position: relative; z-index: 1; width: 100%; max-width: 540px;
+  max-height: 90vh; overflow-y: auto;
+  background: #0d1420; border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 18px; padding: 2.25rem; box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+}
+[data-theme="light"] .oze-modal-box { background: #fff; border-color: rgba(33,69,113,0.12); }
+.oze-modal-close {
+  position: absolute; top: 1rem; right: 1rem; width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(255,255,255,0.06); border: none; color: rgba(255,255,255,0.6);
+  font-size: 1rem; cursor: pointer; transition: all 0.15s;
+}
+.oze-modal-close:hover { background: rgba(255,255,255,0.12); color: #fff; }
+[data-theme="light"] .oze-modal-close { background: rgba(33,69,113,0.06); color: #6B89A8; }
+.oze-modal-title { font-size: 1.5rem; font-weight: 800; color: #fff; margin-bottom: 0.8rem; }
+[data-theme="light"] .oze-modal-title { color: #0E1E2F; }
+.oze-modal-intro { font-size: 0.9rem; color: rgba(255,255,255,0.55); line-height: 1.6; margin-bottom: 1.5rem; }
+[data-theme="light"] .oze-modal-intro { color: #6B89A8; }
+.oze-field { margin-bottom: 1rem; display: flex; flex-direction: column; gap: 0.4rem; flex: 1; }
+.oze-field-row { display: flex; gap: 1rem; }
+@media (max-width: 480px) { .oze-field-row { flex-direction: column; gap: 0; } }
+.oze-field label { font-size: 0.82rem; font-weight: 600; color: rgba(255,255,255,0.7); }
+[data-theme="light"] .oze-field label { color: #3A5A7A; }
+.oze-field input, .oze-field select {
+  padding: 0.7rem 0.9rem; border-radius: 10px;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.14);
+  color: #fff; font-family: inherit; font-size: 0.95rem; width: 100%;
+}
+.oze-field input:focus, .oze-field select:focus { outline: none; border-color: var(--accent, #44e6a3); }
+.oze-field input::placeholder { color: rgba(255,255,255,0.3); }
+[data-theme="light"] .oze-field input, [data-theme="light"] .oze-field select { background: #F4F8FC; border-color: rgba(33,69,113,0.15); color: #0E1E2F; }
+[data-theme="light"] .oze-field input::placeholder { color: #9DB2C8; }
+.oze-form-submit {
+  width: 100%; margin-top: 0.75rem; padding: 0.9rem; border-radius: 12px; border: none;
+  background: var(--accent, #44e6a3); color: #0a0f18;
+  font-family: inherit; font-size: 1rem; font-weight: 700; cursor: pointer; transition: filter 0.15s;
+}
+.oze-form-submit:hover { filter: brightness(1.08); }
+.oze-modal-success { text-align: center; padding: 1rem 0; }
+.oze-success-icon {
+  width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 1.25rem;
+  background: rgba(68,230,163,0.15); display: flex; align-items: center; justify-content: center;
+  color: var(--accent, #44e6a3);
+}
+.oze-success-icon svg { width: 32px; height: 32px; }
+.oze-success-title { font-size: 1.4rem; font-weight: 800; color: #fff; margin-bottom: 0.6rem; }
+[data-theme="light"] .oze-success-title { color: #0E1E2F; }
+.oze-success-text { font-size: 0.95rem; color: rgba(255,255,255,0.6); line-height: 1.6; margin-bottom: 1.5rem; }
+[data-theme="light"] .oze-success-text { color: #4A6B8A; }
 </style>
 <meta name="description" content="FREE for YOU reinvestuje 50 % zisku do vlastních solárních elektráren na střechách. Jak to funguje a proč to děláme.">
 <meta name="robots" content="index, follow">
@@ -135,10 +224,6 @@
           <span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
           <span class="mega-link-body"><strong>Náš příběh</strong><span>Kdo jsme a proč to děláme</span></span>
         </a>
-        <a href="proc-reference.html" class="mega-link">
-          <span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
-          <span class="mega-link-body"><strong>Reference</strong><span>Co říkají naši zákazníci</span></span>
-        </a>
       </div>
 
       <!-- Col 2: Naše služby -->
@@ -216,7 +301,6 @@
       <a href="proc-slevy-za-doporuceni.html" class="mobile-link">Slevy za doporučení</a>
       <a href="proc-investice-oze.html" class="mobile-link">Investice do zdrojů energie</a>
       <a href="proc-nas-pribeh.html" class="mobile-link">Náš příběh</a>
-      <a href="proc-reference.html" class="mobile-link">Reference</a>
     </div>
 
     <div class="mobile-section">
@@ -327,6 +411,131 @@
     </div>
   </section>
 
+  <!-- CTA SEKCE: zapojení do projektu -->
+  <section class="oze-cta-section">
+    <div class="oze-cta-inner">
+      <h2 class="oze-cta-heading">Chcete být u toho?</h2>
+      <p class="oze-cta-sub">Máte vhodný pozemek nebo střechu? Nebo vlastníte elektrárnu, kterou zvažujete prodat? Ozvěte se nám.</p>
+      <div class="oze-cta-cards">
+
+        <div class="oze-cta-card">
+          <div class="oze-cta-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-3"/><path d="M9 9v0M9 12v0M9 15v0"/></svg>
+          </div>
+          <div class="oze-cta-card-title">Mám prostor pro elektrárnu</div>
+          <div class="oze-cta-card-text">Nabídněte nám pozemek nebo střechu. Posoudíme vhodnost lokality a ozveme se vám s dalším postupem.</div>
+          <button type="button" class="oze-cta-btn" id="oze-cta-prostor">Mám zájem poskytnout prostor →</button>
+        </div>
+
+        <div class="oze-cta-card">
+          <div class="oze-cta-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <div class="oze-cta-card-title">Vlastním elektrárnu</div>
+          <div class="oze-cta-card-text">Zvažujete prodej své elektrárny? Dejte nám vědět základní údaje a my se vám ozveme.</div>
+          <button type="button" class="oze-cta-btn oze-cta-btn-alt" id="oze-cta-prodej">Prodám svou elektrárnu →</button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- MODAL: Mám zájem poskytnout prostor -->
+  <div class="oze-modal" id="modal-prostor" aria-hidden="true">
+    <div class="oze-modal-backdrop" data-close-modal></div>
+    <div class="oze-modal-box" role="dialog" aria-modal="true" aria-label="Mám zájem poskytnout prostor">
+      <button type="button" class="oze-modal-close" data-close-modal aria-label="Zavřít">✕</button>
+      <div class="oze-modal-body" id="prostor-form-wrap">
+        <div class="oze-modal-title">Mám zájem poskytnout prostor</div>
+        <p class="oze-modal-intro">Odesláním nám pouze sdělujete svůj zájem — nijak vás to nezavazuje. Údaje slouží k posouzení vhodnosti lokality. Pokud vyhodnotíme, že je na daném místě realizace možná, ozveme se vám s dalším postupem.</p>
+        <!-- TODO IT: napojit odeslání na backend (POST /api/zajem-prostor) -->
+        <div class="oze-field">
+          <label for="prostor-jmeno">Jméno a příjmení</label>
+          <input type="text" id="prostor-jmeno" autocomplete="name" required>
+        </div>
+        <div class="oze-field-row">
+          <div class="oze-field">
+            <label for="prostor-email">E-mail</label>
+            <input type="email" id="prostor-email" autocomplete="email" required>
+          </div>
+          <div class="oze-field">
+            <label for="prostor-telefon">Telefon</label>
+            <input type="tel" id="prostor-telefon" autocomplete="tel" required>
+          </div>
+        </div>
+        <div class="oze-field">
+          <label for="prostor-adresa">Adresa místa potenciální realizace</label>
+          <input type="text" id="prostor-adresa" placeholder="Ulice, obec, PSČ" required>
+        </div>
+        <button type="button" class="oze-form-submit" onclick="submitOzeForm('prostor')">Odeslat zájem</button>
+      </div>
+      <div class="oze-modal-success" id="prostor-success" style="display:none">
+        <div class="oze-success-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        </div>
+        <div class="oze-success-title">Děkujeme za zájem!</div>
+        <div class="oze-success-text">Vaše informace jsme přijali. Posoudíme vhodnost lokality a pokud vyhodnotíme, že je realizace možná, ozveme se vám s dalším postupem.</div>
+        <button type="button" class="oze-form-submit" data-close-modal>Zavřít</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Prodám svou elektrárnu -->
+  <div class="oze-modal" id="modal-prodej" aria-hidden="true">
+    <div class="oze-modal-backdrop" data-close-modal></div>
+    <div class="oze-modal-box" role="dialog" aria-modal="true" aria-label="Prodám svou elektrárnu">
+      <button type="button" class="oze-modal-close" data-close-modal aria-label="Zavřít">✕</button>
+      <div class="oze-modal-body" id="prodej-form-wrap">
+        <div class="oze-modal-title">Prodám svou elektrárnu</div>
+        <p class="oze-modal-intro">Odesláním nám pouze sdělujete svůj zájem — nijak vás to nezavazuje. Na základě údajů posoudíme vhodnost a ozveme se vám.</p>
+        <!-- TODO IT: napojit odeslání na backend (POST /api/prodej-elektrarny) -->
+        <div class="oze-field">
+          <label for="prodej-jmeno">Jméno a příjmení</label>
+          <input type="text" id="prodej-jmeno" autocomplete="name" required>
+        </div>
+        <div class="oze-field-row">
+          <div class="oze-field">
+            <label for="prodej-email">E-mail</label>
+            <input type="email" id="prodej-email" autocomplete="email" required>
+          </div>
+          <div class="oze-field">
+            <label for="prodej-telefon">Telefon</label>
+            <input type="tel" id="prodej-telefon" autocomplete="tel" required>
+          </div>
+        </div>
+        <div class="oze-field">
+          <label for="prodej-typ">Typ elektrárny</label>
+          <select id="prodej-typ" required>
+            <option value="">Vyberte…</option>
+            <option value="solarni">Solární</option>
+            <option value="vetrna">Větrná</option>
+            <option value="vodni">Vodní</option>
+            <option value="jina">Jiná</option>
+          </select>
+        </div>
+        <div class="oze-field-row">
+          <div class="oze-field">
+            <label for="prodej-vykon">Instalovaný výkon</label>
+            <input type="text" id="prodej-vykon" placeholder="např. 250 kWp" required>
+          </div>
+          <div class="oze-field">
+            <label for="prodej-adresa">Adresa elektrárny</label>
+            <input type="text" id="prodej-adresa" placeholder="Ulice, obec, PSČ" required>
+          </div>
+        </div>
+        <button type="button" class="oze-form-submit" onclick="submitOzeForm('prodej')">Odeslat zájem</button>
+      </div>
+      <div class="oze-modal-success" id="prodej-success" style="display:none">
+        <div class="oze-success-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        </div>
+        <div class="oze-success-title">Děkujeme za zájem!</div>
+        <div class="oze-success-text">Vaše informace jsme přijali. Ozveme se vám s dalším postupem.</div>
+        <button type="button" class="oze-form-submit" data-close-modal>Zavřít</button>
+      </div>
+    </div>
+  </div>
+
 </main>
 
 <!-- FOOTER -->
@@ -370,7 +579,6 @@
           <ul class="footer-links">
             <li><a href="proc-nas-pribeh.html">Naše vize</a></li>
             <li><a href="proc-nas-pribeh.html">Náš tým</a></li>
-            <li><a href="proc-reference.html">Reference zákazníků</a></li>
             <li><a href="pro-media.html">Pro média</a></li>
             <li><a href="docs/op/vseobecne-obchodni-podminky.pdf" target="_blank">Obchodní podmínky</a></li>
           </ul>
@@ -527,6 +735,51 @@
       localStorage.setItem('ffy-theme', isLight ? 'dark' : 'light');
     });
   }
+
+  // ── OZE formulářové modaly ──
+  function openOzeModal(id) {
+    const m = document.getElementById(id);
+    if (!m) return;
+    m.classList.add('is-open');
+    m.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeOzeModal(m) {
+    m.classList.remove('is-open');
+    m.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+  const btnProstor = document.getElementById('oze-cta-prostor');
+  const btnProdej = document.getElementById('oze-cta-prodej');
+  if (btnProstor) btnProstor.addEventListener('click', () => openOzeModal('modal-prostor'));
+  if (btnProdej) btnProdej.addEventListener('click', () => openOzeModal('modal-prodej'));
+
+  document.querySelectorAll('.oze-modal').forEach(modal => {
+    modal.querySelectorAll('[data-close-modal]').forEach(el =>
+      el.addEventListener('click', () => closeOzeModal(modal)));
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.oze-modal.is-open').forEach(closeOzeModal);
+    }
+  });
+
+  // Odeslání formuláře (mockup — TODO IT napojit na backend)
+  window.submitOzeForm = function(type) {
+    const wrap = document.getElementById(type + '-form-wrap');
+    const success = document.getElementById(type + '-success');
+    // Jednoduchá validace povinných polí
+    const inputs = wrap.querySelectorAll('input[required], select[required]');
+    let valid = true;
+    inputs.forEach(inp => {
+      if (!inp.value.trim()) { inp.style.borderColor = '#e5484d'; valid = false; }
+      else { inp.style.borderColor = ''; }
+    });
+    if (!valid) return;
+    // TODO IT: zde odeslat data na backend
+    if (wrap) wrap.style.display = 'none';
+    if (success) success.style.display = 'block';
+  };
 
 </script>
 

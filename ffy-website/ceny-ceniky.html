@@ -84,6 +84,67 @@
 .ceniky-special-note { font-size: 0.82rem; color: rgba(255,255,255,0.4); margin-top: 0.25rem; }
 [data-theme="light"] .ceniky-special { border-top-color: rgba(33,69,113,0.12); }
 [data-theme="light"] .ceniky-special-note { color: #6B89A8; }
+
+/* ── Ceníková tlačítka: Zobrazit (výrazné) + Stáhnout ── */
+.cenik-card-actions { display: flex; align-items: center; gap: 0.5rem; }
+.cenik-card-btn {
+  font-size: 0.72rem !important; font-weight: 700; letter-spacing: 0.04em;
+  text-transform: uppercase; text-decoration: none;
+  padding: 0.4rem 0.85rem; border-radius: 8px; transition: all 0.15s; opacity: 1 !important;
+  white-space: nowrap;
+}
+.cenik-card-btn-view { background: var(--accent, #44e6a3); color: #0a0f18 !important; }
+.cenik-card-btn-view:hover { filter: brightness(1.1); }
+.cenik-card-btn-dl {
+  background: transparent; color: rgba(255,255,255,0.55) !important;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.cenik-card-btn-dl:hover { color: rgba(255,255,255,0.9) !important; border-color: rgba(255,255,255,0.35); }
+[data-theme="light"] .cenik-card-btn-view { color: #0a0f18 !important; }
+[data-theme="light"] .cenik-card-btn-dl { color: #3A6298 !important; border-color: rgba(33,69,113,0.18); }
+[data-theme="light"] .cenik-card-btn-dl:hover { color: var(--primary) !important; border-color: rgba(33,69,113,0.35); }
+.cenik-card-footer { flex-wrap: wrap; gap: 0.6rem; }
+
+/* ── Fix/Spot skupiny v ceníkovém panelu ── */
+.cenik-typ-group { margin-bottom: 2rem; }
+.cenik-typ-group:last-child { margin-bottom: 0; }
+.cenik-typ-title {
+  font-size: 1.15rem; font-weight: 700; color: #fff;
+  margin-bottom: 1rem; padding-bottom: 0.6rem;
+  border-bottom: 1px solid rgba(68,230,163,0.2);
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.cenik-typ-title::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent, #44e6a3); }
+[data-theme="light"] .cenik-typ-title { color: #0E1E2F; border-bottom-color: rgba(68,230,163,0.3); }
+
+/* ── Výběr odběrných míst po zadání emailu ── */
+.cenik-om-box { margin-top: 1.25rem; display: none; }
+.cenik-om-box.is-visible { display: block; }
+.cenik-om-title { font-size: 0.9rem; font-weight: 700; color: #fff; margin-bottom: 0.25rem; }
+.cenik-om-sub { font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-bottom: 0.85rem; }
+[data-theme="light"] .cenik-om-title { color: #0E1E2F; }
+[data-theme="light"] .cenik-om-sub { color: #6B89A8; }
+.cenik-om-list { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
+.cenik-om-item {
+  display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.75rem 1rem;
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px; cursor: pointer; transition: all 0.15s;
+}
+.cenik-om-item:hover { border-color: rgba(68,230,163,0.3); }
+.cenik-om-item input { margin-top: 0.2rem; accent-color: var(--accent, #44e6a3); width: 16px; height: 16px; flex-shrink: 0; }
+.cenik-om-item-body { flex: 1; }
+.cenik-om-item-name { font-size: 0.9rem; font-weight: 600; color: #fff; }
+.cenik-om-item-detail { font-size: 0.78rem; color: rgba(255,255,255,0.5); margin-top: 0.15rem; }
+[data-theme="light"] .cenik-om-item { background: #fff; border-color: rgba(33,69,113,0.1); }
+[data-theme="light"] .cenik-om-item-name { color: #0E1E2F; }
+[data-theme="light"] .cenik-om-item-detail { color: #6B89A8; }
+.cenik-om-submit {
+  padding: 0.7rem 1.4rem; border-radius: 10px; border: none;
+  background: var(--accent, #44e6a3); color: #0a0f18;
+  font-family: inherit; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: filter 0.15s;
+}
+.cenik-om-submit:hover { filter: brightness(1.08); }
+.cenik-om-submit:disabled { opacity: 0.4; cursor: not-allowed; }
 </style>
 <meta name="description" content="Kompletní ceníky elektřiny FREE for YOU ke stažení v PDF. Ceny distribuce, silové elektřiny a poplatků pro všechna distribuční území.">
 <meta name="robots" content="index, follow">
@@ -203,10 +264,6 @@
           <span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
           <span class="mega-link-body"><strong>Náš příběh</strong><span>Kdo jsme a proč to děláme</span></span>
         </a>
-        <a href="proc-reference.html" class="mega-link">
-          <span class="mega-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
-          <span class="mega-link-body"><strong>Reference</strong><span>Co říkají naši zákazníci</span></span>
-        </a>
       </div>
 
       <!-- Col 2: Naše služby -->
@@ -284,7 +341,6 @@
       <a href="proc-slevy-za-doporuceni.html" class="mobile-link">Slevy za doporučení</a>
       <a href="proc-investice-oze.html" class="mobile-link">Investice do zdrojů energie</a>
       <a href="proc-nas-pribeh.html" class="mobile-link">Náš příběh</a>
-      <a href="proc-reference.html" class="mobile-link">Reference</a>
     </div>
 
     <div class="mobile-section">
@@ -331,9 +387,19 @@
         <div class="cenik-lookup-title">Máte u nás smlouvu? Najděte svůj ceník.</div>
         <div class="cenik-lookup-row">
           <input type="email" id="cenik-email" class="cenik-lookup-input" placeholder="(zadejte e-mail)" autocomplete="email">
-          <button class="cenik-lookup-btn" id="cenik-lookup-btn">Najít můj ceník →</button>
+          <button class="cenik-lookup-btn" id="cenik-lookup-btn">Najít má odběrná místa →</button>
         </div>
         <div class="cenik-lookup-result" id="cenik-lookup-result"></div>
+
+        <!-- Výpis odběrných míst (napojí IT na CRM: email → seznam OM) -->
+        <div class="cenik-om-box" id="cenik-om-box">
+          <div class="cenik-om-title">Vaše odběrná místa</div>
+          <div class="cenik-om-sub">Zaškrtněte odběrná místa, pro která chcete zobrazit ceníky.</div>
+          <div class="cenik-om-list" id="cenik-om-list">
+            <!-- TODO IT: naplnit reálnými odběrnými místy z CRM podle e-mailu -->
+          </div>
+          <button type="button" class="cenik-om-submit" id="cenik-om-submit" disabled>Zobrazit ceníky pro vybraná OM</button>
+        </div>
       </div>
 
       <div class="ceniky-selectors">
@@ -364,50 +430,52 @@
           <button class="archive-toggle" data-target="archive-cez">Archivní ceníky</button>
         </div>
 
-        <div class="ceniky-grid">
-          <a href="#" class="cenik-card">
+        <div class="cenik-typ-group">
+<div class="cenik-typ-title">Fixní tarify</div>
+<div class="ceniky-grid">
+<div class="cenik-card">
             <div class="cenik-card-body">
               <div class="cenik-card-meta meta-elektrina">Elektřina · platný od 1. 1. 2026</div>
               <div class="cenik-card-name">Ceník elektřiny FIX2026 — ČEZ</div><div class="cenik-card-desc">Jedná se o fixní produkt.</div>
             </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 284 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
-          <a href="#" class="cenik-card">
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 284 kB</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
+<div class="cenik-card">
             <div class="cenik-card-body">
               <div class="cenik-card-meta meta-plyn">Plyn · platný od 1. 1. 2026</div>
               <div class="cenik-card-name">Ceník plynu FIX2026 — ČEZ</div><div class="cenik-card-desc">Jedná se o fixní produkt.</div>
             </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 196 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
-          <a href="#" class="cenik-card">
-            <div class="cenik-card-body">
-              <div class="cenik-card-meta meta-elektrina">Elektřina · platný od 1. 1. 2026</div>
-              <div class="cenik-card-name">Ceník elektřiny SPOT — ČEZ</div><div class="cenik-card-desc">Jedná se o produkt se spotovou cenou.</div>
-            </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 211 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
-          <a href="#" class="cenik-card">
-            <div class="cenik-card-body">
-              <div class="cenik-card-meta meta-plyn">Plyn · platný od 1. 1. 2026</div>
-              <div class="cenik-card-name">Ceník plynu SPOT — ČEZ</div><div class="cenik-card-desc">Jedná se o produkt se spotovou cenou.</div>
-            </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 178 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
-          <a href="#" class="cenik-card">
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 196 kB</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
+<div class="cenik-card">
             <div class="cenik-card-body">
               <div class="cenik-card-meta meta-elektrina">Elektřina · platný od 1. 7. 2025</div>
               <div class="cenik-card-name">Ceník elektřiny FIX2025 H2 — ČEZ</div><div class="cenik-card-desc">Jedná se o fixní produkt.</div>
             </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 268 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
-          <a href="#" class="cenik-card">
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 268 kB</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
+<div class="cenik-card">
             <div class="cenik-card-body">
               <div class="cenik-card-meta meta-plyn">Plyn · platný od 1. 7. 2025</div>
               <div class="cenik-card-name">Ceník plynu FIX2025 H2 — ČEZ</div><div class="cenik-card-desc">Jedná se o fixní produkt.</div>
             </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 189 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
-        </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 189 kB</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
+</div>
+</div>
+<div class="cenik-typ-group">
+<div class="cenik-typ-title">Spotové tarify</div>
+<div class="ceniky-grid">
+<div class="cenik-card">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-elektrina">Elektřina · platný od 1. 1. 2026</div>
+              <div class="cenik-card-name">Ceník elektřiny SPOT — ČEZ</div><div class="cenik-card-desc">Jedná se o produkt se spotovou cenou.</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 211 kB</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
+<div class="cenik-card">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-plyn">Plyn · platný od 1. 1. 2026</div>
+              <div class="cenik-card-name">Ceník plynu SPOT — ČEZ</div><div class="cenik-card-desc">Jedná se o produkt se spotovou cenou.</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 178 kB</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
+</div>
+</div>
 
         <div class="ceniky-archive" id="archive-cez">
           <div class="ceniky-archive-header">
@@ -424,34 +492,30 @@
             </select>
           </div>
           <div class="ceniky-grid ceniky-grid-archive">
-            <a href="#" class="cenik-card cenik-card-archive" data-year="2025">
+            <div class="cenik-card cenik-card-archive" data-year="2025">
             <div class="cenik-card-body">
               <div class="cenik-card-meta meta-elektrina">Elektřina · 2025</div>
               <div class="cenik-card-name">Ceník elektřiny FIX2025 — ČEZ</div><div class="cenik-card-desc">Jedná se o fixní produkt.</div>
             </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 254 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
-            <a href="#" class="cenik-card cenik-card-archive" data-year="2025">
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 254 kB</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
+            <div class="cenik-card cenik-card-archive" data-year="2025">
             <div class="cenik-card-body">
               <div class="cenik-card-meta meta-plyn">Plyn · 2025</div>
               <div class="cenik-card-name">Ceník plynu FIX2025 — ČEZ</div><div class="cenik-card-desc">Jedná se o fixní produkt.</div>
             </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 181 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
-            <a href="#" class="cenik-card cenik-card-archive" data-year="2024">
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 181 kB</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
+            <div class="cenik-card cenik-card-archive" data-year="2024">
             <div class="cenik-card-body">
               <div class="cenik-card-meta meta-elektrina">Elektřina · 2024</div>
               <div class="cenik-card-name">Ceník elektřiny FIX2024 — ČEZ</div><div class="cenik-card-desc">Jedná se o fixní produkt.</div>
             </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 241 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
-            <a href="#" class="cenik-card cenik-card-archive" data-year="2024">
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 241 kB</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
+            <div class="cenik-card cenik-card-archive" data-year="2024">
             <div class="cenik-card-body">
               <div class="cenik-card-meta meta-plyn">Plyn · 2024</div>
               <div class="cenik-card-name">Ceník plynu FIX2024 — ČEZ</div><div class="cenik-card-desc">Jedná se o fixní produkt.</div>
             </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 172 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 172 kB</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
           </div>
         </div>
       </div>
@@ -463,50 +527,52 @@
           <button class="archive-toggle" data-target="archive-egd">Archivní ceníky</button>
         </div>
 
-        <div class="ceniky-grid">
-          <a href="#" class="cenik-card">
+        <div class="cenik-typ-group">
+<div class="cenik-typ-title">Fixní tarify</div>
+<div class="ceniky-grid">
+<div class="cenik-card">
             <div class="cenik-card-body">
               <div class="cenik-card-meta meta-elektrina">Elektřina · platný od 1. 1. 2026</div>
               <div class="cenik-card-name">Ceník elektřiny FIX2026 — EG.D</div><div class="cenik-card-desc">Jedná se o fixní produkt.</div>
             </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 276 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
-          <a href="#" class="cenik-card">
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 276 kB</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
+<div class="cenik-card">
             <div class="cenik-card-body">
               <div class="cenik-card-meta meta-plyn">Plyn · platný od 1. 1. 2026</div>
               <div class="cenik-card-name">Ceník plynu FIX2026 — EG.D</div><div class="cenik-card-desc">Jedná se o fixní produkt.</div>
             </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 192 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
-          <a href="#" class="cenik-card">
-            <div class="cenik-card-body">
-              <div class="cenik-card-meta meta-elektrina">Elektřina · platný od 1. 1. 2026</div>
-              <div class="cenik-card-name">Ceník elektřiny SPOT — EG.D</div><div class="cenik-card-desc">Jedná se o produkt se spotovou cenou.</div>
-            </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 208 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
-          <a href="#" class="cenik-card">
-            <div class="cenik-card-body">
-              <div class="cenik-card-meta meta-plyn">Plyn · platný od 1. 1. 2026</div>
-              <div class="cenik-card-name">Ceník plynu SPOT — EG.D</div><div class="cenik-card-desc">Jedná se o produkt se spotovou cenou.</div>
-            </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 175 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
-          <a href="#" class="cenik-card">
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 192 kB</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
+<div class="cenik-card">
             <div class="cenik-card-body">
               <div class="cenik-card-meta meta-elektrina">Elektřina · platný od 1. 7. 2025</div>
               <div class="cenik-card-name">Ceník elektřiny FIX2025 H2 — EG.D</div><div class="cenik-card-desc">Jedná se o fixní produkt.</div>
             </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 261 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
-          <a href="#" class="cenik-card">
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 261 kB</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
+<div class="cenik-card">
             <div class="cenik-card-body">
               <div class="cenik-card-meta meta-plyn">Plyn · platný od 1. 7. 2025</div>
               <div class="cenik-card-name">Ceník plynu FIX2025 H2 — EG.D</div><div class="cenik-card-desc">Jedná se o fixní produkt.</div>
             </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 184 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
-        </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 184 kB</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
+</div>
+</div>
+<div class="cenik-typ-group">
+<div class="cenik-typ-title">Spotové tarify</div>
+<div class="ceniky-grid">
+<div class="cenik-card">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-elektrina">Elektřina · platný od 1. 1. 2026</div>
+              <div class="cenik-card-name">Ceník elektřiny SPOT — EG.D</div><div class="cenik-card-desc">Jedná se o produkt se spotovou cenou.</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 208 kB</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
+<div class="cenik-card">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-plyn">Plyn · platný od 1. 1. 2026</div>
+              <div class="cenik-card-name">Ceník plynu SPOT — EG.D</div><div class="cenik-card-desc">Jedná se o produkt se spotovou cenou.</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 175 kB</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
+</div>
+</div>
 
         <div class="ceniky-archive" id="archive-egd">
           <div class="ceniky-archive-header">
@@ -523,34 +589,30 @@
             </select>
           </div>
           <div class="ceniky-grid ceniky-grid-archive">
-            <a href="#" class="cenik-card cenik-card-archive" data-year="2025">
+            <div class="cenik-card cenik-card-archive" data-year="2025">
             <div class="cenik-card-body">
               <div class="cenik-card-meta meta-elektrina">Elektřina · 2025</div>
               <div class="cenik-card-name">Ceník elektřiny FIX2025 — EG.D</div><div class="cenik-card-desc">Jedná se o fixní produkt.</div>
             </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 248 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
-            <a href="#" class="cenik-card cenik-card-archive" data-year="2025">
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 248 kB</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
+            <div class="cenik-card cenik-card-archive" data-year="2025">
             <div class="cenik-card-body">
               <div class="cenik-card-meta meta-plyn">Plyn · 2025</div>
               <div class="cenik-card-name">Ceník plynu FIX2025 — EG.D</div><div class="cenik-card-desc">Jedná se o fixní produkt.</div>
             </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 178 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
-            <a href="#" class="cenik-card cenik-card-archive" data-year="2024">
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 178 kB</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
+            <div class="cenik-card cenik-card-archive" data-year="2024">
             <div class="cenik-card-body">
               <div class="cenik-card-meta meta-elektrina">Elektřina · 2024</div>
               <div class="cenik-card-name">Ceník elektřiny FIX2024 — EG.D</div><div class="cenik-card-desc">Jedná se o fixní produkt.</div>
             </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 237 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
-            <a href="#" class="cenik-card cenik-card-archive" data-year="2024">
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 237 kB</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
+            <div class="cenik-card cenik-card-archive" data-year="2024">
             <div class="cenik-card-body">
               <div class="cenik-card-meta meta-plyn">Plyn · 2024</div>
               <div class="cenik-card-name">Ceník plynu FIX2024 — EG.D</div><div class="cenik-card-desc">Jedná se o fixní produkt.</div>
             </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 169 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 169 kB</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
           </div>
         </div>
       </div>
@@ -562,50 +624,52 @@
           <button class="archive-toggle" data-target="archive-pre">Archivní ceníky</button>
         </div>
 
-        <div class="ceniky-grid">
-          <a href="#" class="cenik-card">
+        <div class="cenik-typ-group">
+<div class="cenik-typ-title">Fixní tarify</div>
+<div class="ceniky-grid">
+<div class="cenik-card">
             <div class="cenik-card-body">
               <div class="cenik-card-meta meta-elektrina">Elektřina · platný od 1. 1. 2026</div>
               <div class="cenik-card-name">Ceník elektřiny FIX2026 — PRE</div><div class="cenik-card-desc">Jedná se o fixní produkt.</div>
             </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 271 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
-          <a href="#" class="cenik-card">
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 271 kB</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
+<div class="cenik-card">
             <div class="cenik-card-body">
               <div class="cenik-card-meta meta-plyn">Plyn · platný od 1. 1. 2026</div>
               <div class="cenik-card-name">Ceník plynu FIX2026 — PRE</div><div class="cenik-card-desc">Jedná se o fixní produkt.</div>
             </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 188 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
-          <a href="#" class="cenik-card">
-            <div class="cenik-card-body">
-              <div class="cenik-card-meta meta-elektrina">Elektřina · platný od 1. 1. 2026</div>
-              <div class="cenik-card-name">Ceník elektřiny SPOT — PRE</div><div class="cenik-card-desc">Jedná se o produkt se spotovou cenou.</div>
-            </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 203 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
-          <a href="#" class="cenik-card">
-            <div class="cenik-card-body">
-              <div class="cenik-card-meta meta-plyn">Plyn · platný od 1. 1. 2026</div>
-              <div class="cenik-card-name">Ceník plynu SPOT — PRE</div><div class="cenik-card-desc">Jedná se o produkt se spotovou cenou.</div>
-            </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 172 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
-          <a href="#" class="cenik-card">
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 188 kB</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
+<div class="cenik-card">
             <div class="cenik-card-body">
               <div class="cenik-card-meta meta-elektrina">Elektřina · platný od 1. 7. 2025</div>
               <div class="cenik-card-name">Ceník elektřiny FIX2025 H2 — PRE</div><div class="cenik-card-desc">Jedná se o fixní produkt.</div>
             </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 259 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
-          <a href="#" class="cenik-card">
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 259 kB</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
+<div class="cenik-card">
             <div class="cenik-card-body">
               <div class="cenik-card-meta meta-plyn">Plyn · platný od 1. 7. 2025</div>
               <div class="cenik-card-name">Ceník plynu FIX2025 H2 — PRE</div><div class="cenik-card-desc">Jedná se o fixní produkt.</div>
             </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 181 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
-        </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 181 kB</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
+</div>
+</div>
+<div class="cenik-typ-group">
+<div class="cenik-typ-title">Spotové tarify</div>
+<div class="ceniky-grid">
+<div class="cenik-card">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-elektrina">Elektřina · platný od 1. 1. 2026</div>
+              <div class="cenik-card-name">Ceník elektřiny SPOT — PRE</div><div class="cenik-card-desc">Jedná se o produkt se spotovou cenou.</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 203 kB</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
+<div class="cenik-card">
+            <div class="cenik-card-body">
+              <div class="cenik-card-meta meta-plyn">Plyn · platný od 1. 1. 2026</div>
+              <div class="cenik-card-name">Ceník plynu SPOT — PRE</div><div class="cenik-card-desc">Jedná se o produkt se spotovou cenou.</div>
+            </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 172 kB</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
+</div>
+</div>
 
         <div class="ceniky-archive" id="archive-pre">
           <div class="ceniky-archive-header">
@@ -622,34 +686,30 @@
             </select>
           </div>
           <div class="ceniky-grid ceniky-grid-archive">
-            <a href="#" class="cenik-card cenik-card-archive" data-year="2025">
+            <div class="cenik-card cenik-card-archive" data-year="2025">
             <div class="cenik-card-body">
               <div class="cenik-card-meta meta-elektrina">Elektřina · 2025</div>
               <div class="cenik-card-name">Ceník elektřiny FIX2025 — PRE</div><div class="cenik-card-desc">Jedná se o fixní produkt.</div>
             </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 245 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
-            <a href="#" class="cenik-card cenik-card-archive" data-year="2025">
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 245 kB</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
+            <div class="cenik-card cenik-card-archive" data-year="2025">
             <div class="cenik-card-body">
               <div class="cenik-card-meta meta-plyn">Plyn · 2025</div>
               <div class="cenik-card-name">Ceník plynu FIX2025 — PRE</div><div class="cenik-card-desc">Jedná se o fixní produkt.</div>
             </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 175 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
-            <a href="#" class="cenik-card cenik-card-archive" data-year="2024">
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 175 kB</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
+            <div class="cenik-card cenik-card-archive" data-year="2024">
             <div class="cenik-card-body">
               <div class="cenik-card-meta meta-elektrina">Elektřina · 2024</div>
               <div class="cenik-card-name">Ceník elektřiny FIX2024 — PRE</div><div class="cenik-card-desc">Jedná se o fixní produkt.</div>
             </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 234 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
-            <a href="#" class="cenik-card cenik-card-archive" data-year="2024">
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 234 kB</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
+            <div class="cenik-card cenik-card-archive" data-year="2024">
             <div class="cenik-card-body">
               <div class="cenik-card-meta meta-plyn">Plyn · 2024</div>
               <div class="cenik-card-name">Ceník plynu FIX2024 — PRE</div><div class="cenik-card-desc">Jedná se o fixní produkt.</div>
             </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 166 kB</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · 166 kB</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
           </div>
         </div>
       </div>
@@ -660,24 +720,25 @@
           <div class="ceniky-panel-title">Další ceníky</div>
           <div class="ceniky-special-note">Platí bez ohledu na distribuční území.</div>
         </div>
-        <div class="ceniky-grid">
-          <a href="#" class="cenik-card">
+        <div class="cenik-typ-group">
+<div class="cenik-typ-title">Fixní tarify</div>
+<div class="ceniky-grid">
+<div class="cenik-card">
             <div class="cenik-card-body">
               <div class="cenik-card-meta meta-elektrina">Elektřina · platný od 1. 1. 2026</div>
               <div class="cenik-card-name">Ceník Elektřina od Souseda</div>
               <div class="cenik-card-desc">Sdílení elektřiny mezi odběrnými místy.</div>
             </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · mockup</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
-          <a href="#" class="cenik-card">
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · mockup</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
+<div class="cenik-card">
             <div class="cenik-card-body">
               <div class="cenik-card-meta meta-elektrina">Elektřina · platný od 1. 1. 2026</div>
               <div class="cenik-card-name">Ceník výkupů elektřiny</div>
               <div class="cenik-card-desc">Výkup přebytků z vaší výroby.</div>
             </div>
-            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · mockup</span><span class="cenik-card-btn">Stáhnout</span></div>
-          </a>
-        </div>
+            <div class="cenik-card-footer"><span class="cenik-card-size">PDF · mockup</span><span class="cenik-card-actions"><a href="#" class="cenik-card-btn cenik-card-btn-view">Zobrazit</a><a href="#" class="cenik-card-btn cenik-card-btn-dl">Stáhnout</a></span></div></div>
+</div>
+</div>
       </div>
 
     </div>
@@ -726,7 +787,6 @@
           <ul class="footer-links">
             <li><a href="proc-nas-pribeh.html">Naše vize</a></li>
             <li><a href="proc-nas-pribeh.html">Náš tým</a></li>
-            <li><a href="proc-reference.html">Reference zákazníků</a></li>
             <li><a href="pro-media.html">Pro média</a></li>
             <li><a href="docs/op/vseobecne-obchodni-podminky.pdf" target="_blank">Obchodní podmínky</a></li>
           </ul>
@@ -972,23 +1032,68 @@
   const lookupBtn = document.getElementById('cenik-lookup-btn');
   const lookupEmail = document.getElementById('cenik-email');
   const lookupResult = document.getElementById('cenik-lookup-result');
+  const omBox = document.getElementById('cenik-om-box');
+  const omList = document.getElementById('cenik-om-list');
+  const omSubmit = document.getElementById('cenik-om-submit');
+
   if (lookupBtn) {
     lookupBtn.addEventListener('click', () => {
       const email = (lookupEmail.value || '').trim();
       if (!email || email.indexOf('@') < 0) {
         lookupResult.className = 'cenik-lookup-result err';
         lookupResult.textContent = 'Zadejte platný e-mail.';
+        if (omBox) omBox.classList.remove('is-visible');
         return;
       }
-      // MOCKUP odpověď — reálně přijde z CRM
       lookupResult.className = 'cenik-lookup-result loading';
-      lookupResult.textContent = 'Vyhledávám ceníky přiřazené k vašemu účtu…';
+      lookupResult.textContent = 'Vyhledávám odběrná místa přiřazená k vašemu účtu…';
+      if (omBox) omBox.classList.remove('is-visible');
+
+      // TODO IT: nahradit mock voláním na CRM — POST /api/odberna-mista { email } → seznam OM
       setTimeout(() => {
+        // MOCKUP dat — reálně přijde ze systému podle e-mailu
+        const mockOM = [
+          { id: 'OM1', name: 'Odběrné místo — elektřina', detail: 'EAN 859182400100000001 · Praha 9, Českomoravská 2255/12a' },
+          { id: 'OM2', name: 'Odběrné místo — plyn', detail: 'EIC 27ZG600Z00000001 · Praha 9, Českomoravská 2255/12a' },
+          { id: 'OM3', name: 'Odběrné místo — elektřina', detail: 'EAN 859182400100000042 · Brno, Veveří 111' }
+        ];
         lookupResult.className = 'cenik-lookup-result ok';
-        lookupResult.innerHTML = '<strong>Ukázka:</strong> po napojení na náš systém se zde zobrazí pouze ceníky tarifů, na které máte uzavřenou smlouvu. (Tato část čeká na propojení s CRM.)';
+        lookupResult.innerHTML = '<strong>Ukázka:</strong> po napojení na náš systém se zde zobrazí odběrná místa přiřazená k zadanému e-mailu. (Čeká na propojení s CRM.)';
+
+        // Vykresli seznam OM s checkboxy
+        if (omList) {
+          omList.innerHTML = mockOM.map(om => (
+            '<label class="cenik-om-item">' +
+            '<input type="checkbox" class="cenik-om-check" value="' + om.id + '">' +
+            '<span class="cenik-om-item-body">' +
+            '<span class="cenik-om-item-name">' + om.name + '</span>' +
+            '<span class="cenik-om-item-detail">' + om.detail + '</span>' +
+            '</span></label>'
+          )).join('');
+        }
+        if (omBox) omBox.classList.add('is-visible');
+
+        // Aktivuj submit jen když je něco zaškrtnuté
+        const checks = omList.querySelectorAll('.cenik-om-check');
+        function updateSubmit() {
+          const any = Array.from(checks).some(c => c.checked);
+          omSubmit.disabled = !any;
+        }
+        checks.forEach(c => c.addEventListener('change', updateSubmit));
+        updateSubmit();
       }, 700);
     });
     lookupEmail.addEventListener('keydown', e => { if (e.key === 'Enter') lookupBtn.click(); });
+  }
+
+  if (omSubmit) {
+    omSubmit.addEventListener('click', () => {
+      const selected = Array.from(document.querySelectorAll('.cenik-om-check:checked')).map(c => c.value);
+      if (!selected.length) return;
+      // TODO IT: podle vybraných OM zobrazit odpovídající ceníky (filtr / načtení z CRM)
+      lookupResult.className = 'cenik-lookup-result ok';
+      lookupResult.innerHTML = '<strong>Vybráno ' + selected.length + ' odběrných míst.</strong> Po napojení na systém se zde zobrazí ceníky pro zvolená místa.';
+    });
   }
 
   // Archivní ceníky toggle
