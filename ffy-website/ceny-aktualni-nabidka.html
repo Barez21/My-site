@@ -17,6 +17,26 @@
   .nav-tabs      { display: none !important; }
 }
 
+/* ── Přepínač Fyzická osoba / Firma ── */
+.tarify-osoba-switch {
+  display: inline-flex; gap: 4px; padding: 4px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px; margin-bottom: 1rem;
+  align-self: flex-start;
+}
+.to-tab {
+  background: none; border: none; color: rgba(255,255,255,0.55);
+  font-family: inherit; font-size: 0.9rem; font-weight: 600;
+  padding: 0.5rem 1.4rem; border-radius: 9px; cursor: pointer;
+  transition: all 0.15s;
+}
+.to-tab:hover { color: rgba(255,255,255,0.85); }
+.to-tab.active { background: var(--accent, #44e6a3); color: #0a0f18; }
+[data-theme="light"] .tarify-osoba-switch { background: #fff; border-color: rgba(33,69,113,0.12); }
+[data-theme="light"] .to-tab { color: #6B89A8; }
+[data-theme="light"] .to-tab.active { color: #0a0f18; }
+
 /* ── Přepínač komodity ── */
 .tarify-komodita-switch {
   display: inline-flex; gap: 4px; padding: 4px;
@@ -370,6 +390,12 @@
   <section class="tarify-section">
     <div class="tarify-inner">
 
+      <!-- Přepínač Fyzická osoba / Firma -->
+      <div class="tarify-osoba-switch" id="tarify-osoba-switch">
+        <button type="button" class="to-tab active" data-osoba="fo">Fyzická osoba</button>
+        <button type="button" class="to-tab" data-osoba="firma">Firma</button>
+      </div>
+
       <!-- Přepínač komodity -->
       <div class="tarify-komodita-switch">
         <button class="tk-tab active" data-komodita="elektrina">Elektřina</button>
@@ -384,9 +410,7 @@
         </div>
 
         <div class="tarify-cards">
-
-          <!-- FIX elektřina -->
-          <div class="tarif-card tarif-elektrina" data-komodita="elektrina">
+<div class="tarif-card tarif-elektrina" data-komodita="elektrina" data-osoba="fo">
             <div class="tarif-card-header">
               <div class="tarif-type-label">Elektřina</div>
               <div class="tarif-name">FIX 2026</div>
@@ -410,9 +434,7 @@
               <a href="ceny-ceniky.html" class="tarif-cta-secondary">Zobrazit ceník</a>
             </div>
           </div>
-
-          <!-- STANDART elektřina -->
-          <div class="tarif-card tarif-elektrina" data-komodita="elektrina">
+<div class="tarif-card tarif-elektrina" data-komodita="elektrina" data-osoba="fo">
             <div class="tarif-card-header">
               <div class="tarif-type-label">Elektřina</div>
               <div class="tarif-name">Standart</div>
@@ -436,9 +458,7 @@
               <a href="ceny-ceniky.html" class="tarif-cta-secondary">Zobrazit ceník</a>
             </div>
           </div>
-
-          <!-- FIX plyn -->
-          <div class="tarif-card tarif-plyn" data-komodita="plyn" style="display:none">
+<div class="tarif-card tarif-plyn" data-komodita="plyn" data-osoba="fo" style="display:none">
             <div class="tarif-card-header">
               <div class="tarif-type-label">Plyn</div>
               <div class="tarif-name">FIX 2026</div>
@@ -462,9 +482,7 @@
               <a href="ceny-ceniky.html" class="tarif-cta-secondary">Zobrazit ceník</a>
             </div>
           </div>
-
-          <!-- STANDART plyn -->
-          <div class="tarif-card tarif-plyn" data-komodita="plyn" style="display:none">
+<div class="tarif-card tarif-plyn" data-komodita="plyn" data-osoba="fo" style="display:none">
             <div class="tarif-card-header">
               <div class="tarif-type-label">Plyn</div>
               <div class="tarif-name">Standart</div>
@@ -488,8 +506,103 @@
               <a href="ceny-ceniky.html" class="tarif-cta-secondary">Zobrazit ceník</a>
             </div>
           </div>
-
-        </div>
+<div class="tarif-card tarif-elektrina" data-komodita="elektrina" data-osoba="firma" style="display:none">
+            <div class="tarif-card-header">
+              <div class="tarif-type-label">Elektřina</div>
+              <div class="tarif-name">FIX 2026</div>
+              <div class="tarif-subtitle">Fixní cena do 31. 12. 2026</div>
+            </div>
+            <div class="tarif-price-block">
+              <div class="tarif-price-main">
+                <span class="tarif-price-num">X,XX</span>
+                <span class="tarif-price-unit">Kč / kWh s DPH</span>
+              </div>
+              <div class="tarif-price-sub">X,XX Kč / kWh bez DPH</div>
+              <div class="tarif-price-note">Cena silové elektřiny. Regulovanou část ceny stanovuje ERÚ.</div>
+              <ul class="tarif-benefits">
+                <li>Cena se během fixace nemění</li>
+                <li>Bez sankce za předčasné ukončení</li>
+                <li>Zákaznická podpora s člověkem</li>
+              </ul>
+            </div>
+            <div class="tarif-card-footer">
+              <a href="prepis.html" class="tarif-cta">Zapojit tento tarif →</a>
+              <a href="ceny-ceniky.html" class="tarif-cta-secondary">Zobrazit ceník</a>
+            </div>
+          </div>
+<div class="tarif-card tarif-elektrina" data-komodita="elektrina" data-osoba="firma" style="display:none">
+            <div class="tarif-card-header">
+              <div class="tarif-type-label">Elektřina</div>
+              <div class="tarif-name">Standart</div>
+              <div class="tarif-subtitle">Fixní cena bez časového omezení</div>
+            </div>
+            <div class="tarif-price-block">
+              <div class="tarif-price-main">
+                <span class="tarif-price-num">X,XX</span>
+                <span class="tarif-price-unit">Kč / kWh s DPH</span>
+              </div>
+              <div class="tarif-price-sub">X,XX Kč / kWh bez DPH</div>
+              <div class="tarif-price-note">Cena silové elektřiny. Regulovanou část ceny stanovuje ERÚ.</div>
+              <ul class="tarif-benefits">
+                <li>Cena se během fixace nemění</li>
+                <li>Bez sankce za předčasné ukončení</li>
+                <li>Zákaznická podpora s člověkem</li>
+              </ul>
+            </div>
+            <div class="tarif-card-footer">
+              <a href="prepis.html" class="tarif-cta">Zapojit tento tarif →</a>
+              <a href="ceny-ceniky.html" class="tarif-cta-secondary">Zobrazit ceník</a>
+            </div>
+          </div>
+<div class="tarif-card tarif-plyn" data-komodita="plyn" data-osoba="firma" style="display:none">
+            <div class="tarif-card-header">
+              <div class="tarif-type-label">Plyn</div>
+              <div class="tarif-name">FIX 2026</div>
+              <div class="tarif-subtitle">Fixní cena do 31. 12. 2026</div>
+            </div>
+            <div class="tarif-price-block">
+              <div class="tarif-price-main">
+                <span class="tarif-price-num">X,XX</span>
+                <span class="tarif-price-unit">Kč / kWh s DPH</span>
+              </div>
+              <div class="tarif-price-sub">X,XX Kč / kWh bez DPH</div>
+              <div class="tarif-price-note">Cena silového plynu. Regulovanou část ceny stanovuje ERÚ.</div>
+              <ul class="tarif-benefits">
+                <li>Cena se během fixace nemění</li>
+                <li>Bez sankce za předčasné ukončení</li>
+                <li>Zákaznická podpora s člověkem</li>
+              </ul>
+            </div>
+            <div class="tarif-card-footer">
+              <a href="prepis.html" class="tarif-cta">Zapojit tento tarif →</a>
+              <a href="ceny-ceniky.html" class="tarif-cta-secondary">Zobrazit ceník</a>
+            </div>
+          </div>
+<div class="tarif-card tarif-plyn" data-komodita="plyn" data-osoba="firma" style="display:none">
+            <div class="tarif-card-header">
+              <div class="tarif-type-label">Plyn</div>
+              <div class="tarif-name">Standart</div>
+              <div class="tarif-subtitle">Fixní cena bez časového omezení</div>
+            </div>
+            <div class="tarif-price-block">
+              <div class="tarif-price-main">
+                <span class="tarif-price-num">X,XX</span>
+                <span class="tarif-price-unit">Kč / kWh s DPH</span>
+              </div>
+              <div class="tarif-price-sub">X,XX Kč / kWh bez DPH</div>
+              <div class="tarif-price-note">Cena silového plynu. Regulovanou část ceny stanovuje ERÚ.</div>
+              <ul class="tarif-benefits">
+                <li>Cena se během fixace nemění</li>
+                <li>Bez sankce za předčasné ukončení</li>
+                <li>Zákaznická podpora s člověkem</li>
+              </ul>
+            </div>
+            <div class="tarif-card-footer">
+              <a href="prepis.html" class="tarif-cta">Zapojit tento tarif →</a>
+              <a href="ceny-ceniky.html" class="tarif-cta-secondary">Zobrazit ceník</a>
+            </div>
+          </div>
+</div>
       </div>
 
       <!-- DIVIDER -->
@@ -503,9 +616,7 @@
         </div>
 
         <div class="tarify-cards">
-
-          <!-- SPOT elektřina -->
-          <div class="tarif-card tarif-elektrina tarif-spot" data-komodita="elektrina">
+<div class="tarif-card tarif-elektrina tarif-spot" data-komodita="elektrina" data-osoba="fo">
             <div class="tarif-card-header">
               <div class="tarif-type-label">Elektřina</div>
               <div class="tarif-name">SPOT</div>
@@ -525,9 +636,7 @@
               <a href="ceny-ceniky.html" class="tarif-cta-secondary">Zobrazit ceník</a>
             </div>
           </div>
-
-          <!-- SPOT plyn -->
-          <div class="tarif-card tarif-plyn tarif-spot" data-komodita="plyn" style="display:none">
+<div class="tarif-card tarif-plyn tarif-spot" data-komodita="plyn" data-osoba="fo" style="display:none">
             <div class="tarif-card-header">
               <div class="tarif-type-label">Plyn</div>
               <div class="tarif-name">SPOT</div>
@@ -547,8 +656,47 @@
               <a href="ceny-ceniky.html" class="tarif-cta-secondary">Zobrazit ceník</a>
             </div>
           </div>
-
-        </div>
+<div class="tarif-card tarif-elektrina tarif-spot" data-komodita="elektrina" data-osoba="firma" style="display:none">
+            <div class="tarif-card-header">
+              <div class="tarif-type-label">Elektřina</div>
+              <div class="tarif-name">SPOT</div>
+              <div class="tarif-subtitle">Cena podle burzovního trhu</div>
+            </div>
+            <div class="tarif-price-block">
+              <div class="tarif-price-spot-main">Cena SPOTu je určována cenami elektřiny na burze.</div>
+              <div class="tarif-price-note">Tento produkt je možné mít pouze pokud má klient elektroměr s průběhovým měřením, nebo jde o právnickou osobu.</div>
+              <ul class="tarif-benefits">
+                <li>Cena kopíruje burzu — platíte aktuální tržní cenu</li>
+                <li>Bez sankce za předčasné ukončení</li>
+                <li>Zákaznická podpora s člověkem</li>
+              </ul>
+            </div>
+            <div class="tarif-card-footer">
+              <a href="prepis.html" class="tarif-cta">Zapojit tento tarif →</a>
+              <a href="ceny-ceniky.html" class="tarif-cta-secondary">Zobrazit ceník</a>
+            </div>
+          </div>
+<div class="tarif-card tarif-plyn tarif-spot" data-komodita="plyn" data-osoba="firma" style="display:none">
+            <div class="tarif-card-header">
+              <div class="tarif-type-label">Plyn</div>
+              <div class="tarif-name">SPOT</div>
+              <div class="tarif-subtitle">Cena podle burzovního trhu</div>
+            </div>
+            <div class="tarif-price-block">
+              <div class="tarif-price-spot-main">Cena SPOTu je určována cenami plynu na burze.</div>
+              <div class="tarif-price-note">Tento produkt je možné mít pouze pokud má klient měřidlo s průběhovým měřením, nebo jde o právnickou osobu.</div>
+              <ul class="tarif-benefits">
+                <li>Cena kopíruje burzu — platíte aktuální tržní cenu</li>
+                <li>Bez sankce za předčasné ukončení</li>
+                <li>Zákaznická podpora s člověkem</li>
+              </ul>
+            </div>
+            <div class="tarif-card-footer">
+              <a href="prepis.html" class="tarif-cta">Zapojit tento tarif →</a>
+              <a href="ceny-ceniky.html" class="tarif-cta-secondary">Zobrazit ceník</a>
+            </div>
+          </div>
+</div>
       </div>
 
       <!-- Proč energie od FREE for YOU -->
@@ -767,23 +915,42 @@
     });
   }
 
-  // ── Přepínač komodity (Elektřina / Plyn) ──
+  // ── Přepínač komodity + osoby ──
   const tkTabs = document.querySelectorAll('.tk-tab');
   const tarifCards = document.querySelectorAll('.tarif-card[data-komodita]');
-  function switchKomodita(k) {
-    tkTabs.forEach(t => t.classList.toggle('active', t.dataset.komodita === k));
+  let currentKomodita = 'elektrina';
+  let currentOsoba = 'fo';
+
+  function applyFilter() {
     tarifCards.forEach(card => {
-      card.style.display = card.dataset.komodita === k ? '' : 'none';
+      const komMatch = card.dataset.komodita === currentKomodita;
+      const osobaMatch = (card.dataset.osoba || 'fo') === currentOsoba;
+      card.style.display = (komMatch && osobaMatch) ? '' : 'none';
     });
+  }
+  function switchKomodita(k) {
+    currentKomodita = k;
+    tkTabs.forEach(t => t.classList.toggle('active', t.dataset.komodita === k));
+    applyFilter();
+  }
+  function switchOsoba(o) {
+    currentOsoba = o;
+    document.querySelectorAll('#tarify-osoba-switch .to-tab').forEach(t =>
+      t.classList.toggle('active', t.dataset.osoba === o));
+    applyFilter();
   }
   tkTabs.forEach(tab => {
     tab.addEventListener('click', () => switchKomodita(tab.dataset.komodita));
+  });
+  document.querySelectorAll('#tarify-osoba-switch .to-tab').forEach(tab => {
+    tab.addEventListener('click', () => switchOsoba(tab.dataset.osoba));
   });
   // Přepnutí podle URL parametru (?komodita=plyn) — např. z odkazu v patičce
   const urlKomodita = new URLSearchParams(window.location.search).get('komodita');
   if (urlKomodita === 'plyn' || urlKomodita === 'elektrina') {
     switchKomodita(urlKomodita);
   }
+  applyFilter();
 
 </script>
 

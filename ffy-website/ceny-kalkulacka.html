@@ -16,6 +16,43 @@
   .nav-hamburger { display: flex !important; }
   .nav-tabs      { display: none !important; }
 }
+
+/* ── Přepínač Fyzická osoba / Firma ── */
+.kalk-osoba-switch-wrap { display: flex; justify-content: center; margin-bottom: 2rem; }
+.kalk-osoba-switch {
+  display: inline-flex; gap: 4px; padding: 4px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+}
+.ko-tab {
+  background: none; border: none; color: rgba(255,255,255,0.55);
+  font-family: inherit; font-size: 0.9rem; font-weight: 600;
+  padding: 0.55rem 1.4rem; border-radius: 9px; cursor: pointer;
+  transition: all 0.15s;
+}
+.ko-tab:hover { color: rgba(255,255,255,0.85); }
+.ko-tab.active { background: var(--accent, #44e6a3); color: #0a0f18; }
+[data-theme="light"] .kalk-osoba-switch { background: #fff; border-color: rgba(33,69,113,0.12); }
+[data-theme="light"] .ko-tab { color: #6B89A8; }
+[data-theme="light"] .ko-tab.active { color: #0a0f18; }
+
+/* ── Dropdown pro sazbu a jistič ── */
+.kalk-select {
+  width: 100%; max-width: 320px;
+  padding: 0.75rem 2.2rem 0.75rem 1rem; border-radius: 10px;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.15);
+  color: #fff; font-family: inherit; font-size: 0.98rem; font-weight: 600;
+  cursor: pointer;
+  appearance: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 0.75rem center; background-size: 16px;
+}
+.kalk-select:focus { outline: none; border-color: var(--accent, #44e6a3); }
+.kalk-select optgroup { font-weight: 700; color: #64748b; }
+.kalk-select option { background: #0d1420; color: #fff; padding: 0.5rem; }
+[data-theme="light"] .kalk-select { background: #fff; color: #0E1E2F; border-color: rgba(33,69,113,0.18); }
+[data-theme="light"] .kalk-select option { background: #fff; color: #0E1E2F; }
 </style>
 <meta name="description" content="Spočítejte si orientační roční náklad za elektřinu u FREE for YOU. Zadejte spotřebu a PSČ — kalkulačka zobrazí celkovou cenu včetně distribuce.">
 <meta name="robots" content="index, follow">
@@ -419,6 +456,14 @@
     <div class="kalk-tab-panel" id="tab-slozita">
       <div class="kalk-wide-inner">
 
+        <!-- Přepínač Fyzická osoba / Firma -->
+        <div class="kalk-osoba-switch-wrap">
+          <div class="kalk-osoba-switch" id="kalk-osoba-switch">
+            <button type="button" class="ko-tab active" data-osoba="fo">Fyzická osoba</button>
+            <button type="button" class="ko-tab" data-osoba="firma">Firma</button>
+          </div>
+        </div>
+
         <div class="kalk-form-row-slozita">
 
           <!-- PSC -->
@@ -431,36 +476,61 @@
             <div class="kalk-hint">Podle PSČ zjistíme vaše distribuční území.</div>
           </div>
 
-          <!-- Sazba -->
+          <!-- Sazba (dropdown) -->
           <div class="kalk-step kalk-step-centered">
             <div class="kalk-step-label">Distribuční sazba</div>
-            <div class="kalk-pills kalk-pills-center">
-              <button class="kalk-pill active" data-sazba="D01d">D01d</button>
-              <button class="kalk-pill" data-sazba="D02d">D02d</button>
-              <button class="kalk-pill" data-sazba="D25d">D25d</button>
-              <button class="kalk-pill" data-sazba="D26d">D26d</button>
-              <button class="kalk-pill" data-sazba="D27d">D27d</button>
-              <button class="kalk-pill" data-sazba="D35d">D35d</button>
-              <button class="kalk-pill" data-sazba="D45d">D45d</button>
-              <button class="kalk-pill" data-sazba="D56d">D56d</button>
-              <button class="kalk-pill" data-sazba="D57d">D57d</button>
-              <button class="kalk-pill" data-sazba="D61d">D61d</button>
-            </div>
+            <select class="kalk-select" id="sazba-select" data-current-osoba="fo">
+              <!-- FO: D-řada (fyzická osoba) -->
+              <optgroup label="Domácnosti" data-osoba="fo">
+                <option value="D01d" selected>D01d</option>
+                <option value="D02d">D02d</option>
+                <option value="D25d">D25d</option>
+                <option value="D26d">D26d</option>
+                <option value="D27d">D27d</option>
+                <option value="D35d">D35d</option>
+                <option value="D45d">D45d</option>
+                <option value="D56d">D56d</option>
+                <option value="D57d">D57d</option>
+                <option value="D61d">D61d</option>
+              </optgroup>
+              <!-- Firma: C-řada -->
+              <optgroup label="Podnikatelé / firmy" data-osoba="firma">
+                <option value="C01d">C01d</option>
+                <option value="C02d">C02d</option>
+                <option value="C03d">C03d</option>
+                <option value="C25d">C25d</option>
+                <option value="C26d">C26d</option>
+                <option value="C27d">C27d</option>
+                <option value="C35d">C35d</option>
+                <option value="C45d">C45d</option>
+                <option value="C46d">C46d</option>
+                <option value="C55d">C55d</option>
+                <option value="C56d">C56d</option>
+                <option value="C62d">C62d</option>
+              </optgroup>
+            </select>
           </div>
 
-          <!-- Jistič -->
+          <!-- Jistič (dropdown) -->
           <div class="kalk-step kalk-step-centered">
             <div class="kalk-step-label">Hlavní jistič</div>
-            <div class="kalk-pills kalk-pills-center">
-              <button class="kalk-pill active" data-jistic="10">do 3×10 A</button>
-              <button class="kalk-pill" data-jistic="16">do 3×16 A</button>
-              <button class="kalk-pill" data-jistic="20">do 3×20 A</button>
-              <button class="kalk-pill" data-jistic="25">do 3×25 A</button>
-              <button class="kalk-pill" data-jistic="32">do 3×32 A</button>
-              <button class="kalk-pill" data-jistic="40">do 3×40 A</button>
-              <button class="kalk-pill" data-jistic="50">do 3×50 A</button>
-              <button class="kalk-pill" data-jistic="63">do 3×63 A</button>
-            </div>
+            <select class="kalk-select" id="jistic-select">
+              <optgroup label="Jednofázové">
+                <option value="1x16">do 1×16 A</option>
+                <option value="1x20">do 1×20 A</option>
+                <option value="1x25">do 1×25 A</option>
+              </optgroup>
+              <optgroup label="Třífázové">
+                <option value="10" selected>do 3×10 A</option>
+                <option value="16">do 3×16 A</option>
+                <option value="20">do 3×20 A</option>
+                <option value="25">do 3×25 A</option>
+                <option value="32">do 3×32 A</option>
+                <option value="40">do 3×40 A</option>
+                <option value="50">do 3×50 A</option>
+                <option value="63">do 3×63 A</option>
+              </optgroup>
+            </select>
           </div>
 
           <!-- Spotřeby — dynamic VT/NT -->
@@ -1020,14 +1090,55 @@
     if (!ntVis) document.getElementById('spotreba-nt').value = '';
   }
 
-  document.querySelectorAll('[data-sazba]').forEach(b => b.addEventListener('click', () => {
-    document.querySelectorAll('[data-sazba]').forEach(x => x.classList.remove('active'));
-    b.classList.add('active'); activeSazba = b.dataset.sazba; updateTarifFields();
-  }));
-  document.querySelectorAll('[data-jistic]').forEach(b => b.addEventListener('click', () => {
-    document.querySelectorAll('[data-jistic]').forEach(x => x.classList.remove('active'));
-    b.classList.add('active'); activeJistic = parseInt(b.dataset.jistic);
-  }));
+  // Sazba (dropdown)
+  const sazbaSelect = document.getElementById('sazba-select');
+  if (sazbaSelect) {
+    sazbaSelect.addEventListener('change', () => {
+      activeSazba = sazbaSelect.value;
+      updateTarifFields();
+    });
+    activeSazba = sazbaSelect.value;
+  }
+
+  // Jistič (dropdown)
+  const jisticSelect = document.getElementById('jistic-select');
+  if (jisticSelect) {
+    jisticSelect.addEventListener('change', () => {
+      const v = jisticSelect.value;
+      // 1x tarify uložíme jako string, 3x jako číslo (kvůli existující logice)
+      activeJistic = v.startsWith('1x') ? v : parseInt(v);
+    });
+    const v0 = jisticSelect.value;
+    activeJistic = v0.startsWith('1x') ? v0 : parseInt(v0);
+  }
+
+  // Přepínač Fyzická osoba / Firma — přepíná dostupné distribuční sazby
+  const osobaSwitch = document.getElementById('kalk-osoba-switch');
+  if (osobaSwitch && sazbaSelect) {
+    const foGroup = sazbaSelect.querySelector('optgroup[data-osoba="fo"]');
+    const firmaGroup = sazbaSelect.querySelector('optgroup[data-osoba="firma"]');
+    function setOsoba(o) {
+      osobaSwitch.querySelectorAll('.ko-tab').forEach(t => t.classList.toggle('active', t.dataset.osoba === o));
+      // Skryj/zobraz optgroup podle typu osoby
+      if (foGroup) foGroup.style.display = (o === 'fo') ? '' : 'none';
+      if (firmaGroup) firmaGroup.style.display = (o === 'firma') ? '' : 'none';
+      // Přenastav dostupné options (disabled na skrytých, ať se dropdown chová dobře)
+      Array.from(foGroup ? foGroup.children : []).forEach(opt => opt.disabled = (o !== 'fo'));
+      Array.from(firmaGroup ? firmaGroup.children : []).forEach(opt => opt.disabled = (o !== 'firma'));
+      // Nastav defaultní vybranou sazbu (první z aktivní skupiny)
+      const activeGroup = o === 'fo' ? foGroup : firmaGroup;
+      if (activeGroup && activeGroup.children.length) {
+        sazbaSelect.value = activeGroup.children[0].value;
+        activeSazba = sazbaSelect.value;
+        updateTarifFields();
+      }
+      sazbaSelect.dataset.currentOsoba = o;
+    }
+    osobaSwitch.querySelectorAll('.ko-tab').forEach(tab => {
+      tab.addEventListener('click', () => setOsoba(tab.dataset.osoba));
+    });
+    setOsoba('fo'); // výchozí
+  }
 
   updateTarifFields();
 
