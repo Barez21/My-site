@@ -16,6 +16,20 @@
   .nav-hamburger { display: flex !important; }
   .nav-tabs      { display: none !important; }
 }
+
+/* ── Úvodní poznámka nad příběhem ── */
+.pribeh-intro-note {
+  max-width: 640px; margin: 0 auto 2.5rem;
+  padding: 1.1rem 1.5rem;
+  border-left: 3px solid var(--accent, #44e6a3);
+  background: rgba(68,230,163,0.05);
+  border-radius: 0 8px 8px 0;
+}
+.pribeh-intro-note p {
+  margin: 0; font-size: 0.98rem; line-height: 1.6;
+  color: rgba(255,255,255,0.7); font-style: italic;
+}
+[data-theme="light"] .pribeh-intro-note p { color: #4A6B8A; }
 </style>
 <meta name="description" content="Jak jsme od dodavatele elektřiny došli ke stavbě vlastních solárních zdrojů. Příběh FREE for YOU — od otázky po odpověď.">
 <meta name="robots" content="index, follow">
@@ -251,10 +265,14 @@
     <div class="pribeh-inner">
 
       <!-- Úvod -->
+      <div class="pribeh-intro-note">
+        <p>Zde je příběh firmy FREE for YOU očima našeho jednatele, Lukáše Artura Vágnera, zakladatele firmy.</p>
+      </div>
+
       <div class="pribeh-chapter">
         <div class="pribeh-chapter-label">K energetice jsem se dostal náhodou</div>
         <div class="pribeh-prose">
-          <p>Začínal jsem podomním prodejem, později vedl tým, spojoval zprostředkovatele, a nakonec koupil malého dodavatele energií. Udělal jsem při tom spoustu chyb, ale právě ty mě přivedly k otázce:</p>
+          <p>Začínal jsem přímým prodejem, později vedl tým, spojoval zprostředkovatele, a nakonec koupil malého dodavatele energií. Udělal jsem při tom spoustu chyb, ale právě ty mě přivedly k otázce:</p>
           <p><em>Proč by měl zákazník zůstat právě s námi, když mu zítra někdo nabídne o pár korun méně?</em></p>
           <p>Došlo mi, že odpovědí nemůže být jen cena. Zákazník musí ze vztahu se svým dodavatelem dostávat něco víc.</p>
         </div>
@@ -316,7 +334,7 @@
       <div class="pribeh-chapter pribeh-chapter-last">
         <div class="pribeh-chapter-label">Aby energie patřila lidem</div>
         <div class="pribeh-prose">
-          <p>Začínal jsem jako podomní prodejce. Dnes se snažím, aby energie patřila lidem.</p>
+          <p>Začínal jsem jako přímý prodejce. Dnes se snažím, aby energie patřila lidem.</p>
           <p>A každý nový zákazník nás posouvá o krok blíž k systému, ve kterém nebudeme energii jen nakupovat, ale společně ji také vytvářet.</p>
         </div>
       </div>
