@@ -28,6 +28,13 @@
 @media (max-width: 640px) {
   .faq-group-title { font-size: 1.25rem; }
 }
+
+/* ── Víceodstavcové odpovědi ── */
+.faq-a p { margin: 0 0 0.75em; }
+.faq-a p:last-child { margin-bottom: 0; }
+
+/* ── Dvojitý úvodní odstavec pod H1 ── */
+.subpage-header .subpage-lead + .subpage-lead { margin-top: 0.75rem; }
 </style>
 <meta name="description" content="Odpovědi na nejčastější otázky o změně dodavatele, fakturaci, distribučním území a službách FREE for YOU. Vše přehledně na jednom místě.">
 <meta name="robots" content="index, follow">
@@ -418,6 +425,7 @@
         <a href="index.html">Domů</a><span>/</span>Podpora
       </div>
       <h1 class="subpage-h1">Časté dotazy</h1>
+      <p class="subpage-lead">Máte otázku k elektřině, plynu, změně dodavatele nebo své smlouvě? Tady najdete odpovědi na nejčastější otázky našich zákazníků.</p>
       <p class="subpage-lead">Nenašli jste odpověď? <a href="podpora-kontakty.html" class="faq-lead-link">Napište nebo zavolejte</a> — odpovídá člověk.</p>
     </div>
   </section>
@@ -429,38 +437,38 @@
         <div class="faq-group-title">Přechod k FREE for YOU</div>
 
         <div class="faq-item">
-          <button class="faq-q" onclick="toggleFaq(this)">Přijdu při přechodu o dodávku elektřiny nebo plynu?<span class="faq-arrow">▾</span></button>
+          <button class="faq-q" onclick="toggleFaq(this)">Přijdu při změně dodavatele o dodávku elektřiny nebo plynu?<span class="faq-arrow">▾</span></button>
           <div class="faq-a">Ne. Přechod mezi dodavateli probíhá čistě administrativně — fyzická dodávka se nepřerušuje ani na minutu. Elektřina nebo plyn teče dál stejnou sítí, mění se jen to, kdo vám posílá fakturu.</div>
         </div>
 
         <div class="faq-item">
-          <button class="faq-q" onclick="toggleFaq(this)">Jak dlouho přechod trvá?<span class="faq-arrow">▾</span></button>
-          <div class="faq-a">Standardně 6 až 8 týdnů od podpisu smlouvy. Většinu té doby běží lhůty na straně distribuce — my mezitím zařizujeme vše potřebné. Vy čekáte, my pracujeme.</div>
+          <button class="faq-q" onclick="toggleFaq(this)">Jak dlouho trvá změna dodavatele elektřiny nebo plynu?<span class="faq-arrow">▾</span></button>
+          <div class="faq-a"><p>Záleží na vaší současné smlouvě a výpovědní lhůtě. Změna obvykle trvá 1 až 3 měsíce. Pokud už máte smlouvu připravenou k ukončení a jde jen o samotnou změnu dodavatele, může přechod proběhnout přibližně za 2 až 3 týdny.</p><p>O výpověď i komunikaci se současným dodavatelem se postaráme za vás. Jakmile zjistíme termín, kdy můžete přejít, řekneme vám přesně, kdy začnete odebírat od FREE for YOU.</p></div>
         </div>
 
         <div class="faq-item">
-          <button class="faq-q" onclick="toggleFaq(this)">Co musím udělat já a co zařídíte vy?<span class="faq-arrow">▾</span></button>
-          <div class="faq-a">Vy vyplníte krátký formulář a podepíšete smlouvu a plnou moc. Zbytek — výpověď stávající smlouvy, komunikace s distributorem, přihlášení odběrného místa — zařídíme za vás.</div>
+          <button class="faq-q" onclick="toggleFaq(this)">Co musím udělat při změně dodavatele a co zařídíte vy?<span class="faq-arrow">▾</span></button>
+          <div class="faq-a">Vy vyplníte krátký formulář, podepíšete smlouvu a plnou moc. Zbytek zařídíme za vás — výpověď stávající smlouvy, komunikaci s distributorem i přihlášení odběrného místa.</div>
         </div>
 
         <div class="faq-item">
-          <button class="faq-q" onclick="toggleFaq(this)">Jaké dokumenty potřebuji k přechodu?<span class="faq-arrow">▾</span></button>
+          <button class="faq-q" onclick="toggleFaq(this)">Jaké dokumenty potřebuji ke změně dodavatele?<span class="faq-arrow">▾</span></button>
           <div class="faq-a">Stačí poslední vyúčtování od současného dodavatele a podepsaná plná moc. To je vše, co od vás potřebujeme, abychom mohli začít.</div>
         </div>
 
         <div class="faq-item">
-          <button class="faq-q" onclick="toggleFaq(this)">Mohu přejít, i když mám smlouvu s výpovědní lhůtou?<span class="faq-arrow">▾</span></button>
-          <div class="faq-a">Ano. Smlouvu za vás vypovíme a přechod naplánujeme tak, aby navazoval přesně na konec výpovědní lhůty. Nic neplatíte dvakrát.</div>
+          <button class="faq-q" onclick="toggleFaq(this)">Mohu změnit dodavatele, i když mám smlouvu s výpovědní lhůtou?<span class="faq-arrow">▾</span></button>
+          <div class="faq-a">Ano. Smlouvu za vás vypovíme a přechod naplánujeme tak, aby navazoval přesně na konec výpovědní lhůty. Díky tomu na sebe dodávky plynule navážou a vy neplatíte nic dvakrát.</div>
         </div>
 
         <div class="faq-item">
-          <button class="faq-q" onclick="toggleFaq(this)">Mohu přejít jen s elektřinou, nebo musím i s plynem?<span class="faq-arrow">▾</span></button>
+          <button class="faq-q" onclick="toggleFaq(this)">Mohu změnit dodavatele jen u elektřiny, nebo musím převést i plyn?<span class="faq-arrow">▾</span></button>
           <div class="faq-a">Přejít můžete s elektřinou, s plynem, nebo s obojím — záleží jen na vás. Každá komodita se řeší samostatně.</div>
         </div>
 
         <div class="faq-item">
-          <button class="faq-q" onclick="toggleFaq(this)">Co když budu chtít odejít?<span class="faq-arrow">▾</span></button>
-          <div class="faq-a">Podmínky ukončení smlouvy jsou jasně popsané ve smlouvě. Žádné skryté pokuty. Když se rozhodnete odejít, řeknete nám to a projdeme postup společně.</div>
+          <button class="faq-q" onclick="toggleFaq(this)">Co když budu chtít odejít od FREE for YOU?<span class="faq-arrow">▾</span></button>
+          <div class="faq-a">Podmínky ukončení smlouvy najdete přehledně ve své smlouvě. Když se rozhodnete odejít, dejte nám vědět a společně projdeme, co je potřeba zařídit a kdy.</div>
         </div>
 
       </div>
@@ -469,33 +477,33 @@
         <div class="faq-group-title">Ceny a produkty</div>
 
         <div class="faq-item">
-          <button class="faq-q" onclick="toggleFaq(this)">Jaký je rozdíl mezi fixním a SPOT tarifem?<span class="faq-arrow">▾</span></button>
-          <div class="faq-a">U fixního tarifu víte předem přesně, za kolik platíte — cena je dohodnutá na celé smluvní období. U SPOT tarifu se cena mění každou hodinu podle burzovního trhu. Když je trh levný, platíte méně. Když je drahý, platíte více. SPOT se vyplatí těm, kdo sledují spotřebu a dokážou ji přizpůsobit době, kdy je energie nejlevnější.</div>
+          <button class="faq-q" onclick="toggleFaq(this)">Jaký je rozdíl mezi fixním a SPOT tarifem elektřiny?<span class="faq-arrow">▾</span></button>
+          <div class="faq-a"><p>U fixního tarifu víte předem, za kolik platíte silovou energii — cena je dohodnutá na celé smluvní období. U SPOT tarifu se cena mění každou hodinu podle vývoje trhu. Když je cena na trhu nižší, platíte méně. Když je vyšší, platíte více.</p><p>SPOT se hodí pro ty, kteří mohou svou spotřebu přizpůsobit tomu, kdy je energie na trhu levnější.</p></div>
         </div>
 
         <div class="faq-item">
-          <button class="faq-q" onclick="toggleFaq(this)">Jak se tvoří cena energie u FREE for YOU?<span class="faq-arrow">▾</span></button>
-          <div class="faq-a">Cena se skládá ze dvou částí — regulované složky (distribuce, daně, poplatky — stejné u všech dodavatelů) a obchodní složky, kterou stanovuje FREE for YOU. Část zisku z obchodní složky reinvestujeme do zdrojů energie. Když vlastní výroba roste, klesá naše závislost na tržní ceně — a to se časem projeví i na ceně pro vás.</div>
+          <button class="faq-q" onclick="toggleFaq(this)">Jak se tvoří cena elektřiny a plynu u FREE for YOU?<span class="faq-arrow">▾</span></button>
+          <div class="faq-a"><p>Cena se skládá ze dvou částí — regulované složky, kam patří například distribuce, daně a poplatky, a obchodní složky, kterou stanovuje FREE for YOU.</p><p>A právě s obchodní částí pracujeme trochu jinak. Polovinu zisku investujeme do nových energetických zdrojů. Čím víc vlastní energie vyrobíme, tím méně jsme závislí na nákupu energie z trhu. Energii, kterou v našich zdrojích vyrobíme, pak mohou naši zákazníci odebírat za nákladovou cenu.</p></div>
         </div>
 
         <div class="faq-item">
-          <button class="faq-q" onclick="toggleFaq(this)">Co je Energobanking a musím ho používat?<span class="faq-arrow">▾</span></button>
-          <div class="faq-a">Energobanking je váš zákaznický účet, kde vidíte faktury, spotřebu, historii plateb a dopad výroby komunity. Není povinný, ale doporučujeme ho — přehled o vlastní energii se hodí. Přístup dostanete automaticky po přechodu.</div>
+          <button class="faq-q" onclick="toggleFaq(this)">Co je Energobanking a proč ho vyzkoušet?<span class="faq-arrow">▾</span></button>
+          <div class="faq-a"><p>Energobanking je váš přehled o energiích na jednom místě. Vidíte v něm faktury, spotřebu, zálohy i historii plateb a můžete si například udělat samoodečet nebo upravit výši zálohy.</p><p>Chcete se podívat, jak <a href="https://www.energobanking.cz/" target="_blank" class="faq-link">Energobanking</a> vypadá, ještě než se stanete naším zákazníkem? Klidně můžete. Přihlaste se a projděte si ho sami. A pokud se později rozhodnete přejít k FREE for YOU, budete přesně vědět, co vás čeká.</p><p>Pro naše zákazníky je Energobanking automatickou součástí služeb. Používat ho nemusíte, ale když máte všechno kolem energií přehledně na jednom místě, je to výhoda.</p></div>
         </div>
 
         <div class="faq-item">
-          <button class="faq-q" onclick="toggleFaq(this)">Jak funguje systém slev za doporučení?<span class="faq-arrow">▾</span></button>
-          <div class="faq-a">Když doporučíte FREE for YOU někomu dalšímu a ten přejde, získávají obě strany slevu na energii. Systém je nastaven tak, aby měl smysl jak pro toho, kdo doporučuje, tak pro toho, kdo přichází. Konkrétní podmínky a modelový příklad najdete na stránce <a href="proc-slevy-za-doporuceni.html" class="faq-link">Slevy za doporučení</a>.</div>
+          <button class="faq-q" onclick="toggleFaq(this)">Jak funguje sleva za doporučení FREE for YOU?<span class="faq-arrow">▾</span></button>
+          <div class="faq-a"><p>Doporučte FREE for YOU své rodině nebo přátelům a získejte slevu na svou energii. Čím více lidí díky vašemu doporučení přejde k FREE for YOU, tím větší slevu můžete získat.</p><p>Konkrétní podmínky a modelový příklad najdete na stránce <a href="proc-slevy-za-doporuceni.html" class="faq-link">Slevy za doporučení</a>.</p></div>
         </div>
 
         <div class="faq-item">
-          <button class="faq-q" onclick="toggleFaq(this)">Mění se cena v průběhu smlouvy?<span class="faq-arrow">▾</span></button>
-          <div class="faq-a">U fixního tarifu ne — cena je garantovaná po celou dobu smluvního období. U SPOT tarifu se mění každou hodinu podle trhu. O jakékoli změně ceníku vás vždy informujeme předem.</div>
+          <button class="faq-q" onclick="toggleFaq(this)">Mění se cena elektřiny nebo plynu v průběhu smlouvy?<span class="faq-arrow">▾</span></button>
+          <div class="faq-a"><p>U fixního tarifu se cena silové energie po dobu fixace nemění. U SPOT tarifu se cena silové energie mění podle aktuální ceny na trhu, zpravidla každou hodinu.</p><p>Regulovaná část ceny se může změnit podle rozhodnutí Energetického regulačního úřadu. O změnách, které se vás týkají, vás samozřejmě informujeme.</p></div>
         </div>
 
         <div class="faq-item">
-          <button class="faq-q" onclick="toggleFaq(this)">Jsou v ceně zahrnuty i poplatky za distribuci?<span class="faq-arrow">▾</span></button>
-          <div class="faq-a">Poplatky za distribuci jsou součástí vaší faktury, ale nejde o naši marži — jde o regulované platby, které odvádíme distributorovi ve vaší oblasti. Jsou stejné u každého dodavatele. Na faktuře je vždy vidíte odděleně.</div>
+          <button class="faq-q" onclick="toggleFaq(this)">Jsou v ceně elektřiny zahrnuté i poplatky za distribuci?<span class="faq-arrow">▾</span></button>
+          <div class="faq-a"><p>Ano. Poplatky za distribuci jsou součástí vaší faktury, nejde ale o peníze, které si nechává FREE for YOU. Jde o regulované platby, které odvádíme distributorovi ve vaší oblasti.</p><p>Jejich výši neurčuje FREE for YOU a na faktuře je uvidíte přehledně odděleně od ceny za samotnou dodávku energie.</p></div>
         </div>
 
       </div>
@@ -504,33 +512,33 @@
         <div class="faq-group-title">Pro stávající zákazníky</div>
 
         <div class="faq-item">
-          <button class="faq-q" onclick="toggleFaq(this)">Kdy probíhají odečty?<span class="faq-arrow">▾</span></button>
-          <div class="faq-a">Odečty provádí váš distributor podle distribučního území — ne FREE for YOU. Při přechodu k nám se termíny odečtů nemění, stejně jako se nemění distributor. Ten závisí na tom, kde bydlíte, a nelze ho zvolit.</div>
+          <button class="faq-q" onclick="toggleFaq(this)">Kdy probíhají odečty elektřiny nebo plynu?<span class="faq-arrow">▾</span></button>
+          <div class="faq-a"><p>Odečty zajišťuje váš distributor podle distribučního území — FREE for YOU je neprovádí. Nemusíte se ale bát, že by se po přechodu k nám něco měnilo. Termín odečtu i váš distributor zůstávají stejné.</p><p>Pokud si nejste jistí, kdy vás čeká odečet nebo co máte udělat, ozvěte se nám a rádi vám poradíme.</p></div>
         </div>
 
         <div class="faq-item">
           <button class="faq-q" onclick="toggleFaq(this)">Proč mohu mít dvě zálohy splatné ve stejném měsíci?<span class="faq-arrow">▾</span></button>
-          <div class="faq-a">Zálohy FREE for YOU platíte vždy na následující kalendářní měsíc. Při přechodu proto může nastat situace, kdy vám přijdou dvě zálohy ve stejném měsíci — jedna za aktuální měsíc u původního dodavatele, jedna za následující u nás. Pokud si nejste jisti, jak váš rozpis záloh vypadá, projdeme ho s vámi.</div>
+          <div class="faq-a"><p>Při přechodu k FREE for YOU se může stát, že vám v jednom měsíci přijdou dvě zálohy — jedna za aktuální měsíc u původního dodavatele a druhá za následující měsíc u nás.</p><p>Není to chyba ani dvojí platba za stejnou energii. Každá záloha se týká jiného období. Pokud si nejste jistí, jak váš rozpis záloh vypadá, projdeme ho s vámi a všechno vám vysvětlíme.</p></div>
         </div>
 
         <div class="faq-item">
           <button class="faq-q" onclick="toggleFaq(this)">Vracíte přeplatky automaticky?<span class="faq-arrow">▾</span></button>
-          <div class="faq-a">Ano, vždy automaticky. Přeplatek vám vrátíme do data splatnosti faktury na účet, ze kterého platíte zálohy. Nic nepožadujeme, nic nemusíte žádat.</div>
+          <div class="faq-a"><p>Ano, přeplatek vám vrátíme automaticky do data splatnosti faktury na účet, ze kterého platíte zálohy. Nemusíte o nic žádat.</p><p>O přeplatku i jeho vrácení máte přehled také v <a href="https://www.energobanking.cz/" target="_blank" class="faq-link">Energobankingu</a>, kde najdete své faktury a historii plateb.</p></div>
         </div>
 
         <div class="faq-item">
           <button class="faq-q" onclick="toggleFaq(this)">Kde najdu svoje smlouvy a faktury?<span class="faq-arrow">▾</span></button>
-          <div class="faq-a">Všechny dokumenty — smlouvy, faktury, vyúčtování — najdete ve svém <a href="https://www.energobanking.cz/" target="_blank" class="faq-link">Energobankingu</a>. Obecné dokumenty a ceníky jsou k dispozici na stránce <a href="podpora-dokumenty.html" class="faq-link">Dokumenty</a>.</div>
+          <div class="faq-a"><p>Smlouvy, faktury, rozpisy záloh i další dokumenty najdete přehledně v <a href="https://www.energobanking.cz/" target="_blank" class="faq-link">Energobankingu</a>. Vše máte na jednom místě a kdykoliv po ruce. Faktury a rozpisy záloh vám zároveň posíláme také e-mailem.</p><p>Obecné dokumenty a aktuální ceníky najdete na stránce <a href="podpora-dokumenty.html" class="faq-link">Dokumenty</a>.</p></div>
         </div>
 
         <div class="faq-item">
           <button class="faq-q" onclick="toggleFaq(this)">Jak probíhá přepis odběrného místa?<span class="faq-arrow">▾</span></button>
-          <div class="faq-a">Přepis řešíte při prodeji nebo pronájmu nemovitosti, kdy se mění odběratel. Kontaktujte nás — projdeme s vámi, co budete potřebovat od původního i nového odběratele, a celý proces zorganizujeme.</div>
+          <div class="faq-a"><p>Přepis řešíte například při pronájmu, prodeji nebo změně odběratele po úmrtí. Potřebné dokumenty se liší podle konkrétní situace.</p><p>Při pronájmu od nového odběratele obvykle potřebujeme například nájemní smlouvu, předávací protokol a občanský průkaz. Od původního odběratele pak plnou moc a poslední fakturu.</p><p>Při prodeji se může jednat například o kupní smlouvu, výpis z katastru, předávací protokol a občanský průkaz nového odběratele. Od původního potřebujeme plnou moc a fakturu.</p><p>Každý přepis je trochu jiný. Ozvěte se nám a řekneme vám přesně, co budeme potřebovat. O zbytek se postaráme za vás.</p></div>
         </div>
 
         <div class="faq-item">
-          <button class="faq-q" onclick="toggleFaq(this)">Co dělat, když se stěhuji?<span class="faq-arrow">▾</span></button>
-          <div class="faq-a">Napište nebo zavolejte co nejdříve — ideálně pár týdnů před stěhováním. Podle situace buď převedeme smlouvu na novou adresu, nebo zajistíme ukončení a případně nové připojení. Každé stěhování je trochu jiné, proto je nejjednodušší to probrat přímo.</div>
+          <button class="faq-q" onclick="toggleFaq(this)">Co dělat s energiemi při stěhování?<span class="faq-arrow">▾</span></button>
+          <div class="faq-a"><p>Napište nebo zavolejte co nejdříve — ideálně pár týdnů před stěhováním. Podle situace buď převedeme smlouvu na novou adresu, nebo zajistíme její ukončení a případně nové připojení.</p><p>Každé stěhování je trochu jiné, proto je nejjednodušší probrat s námi vaši konkrétní situaci. Rádi vám poradíme, co a kdy zařídit.</p></div>
         </div>
 
       </div>
