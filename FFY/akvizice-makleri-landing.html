@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Online přepis energií pro klienty realitních makléřů | FREE for YOU</title>
 <meta name="description" content="Nabídněte klientům při stěhování online přepis elektřiny a plynu. Vy jen pošlete odkaz, o zbytek se postaráme my. S registrací získáte vizitku v jejich účtu, odměny každý rok a přehled o každém případu.">
-<meta property="og:title" content="Online přepis energií pro vaše klienty. Stačí poslat odkaz.">
+<meta property="og:title" content="Přepis energií vyřeší klient. Díky Vám jednodušeji.">
 <meta property="og:description" content="Služba navíc pro klienty realitních makléřů. S registrací vizitka v Energobankingu, odměny každý rok a sleva 500 Kč pro klienta.">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#214571">
@@ -130,8 +130,8 @@ section[id]{scroll-margin-top:76px}
 .part b{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;letter-spacing:0;font-size:14px}
 
 /* infographic */
-.flow{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px}
-.flow-line{position:absolute;top:44px;left:12.5%;right:12.5%;height:4px;background:repeating-linear-gradient(90deg,var(--blue-300) 0 8px,transparent 8px 16px);border-radius:2px}
+.flow{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+.flow-line{position:absolute;top:44px;left:16.66%;right:16.66%;height:4px;background:repeating-linear-gradient(90deg,var(--blue-300) 0 8px,transparent 8px 16px);border-radius:2px}
 .flow-line .fill{position:absolute;inset:0;background:var(--green);border-radius:2px;transform-origin:0 50%;transform:scaleX(1)}
 .flow-line .dot{position:absolute;top:50%;left:0;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;background:var(--green);box-shadow:0 0 0 6px rgba(69,231,163,.25);opacity:0}
 .node{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px}
@@ -140,9 +140,15 @@ section[id]{scroll-margin-top:76px}
 .who{display:inline-block;font-size:12px;font-weight:700;padding:4px 9px;border-radius:2px;background:#fff;color:var(--blue)}
 .who.you{background:var(--blue);color:#fff}
 .node h3{font-size:20px;font-weight:700;line-height:1.25}
-.node p{font-size:15px;line-height:1.5;max-width:250px}
-.flow-note{margin-top:44px;display:flex;flex-wrap:wrap;gap:16px 32px;align-items:center;justify-content:space-between;background:#fff;border-radius:var(--r);padding:22px 28px}
-.flow-note p{font-size:16px;flex:1 1 420px}
+.node p{font-size:15px;line-height:1.5;max-width:300px}
+.finish{margin-top:48px;display:flex;flex-wrap:wrap;gap:20px 28px;align-items:center;background:var(--blue);color:#fff;border-radius:var(--r);padding:26px 32px}
+.finish-ic{width:60px;height:60px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;flex:none}
+.finish-tx{flex:1 1 380px;min-width:0;display:flex;flex-direction:column;gap:4px}
+.finish-tx b{font-size:22px}
+.finish-tx p{color:var(--blue-100);font-size:16px}
+.finish-days{display:flex;align-items:baseline;gap:6px;color:var(--green);font-weight:800}
+.finish-days .cnt{font-size:56px;line-height:1}
+.finish-days small{font-size:18px}
 
 /* checklist */
 .cl .wrap{display:flex;flex-wrap:wrap;gap:56px 72px;align-items:center}
@@ -288,7 +294,13 @@ label.f input:focus{border-color:var(--blue)}
 .reg-copy .lead{color:var(--blue-100)}
 .reg-copy ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
 .reg-copy li{display:flex;gap:12px;align-items:flex-start;font-size:17px}
-.person{display:flex;align-items:center;gap:16px;background:rgba(255,255,255,.08);border-radius:var(--r);padding:18px 20px}
+.info-form{display:flex;flex-direction:column;gap:6px;background:rgba(255,255,255,.08);border-radius:var(--r);padding:22px 24px}
+.info-form>b{font-size:18px;color:#fff}
+.info-form>span{font-size:15px;color:var(--blue-100)}
+.info-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.info-row input{flex:1 1 220px;min-width:0;font:inherit;font-size:16px;color:var(--ink);padding:13px 15px;border:2px solid transparent;border-radius:8px;outline:none;min-height:52px}
+.info-row input:focus{border-color:var(--green)}
+.info-form .okmsg{margin-top:8px}
 .person .pic{width:60px;height:60px;border-radius:50%;background:var(--blue-600);color:var(--blue-100);display:flex;align-items:center;justify-content:center;font-size:12px;flex:none}
 .reg-form{flex:1 1 420px;min-width:0;background:#fff;border-radius:var(--r);padding:clamp(28px,4vw,44px);display:flex;flex-direction:column;gap:16px;box-shadow:0 30px 70px rgba(10,20,30,.3)}
 .reg-form h3{font-size:26px;font-weight:800}
@@ -376,15 +388,13 @@ footer .wrap{padding-top:72px;padding-bottom:40px;display:flex;flex-direction:co
   .js .node .ic{transform:scale(.4);opacity:0;transition:transform .55s cubic-bezier(.3,1.6,.5,1),opacity .3s ease}
   .js .flow.on .node .ic{transform:none;opacity:1}
   .js .flow.on .node:nth-child(2) .ic{transition-delay:.3s}
-  .js .flow.on .node:nth-child(3) .ic{transition-delay:1s}
-  .js .flow.on .node:nth-child(4) .ic{transition-delay:1.7s}
-  .js .flow.on .node:nth-child(5) .ic{transition-delay:2.4s}
+  .js .flow.on .node:nth-child(3) .ic{transition-delay:1.2s}
+  .js .flow.on .node:nth-child(4) .ic{transition-delay:2.1s}
   .js .node>.nt{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .6s ease}
   .js .flow.on .node>.nt{opacity:1;transform:none}
   .js .flow.on .node:nth-child(2)>.nt{transition-delay:.45s}
-  .js .flow.on .node:nth-child(3)>.nt{transition-delay:1.15s}
-  .js .flow.on .node:nth-child(4)>.nt{transition-delay:1.85s}
-  .js .flow.on .node:nth-child(5)>.nt{transition-delay:2.55s}
+  .js .flow.on .node:nth-child(3)>.nt{transition-delay:1.35s}
+  .js .flow.on .node:nth-child(4)>.nt{transition-delay:2.25s}
   .node:hover .ic svg{animation:wiggle .5s ease}
   @keyframes wiggle{0%,100%{transform:rotate(0)}30%{transform:rotate(-12deg)}60%{transform:rotate(9deg)}}
 
@@ -435,7 +445,6 @@ footer .wrap{padding-top:72px;padding-bottom:40px;display:flex;flex-direction:co
   <div class="wrap">
     <a href="#top" aria-label="FREE for YOU – úvod"><svg style="height:30px;width:auto" role="img" aria-label="FREEforYOU" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 843.92 139.49"><g><path fill="#30c487" d="M88.66,38.45c2.04-2.35,4.14-4.6,6.28-6.76C65.82,2.28,29.46-8.68,10.91,7.44-9.01,24.74-.89,66.68,29.06,101.11c13.54,15.56,29.21,26.93,44.17,33.11-.95-.64-1.87-1.34-2.75-2.1-19.92-17.3-11.78-59.23,18.17-93.66"/><path fill="#45e7a3" d="M178.96,7.44c-18.56-16.12-54.92-5.16-84.02,24.25-2.14,2.16-4.22,4.4-6.28,6.76-29.95,34.43-38.09,76.37-18.17,93.67.88.76,1.79,1.45,2.75,2.1,7.54,3.12,14.89,4.91,21.7,5.27,6.8-.36,14.16-2.16,21.7-5.27,14.95-6.18,30.64-17.54,44.17-33.11,29.95-34.43,38.09-76.37,18.17-93.66"/></g><polygon fill="#214571" points="222.52 106.8 238.84 106.8 238.84 75.74 266.93 75.74 266.93 62.6 238.84 62.6 238.84 46.28 276.36 46.28 276.36 32.6 222.52 32.6 222.52 106.8"/><polygon fill="#214571" points="359.78 106.8 413.62 106.8 413.62 93.13 376.1 93.13 376.1 75.74 404.19 75.74 404.19 62.6 376.1 62.6 376.1 46.28 413.62 46.28 413.62 32.6 359.78 32.6 359.78 106.8"/><polygon fill="#214571" points="426.24 106.8 480.08 106.8 480.08 93.13 442.56 93.13 442.56 75.74 470.65 75.74 470.65 62.6 442.56 62.6 442.56 46.28 480.08 46.28 480.08 32.6 426.24 32.6 426.24 106.8"/><path fill="#214571" d="M303.82,46.28h15.26c3.74,0,6.52.88,8.32,2.65,1.8,1.77,2.7,4.17,2.7,7.21,0,2.05-.41,3.84-1.22,5.35-.81,1.52-2.03,2.67-3.66,3.44-1.63.78-3.71,1.17-6.25,1.17h-15.16v-19.82h0ZM332.01,77.76c3.39-1.34,6.18-3.16,8.37-5.46,2.19-2.29,3.82-4.84,4.88-7.63s1.59-5.64,1.59-8.53c0-4.24-1.01-8.14-3.02-11.71-2.02-3.57-5.02-6.43-9.01-8.59-3.99-2.15-8.99-3.23-15-3.23h-32.33v74.2h16.32v-27.03h10.51l15.67,27.03h18.23l-17.44-28.64c.41-.14.84-.25,1.23-.4"/><polygon fill="#214571" points="679.91 32.6 662.42 65.04 644.83 32.6 626.17 32.6 654.15 81.68 654.15 106.8 670.48 106.8 670.48 81.57 698.56 32.6 679.91 32.6"/><g><path fill="#214571" d="M751.32,82.05c-1.84,3.57-4.35,6.38-7.53,8.43-3.18,2.05-6.89,3.07-11.13,3.07s-7.86-1.02-11.08-3.07c-3.22-2.05-5.72-4.86-7.53-8.43-1.8-3.57-2.7-7.68-2.7-12.35s.9-8.89,2.7-12.45c1.8-3.57,4.31-6.36,7.53-8.37,3.21-2.01,6.91-3.02,11.08-3.02s7.95,1.01,11.13,3.02c3.18,2.01,5.69,4.81,7.53,8.37,1.84,3.57,2.76,7.72,2.76,12.45s-.92,8.78-2.76,12.35M759.59,42.41c-3.46-3.36-7.49-5.95-12.08-7.79s-9.54-2.76-14.84-2.76-10.14.92-14.73,2.76c-4.59,1.84-8.62,4.43-12.08,7.79s-6.18,7.35-8.16,11.98-2.97,9.74-2.97,15.32.99,10.69,2.97,15.32,4.7,8.62,8.16,11.98c3.46,3.36,7.49,5.95,12.08,7.79,4.59,1.84,9.5,2.76,14.73,2.76s10.24-.92,14.84-2.76c4.59-1.84,8.62-4.43,12.08-7.79,3.46-3.35,6.18-7.35,8.16-11.98s2.97-9.73,2.97-15.32-.99-10.69-2.97-15.32-4.7-8.62-8.16-11.98"/><path fill="#214571" d="M513.82,51.04c0-2.61.67-4.5,2.01-5.67s3.43-1.54,6.25-1.11v-13.78c-5.09-.64-9.4-.32-12.93.95-3.53,1.27-6.24,3.41-8.11,6.41s-2.81,7.01-2.81,12.03v3.92h-6.04v13.67h6.04v39.32h15.58v-39.32h8.8v-13.67h-8.8v-2.76h0Z"/><path fill="#214571" d="M827.49,32.6v46.32c0,3.18-.64,5.87-1.91,8.06-1.27,2.19-3.06,3.83-5.35,4.93-2.3,1.1-4.97,1.64-8,1.64s-5.48-.55-7.74-1.64-4.03-2.74-5.3-4.93c-1.27-2.19-1.91-4.88-1.91-8.06v-46.32h-16.43v45.05c0,6.72,1.43,12.28,4.29,16.69,2.86,4.42,6.64,7.72,11.34,9.91s9.87,3.29,15.53,3.29c4.1,0,8.07-.62,11.92-1.86s7.28-3.09,10.28-5.57c3-2.47,5.37-5.56,7.1-9.27,1.73-3.71,2.6-8.11,2.6-13.2v-45.05h-16.43,0Z"/><path fill="#214571" d="M617.06,53.75c-2.33.46-4.42,1.29-6.25,2.49-1.84,1.2-3.43,2.72-4.77,4.56l-1.06-7h-14.1v53h15.48v-23c0-3.53.58-6.41,1.75-8.64,1.17-2.23,2.7-3.92,4.61-5.09s3.92-1.87,6.04-2.12,4.1-.09,5.93.48v-14.63c-2.76-.49-5.3-.51-7.63-.05"/><path fill="#214571" d="M563.69,87.67c-1.1,1.94-2.47,3.41-4.13,4.4-1.66.99-3.41,1.48-5.25,1.48s-3.57-.49-5.19-1.48c-1.63-.99-2.88-2.47-3.76-4.45-.89-1.98-1.33-4.42-1.33-7.31s.46-5.42,1.38-7.37c.92-1.94,2.19-3.41,3.82-4.4,1.62-.99,3.39-1.49,5.3-1.49s3.67.5,5.3,1.49c1.62.99,2.95,2.47,3.98,4.45,1.02,1.98,1.54,4.42,1.54,7.31s-.55,5.42-1.64,7.37M568.51,56.4c-4.1-2.23-8.76-3.34-13.99-3.34s-9.79,1.11-13.89,3.34c-4.1,2.22-7.35,5.37-9.75,9.43-2.4,4.06-3.6,8.89-3.6,14.47s1.17,10.42,3.5,14.52c2.33,4.1,5.55,7.24,9.65,9.43,4.1,2.19,8.73,3.29,13.89,3.29s9.82-1.1,13.99-3.29,7.47-5.33,9.91-9.43,3.66-8.94,3.66-14.52-1.2-10.4-3.6-14.47c-2.41-4.06-5.66-7.21-9.75-9.43"/></g></svg></a>
     <div class="top-right">
-      <a class="tel" href="tel:+420227072290"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>+420 227 072 290</a>
       <a class="btn btn-primary" id="topCta" href="#" data-link="prepis"><span>Vyzkoušet online přepis</span><svg class="arr" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
     </div>
   </div>
@@ -449,7 +458,7 @@ footer .wrap{padding-top:72px;padding-bottom:40px;display:flex;flex-direction:co
   <div class="wrap">
     <div class="hero-copy">
       <span class="eyebrow rv">Pro realitní makléře</span>
-      <h1 class="h1 rv">Nabídněte klientům <span class="kw">online přepis energií.</span> Vy jen pošlete odkaz.</h1>
+      <h1 class="h1 rv">Přepis energií vyřeší klient. <span class="kw">Díky Vám jednodušeji.</span></h1>
       <p class="lead rv">Při stěhování musí klient přepsat elektřinu i plyn na sebe. Stačí mu poslat odkaz na náš online přepis: vyplní ho sám za pár minut a o zbytek se postaráme my. Vy nemusíte nic vyplňovat, vysvětlovat ani hlídat.</p>
       <ul class="checks rv">
         <li><span class="ck"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a141e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span>Žádné papíry ani složité vysvětlování</li>
@@ -460,7 +469,7 @@ footer .wrap{padding-top:72px;padding-bottom:40px;display:flex;flex-direction:co
         <a class="btn btn-primary btn-lg" href="#" data-link="prepis">Vyzkoušet online přepis<svg class="arr" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
         <a class="link" href="#jak-to-funguje">Jak to funguje</a>
       </div>
-      <p class="micro rv">Podívejte se, co přesně uvidí váš klient.</p>
+      <p class="micro rv">Podívejte se, co přesně uvidí Váš klient.</p>
     </div>
 
     <div class="hero-vis">
@@ -486,7 +495,7 @@ footer .wrap{padding-top:72px;padding-bottom:40px;display:flex;flex-direction:co
     <div class="head">
       <span class="eyebrow rv">Jak online přepis funguje</span>
       <h2 class="h2 rv">Od předání klíčů po <span class="kw">rozsvícená světla.</span></h2>
-      <p class="lead rv">Čtyři kroky. Na vás připadá jen ten první.</p>
+      <p class="lead rv">Tři kroky. Na Vás připadá jen ten první.</p>
     </div>
     <div class="flow rv">
       <div class="flow-line" aria-hidden="true"><span class="fill"></span><span class="dot"></span></div>
@@ -500,16 +509,16 @@ footer .wrap{padding-top:72px;padding-bottom:40px;display:flex;flex-direction:co
       </div>
       <div class="node">
         <div class="ic"><span class="num">3</span><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#214571" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 13a8 8 0 0 1 16 0"/><rect x="2.5" y="13" width="4" height="6" rx="1.5"/><rect x="17.5" y="13" width="4" height="6" rx="1.5"/><path d="M20 19c0 1.5-2 2.5-5 2.5"/></svg></div>
-        <div class="nt"><span class="who">FREE for YOU</span><h3>My přepis dotáhneme</h3><p>Zkontrolujeme podklady, klientovi se ozveme, pokud bude něco potřeba, a přepis dokončíme.</p></div>
-      </div>
-      <div class="node">
-        <div class="ic"><span class="num">4</span><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#214571" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 21.5h4"/><path d="M12 2.5a6.5 6.5 0 0 0-4 11.6c.6.5 1 1.2 1 2V16h6v-.1c0-.8.4-1.5 1-2A6.5 6.5 0 0 0 12 2.5z"/></svg></div>
-        <div class="nt"><span class="who">Hotovo</span><h3>Klient svítí a topí</h3><p>Energie jsou přepsané na jeho jméno a on ví, kdo mu s tím pomohl.</p></div>
+        <div class="nt"><span class="who">FREE for YOU</span><h3>My přepis dotáhneme</h3><p>Podklady zkontrolujeme, případné doplnění vyřešíme přímo s klientem a celý přepis dotáhneme až do konce.</p></div>
       </div>
     </div>
-    <div class="flow-note rv">
-      <p><b>Pro klienta služba navíc, pro vás minuta práce.</b> Přepisem ho provede náš nástroj, vy nemusíte nic vysvětlovat ani kontrolovat.</p>
-      <a class="btn btn-primary" href="#" data-link="prepis">Vyzkoušet online přepis<svg class="arr" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
+    <div class="finish rv zoom">
+      <span class="finish-ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0a141e" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span>
+      <div class="finish-tx">
+        <b>Hotovo nejpozději do 28 dnů</b>
+        <p>Jakmile máme všechny potřebné údaje, je vše vyřízené nejpozději do 28 dnů. V některých případech už do 10 dnů.</p>
+      </div>
+      <div class="finish-days" aria-hidden="true"><span class="cnt" data-to="28">28</span><small>dnů</small></div>
     </div>
   </div>
 </section>
@@ -528,41 +537,24 @@ footer .wrap{padding-top:72px;padding-bottom:40px;display:flex;flex-direction:co
         <div class="row"><span class="tick"></span><div>Finanční úřad a OSSZ<small>u OSVČ</small></div></div>
         <div class="row"><span class="tick"></span><div>Elektřina a plyn<small>online přepis přes odkaz makléře</small></div></div>
         <div class="row"><span class="tick"></span><div>Internet, TV a pošta</div></div>
-        <div class="sig">Od vašeho realitního makléře</div>
+        <div class="sig">Od Vašeho realitního makléře</div>
       </div>
     </div>
     <div class="cl-copy">
       <span class="eyebrow rv">Zdarma na e-mail</span>
       <h2 class="h2 rv">Kontrolní seznam, který předáte <span class="kw">spolu s klíči.</span></h2>
-      <p class="lead rv">Po stěhování musí klient nahlásit novou adresu na spoustě míst a na něco snadno zapomene. Náš kontrolní seznam mu pomůže nic nevynechat. A u toho si vzpomene na vás.</p>
+      <p class="lead rv">Po stěhování musí klient nahlásit novou adresu na spoustě míst a na něco snadno zapomene. Náš kontrolní seznam mu pomůže nic nevynechat. A u toho si vzpomene na Vás.</p>
       <ul class="mini-list rv">
-        <li><span class="ck sm"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0a141e" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span>Všechna místa na jedné stránce</li>
-        <li><span class="ck sm"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0a141e" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span>Stačí vytisknout a předat</li>
-        <li><span class="ck sm"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0a141e" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span>Přijde vám hned na e-mail</li>
-        <li><span class="ck sm"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0a141e" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span>Energie klient vyřeší přes váš odkaz</li>
+        <li><span class="ck sm"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0a141e" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span>Vše na jedné stránce</li>
+        <li><span class="ck sm"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0a141e" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span>Stačí předat klientovi</li>
       </ul>
       <form class="mail-form rv" id="clForm" action="#" method="post">
         <label class="sr" for="cl-email">Váš e-mail</label>
         <input id="cl-email" name="email" type="email" autocomplete="email" placeholder="Váš e-mail" required>
         <button class="btn btn-blue" type="submit"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>Poslat seznam na e-mail</button>
-        <p class="okmsg" hidden role="status"><b>Hotovo!</b> Kontrolní seznam je na cestě do vaší schránky.</p>
+        <p class="okmsg" hidden role="status"><b>Hotovo!</b> Kontrolní seznam je na cestě do Vaší schránky.</p>
         <p class="micro">Odesláním souhlasíte se zpracováním osobních údajů. <a href="#">Zásady zpracování osobních údajů</a></p>
       </form>
-    </div>
-  </div>
-</section>
-
-<section class="band" id="odkaz" data-part="1">
-  <svg class="heart-deco" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 188.08"><g ><path fill="#30c487" d="M119.54,51.85c2.76-3.17,5.58-6.2,8.46-9.11C88.76,3.07,39.73-11.7,14.7,10.04-12.15,33.37-1.19,89.91,39.2,136.33c18.25,20.98,39.39,36.3,59.56,44.64-1.28-.86-2.52-1.8-3.7-2.83-26.86-23.33-15.89-79.87,24.49-126.29"/><path fill="#45e7a3" d="M241.3,10.04c-25.02-21.74-74.05-6.96-113.3,32.7-2.88,2.9-5.7,5.94-8.46,9.11-40.38,46.42-51.35,102.96-24.49,126.29,1.18,1.03,2.42,1.96,3.7,2.83,10.16,4.2,20.07,6.63,29.25,7.11,9.17-.49,19.09-2.91,29.25-7.11,20.17-8.34,41.3-23.66,59.56-44.64,40.38-46.42,51.35-102.97,24.49-126.29"/></g></svg>
-  <div class="wrap">
-    <div class="band-copy">
-      <span class="eyebrow rv">Vyzkoušejte si to sami</span>
-      <h2 class="h2 rv">Projděte si přepis očima svého klienta.</h2>
-      <p class="rv">Za pár minut uvidíte, jak jednoduché to je. Pak ho budete s klidem posílat dál.</p>
-    </div>
-    <div class="rv zoom" style="flex:0 1 auto;display:flex;flex-direction:column;align-items:flex-start;gap:12px">
-      <a class="btn btn-primary btn-lg" href="#" data-link="prepis">Vyzkoušet online přepis<svg class="arr" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
-      <span style="font-size:14px;color:var(--blue-100)">Bez registrace a bez závazků.</span>
     </div>
   </div>
 </section>
@@ -583,6 +575,21 @@ footer .wrap{padding-top:72px;padding-bottom:40px;display:flex;flex-direction:co
   </div>
 </section>
 
+<section class="band" id="odkaz" data-part="1">
+  <svg class="heart-deco" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 188.08"><g ><path fill="#30c487" d="M119.54,51.85c2.76-3.17,5.58-6.2,8.46-9.11C88.76,3.07,39.73-11.7,14.7,10.04-12.15,33.37-1.19,89.91,39.2,136.33c18.25,20.98,39.39,36.3,59.56,44.64-1.28-.86-2.52-1.8-3.7-2.83-26.86-23.33-15.89-79.87,24.49-126.29"/><path fill="#45e7a3" d="M241.3,10.04c-25.02-21.74-74.05-6.96-113.3,32.7-2.88,2.9-5.7,5.94-8.46,9.11-40.38,46.42-51.35,102.96-24.49,126.29,1.18,1.03,2.42,1.96,3.7,2.83,10.16,4.2,20.07,6.63,29.25,7.11,9.17-.49,19.09-2.91,29.25-7.11,20.17-8.34,41.3-23.66,59.56-44.64,40.38-46.42,51.35-102.97,24.49-126.29"/></g></svg>
+  <div class="wrap">
+    <div class="band-copy">
+      <span class="eyebrow rv">Vyzkoušejte si to sami</span>
+      <h2 class="h2 rv">Projděte si přepis očima svého klienta.</h2>
+      <p class="rv">Za pár minut uvidíte, jak jednoduché to je. Pak ho budete s klidem posílat dál.</p>
+    </div>
+    <div class="rv zoom" style="flex:0 1 auto;display:flex;flex-direction:column;align-items:flex-start;gap:12px">
+      <a class="btn btn-primary btn-lg" href="#" data-link="prepis">Vyzkoušet online přepis<svg class="arr" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
+      <span style="font-size:14px;color:var(--blue-100)">Bez registrace a bez závazků.</span>
+    </div>
+  </div>
+</section>
+
 <!-- =================================================================== -->
 <!-- ČÁST 2: PARTNERSKÁ SPOLUPRÁCE                                       -->
 <!-- =================================================================== -->
@@ -590,13 +597,13 @@ footer .wrap{padding-top:72px;padding-bottom:40px;display:flex;flex-direction:co
   <svg class="heart-deco" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 188.08"><g ><path fill="#30c487" d="M119.54,51.85c2.76-3.17,5.58-6.2,8.46-9.11C88.76,3.07,39.73-11.7,14.7,10.04-12.15,33.37-1.19,89.91,39.2,136.33c18.25,20.98,39.39,36.3,59.56,44.64-1.28-.86-2.52-1.8-3.7-2.83-26.86-23.33-15.89-79.87,24.49-126.29"/><path fill="#45e7a3" d="M241.3,10.04c-25.02-21.74-74.05-6.96-113.3,32.7-2.88,2.9-5.7,5.94-8.46,9.11-40.38,46.42-51.35,102.96-24.49,126.29,1.18,1.03,2.42,1.96,3.7,2.83,10.16,4.2,20.07,6.63,29.25,7.11,9.17-.49,19.09-2.91,29.25-7.11,20.17-8.34,41.3-23.66,59.56-44.64,40.38-46.42,51.35-102.97,24.49-126.29"/></g></svg>
   <div class="wrap">
     <div class="part rv"><b>+</b>Partnerská spolupráce</div>
-    <h2 class="rv">Zaregistrujte se a online přepis bude <span class="kw">pracovat i pro vás.</span></h2>
-    <p class="lead rv">Jako registrovaný partner FREE for YOU získáte navíc čtyři výhody.</p>
+    <h2 class="rv">Získejte více <span class="kw">za své přepisy.</span></h2>
+    <p class="lead rv">Online přepis pomůže Vašim klientům a zároveň začne dlouhodobě pracovat i pro Vás. Jako partner FREE for YOU získáte čtyři konkrétní výhody:</p>
     <div class="chips">
-      <a class="chip rv" href="#vizitka"><b>1</b>Vizitka v účtu klienta</a>
+      <a class="chip rv" href="#vizitka"><b>1</b>Vaše vizitka v účtu klienta</a>
       <a class="chip rv" href="#odmeny"><b>2</b>Odměny každý rok</a>
       <a class="chip rv" href="#prehled"><b>3</b>Přehled o každém případu</a>
-      <a class="chip rv" href="#klient"><b>4</b>Výhody pro vašeho klienta</a>
+      <a class="chip rv" href="#klient"><b>4</b>Výhody pro Vašeho klienta</a>
     </div>
   </div>
 </section>
@@ -606,7 +613,7 @@ footer .wrap{padding-top:72px;padding-bottom:40px;display:flex;flex-direction:co
     <div class="ben-copy">
       <div class="ben-no rv"><b>1</b><span>Vizitka v účtu klienta</span></div>
       <h2 class="h2 rv">Vaše vizitka v účtu <span class="kw">každého klienta.</span></h2>
-      <p class="rv">Každý klient, který se k nám přes váš odkaz přepíše, uvidí vaši vizitku ve svém zákaznickém účtu v Energobankingu. Pokaždé, když se podívá na spotřebu, platby nebo faktury.</p>
+      <p class="rv">Každý klient, který se k nám přes Váš odkaz přepíše, uvidí Vaši vizitku ve svém zákaznickém účtu v Energobankingu, našem online portálu a mobilní aplikaci, kde klienti sledují spotřebu, platby a faktury. Uvidí ji pokaždé, když se do účtu přihlásí.</p>
       <p class="rv">Až bude za pár let znovu prodávat, kupovat nebo pronajímat, nebude muset vzpomínat, jak se jmenoval jeho makléř.</p>
     </div>
     <div class="ben-vis">
@@ -633,8 +640,8 @@ footer .wrap{padding-top:72px;padding-bottom:40px;display:flex;flex-direction:co
     <div class="ben-copy">
       <div class="ben-no rv"><b>2</b><span>Odměny</span></div>
       <h2 class="h2 rv">Odměna za každého klienta. <span class="kw">Každý rok.</span></h2>
-      <p class="rv">Za každého klienta, který se přes váš odkaz přepíše, dostanete <b>fixní odměnu</b> a k tomu <b>odměnu podle jeho spotřeby</b>. Každý rok, dokud u nás odebírá.</p>
-      <p class="rv">Jeden odkaz z předání klíčů vám tak vydělává i v dalších letech.</p>
+      <p class="rv">Za každého klienta, který se přes Váš odkaz přepíše, dostanete <b>fixní odměnu</b> a k tomu <b>odměnu podle jeho spotřeby</b>. Každý rok, dokud u nás odebírá.</p>
+      <p class="rv">Jeden odkaz z předání klíčů Vám tak vydělává i v dalších letech.</p>
     </div>
     <div class="ben-vis">
       <div class="rw rv left">
@@ -660,7 +667,8 @@ footer .wrap{padding-top:72px;padding-bottom:40px;display:flex;flex-direction:co
     <div class="ben-copy">
       <div class="ben-no rv"><b>3</b><span>Přehled v Energobankingu</span></div>
       <h2 class="h2 rv">Stav každého přepisu máte <span class="kw">jako na dlani.</span></h2>
-      <p class="rv">Hlídat nic nemusíte. Ale kdykoliv se můžete v Energobankingu podívat, v jaké fázi je přepis každého klienta, kterého jste k nám poslali.</p>
+      <p class="rv">Energobanking neslouží jen klientům. Jako partner v něm dostanete vlastní účet, kde přehledně vidíte všechny klienty, které jste k nám poslali.</p>
+      <p class="rv">Hlídat nic nemusíte. Ale kdykoliv se můžete podívat, v jaké fázi je přepis každého z nich.</p>
     </div>
     <div class="ben-vis">
       <div class="cases rv right">
@@ -678,7 +686,7 @@ footer .wrap{padding-top:72px;padding-bottom:40px;display:flex;flex-direction:co
     <div class="ben-copy">
       <div class="ben-no rv"><b>4</b><span>Výhody pro klienta</span></div>
       <h2 class="h2 rv">Klientovi doporučíte něco, co mu <span class="kw">opravdu pomůže.</span></h2>
-      <p class="rv">Váš klient dostane slevu 500 Kč přímo do faktury a smlouvu bez sankcí. Když nebude spokojený, může kdykoliv odejít. Nic neriskuje, a vy tedy taky ne.</p>
+      <p class="rv">Váš klient dostane slevu 500 Kč přímo do faktury a smlouvu bez sankcí. Když nebude spokojený, může kdykoliv odejít. Nic neriskuje, a Vy tedy taky ne.</p>
     </div>
     <div class="ben-vis">
       <div class="perks rv">
@@ -696,13 +704,13 @@ footer .wrap{padding-top:72px;padding-bottom:40px;display:flex;flex-direction:co
     <div class="head">
       <span class="eyebrow rv">Nejdřív vyzkoušejte</span>
       <h2 class="h2 rv">Než nás doporučíte, <span class="kw">vyzkoušejte si nás sami.</span></h2>
-      <p class="lead rv">Za každým doporučením stojí vaše jméno. Proto začněte vlastní zkušeností: uvidíte, jak přepis probíhá a jak s klienty komunikujeme. Pak budete doporučovat s jistotou.</p>
+      <p class="lead rv">Za každým doporučením stojí Vaše jméno. Proto začněte vlastní zkušeností: uvidíte, jak přepis probíhá a jak s klienty komunikujeme. Pak budete doporučovat s jistotou.</p>
     </div>
     <div class="opts">
       <div class="opt rv">
         <span class="ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#214571" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M13 11l-3 4h4l-3 4"/></svg></span>
         <h3>Přepište vlastní odběrné místo</h3>
-        <p>Projděte si přepis sami za sebe a zažijte přesně to, co váš klient.</p>
+        <p>Projděte si přepis sami za sebe a zažijte přesně to, co Váš klient.</p>
       </div>
       <div class="opt rv">
         <span class="ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#214571" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg></span>
@@ -730,10 +738,16 @@ footer .wrap{padding-top:72px;padding-bottom:40px;display:flex;flex-direction:co
         <li><span class="ck sm"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0a141e" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span>Stav každého případu v Energobankingu</li>
         <li><span class="ck sm"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0a141e" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span>Sleva 500 Kč a smlouva bez sankcí pro klienta</li>
       </ul>
-      <div class="person rv">
-        <div class="pic">Foto</div>
-        <div><b style="font-size:18px"><span class="ph" style="background:rgba(255,255,255,.12)">Jméno a příjmení</span></b><br><span style="font-size:13px;font-weight:700;color:var(--green)">Váš kontakt pro spolupráci</span><br><span style="font-size:15px">+420 <span class="ph" style="background:rgba(255,255,255,.12)">000 000 000</span></span></div>
-      </div>
+      <form class="info-form rv" id="infoForm" action="#" method="post">
+        <b>Zaujalo Vás to, ale chcete více informací?</b>
+        <span>Nechte nám e-mail a ozveme se Vám.</span>
+        <div class="info-row">
+          <label class="sr" for="info-email">Váš e-mail</label>
+          <input id="info-email" name="email" type="email" autocomplete="email" placeholder="Váš e-mail" required>
+          <button class="btn btn-mint" type="submit">Odeslat</button>
+        </div>
+        <p class="okmsg" hidden role="status"><b>Děkujeme!</b> Brzy se Vám ozveme.</p>
+      </form>
     </div>
     <div class="reg-card rv zoom">
       <div class="eb-badge"><svg class="ebh" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 188.08"><g ><path fill="#30c487" d="M119.54,51.85c2.76-3.17,5.58-6.2,8.46-9.11C88.76,3.07,39.73-11.7,14.7,10.04-12.15,33.37-1.19,89.91,39.2,136.33c18.25,20.98,39.39,36.3,59.56,44.64-1.28-.86-2.52-1.8-3.7-2.83-26.86-23.33-15.89-79.87,24.49-126.29"/><path fill="#45e7a3" d="M241.3,10.04c-25.02-21.74-74.05-6.96-113.3,32.7-2.88,2.9-5.7,5.94-8.46,9.11-40.38,46.42-51.35,102.96-24.49,126.29,1.18,1.03,2.42,1.96,3.7,2.83,10.16,4.2,20.07,6.63,29.25,7.11,9.17-.49,19.09-2.91,29.25-7.11,20.17-8.34,41.3-23.66,59.56-44.64,40.38-46.42,51.35-102.97,24.49-126.29"/></g></svg><span><b>Energo</b>banking</span></div>
@@ -786,7 +800,7 @@ footer .wrap{padding-top:72px;padding-bottom:40px;display:flex;flex-direction:co
   addEventListener('scroll', onScroll, {passive:true}); onScroll();
 
   // formuláře – zde napojte odeslání do CRM / e-mailového nástroje
-  ['clForm'].forEach(function(id){
+  ['clForm','infoForm'].forEach(function(id){
     var f = document.getElementById(id);
     f.addEventListener('submit', function(e){
       e.preventDefault();
