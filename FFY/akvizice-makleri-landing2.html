@@ -1,0 +1,727 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<!-- ODKAZY K NASTAVENÍ: data-link="prepis" = URL online přepisu (zatím #), data-link="registrace" = registrace v Energobankingu (https://energobanking.cz/). Ve skriptu dole je musíte změnit i v proměnné CTA. Video v úvodu: odkaz s třídou .video -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Partnerská spolupráce pro realitní makléře | FREE for YOU</title>
+<meta name="description" content="Staňte se partnerem FREE for YOU: Vaše vizitka v účtu každého klienta, odměna každý rok, přehled o každém přepisu a výhody pro Vaše klienty. Registrace v Energobankingu zabere pár minut.">
+<meta property="og:title" content="Získejte více za své přepisy. Partnerská spolupráce FREE for YOU.">
+<meta property="og:description" content="Vizitka v účtu klienta, odměna každý rok a přehled o každém případu. Registrace v Energobankingu.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#214571">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#214571; --blue-700:#18314E; --blue-600:#31629B; --blue-400:#73A0D3; --blue-300:#92B5DD; --blue-200:#B1CAE7; --blue-100:#D0DFF0; --blue-50:#EFF4FA;
+  --green:#45e7a3; --green-dark:#30c487; --green-50:#EDFDF6; --green-100:#DBFAED; --green-800:#107E51;
+  --bronze:#e8af46; --bronze-50:#FDF7ED; --ink:#0a141e; --line:#E3E8EF;
+  --r:21px 0 21px 0; --r-sm:12px 0 12px 0;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#fff;color:var(--blue);font-family:'Albert Sans','Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,sans-serif;-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.55;overflow-x:clip}
+img,svg{display:block}
+main,footer{overflow-x:clip}
+a{color:var(--blue)}
+h1,h2,h3,p{margin:0}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+section[id]{scroll-margin-top:76px}
+.sec{padding:104px 0}
+.bg-blue50{background:var(--blue-50)}
+.eyebrow{display:inline-block;background:var(--green);color:var(--ink);font-weight:700;font-size:13px;padding:5px 10px;border-radius:2px;letter-spacing:.02em}
+.h1{font-size:clamp(36px,4.6vw,58px);line-height:1.1;font-weight:800;letter-spacing:-.02em}
+.h2{font-size:clamp(30px,3.4vw,46px);line-height:1.14;font-weight:800;letter-spacing:-.01em}
+.h3{font-size:clamp(24px,2.4vw,32px);line-height:1.2;font-weight:800}
+.lead{font-size:20px;line-height:1.5}
+.muted{color:var(--blue-600)}
+.kw{background-image:linear-gradient(var(--green),var(--green));background-repeat:no-repeat;background-position:0 calc(100% - 1px);background-size:100% 5px;padding-bottom:3px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.head{display:flex;flex-direction:column;gap:16px;max-width:780px;margin-bottom:56px}
+.head .eyebrow{align-self:flex-start}
+.box{border-radius:var(--r)}
+.ph{background:var(--bronze-50);border-radius:3px;padding:0 3px}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;font:inherit;font-weight:700;font-size:17px;padding:16px 26px;border-radius:8px;min-height:52px;border:0;cursor:pointer;position:relative;overflow:hidden;transition:transform .15s ease,box-shadow .15s ease,background-color .15s ease}
+.btn:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(10,20,30,.14)}
+.btn:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--green);outline-offset:2px}
+.btn svg{transition:transform .2s ease;flex:none}
+.btn:hover svg.arr{transform:translateX(4px)}
+.btn-primary{background:var(--bronze);color:var(--ink)}
+.btn-mint{background:var(--green);color:var(--ink)}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-white{background:#fff;color:var(--ink)}
+.btn-lg{font-size:18px;padding:18px 30px;min-height:58px}
+.link{font-weight:600;color:var(--blue);text-underline-offset:4px}
+
+/* header */
+.top{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);transition:box-shadow .3s ease}
+.top.scrolled{box-shadow:0 6px 24px rgba(33,69,113,.10)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:14px;padding-bottom:14px}
+.top-right{display:flex;align-items:center;gap:24px}
+.tel{display:flex;align-items:center;gap:8px;text-decoration:none;font-weight:600;font-size:15px}
+.top .btn{font-size:15px;padding:12px 20px;min-height:44px}
+.progress{position:fixed;top:0;left:0;height:3px;width:100%;background:var(--green);transform-origin:0 50%;transform:scaleX(0);z-index:60;pointer-events:none}
+
+/* hero */
+.hero{background:var(--blue-50);position:relative}
+.hero .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:56px;padding-top:72px;padding-bottom:96px}
+.hero-copy{flex:1 1 520px;min-width:0;display:flex;flex-direction:column;gap:24px}
+.hero-copy .eyebrow{align-self:flex-start}
+.checks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.checks li{display:flex;gap:12px;align-items:flex-start;font-size:17px;font-weight:500}
+.ck{width:26px;height:26px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;flex:none}
+.ck.sm{width:22px;height:22px;margin-top:1px}
+.ck.blue{background:var(--blue)}
+.cta-row{display:flex;flex-wrap:wrap;align-items:center;gap:18px 28px;margin-top:6px}
+.micro{font-size:14px;color:var(--blue-600)}
+.hero-vis{flex:1 1 440px;min-width:0;position:relative;display:flex;flex-direction:column;align-items:center;gap:18px;padding:24px 0}
+.heart-bg{position:absolute;width:120%;max-width:640px;right:-14%;top:50%;transform:translateY(-50%);opacity:.92;pointer-events:none}
+.bubble{position:relative;align-self:flex-start;max-width:340px;background:#fff;border-radius:18px 18px 18px 4px;padding:14px 16px;box-shadow:0 14px 34px rgba(33,69,113,.14);font-size:15px;line-height:1.45;margin-left:4%}
+.bubble .from{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--blue-600);margin-bottom:6px}
+.av{width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+.linkchip{display:flex;align-items:center;gap:8px;margin-top:10px;background:var(--green-50);border:1.5px solid var(--green);border-radius:10px;padding:8px 10px;font-weight:700;font-size:14px;color:var(--green-800)}
+.tool{position:relative;width:100%;max-width:420px;background:#fff;border-radius:var(--r);box-shadow:0 30px 60px rgba(33,69,113,.18);overflow:hidden;align-self:flex-end;margin-right:2%}
+.tool-h{background:var(--blue);color:#fff;padding:16px 22px;display:flex;justify-content:space-between;align-items:center;font-size:15px}
+.tool-b{padding:22px;display:flex;flex-direction:column;gap:16px}
+.steps{display:flex;gap:8px}
+.step{flex:1;display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:600;color:var(--blue-600)}
+.step i{height:6px;border-radius:3px;background:var(--blue-100);position:relative;overflow:hidden}
+.step i::after{content:"";position:absolute;inset:0;background:var(--green);transform:scaleX(1);transform-origin:0 50%}
+.step.cur i::after{transform:scaleX(.55)}
+.step.todo i::after{transform:scaleX(0)}
+.fld{display:flex;flex-direction:column;gap:5px}
+.fld span{font-size:12px;color:var(--blue-600)}
+.fld div{border:2px solid var(--blue-100);border-radius:8px;padding:10px 12px;font-size:14px;font-weight:600;display:flex;justify-content:space-between;align-items:center}
+.ok{color:var(--green-800);font-size:12px;font-weight:700;display:flex;gap:4px;align-items:center}
+.fake-btn{background:var(--bronze);color:var(--ink);font-weight:700;text-align:center;border-radius:8px;padding:12px;font-size:15px}
+.tag-float{position:absolute;left:4%;bottom:0;background:var(--ink);color:#fff;font-size:14px;font-weight:600;padding:10px 16px;border-radius:var(--r-sm);box-shadow:0 10px 24px rgba(10,20,30,.25);z-index:2}
+
+/* hero video */
+.hero-vis{gap:0}
+.hv-bubble{position:relative;z-index:2;align-self:flex-start;margin:0 0 -46px 0}
+.video{position:relative;z-index:1;display:block;width:100%;max-width:540px;aspect-ratio:16/10;border-radius:var(--r);overflow:hidden;background:linear-gradient(150deg,var(--blue) 0%,var(--blue-700) 55%,var(--ink) 100%);box-shadow:0 30px 60px rgba(33,69,113,.22);text-decoration:none;color:#fff;align-self:flex-end}
+.video .vheart{position:absolute;width:70%;right:-12%;bottom:-18%;opacity:.16}
+.video .play-xl{position:absolute;left:50%;top:50%;width:88px;height:88px;margin:-44px 0 0 -44px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;transition:transform .2s ease}
+.video:hover .play-xl{transform:scale(1.08)}
+.video .vcap{position:absolute;left:22px;right:22px;bottom:18px;display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+.video .vcap b{font-size:18px;line-height:1.25}
+.video .vcap small{font-size:13px;color:var(--blue-200);white-space:nowrap}
+.video .vtop{position:absolute;left:22px;top:18px;font-size:13px;color:var(--blue-200)}
+.hero-vis .tag-float{left:auto;right:2%;bottom:6px}
+/* checklist e-mail */
+.mail-form{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch}
+.mail-form input{flex:1 1 240px;min-width:0;font:inherit;font-size:16px;color:var(--ink);padding:13px 15px;border:2px solid var(--blue-100);border-radius:8px;outline:none;min-height:52px;transition:border-color .15s ease}
+.mail-form input:focus{border-color:var(--blue)}
+.mail-form .okmsg,.mail-form .micro{flex-basis:100%}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* registration card */
+.reg-card{flex:1 1 420px;min-width:0;background:#fff;border-radius:var(--r);padding:clamp(28px,4vw,44px);display:flex;flex-direction:column;gap:18px;box-shadow:0 30px 70px rgba(10,20,30,.3)}
+.reg-card h3{font-size:26px;font-weight:800}
+.reg-steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px;counter-reset:rs}
+.reg-steps li{display:flex;gap:14px;align-items:center;font-size:16px;font-weight:500;counter-increment:rs}
+.reg-steps li::before{content:counter(rs);width:34px;height:34px;border-radius:50%;background:var(--green);color:var(--ink);font-weight:800;display:flex;align-items:center;justify-content:center;flex:none}
+.eb-badge{display:flex;align-items:center;gap:10px;font-size:15px;color:var(--blue-600)}
+.eb-badge b{color:var(--blue)}
+.eb-badge .ebh{width:30px;height:auto}
+/* part labels */
+.part{display:flex;align-items:center;gap:14px;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue-600);margin-bottom:22px}
+.part b{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;letter-spacing:0;font-size:14px}
+
+/* infographic */
+.flow{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+.flow-line{position:absolute;top:44px;left:16.66%;right:16.66%;height:4px;background:repeating-linear-gradient(90deg,var(--blue-300) 0 8px,transparent 8px 16px);border-radius:2px}
+.flow-line .fill{position:absolute;inset:0;background:var(--green);border-radius:2px;transform-origin:0 50%;transform:scaleX(1)}
+.flow-line .dot{position:absolute;top:50%;left:0;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;background:var(--green);box-shadow:0 0 0 6px rgba(69,231,163,.25);opacity:0}
+.node{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px}
+.node .ic{width:88px;height:88px;border-radius:50%;background:#fff;border:3px solid var(--green);display:flex;align-items:center;justify-content:center;position:relative;z-index:1;box-shadow:0 10px 26px rgba(33,69,113,.10)}
+.node .num{position:absolute;top:-6px;right:-6px;width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center}
+.who{display:inline-block;font-size:12px;font-weight:700;padding:4px 9px;border-radius:2px;background:#fff;color:var(--blue)}
+.who.you{background:var(--blue);color:#fff}
+.node h3{font-size:20px;font-weight:700;line-height:1.25}
+.node p{font-size:15px;line-height:1.5;max-width:300px}
+.finish{margin-top:48px;display:flex;flex-wrap:wrap;gap:20px 28px;align-items:center;background:var(--blue);color:#fff;border-radius:var(--r);padding:26px 32px}
+.finish-ic{width:60px;height:60px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;flex:none}
+.finish-tx{flex:1 1 380px;min-width:0;display:flex;flex-direction:column;gap:4px}
+.finish-tx b{font-size:22px}
+.finish-tx p{color:var(--blue-100);font-size:16px}
+.finish-days{display:flex;align-items:baseline;gap:6px;color:var(--green);font-weight:800}
+.finish-days .cnt{font-size:56px;line-height:1}
+.finish-days small{font-size:18px}
+
+/* checklist */
+.cl .wrap{display:flex;flex-wrap:wrap;gap:56px 72px;align-items:center}
+.paper-wrap{flex:0 1 400px;display:flex;justify-content:center;margin:0 auto}
+.paper{width:100%;max-width:360px;aspect-ratio:210/297;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:28px 26px;box-shadow:0 24px 50px rgba(33,69,113,.14);transform:rotate(-3deg);display:flex;flex-direction:column;gap:12px;position:relative;overflow:hidden}
+.paper::before{content:"";position:absolute;right:-30%;top:-10%;width:80%;height:120%;background:var(--blue-50);border-radius:50% 0 0 50%;z-index:0}
+.paper>*{position:relative;z-index:1}
+.paper .t{font-size:17px;font-weight:800;line-height:1.2;margin-top:6px}
+.paper .row{display:flex;gap:9px;align-items:center;font-size:12.5px;line-height:1.3}
+.paper .row small{display:block;font-size:10.5px;color:var(--blue-600)}
+.tick{width:16px;height:16px;border:2px solid var(--green);border-radius:4px;flex:none;transition:background-color .25s ease,transform .25s cubic-bezier(.3,1.6,.5,1)}
+.paper .sig{margin-top:auto;border-top:1px dashed var(--blue-200);padding-top:10px;font-size:11px;color:var(--blue-600)}
+.cl-copy{flex:1 1 460px;min-width:0;display:flex;flex-direction:column;gap:18px}
+.cl-copy .eyebrow{align-self:flex-start}
+.mini-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px 24px}
+.mini-list li{display:flex;gap:10px;align-items:center;font-size:15px;font-weight:500}
+
+/* get-link band */
+.band{background:var(--blue);color:#fff;position:relative;overflow:hidden}
+.band .heart-deco{position:absolute;width:520px;right:-140px;top:-120px;opacity:.10;pointer-events:none}
+.band .wrap{position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:32px 56px;padding-top:80px;padding-bottom:80px}
+.band-copy{flex:1 1 420px;min-width:0;display:flex;flex-direction:column;gap:14px}
+.band-copy .eyebrow{align-self:flex-start}
+.band h2{color:#fff}
+.band-copy p{color:var(--blue-100);font-size:18px}
+.band .ph,.reg-copy .ph{background:rgba(255,255,255,.14)}
+.okmsg{color:var(--blue)}
+.inline-form{flex:1 1 460px;min-width:0;background:#fff;border-radius:var(--r);padding:28px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;box-shadow:0 30px 60px rgba(10,20,30,.3)}
+.inline-form .full{grid-column:1/-1}
+label.f{display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;color:var(--blue)}
+label.f input{font:inherit;font-size:16px;color:var(--ink);padding:13px 15px;border:2px solid var(--blue-100);border-radius:8px;outline:none;min-height:50px;transition:border-color .15s ease}
+label.f input:focus{border-color:var(--blue)}
+.okmsg{grid-column:1/-1;background:var(--green-50);color:var(--blue);border-radius:var(--r-sm);padding:14px 16px;font-size:15px}
+
+/* videos */
+.vids{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
+.vid{text-decoration:none;color:var(--blue);display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;transition:transform .2s ease,box-shadow .2s ease}
+.vid:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(33,69,113,.10)}
+.vid .th{position:relative;aspect-ratio:4/5;background:linear-gradient(160deg,var(--blue-700),var(--ink));display:flex;align-items:center;justify-content:center}
+.vid .th small{position:absolute;top:14px;left:14px;color:var(--blue-300);font-size:13px}
+.play{width:64px;height:64px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;transition:transform .2s ease}
+.vid:hover .play{transform:scale(1.1)}
+.vid .tx{padding:20px;display:flex;flex-direction:column;gap:10px}
+.vid .q{font-size:18px;font-weight:700;line-height:1.35}
+
+/* part 2 intro */
+.p2{background:var(--ink);color:#fff;position:relative;overflow:hidden}
+.p2 .wrap{position:relative;padding-top:96px;padding-bottom:96px}
+.p2 .heart-deco{position:absolute;width:700px;left:50%;top:50%;transform:translate(-10%,-50%);opacity:.08;pointer-events:none}
+.p2 .part{color:var(--blue-300)}
+.p2 .part b{background:var(--green);color:var(--ink)}
+.p2 h1,.p2 h2{margin:0;color:#fff;max-width:900px;font-size:clamp(34px,4.4vw,60px);line-height:1.08}
+.p2 .lead{color:var(--blue-100);max-width:720px;margin-top:22px}
+.chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:48px}
+.chip{display:flex;gap:14px;align-items:center;text-decoration:none;color:#fff;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:var(--r-sm);padding:16px 18px;font-weight:600;font-size:16px;transition:background-color .2s ease,transform .2s ease}
+.chip:hover{background:rgba(69,231,163,.14);transform:translateY(-2px)}
+.chip b{width:34px;height:34px;border-radius:50%;background:var(--green);color:var(--ink);display:flex;align-items:center;justify-content:center;flex:none}
+
+/* benefit rows */
+.ben .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:48px 80px}
+.ben.rev .wrap{flex-direction:row-reverse}
+.ben-copy{flex:1 1 440px;min-width:0;display:flex;flex-direction:column;gap:18px}
+.ben-no{display:flex;align-items:center;gap:12px}
+.ben-no b{width:44px;height:44px;border-radius:50%;background:var(--green);color:var(--ink);font-size:18px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.ben-no span{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue-600)}
+.ben-copy p{font-size:18px;line-height:1.6}
+.ben-vis{flex:1 1 440px;min-width:0;display:flex;justify-content:center;position:relative}
+
+/* EB mockup */
+.eb{width:100%;max-width:440px;background:#fff;border-radius:var(--r);box-shadow:0 30px 60px rgba(33,69,113,.16);overflow:hidden;border:1px solid var(--line)}
+.eb-h{background:var(--blue);color:#fff;padding:16px 22px;display:flex;justify-content:space-between;align-items:center;font-size:15px}
+.eb-h small{color:var(--blue-200);font-size:13px}
+.eb-b{padding:22px;display:flex;flex-direction:column;gap:16px}
+.kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.kpi{background:var(--blue-50);border-radius:var(--r-sm);padding:14px}
+.kpi>span{font-size:12px;color:var(--blue-600)}
+.kpi div{font-size:22px;font-weight:800;margin-top:4px}
+.bars{display:flex;align-items:flex-end;gap:8px;height:64px;padding:0 4px}
+.bars i{flex:1;background:var(--blue-200);border-radius:4px 4px 0 0;transform-origin:50% 100%}
+.bars i:last-child{background:var(--blue)}
+.vcard{border:2px solid var(--green);border-radius:var(--r);padding:16px;display:flex;gap:14px;align-items:center;background:var(--green-50)}
+.vcard .pic{width:54px;height:54px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;flex:none}
+.vcard .lbl{font-size:11px;font-weight:700;color:var(--green-800);letter-spacing:.06em;text-transform:uppercase}
+.vcard .nm{font-size:18px;font-weight:700;min-height:1.4em}
+.vcard .ph2{font-size:14px;color:var(--blue-600)}
+.vcard .call{margin-left:auto;width:40px;height:40px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;flex:none}
+
+/* reward chart */
+.rw{width:100%;max-width:460px;background:#fff;border-radius:var(--r);box-shadow:0 30px 60px rgba(33,69,113,.14);padding:28px;border:1px solid var(--line)}
+.rw-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:22px}
+.rw-top h4{margin:0;font-size:17px;font-weight:800}
+.legend{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:600}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{width:12px;height:12px;border-radius:3px}
+.chart{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;align-items:end;height:220px;border-bottom:2px solid var(--blue-100);padding:0 6px}
+.col{display:flex;flex-direction:column;justify-content:flex-end;height:100%;gap:3px}
+.seg{border-radius:6px 6px 2px 2px;transform-origin:50% 100%}
+.seg.cons{background:var(--green)}
+.seg.fix{background:var(--blue);border-radius:2px 2px 6px 6px}
+.yrs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;padding:10px 6px 0;font-size:13px;font-weight:700;text-align:center;color:var(--blue-600)}
+.rw-note{margin-top:16px;font-size:13px;color:var(--blue-600)}
+
+/* cases */
+.cases{width:100%;max-width:460px;background:#fff;border-radius:var(--r);box-shadow:0 30px 60px rgba(33,69,113,.14);overflow:hidden;border:1px solid var(--line)}
+.case{padding:18px 22px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.eb-h+.case{border-top:0}
+.case-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.case-top b{font-size:15px}
+.case-top small{display:block;font-weight:500;font-size:12px;color:var(--blue-600)}
+.pill{font-size:12px;font-weight:700;padding:5px 10px;border-radius:999px;white-space:nowrap}
+.pill.done{background:var(--green-100);color:var(--green-800)}
+.pill.wip{background:var(--bronze-50);color:#7F5810}
+.pill.new{background:var(--blue-50);color:var(--blue)}
+.track{height:6px;border-radius:3px;background:var(--blue-50);overflow:hidden}
+.track i{display:block;height:100%;border-radius:3px;background:var(--green);transform-origin:0 50%}
+
+/* client perks */
+.perks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;width:100%;max-width:520px}
+.perk{background:var(--blue);color:#fff;border-radius:var(--r);padding:24px 16px;display:flex;flex-direction:column;gap:8px;min-height:180px}
+.perk:nth-child(2){background:var(--blue-700)}
+.perk:nth-child(3){background:var(--ink)}
+.perk .big{font-size:clamp(22px,2.1vw,28px);font-weight:800;color:var(--green);line-height:1.05}
+.perk>span{font-size:14px;line-height:1.4}
+.perks-wide{grid-column:1/-1;background:var(--green-50);border-radius:var(--r);padding:16px 18px;font-size:15px;font-weight:600;display:flex;gap:10px;align-items:center}
+
+/* try first */
+.try{background:var(--green-50)}
+.try .wrap{padding-top:104px;padding-bottom:104px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:8px}
+.opt{background:#fff;border-radius:var(--r);padding:30px;display:flex;flex-direction:column;gap:12px;border:2px solid transparent;transition:border-color .2s ease,transform .2s ease,box-shadow .2s ease}
+.opt:hover{border-color:var(--green);transform:translateY(-3px);box-shadow:0 14px 34px rgba(33,69,113,.10)}
+.opt .ico{width:56px;height:56px;border-radius:50%;background:var(--green-50);display:flex;align-items:center;justify-content:center}
+.opt h3{font-size:21px;font-weight:700}
+.try-cta{display:flex;flex-wrap:wrap;align-items:center;gap:16px 24px;margin-top:36px}
+
+/* registration */
+.reg{background:var(--blue);position:relative;overflow:hidden}
+.reg .heart-deco{position:absolute;width:560px;left:-180px;bottom:-140px;opacity:.12;pointer-events:none}
+.reg .wrap{position:relative;display:flex;flex-wrap:wrap;gap:56px;align-items:flex-start;padding-top:104px;padding-bottom:104px}
+.reg-copy{flex:1 1 440px;min-width:0;display:flex;flex-direction:column;gap:22px;color:#fff}
+.reg-copy .eyebrow{align-self:flex-start}
+.reg-copy h2{color:#fff}
+.reg-copy .lead{color:var(--blue-100)}
+.reg-copy ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.reg-copy li{display:flex;gap:12px;align-items:flex-start;font-size:17px}
+.info-form{display:flex;flex-direction:column;gap:6px;background:rgba(255,255,255,.08);border-radius:var(--r);padding:22px 24px}
+.info-form>b{font-size:18px;color:#fff}
+.info-form>span{font-size:15px;color:var(--blue-100)}
+.info-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.info-row input{flex:1 1 220px;min-width:0;font:inherit;font-size:16px;color:var(--ink);padding:13px 15px;border:2px solid transparent;border-radius:8px;outline:none;min-height:52px}
+.info-row input:focus{border-color:var(--green)}
+.info-form .okmsg{margin-top:8px}
+.person .pic{width:60px;height:60px;border-radius:50%;background:var(--blue-600);color:var(--blue-100);display:flex;align-items:center;justify-content:center;font-size:12px;flex:none}
+.reg-form{flex:1 1 420px;min-width:0;background:#fff;border-radius:var(--r);padding:clamp(28px,4vw,44px);display:flex;flex-direction:column;gap:16px;box-shadow:0 30px 70px rgba(10,20,30,.3)}
+.reg-form h3{font-size:26px;font-weight:800}
+.reg-form .opt-l{font-weight:400;color:var(--blue-600)}
+.or{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--blue-600)}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+
+/* footer */
+footer{background:var(--ink);color:#fff}
+footer .wrap{padding-top:72px;padding-bottom:40px;display:flex;flex-direction:column;gap:40px}
+.f-cols{display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px 48px}
+.f-cols div{display:flex;flex-direction:column;gap:8px;flex:1 1 220px}
+.f-cols b{font-size:13px;color:var(--green);letter-spacing:.06em;text-transform:uppercase}
+.f-cols a{color:#fff;text-decoration:none}
+.legal{border-top:1px solid var(--blue-700);padding-top:20px;font-size:13px;color:var(--blue-300)}
+
+/* mobile cta */
+.mcta{display:none}
+
+@media (max-width:900px){
+  .flow{grid-template-columns:1fr;gap:0}
+  .flow-line{top:44px;bottom:44px;left:44px;right:auto;width:4px;height:auto;background:repeating-linear-gradient(180deg,var(--blue-300) 0 8px,transparent 8px 16px)}
+  .flow-line .fill{transform-origin:50% 0}
+  .flow-line .dot{left:50%;top:0;margin:-9px 0 0 -9px}
+  .node{flex-direction:row;align-items:flex-start;text-align:left;gap:20px;padding-bottom:36px}
+  .node .ic{flex:none}
+  .node>.nt{display:flex;flex-direction:column;gap:8px;align-items:flex-start;padding-top:8px}
+  .node p{max-width:none}
+}
+@media (max-width:720px){
+  .sec{padding:72px 0}
+  .tel,.top .btn{display:none}
+  .hero .wrap{padding-top:48px;padding-bottom:72px}
+  .lead{font-size:18px}
+  .inline-form{grid-template-columns:1fr}
+  .perks{grid-template-columns:1fr}
+  .perk{min-height:0}
+  .bubble{margin-left:0}
+  .mcta{display:flex;position:fixed;left:12px;right:12px;bottom:12px;z-index:50;justify-content:center;align-items:center;gap:8px;background:var(--bronze);color:var(--ink);font-weight:700;font-size:17px;text-decoration:none;min-height:56px;border-radius:8px;box-shadow:0 12px 30px rgba(10,20,30,.28);transform:translateY(140%);transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+  .mcta.show{transform:none}
+}
+
+/* ================= ANIMACE ================= */
+@media (prefers-reduced-motion:no-preference){
+  .js .rv{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .8s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
+  .js .rv.zoom:not(.on){transform:scale(.92)}
+  .js .rv.right:not(.on){transform:translateX(48px) rotate(2deg)}
+  .js .rv.left:not(.on){transform:translateX(-48px) rotate(-2deg)}
+  .js .rv.on{opacity:1;transform:none}
+  .js .paper.rv.on{transform:rotate(-3deg)}
+  .js .paper.rv:not(.on){transform:translateY(40px) rotate(-10deg)}
+  .js .kw{background-size:0% 5px;transition:background-size 1.1s cubic-bezier(.6,0,.2,1) .35s}
+  .js .kw.on{background-size:100% 5px}
+
+  /* hero */
+  .heart-bg{animation:breathe 9s ease-in-out infinite}
+  @keyframes breathe{0%,100%{transform:translateY(-50%) scale(1) rotate(0)}50%{transform:translateY(-52%) scale(1.04) rotate(-3deg)}}
+  .video{animation:floaty 7s ease-in-out 1.5s infinite}
+  .play-xl{animation:pulse 2.4s ease-out infinite}
+  @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  .js .bubble:not(.on){opacity:0;transform:translateY(16px) scale(.9);transform-origin:0 100%}
+  .js .bubble{transition:opacity .5s ease,transform .6s cubic-bezier(.3,1.5,.5,1);transition-delay:.5s}
+  .js .linkchip{animation:chip 2.6s ease-in-out 2.2s infinite}
+  @keyframes chip{0%,100%{box-shadow:0 0 0 0 rgba(69,231,163,0)}50%{box-shadow:0 0 0 6px rgba(69,231,163,.28)}}
+  .js .step i::after{transform:scaleX(0);transition:transform .7s cubic-bezier(.6,0,.2,1)}
+  .js .tool.on .step:nth-child(1) i::after{transform:scaleX(1);transition-delay:1.1s}
+  .js .tool.on .step:nth-child(2) i::after{transform:scaleX(1);transition-delay:1.7s}
+  .js .tool.on .step.cur i::after{transform:scaleX(.55);transition-delay:2.3s}
+  .js .ok{opacity:0;transition:opacity .4s ease}
+  .js .tool.on .ok{opacity:1}
+  .js .tool.on .ok{transition-delay:var(--od,1.3s)}
+  .tag-float{animation:pop .6s cubic-bezier(.3,1.6,.5,1) 2.6s both}
+  @keyframes pop{from{opacity:0;transform:translateY(12px) scale(.85)}to{opacity:1;transform:none}}
+
+  /* CTA shine */
+  .btn-primary::after{content:"";position:absolute;top:0;bottom:0;left:-60%;width:40%;background:linear-gradient(100deg,rgba(255,255,255,0),rgba(255,255,255,.55),rgba(255,255,255,0));transform:skewX(-20deg);animation:shine 4.5s ease-in-out 3s infinite;pointer-events:none}
+  @keyframes shine{0%{left:-60%}22%,100%{left:130%}}
+
+  /* infographic */
+  .js .flow-line .fill{transform:scaleX(0);transition:transform 2.4s cubic-bezier(.5,0,.2,1) .3s}
+  .js .flow.on .flow-line .fill{transform:scaleX(1)}
+  .js .flow.on .flow-line .dot{animation:travel 2.4s cubic-bezier(.5,0,.2,1) .3s both, dotpulse 2s ease-out 2.7s infinite}
+  @keyframes travel{0%{left:0;opacity:1}100%{left:100%;opacity:1}}
+  @keyframes dotpulse{0%{box-shadow:0 0 0 0 rgba(69,231,163,.5)}100%{box-shadow:0 0 0 18px rgba(69,231,163,0)}}
+  .js .node .ic{transform:scale(.4);opacity:0;transition:transform .55s cubic-bezier(.3,1.6,.5,1),opacity .3s ease}
+  .js .flow.on .node .ic{transform:none;opacity:1}
+  .js .flow.on .node:nth-child(2) .ic{transition-delay:.3s}
+  .js .flow.on .node:nth-child(3) .ic{transition-delay:1.2s}
+  .js .flow.on .node:nth-child(4) .ic{transition-delay:2.1s}
+  .js .node>.nt{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .6s ease}
+  .js .flow.on .node>.nt{opacity:1;transform:none}
+  .js .flow.on .node:nth-child(2)>.nt{transition-delay:.45s}
+  .js .flow.on .node:nth-child(3)>.nt{transition-delay:1.35s}
+  .js .flow.on .node:nth-child(4)>.nt{transition-delay:2.25s}
+  .node:hover .ic svg{animation:wiggle .5s ease}
+  @keyframes wiggle{0%,100%{transform:rotate(0)}30%{transform:rotate(-12deg)}60%{transform:rotate(9deg)}}
+
+  /* checklist ticks */
+  .js .paper .tick{transition-delay:var(--d,0s)}
+  .js .paper.on .tick{background:var(--green) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230a141e' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5 9-10'/%3E%3C/svg%3E") center/10px no-repeat;transform:scale(1.12)}
+
+  .play{animation:pulse 2.4s ease-out infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(69,231,163,.55)}80%,100%{box-shadow:0 0 0 18px rgba(69,231,163,0)}}
+
+  /* EB */
+  .js .bars i{transform:scaleY(0);transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+  .js .on .bars i{transform:scaleY(1)}
+  .js .on .bars i:nth-child(2){transition-delay:.1s}.js .on .bars i:nth-child(3){transition-delay:.2s}.js .on .bars i:nth-child(4){transition-delay:.3s}.js .on .bars i:nth-child(5){transition-delay:.4s}.js .on .bars i:nth-child(6){transition-delay:.5s}
+  .js .on .vcard{animation:glow 2.8s ease-in-out 2.2s infinite}
+  @keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(69,231,163,0)}50%{box-shadow:0 0 0 8px rgba(69,231,163,.28)}}
+  .tw.typing::after{content:"";display:inline-block;width:2px;height:1em;background:currentColor;margin-left:2px;vertical-align:-.12em;animation:caret .8s steps(1) infinite}
+  @keyframes caret{50%{opacity:0}}
+
+  /* reward chart */
+  .js .seg{transform:scaleY(0);transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+  .js .rw.on .seg{transform:scaleY(1)}
+  .js .rw.on .col:nth-child(1) .fix{transition-delay:.2s}.js .rw.on .col:nth-child(1) .cons{transition-delay:.5s}
+  .js .rw.on .col:nth-child(2) .fix{transition-delay:.6s}.js .rw.on .col:nth-child(2) .cons{transition-delay:.9s}
+  .js .rw.on .col:nth-child(3) .fix{transition-delay:1s}.js .rw.on .col:nth-child(3) .cons{transition-delay:1.3s}
+  .js .rw.on .col:nth-child(4) .fix{transition-delay:1.4s}.js .rw.on .col:nth-child(4) .cons{transition-delay:1.7s}
+
+  /* cases */
+  .js .track i{transform:scaleX(0);transition:transform 1.4s cubic-bezier(.6,0,.2,1)}
+  .js .cases.on .track i{transform:scaleX(1)}
+  .js .cases.on .track i{transition-delay:var(--cd,0s)}
+  .js .pill{opacity:0;transform:scale(.7);transition:opacity .3s ease,transform .4s cubic-bezier(.3,1.6,.5,1)}
+  .js .cases.on .pill{opacity:1;transform:none}
+  .js .cases.on .pill{transition-delay:calc(var(--cd,0s) + 1.4s)}
+
+  /* perks */
+  .js .perk{opacity:0;transform:translateY(30px) rotate(-2deg);transition:opacity .6s ease,transform .7s cubic-bezier(.3,1.4,.5,1)}
+  .js .perks.on .perk{opacity:1;transform:none}
+  .js .perks.on .perk:nth-child(2){transition-delay:.15s}
+  .js .perks.on .perk:nth-child(3){transition-delay:.3s}
+}
+</style>
+</head>
+<body>
+<div class="progress" aria-hidden="true"></div>
+
+<header class="top">
+  <div class="wrap">
+    <a href="#top" aria-label="FREE for YOU – úvod"><svg style="height:30px;width:auto" role="img" aria-label="FREEforYOU" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 843.92 139.49"><g><path fill="#30c487" d="M88.66,38.45c2.04-2.35,4.14-4.6,6.28-6.76C65.82,2.28,29.46-8.68,10.91,7.44-9.01,24.74-.89,66.68,29.06,101.11c13.54,15.56,29.21,26.93,44.17,33.11-.95-.64-1.87-1.34-2.75-2.1-19.92-17.3-11.78-59.23,18.17-93.66"/><path fill="#45e7a3" d="M178.96,7.44c-18.56-16.12-54.92-5.16-84.02,24.25-2.14,2.16-4.22,4.4-6.28,6.76-29.95,34.43-38.09,76.37-18.17,93.67.88.76,1.79,1.45,2.75,2.1,7.54,3.12,14.89,4.91,21.7,5.27,6.8-.36,14.16-2.16,21.7-5.27,14.95-6.18,30.64-17.54,44.17-33.11,29.95-34.43,38.09-76.37,18.17-93.66"/></g><polygon fill="#214571" points="222.52 106.8 238.84 106.8 238.84 75.74 266.93 75.74 266.93 62.6 238.84 62.6 238.84 46.28 276.36 46.28 276.36 32.6 222.52 32.6 222.52 106.8"/><polygon fill="#214571" points="359.78 106.8 413.62 106.8 413.62 93.13 376.1 93.13 376.1 75.74 404.19 75.74 404.19 62.6 376.1 62.6 376.1 46.28 413.62 46.28 413.62 32.6 359.78 32.6 359.78 106.8"/><polygon fill="#214571" points="426.24 106.8 480.08 106.8 480.08 93.13 442.56 93.13 442.56 75.74 470.65 75.74 470.65 62.6 442.56 62.6 442.56 46.28 480.08 46.28 480.08 32.6 426.24 32.6 426.24 106.8"/><path fill="#214571" d="M303.82,46.28h15.26c3.74,0,6.52.88,8.32,2.65,1.8,1.77,2.7,4.17,2.7,7.21,0,2.05-.41,3.84-1.22,5.35-.81,1.52-2.03,2.67-3.66,3.44-1.63.78-3.71,1.17-6.25,1.17h-15.16v-19.82h0ZM332.01,77.76c3.39-1.34,6.18-3.16,8.37-5.46,2.19-2.29,3.82-4.84,4.88-7.63s1.59-5.64,1.59-8.53c0-4.24-1.01-8.14-3.02-11.71-2.02-3.57-5.02-6.43-9.01-8.59-3.99-2.15-8.99-3.23-15-3.23h-32.33v74.2h16.32v-27.03h10.51l15.67,27.03h18.23l-17.44-28.64c.41-.14.84-.25,1.23-.4"/><polygon fill="#214571" points="679.91 32.6 662.42 65.04 644.83 32.6 626.17 32.6 654.15 81.68 654.15 106.8 670.48 106.8 670.48 81.57 698.56 32.6 679.91 32.6"/><g><path fill="#214571" d="M751.32,82.05c-1.84,3.57-4.35,6.38-7.53,8.43-3.18,2.05-6.89,3.07-11.13,3.07s-7.86-1.02-11.08-3.07c-3.22-2.05-5.72-4.86-7.53-8.43-1.8-3.57-2.7-7.68-2.7-12.35s.9-8.89,2.7-12.45c1.8-3.57,4.31-6.36,7.53-8.37,3.21-2.01,6.91-3.02,11.08-3.02s7.95,1.01,11.13,3.02c3.18,2.01,5.69,4.81,7.53,8.37,1.84,3.57,2.76,7.72,2.76,12.45s-.92,8.78-2.76,12.35M759.59,42.41c-3.46-3.36-7.49-5.95-12.08-7.79s-9.54-2.76-14.84-2.76-10.14.92-14.73,2.76c-4.59,1.84-8.62,4.43-12.08,7.79s-6.18,7.35-8.16,11.98-2.97,9.74-2.97,15.32.99,10.69,2.97,15.32,4.7,8.62,8.16,11.98c3.46,3.36,7.49,5.95,12.08,7.79,4.59,1.84,9.5,2.76,14.73,2.76s10.24-.92,14.84-2.76c4.59-1.84,8.62-4.43,12.08-7.79,3.46-3.35,6.18-7.35,8.16-11.98s2.97-9.73,2.97-15.32-.99-10.69-2.97-15.32-4.7-8.62-8.16-11.98"/><path fill="#214571" d="M513.82,51.04c0-2.61.67-4.5,2.01-5.67s3.43-1.54,6.25-1.11v-13.78c-5.09-.64-9.4-.32-12.93.95-3.53,1.27-6.24,3.41-8.11,6.41s-2.81,7.01-2.81,12.03v3.92h-6.04v13.67h6.04v39.32h15.58v-39.32h8.8v-13.67h-8.8v-2.76h0Z"/><path fill="#214571" d="M827.49,32.6v46.32c0,3.18-.64,5.87-1.91,8.06-1.27,2.19-3.06,3.83-5.35,4.93-2.3,1.1-4.97,1.64-8,1.64s-5.48-.55-7.74-1.64-4.03-2.74-5.3-4.93c-1.27-2.19-1.91-4.88-1.91-8.06v-46.32h-16.43v45.05c0,6.72,1.43,12.28,4.29,16.69,2.86,4.42,6.64,7.72,11.34,9.91s9.87,3.29,15.53,3.29c4.1,0,8.07-.62,11.92-1.86s7.28-3.09,10.28-5.57c3-2.47,5.37-5.56,7.1-9.27,1.73-3.71,2.6-8.11,2.6-13.2v-45.05h-16.43,0Z"/><path fill="#214571" d="M617.06,53.75c-2.33.46-4.42,1.29-6.25,2.49-1.84,1.2-3.43,2.72-4.77,4.56l-1.06-7h-14.1v53h15.48v-23c0-3.53.58-6.41,1.75-8.64,1.17-2.23,2.7-3.92,4.61-5.09s3.92-1.87,6.04-2.12,4.1-.09,5.93.48v-14.63c-2.76-.49-5.3-.51-7.63-.05"/><path fill="#214571" d="M563.69,87.67c-1.1,1.94-2.47,3.41-4.13,4.4-1.66.99-3.41,1.48-5.25,1.48s-3.57-.49-5.19-1.48c-1.63-.99-2.88-2.47-3.76-4.45-.89-1.98-1.33-4.42-1.33-7.31s.46-5.42,1.38-7.37c.92-1.94,2.19-3.41,3.82-4.4,1.62-.99,3.39-1.49,5.3-1.49s3.67.5,5.3,1.49c1.62.99,2.95,2.47,3.98,4.45,1.02,1.98,1.54,4.42,1.54,7.31s-.55,5.42-1.64,7.37M568.51,56.4c-4.1-2.23-8.76-3.34-13.99-3.34s-9.79,1.11-13.89,3.34c-4.1,2.22-7.35,5.37-9.75,9.43-2.4,4.06-3.6,8.89-3.6,14.47s1.17,10.42,3.5,14.52c2.33,4.1,5.55,7.24,9.65,9.43,4.1,2.19,8.73,3.29,13.89,3.29s9.82-1.1,13.99-3.29,7.47-5.33,9.91-9.43,3.66-8.94,3.66-14.52-1.2-10.4-3.6-14.47c-2.41-4.06-5.66-7.21-9.75-9.43"/></g></svg></a>
+    <div class="top-right">
+      <a class="btn btn-primary" id="topCta" href="https://energobanking.cz/" data-link="registrace"><span>Chci se registrovat</span><svg class="arr" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="p2" id="partnerstvi">
+  <svg class="heart-deco" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 188.08"><g ><path fill="#30c487" d="M119.54,51.85c2.76-3.17,5.58-6.2,8.46-9.11C88.76,3.07,39.73-11.7,14.7,10.04-12.15,33.37-1.19,89.91,39.2,136.33c18.25,20.98,39.39,36.3,59.56,44.64-1.28-.86-2.52-1.8-3.7-2.83-26.86-23.33-15.89-79.87,24.49-126.29"/><path fill="#45e7a3" d="M241.3,10.04c-25.02-21.74-74.05-6.96-113.3,32.7-2.88,2.9-5.7,5.94-8.46,9.11-40.38,46.42-51.35,102.96-24.49,126.29,1.18,1.03,2.42,1.96,3.7,2.83,10.16,4.2,20.07,6.63,29.25,7.11,9.17-.49,19.09-2.91,29.25-7.11,20.17-8.34,41.3-23.66,59.56-44.64,40.38-46.42,51.35-102.97,24.49-126.29"/></g></svg>
+  <div class="wrap">
+    <div class="part rv"><b>+</b>Partnerská spolupráce</div>
+    <h1 class="rv">Získejte více <span class="kw">za své přepisy.</span></h1>
+    <p class="lead rv">Online přepis pomůže Vašim klientům a zároveň začne dlouhodobě pracovat i pro Vás. Jako partner FREE for YOU získáte čtyři konkrétní výhody:</p>
+    <div class="cta-row rv" style="margin-top:32px">
+      <a class="btn btn-primary btn-lg" href="https://energobanking.cz/" data-link="registrace">Chci se registrovat<svg class="arr" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
+      <a class="link" href="#vizitka" style="color:#fff">Co získáte</a>
+    </div>
+    <p class="rv" style="margin-top:14px;font-size:14px;color:var(--blue-300)">Bez poplatků a bez závazků. Registrace v Energobankingu zabere pár minut.</p>
+    <div class="chips">
+      <a class="chip rv" href="#vizitka"><b>1</b>Vaše vizitka v účtu klienta</a>
+      <a class="chip rv" href="#odmeny"><b>2</b>Odměny každý rok</a>
+      <a class="chip rv" href="#prehled"><b>3</b>Přehled o každém případu</a>
+      <a class="chip rv" href="#klient"><b>4</b>Výhody pro Vašeho klienta</a>
+    </div>
+  </div>
+</section>
+
+<section class="sec ben" id="vizitka" data-part="2">
+  <div class="wrap">
+    <div class="ben-copy">
+      <div class="ben-no rv"><b>1</b><span>Vizitka v účtu klienta</span></div>
+      <h2 class="h2 rv">Vaše vizitka v účtu <span class="kw">každého klienta.</span></h2>
+      <p class="rv">Každý klient, který se k nám přes Váš odkaz přepíše, uvidí Vaši vizitku ve svém zákaznickém účtu v Energobankingu, našem online portálu a mobilní aplikaci, kde klienti sledují spotřebu, platby a faktury. Uvidí ji pokaždé, když se do účtu přihlásí.</p>
+      <p class="rv">Až bude za pár let znovu prodávat, kupovat nebo pronajímat, nebude muset vzpomínat, jak se jmenoval jeho makléř.</p>
+    </div>
+    <div class="ben-vis">
+      <div class="eb rv right">
+        <div class="eb-h"><span><b>Energo</b>banking</span><small>Zákaznický účet</small></div>
+        <div class="eb-b">
+          <div class="kpis">
+            <div class="kpi"><span>Spotřeba tento měsíc</span><div><span class="ph">184</span> kWh</div></div>
+            <div class="kpi"><span>Uvítací sleva</span><div style="color:#15A268"><span class="cnt" data-to="500" data-pre="−" data-suf=" Kč">−500 Kč</span></div></div>
+          </div>
+          <div class="bars" aria-hidden="true"><i style="height:45%"></i><i style="height:60%"></i><i style="height:52%"></i><i style="height:78%"></i><i style="height:66%"></i><i style="height:90%"></i></div>
+          <div class="vcard">
+            <div class="pic">VJ</div>
+            <div><div class="lbl">Váš realitní makléř</div><div class="nm"><span class="tw">Vaše jméno</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec ben rev bg-blue50" id="odmeny" data-part="2">
+  <div class="wrap">
+    <div class="ben-copy">
+      <div class="ben-no rv"><b>2</b><span>Odměny</span></div>
+      <h2 class="h2 rv">Odměna za každého klienta. <span class="kw">Každý rok.</span></h2>
+      <p class="rv">Za každého klienta, který se přes Váš odkaz přepíše, dostanete <b>fixní odměnu</b> a k tomu <b>odměnu podle jeho spotřeby</b>. Každý rok, dokud u nás odebírá.</p>
+      <p class="rv">Jeden odkaz z předání klíčů Vám tak vydělává i v dalších letech.</p>
+    </div>
+    <div class="ben-vis">
+      <div class="rw rv left">
+        <div class="rw-top">
+          <h4>Vaše odměna za jednoho klienta</h4>
+          <div class="legend"><span><i style="background:var(--blue)"></i>Fixní odměna</span><span><i style="background:var(--green)"></i>Ze spotřeby klienta</span></div>
+        </div>
+        <div class="chart" aria-hidden="true">
+          <div class="col"><div class="seg cons" style="height:30%"></div><div class="seg fix" style="height:34%"></div></div>
+          <div class="col"><div class="seg cons" style="height:32%"></div><div class="seg fix" style="height:34%"></div></div>
+          <div class="col"><div class="seg cons" style="height:34%"></div><div class="seg fix" style="height:34%"></div></div>
+          <div class="col"><div class="seg cons" style="height:36%"></div><div class="seg fix" style="height:34%"></div></div>
+        </div>
+        <div class="yrs"><span>1. rok</span><span>2. rok</span><span>3. rok</span><span>4. rok…</span></div>
+        <p class="rw-note">Ilustrační graf. Výše odměn: <span class="ph">doplnit fixní částku a výpočet ze spotřeby</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec ben" id="prehled" data-part="2">
+  <div class="wrap">
+    <div class="ben-copy">
+      <div class="ben-no rv"><b>3</b><span>Přehled v Energobankingu</span></div>
+      <h2 class="h2 rv">Stav každého přepisu máte <span class="kw">jako na dlani.</span></h2>
+      <p class="rv">Energobanking neslouží jen klientům. Jako partner v něm dostanete vlastní účet, kde přehledně vidíte všechny klienty, které jste k nám poslali.</p>
+      <p class="rv">Hlídat nic nemusíte. Ale kdykoliv se můžete podívat, v jaké fázi je přepis každého z nich.</p>
+    </div>
+    <div class="ben-vis">
+      <div class="cases rv right">
+        <div class="eb-h"><span><b>Energo</b>banking</span><small>Moje předané případy</small></div>
+        <div class="case"><div class="case-top"><b>Byt 2+kk<small>Přijato 2. 10.</small></b><span class="pill done">Dokončeno</span></div><div class="track"><i style="width:100%"></i></div></div>
+        <div class="case" style="--cd:.3s"><div class="case-top"><b>Rodinný dům<small>Přijato 5. 10.</small></b><span class="pill wip">Zpracováváme</span></div><div class="track"><i style="width:62%"></i></div></div>
+        <div class="case" style="--cd:.6s"><div class="case-top"><b>Byt 3+1<small>Přijato dnes</small></b><span class="pill new">Klient odeslal</span></div><div class="track"><i style="width:22%"></i></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec ben rev bg-blue50" id="klient" data-part="2">
+  <div class="wrap">
+    <div class="ben-copy">
+      <div class="ben-no rv"><b>4</b><span>Výhody pro klienta</span></div>
+      <h2 class="h2 rv">Klientovi doporučíte něco, co mu <span class="kw">opravdu pomůže.</span></h2>
+      <p class="rv">Váš klient dostane slevu 500 Kč přímo do faktury a smlouvu bez sankcí. Když nebude spokojený, může kdykoliv odejít. Nic neriskuje, a Vy tedy taky ne.</p>
+    </div>
+    <div class="ben-vis">
+      <div class="perks rv">
+        <div class="perk"><div class="big"><span class="cnt" data-to="500" data-suf=" Kč">500 Kč</span></div><span>sleva přímo do faktury</span></div>
+        <div class="perk"><div class="big">Bez sankcí</div><span>žádné pokuty za odchod</span></div>
+        <div class="perk"><div class="big">Kdykoliv</div><span>může od smlouvy odejít</span></div>
+        <div class="perks-wide"><span class="ck sm"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0a141e" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span>Když zavolá, ozve se mu skutečný člověk.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="try" id="vyzkouset" data-part="2">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow rv">Nejdřív vyzkoušejte</span>
+      <h2 class="h2 rv">Než nás doporučíte, <span class="kw">vyzkoušejte si nás sami.</span></h2>
+      <p class="lead rv">Za každým doporučením stojí Vaše jméno. Proto začněte vlastní zkušeností: uvidíte, jak přepis probíhá a jak s klienty komunikujeme. Pak budete doporučovat s jistotou.</p>
+    </div>
+    <div class="opts">
+      <div class="opt rv">
+        <span class="ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#214571" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M13 11l-3 4h4l-3 4"/></svg></span>
+        <h3>Přepište vlastní odběrné místo</h3>
+        <p>Projděte si přepis sami za sebe a zažijte přesně to, co Váš klient.</p>
+      </div>
+      <div class="opt rv">
+        <span class="ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#214571" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg></span>
+        <h3>Pošlete odkaz prvnímu klientovi</h3>
+        <p>Vyberte klienta, kterému právě předáváte nemovitost, a pošlete mu odkaz. Celý průběh pak uvidíte v Energobankingu.</p>
+      </div>
+    </div>
+    <div class="try-cta rv">
+      <a class="btn btn-blue btn-lg" href="#" data-link="prepis">Vyzkoušet přepis<svg class="arr" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
+      <span class="micro">Bez závazků. Smlouvu lze kdykoliv ukončit bez sankcí.</span>
+    </div>
+  </div>
+</section>
+
+<section class="reg" id="registrace" data-part="2">
+  <svg class="heart-deco" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 188.08"><g ><path fill="#30c487" d="M119.54,51.85c2.76-3.17,5.58-6.2,8.46-9.11C88.76,3.07,39.73-11.7,14.7,10.04-12.15,33.37-1.19,89.91,39.2,136.33c18.25,20.98,39.39,36.3,59.56,44.64-1.28-.86-2.52-1.8-3.7-2.83-26.86-23.33-15.89-79.87,24.49-126.29"/><path fill="#45e7a3" d="M241.3,10.04c-25.02-21.74-74.05-6.96-113.3,32.7-2.88,2.9-5.7,5.94-8.46,9.11-40.38,46.42-51.35,102.96-24.49,126.29,1.18,1.03,2.42,1.96,3.7,2.83,10.16,4.2,20.07,6.63,29.25,7.11,9.17-.49,19.09-2.91,29.25-7.11,20.17-8.34,41.3-23.66,59.56-44.64,40.38-46.42,51.35-102.97,24.49-126.29"/></g></svg>
+  <div class="wrap">
+    <div class="reg-copy">
+      <span class="eyebrow rv">Registrace partnera</span>
+      <h2 class="h2 rv">Začněte posílat odkaz <span class="kw">ještě tento týden.</span></h2>
+      <p class="lead rv">Registrace v Energobankingu zabere pár minut. Pak už jen posíláte odkaz, o všechno ostatní se postaráme my.</p>
+      <ul class="rv">
+        <li><span class="ck sm"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0a141e" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span>Vizitka v zákaznickém účtu každého klienta</li>
+        <li><span class="ck sm"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0a141e" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span>Fixní odměna a odměna ze spotřeby, každý rok</li>
+        <li><span class="ck sm"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0a141e" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span>Stav každého případu v Energobankingu</li>
+        <li><span class="ck sm"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0a141e" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span>Sleva 500 Kč a smlouva bez sankcí pro klienta</li>
+      </ul>
+      <form class="info-form rv" id="infoForm" action="#" method="post">
+        <b>Zaujalo Vás to, ale chcete více informací?</b>
+        <span>Nechte nám e-mail a ozveme se Vám.</span>
+        <div class="info-row">
+          <label class="sr" for="info-email">Váš e-mail</label>
+          <input id="info-email" name="email" type="email" autocomplete="email" placeholder="Váš e-mail" required>
+          <button class="btn btn-mint" type="submit">Odeslat</button>
+        </div>
+        <p class="okmsg" hidden role="status"><b>Děkujeme!</b> Brzy se Vám ozveme.</p>
+      </form>
+    </div>
+    <div class="reg-card rv zoom">
+      <div class="eb-badge"><svg class="ebh" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 188.08"><g ><path fill="#30c487" d="M119.54,51.85c2.76-3.17,5.58-6.2,8.46-9.11C88.76,3.07,39.73-11.7,14.7,10.04-12.15,33.37-1.19,89.91,39.2,136.33c18.25,20.98,39.39,36.3,59.56,44.64-1.28-.86-2.52-1.8-3.7-2.83-26.86-23.33-15.89-79.87,24.49-126.29"/><path fill="#45e7a3" d="M241.3,10.04c-25.02-21.74-74.05-6.96-113.3,32.7-2.88,2.9-5.7,5.94-8.46,9.11-40.38,46.42-51.35,102.96-24.49,126.29,1.18,1.03,2.42,1.96,3.7,2.83,10.16,4.2,20.07,6.63,29.25,7.11,9.17-.49,19.09-2.91,29.25-7.11,20.17-8.34,41.3-23.66,59.56-44.64,40.38-46.42,51.35-102.97,24.49-126.29"/></g></svg><span><b>Energo</b>banking</span></div>
+      <h3>Registrace v Energobankingu</h3>
+      <ol class="reg-steps">
+        <li>Založte si partnerský účet v Energobankingu</li>
+        <li>Získáte svůj odkaz na online přepis</li>
+        <li>Posílejte ho klientům při předání klíčů</li>
+      </ol>
+      <a class="btn btn-primary btn-lg" href="https://energobanking.cz/" data-link="registrace">Chci se registrovat<svg class="arr" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
+      <p class="micro" style="text-align:center">Bez poplatků a bez závazků. Budete přesměrováni na energobanking.cz.</p>
+      <div class="or">nebo</div>
+      <a class="btn btn-mint" href="#" data-link="prepis">Nejdřív vyzkoušet přepis<svg class="arr" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="rv"><svg style="width:100%;max-width:760px;height:auto" role="img" aria-label="FREEforYOU" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 843.92 139.49"><g><path fill="#30c487" d="M88.66,38.45c2.04-2.35,4.14-4.6,6.28-6.76C65.82,2.28,29.46-8.68,10.91,7.44-9.01,24.74-.89,66.68,29.06,101.11c13.54,15.56,29.21,26.93,44.17,33.11-.95-.64-1.87-1.34-2.75-2.1-19.92-17.3-11.78-59.23,18.17-93.66"/><path fill="#45e7a3" d="M178.96,7.44c-18.56-16.12-54.92-5.16-84.02,24.25-2.14,2.16-4.22,4.4-6.28,6.76-29.95,34.43-38.09,76.37-18.17,93.67.88.76,1.79,1.45,2.75,2.1,7.54,3.12,14.89,4.91,21.7,5.27,6.8-.36,14.16-2.16,21.7-5.27,14.95-6.18,30.64-17.54,44.17-33.11,29.95-34.43,38.09-76.37,18.17-93.66"/></g><polygon fill="#ffffff" points="222.52 106.8 238.84 106.8 238.84 75.74 266.93 75.74 266.93 62.6 238.84 62.6 238.84 46.28 276.36 46.28 276.36 32.6 222.52 32.6 222.52 106.8"/><polygon fill="#ffffff" points="359.78 106.8 413.62 106.8 413.62 93.13 376.1 93.13 376.1 75.74 404.19 75.74 404.19 62.6 376.1 62.6 376.1 46.28 413.62 46.28 413.62 32.6 359.78 32.6 359.78 106.8"/><polygon fill="#ffffff" points="426.24 106.8 480.08 106.8 480.08 93.13 442.56 93.13 442.56 75.74 470.65 75.74 470.65 62.6 442.56 62.6 442.56 46.28 480.08 46.28 480.08 32.6 426.24 32.6 426.24 106.8"/><path fill="#ffffff" d="M303.82,46.28h15.26c3.74,0,6.52.88,8.32,2.65,1.8,1.77,2.7,4.17,2.7,7.21,0,2.05-.41,3.84-1.22,5.35-.81,1.52-2.03,2.67-3.66,3.44-1.63.78-3.71,1.17-6.25,1.17h-15.16v-19.82h0ZM332.01,77.76c3.39-1.34,6.18-3.16,8.37-5.46,2.19-2.29,3.82-4.84,4.88-7.63s1.59-5.64,1.59-8.53c0-4.24-1.01-8.14-3.02-11.71-2.02-3.57-5.02-6.43-9.01-8.59-3.99-2.15-8.99-3.23-15-3.23h-32.33v74.2h16.32v-27.03h10.51l15.67,27.03h18.23l-17.44-28.64c.41-.14.84-.25,1.23-.4"/><polygon fill="#ffffff" points="679.91 32.6 662.42 65.04 644.83 32.6 626.17 32.6 654.15 81.68 654.15 106.8 670.48 106.8 670.48 81.57 698.56 32.6 679.91 32.6"/><g><path fill="#ffffff" d="M751.32,82.05c-1.84,3.57-4.35,6.38-7.53,8.43-3.18,2.05-6.89,3.07-11.13,3.07s-7.86-1.02-11.08-3.07c-3.22-2.05-5.72-4.86-7.53-8.43-1.8-3.57-2.7-7.68-2.7-12.35s.9-8.89,2.7-12.45c1.8-3.57,4.31-6.36,7.53-8.37,3.21-2.01,6.91-3.02,11.08-3.02s7.95,1.01,11.13,3.02c3.18,2.01,5.69,4.81,7.53,8.37,1.84,3.57,2.76,7.72,2.76,12.45s-.92,8.78-2.76,12.35M759.59,42.41c-3.46-3.36-7.49-5.95-12.08-7.79s-9.54-2.76-14.84-2.76-10.14.92-14.73,2.76c-4.59,1.84-8.62,4.43-12.08,7.79s-6.18,7.35-8.16,11.98-2.97,9.74-2.97,15.32.99,10.69,2.97,15.32,4.7,8.62,8.16,11.98c3.46,3.36,7.49,5.95,12.08,7.79,4.59,1.84,9.5,2.76,14.73,2.76s10.24-.92,14.84-2.76c4.59-1.84,8.62-4.43,12.08-7.79,3.46-3.35,6.18-7.35,8.16-11.98s2.97-9.73,2.97-15.32-.99-10.69-2.97-15.32-4.7-8.62-8.16-11.98"/><path fill="#ffffff" d="M513.82,51.04c0-2.61.67-4.5,2.01-5.67s3.43-1.54,6.25-1.11v-13.78c-5.09-.64-9.4-.32-12.93.95-3.53,1.27-6.24,3.41-8.11,6.41s-2.81,7.01-2.81,12.03v3.92h-6.04v13.67h6.04v39.32h15.58v-39.32h8.8v-13.67h-8.8v-2.76h0Z"/><path fill="#ffffff" d="M827.49,32.6v46.32c0,3.18-.64,5.87-1.91,8.06-1.27,2.19-3.06,3.83-5.35,4.93-2.3,1.1-4.97,1.64-8,1.64s-5.48-.55-7.74-1.64-4.03-2.74-5.3-4.93c-1.27-2.19-1.91-4.88-1.91-8.06v-46.32h-16.43v45.05c0,6.72,1.43,12.28,4.29,16.69,2.86,4.42,6.64,7.72,11.34,9.91s9.87,3.29,15.53,3.29c4.1,0,8.07-.62,11.92-1.86s7.28-3.09,10.28-5.57c3-2.47,5.37-5.56,7.1-9.27,1.73-3.71,2.6-8.11,2.6-13.2v-45.05h-16.43,0Z"/><path fill="#ffffff" d="M617.06,53.75c-2.33.46-4.42,1.29-6.25,2.49-1.84,1.2-3.43,2.72-4.77,4.56l-1.06-7h-14.1v53h15.48v-23c0-3.53.58-6.41,1.75-8.64,1.17-2.23,2.7-3.92,4.61-5.09s3.92-1.87,6.04-2.12,4.1-.09,5.93.48v-14.63c-2.76-.49-5.3-.51-7.63-.05"/><path fill="#ffffff" d="M563.69,87.67c-1.1,1.94-2.47,3.41-4.13,4.4-1.66.99-3.41,1.48-5.25,1.48s-3.57-.49-5.19-1.48c-1.63-.99-2.88-2.47-3.76-4.45-.89-1.98-1.33-4.42-1.33-7.31s.46-5.42,1.38-7.37c.92-1.94,2.19-3.41,3.82-4.4,1.62-.99,3.39-1.49,5.3-1.49s3.67.5,5.3,1.49c1.62.99,2.95,2.47,3.98,4.45,1.02,1.98,1.54,4.42,1.54,7.31s-.55,5.42-1.64,7.37M568.51,56.4c-4.1-2.23-8.76-3.34-13.99-3.34s-9.79,1.11-13.89,3.34c-4.1,2.22-7.35,5.37-9.75,9.43-2.4,4.06-3.6,8.89-3.6,14.47s1.17,10.42,3.5,14.52c2.33,4.1,5.55,7.24,9.65,9.43,4.1,2.19,8.73,3.29,13.89,3.29s9.82-1.1,13.99-3.29,7.47-5.33,9.91-9.43,3.66-8.94,3.66-14.52-1.2-10.4-3.6-14.47c-2.41-4.06-5.66-7.21-9.75-9.43"/></g></svg></div>
+    <div class="f-cols">
+      <div><b>FREE for YOU</b><span>Ryze český dodavatel energií od roku 2016.</span></div>
+      <div><b>Kontakt</b><a href="tel:+420227072290">+420 227 072 290</a><a href="mailto:info@freeforyou.cz">info@freeforyou.cz</a></div>
+      <div><b>Adresa</b><span>Českomoravská 2255/12a<br>190 00 Praha 9</span></div>
+    </div>
+    <div class="legal">FREE for YOU s.r.o. · IČO 25336665 · DIČ CZ25336665 · C 260212 vedená u Městského soudu v Praze</div>
+  </div>
+</footer>
+
+<a class="mcta" id="mcta" href="https://energobanking.cz/" data-link="registrace"><span>Chci se registrovat</span><svg class="arr" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
+
+<script>
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var top = document.querySelector('.top'), bar = document.querySelector('.progress');
+  var topCta = document.getElementById('topCta'), mcta = document.getElementById('mcta');
+  var CTA = {t:'Chci se registrovat',h:'https://energobanking.cz/'};
+  var heroGone = false, formSeen = false;
+
+  function onScroll(){
+    var y = scrollY, max = document.documentElement.scrollHeight - innerHeight;
+    top.classList.toggle('scrolled', y > 8);
+    bar.style.transform = 'scaleX(' + (max > 0 ? y / max : 0) + ')';
+  }
+  addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+  // formuláře – zde napojte odeslání do CRM / e-mailového nástroje
+  ['infoForm'].forEach(function(id){
+    var f = document.getElementById(id); if (!f) return;
+    f.addEventListener('submit', function(e){
+      e.preventDefault();
+      if (!f.checkValidity()){ f.reportValidity(); return; }
+      // fetch('/api/lead', {method:'POST', body:new FormData(f)});
+      f.querySelector('.okmsg').hidden = false;
+      f.querySelector('button[type=submit]').disabled = true;
+      f.querySelector('button[type=submit]').style.opacity = '.6';
+    });
+  });
+
+  if (!('IntersectionObserver' in window)) return;
+  // plovoucí CTA na mobilu
+  new IntersectionObserver(function(e){ heroGone = !e[0].isIntersecting; upd(); }).observe(document.querySelector('#partnerstvi'));
+  var forms = ['registrace'].map(function(id){ return document.getElementById(id); }).filter(Boolean), vis = {};
+  var fo = new IntersectionObserver(function(es){ es.forEach(function(e){ vis[e.target.id] = e.isIntersecting; }); formSeen = Object.keys(vis).some(function(k){ return vis[k]; }); upd(); });
+  forms.forEach(function(f){ fo.observe(f); });
+  function upd(){ mcta.classList.toggle('show', heroGone && !formSeen); }
+
+  // checklist – postupné odškrtávání
+  document.querySelectorAll('.paper .tick').forEach(function(t,i){ t.style.setProperty('--d', (0.5 + i * 0.25) + 's'); });
+
+  if (reduce) return;
+  document.documentElement.classList.add('js');
+
+  // stagger sourozenců
+  document.querySelectorAll('.rv').forEach(function(el){
+    if (el.style.getPropertyValue('--d')) return;
+    var sib = Array.prototype.filter.call(el.parentElement.children, function(c){ return c.classList.contains('rv'); });
+    el.style.setProperty('--d', Math.min(sib.indexOf(el) * 0.09, 0.45) + 's');
+  });
+
+  function count(el){
+    if (el.dataset.done) return; el.dataset.done = 1;
+    var to = +el.dataset.to, pre = el.dataset.pre || '', suf = el.dataset.suf || '', t0 = null;
+    (function f(t){ if (!t) return requestAnimationFrame(f); if (!t0) t0 = t; var p = Math.min((t - t0) / 1400, 1);
+      el.textContent = pre + Math.round(to * (1 - Math.pow(1 - p, 3))) + suf; if (p < 1) requestAnimationFrame(f); })();
+  }
+  function type(el){
+    if (el.dataset.done) return; el.dataset.done = 1;
+    var txt = el.dataset.txt, i = 0; el.textContent = ''; el.classList.add('typing');
+    (function s(){ el.textContent = txt.slice(0, ++i); if (i < txt.length) setTimeout(s, 75); else setTimeout(function(){ el.classList.remove('typing'); }, 1400); })();
+  }
+  document.querySelectorAll('.cnt').forEach(function(el){ el.textContent = (el.dataset.pre || '') + '0' + (el.dataset.suf || ''); });
+  document.querySelectorAll('.tw').forEach(function(el){ el.dataset.txt = el.textContent; el.textContent = ' '; });
+
+  var watched = '.rv, .bubble, .tool, .cnt, .tw, .kw';
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if (!e.isIntersecting && e.boundingClientRect.top > 0) return;
+      var el = e.target; el.classList.add('on'); io.unobserve(el);
+      if (el.classList.contains('cnt')) setTimeout(function(){ count(el); }, 300);
+      if (el.classList.contains('tw')) setTimeout(function(){ type(el); }, 700);
+    });
+  }, {threshold: 0.2, rootMargin: '0px 0px -40px 0px'});
+  document.querySelectorAll(watched).forEach(function(el){ if (!el.closest('.hero') || el.classList.contains('tool') || el.classList.contains('bubble')) io.observe(el); });
+  // hero hned po načtení
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){
+    document.querySelectorAll('.hero .rv').forEach(function(el, i){ el.style.setProperty('--d', (0.1 + i * 0.09) + 's'); el.classList.add('on'); });
+    setTimeout(function(){ document.querySelectorAll('.hero .kw').forEach(function(k){ k.classList.add('on'); }); }, 600);
+  }); });
+})();
+</script>
+</body>
+</html>
