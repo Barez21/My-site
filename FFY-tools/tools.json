@@ -15,6 +15,11 @@
     "description": "Zjistí distributora elektřiny a plynu podle PSČ odběrného místa."
   },
   {
+    "file": "ceny-konkurence.html",
+    "title": "Ceny konkurence",
+    "description": "Stáhne aktuální tarify elektřiny a plynu všech dodavatelů z kurzy.cz a porovná je podle kraje a sazby."
+  },
+  {
     "file": "qr-generator.html",
     "title": "QR generátor",
     "description": "Odkazy, platební QR, vizitky a kampaně s UTM. Stažení v PNG i SVG."

@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ceny konkurence</title>
+  <meta name="description" content="Stáhne aktuální tarify elektřiny a plynu všech dodavatelů z kurzy.cz a porovná je podle kraje a sazby.">
+  <script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.24.7/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg-primary: #060a10; --bg-secondary: #0d1117; --bg-tertiary: #161b22; --bg-card: #1c2333;
+      --accent: #00e5b0; --accent-alt: #00b4d8; --accent-glow: rgba(0,229,176,0.15); --accent-glow-strong: rgba(0,229,176,0.3);
+      --text-primary: #e6edf3; --text-secondary: #8b949e; --text-dim: #6e7681;
+      --border: #30363d; --border-glow: rgba(0,229,176,0.2);
+      --danger: #ff6b6b; --warning: #ffd93d; --success: #00e5b0;
+      --gradient-primary: linear-gradient(135deg, var(--accent) 0%, var(--accent-alt) 100%);
+      --gradient-card: linear-gradient(145deg, rgba(22,27,34,0.9), rgba(28,35,51,0.9));
+    }
+    body {
+      font-family: 'IBM Plex Mono', monospace; background: var(--bg-primary);
+      background-image: radial-gradient(ellipse 80% 50% at 50% -20%, var(--accent-glow), transparent);
+      color: var(--text-primary); min-height: 100vh; line-height: 1.6;
+    }
+    .top-nav { display:flex; justify-content:center; background:var(--bg-secondary); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:100; backdrop-filter:blur(12px); }
+    .top-nav-btn { background:transparent; border:none; color:var(--text-secondary); padding:1rem 2.5rem; cursor:pointer; font-family:'Space Mono',monospace; font-weight:700; font-size:1rem; transition:all 0.3s; text-transform:uppercase; letter-spacing:2px; border-bottom:3px solid transparent; }
+    .top-nav-btn:hover { color:var(--text-primary); }
+    .top-nav-btn.active-elec { color:#00e5b0; border-bottom-color:#00e5b0; }
+    .top-nav-btn.active-gas  { color:#3ba0e8; border-bottom-color:#3ba0e8; }
+    .page-wrap { padding: 2rem; }
+    .container { max-width: 1400px; margin: 0 auto; }
+    .header { text-align:center; margin-bottom:2rem; padding:1.5rem 1rem 1.5rem; position:relative; border-bottom:1px solid var(--border); background:linear-gradient(180deg, var(--accent-glow), transparent); border-radius:16px 16px 0 0; }
+    .header::after { content:''; position:absolute; bottom:-1px; left:10%; right:10%; height:2px; background:var(--gradient-primary); border-radius:2px; box-shadow:0 0 12px var(--accent-glow-strong); }
+    .header h1 { font-family:'Space Mono',monospace; font-size:2.2rem; font-weight:700; color:var(--accent); text-transform:uppercase; letter-spacing:3px; margin-bottom:0.5rem; text-shadow:0 0 30px var(--accent-glow-strong); }
+    .header .subtitle { color:var(--text-secondary); font-size:0.9rem; letter-spacing:1px; }
+    .data-source { text-align:center; color:var(--text-dim); font-size:0.85rem; margin-top:0.5rem; }
+    .data-source a { color:var(--accent); text-decoration:none; } .data-source a:hover { text-decoration:underline; }
+    .help-button { position:absolute; top:1.5rem; right:1rem; background:var(--bg-tertiary); border:1px solid var(--border); color:var(--accent); width:42px; height:42px; border-radius:50%; cursor:pointer; font-size:1.2rem; font-weight:bold; transition:all 0.3s; display:flex; align-items:center; justify-content:center; }
+    .help-button:hover { background:var(--accent); color:var(--bg-primary); transform:scale(1.1); box-shadow:0 0 20px var(--accent-glow-strong); }
+    .filters-bar { background:var(--bg-tertiary); border:1px solid var(--border); border-radius:12px; padding:1.5rem; margin-bottom:2rem; display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:1rem; }
+    .filter-group { display:flex; flex-direction:column; gap:0.5rem; }
+    .filter-label { color:var(--text-secondary); font-size:0.85rem; text-transform:uppercase; letter-spacing:1px; }
+    .filter-input { background:var(--bg-secondary); border:1px solid var(--border); color:var(--text-primary); padding:0.75rem; border-radius:8px; font-family:'IBM Plex Mono',monospace; font-size:0.9rem; }
+    .filter-input:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-glow); }
+    .stats-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:1rem; margin-bottom:2rem; }
+    .stat-card { background:var(--gradient-card); border:1px solid var(--border); border-radius:12px; padding:1.2rem; position:relative; overflow:hidden; transition:all 0.4s; backdrop-filter:blur(8px); }
+    .stat-card:hover { border-color:var(--accent); transform:translateY(-4px); box-shadow:0 8px 32px var(--accent-glow); }
+    .stat-card::before { content:''; position:absolute; top:0; left:0; width:4px; height:100%; background:var(--gradient-primary); }
+    .stat-label { color:var(--text-secondary); font-size:0.78rem; margin-bottom:0.4rem; text-transform:uppercase; letter-spacing:1px; }
+    .stat-value { font-size:1.5rem; font-weight:700; color:var(--accent); font-family:'Space Mono',monospace; text-shadow:0 0 20px var(--accent-glow); }
+    .stat-unit { font-size:0.8rem; color:var(--text-dim); margin-left:0.3rem; }
+    .tabs { display:flex; gap:0.25rem; margin-bottom:2rem; background:var(--bg-tertiary); border-radius:12px; padding:0.35rem; border:1px solid var(--border); overflow-x:auto; }
+    .tab { background:transparent; border:none; color:var(--text-secondary); padding:0.85rem 1.25rem; cursor:pointer; font-family:'Space Mono',monospace; font-weight:600; font-size:0.85rem; transition:all 0.3s; border-radius:8px; text-transform:uppercase; letter-spacing:1px; white-space:nowrap; }
+    .tab:hover { color:var(--text-primary); background:rgba(255,255,255,0.03); }
+    .tab.active { color:var(--bg-primary); background:var(--gradient-primary); box-shadow:0 2px 16px var(--accent-glow-strong); }
+    .top10-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:1rem; margin-bottom:2rem; }
+    .top10-card { background:var(--bg-tertiary); border:1px solid var(--border); border-radius:12px; padding:1.15rem; display:flex; gap:1rem; align-items:center; transition:all 0.4s; position:relative; overflow:hidden; }
+    .top10-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:var(--gradient-primary); opacity:0; transition:opacity 0.3s; }
+    .top10-card:hover { border-color:var(--accent); transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,0.3); }
+    .top10-card:hover::before { opacity:1; }
+    .top10-rank { font-size:1.8rem; font-weight:700; color:var(--accent); font-family:'Space Mono',monospace; min-width:50px; text-align:center; }
+    .top10-info { flex:1; min-width:0; }
+    .top10-provider { font-weight:600; color:var(--text-primary); margin-bottom:0.25rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .top10-tariff { font-size:0.85rem; color:var(--text-dim); margin-bottom:0.5rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .top10-price { font-size:1.2rem; font-weight:700; color:var(--accent); }
+    .top10-monthly { color:var(--text-dim); font-size:0.85rem; }
+    .top10-secondary { color:var(--text-secondary); font-size:0.85rem; }
+    .fav-star { background:transparent; border:2px solid #3d4450; color:#3d4450; width:38px; height:38px; min-width:38px; border-radius:10px; cursor:pointer; font-size:1.15rem; display:flex; align-items:center; justify-content:center; transition:all 0.3s; padding:0; }
+    .fav-star:hover { border-color:var(--accent); color:var(--accent); transform:scale(1.1); box-shadow:0 0 16px var(--accent-glow); }
+    .fav-star.active { background:var(--accent); border-color:var(--accent); color:var(--bg-primary); box-shadow:0 0 16px var(--accent-glow-strong); }
+    .fav-star.active:hover { background:var(--accent-alt); border-color:var(--accent-alt); }
+    .providers-section { background:var(--bg-tertiary); border:1px solid var(--border); border-radius:12px; padding:1.5rem; margin-bottom:2rem; }
+    .section-title { font-family:'Space Mono',monospace; font-size:1.2rem; color:var(--accent); margin-bottom:1rem; text-transform:uppercase; letter-spacing:1px; text-shadow:0 0 15px var(--accent-glow); }
+    .providers-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:0.5rem; margin-bottom:1.5rem; }
+    .provider-checkbox { display:flex; align-items:center; gap:0.5rem; padding:0.6rem 0.75rem; border-radius:8px; cursor:pointer; transition:all 0.2s; border:1px solid transparent; }
+    .provider-checkbox:hover { background:var(--bg-secondary); border-color:var(--border); }
+    .provider-checkbox input[type="checkbox"] { width:18px; height:18px; cursor:pointer; accent-color:var(--accent); }
+    .provider-checkbox label { cursor:pointer; font-size:0.9rem; color:var(--text-primary); flex:1; }
+    .providers-list { display:flex; flex-direction:column; gap:0.35rem; margin-bottom:1.5rem; }
+    .prov-list-price { color:var(--accent); font-size:0.85rem; font-weight:600; margin-left:auto; padding-left:1rem; white-space:nowrap; }
+    .toolbar { display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap; padding:0.75rem 0; margin-bottom:0.75rem; border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+    .toolbar-select { background:var(--bg-secondary); border:1px solid var(--border); color:var(--text-primary); padding:0.4rem 0.6rem; border-radius:8px; font-family:'IBM Plex Mono',monospace; font-size:0.8rem; cursor:pointer; }
+    .toolbar-select:focus { outline:none; border-color:var(--accent); }
+    .view-toggle { display:flex; border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+    .view-toggle button { background:var(--bg-secondary); border:none; color:var(--text-dim); padding:0.4rem 0.65rem; cursor:pointer; font-size:0.9rem; transition:all 0.2s; line-height:1; }
+    .view-toggle button.active { background:var(--accent); color:var(--bg-primary); }
+    .view-toggle button:not(:last-child) { border-right:1px solid var(--border); }
+    .selected-providers { margin-top:2rem; }
+    .provider-card { background:var(--bg-secondary); border:1px solid var(--border); border-radius:12px; padding:1rem 1.5rem; margin-bottom:1rem; animation:slideIn 0.3s ease; }
+    .provider-card:hover { border-color:var(--border-glow); }
+    .close-btn { background:none; border:1px solid var(--border); color:var(--text-dim); width:30px; height:30px; min-width:30px; border-radius:8px; cursor:pointer; font-size:1.1rem; display:flex; align-items:center; justify-content:center; transition:all 0.2s; padding:0; }
+    .close-btn:hover { border-color:var(--danger); color:var(--danger); background:rgba(255,107,107,0.1); }
+    @keyframes slideIn { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
+    .provider-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; padding-bottom:0.75rem; border-bottom:1px solid var(--border); }
+    .provider-name { font-weight:700; color:var(--accent); font-size:1.3rem; text-shadow:0 0 12px var(--accent-glow); }
+    .tariff-count { color:var(--text-dim); font-size:0.9rem; }
+    .tariff-list { display:flex; flex-direction:column; gap:0.75rem; }
+    .tariff-item { background:var(--bg-primary); border:1px solid var(--border); border-radius:10px; padding:1rem; display:flex; gap:1rem; align-items:center; flex-wrap:wrap; transition:all 0.3s; }
+    .tariff-item:hover { border-color:var(--accent-glow); }
+    .tariff-item.favorite { border-color:var(--accent); background:rgba(0,229,176,0.03); box-shadow:0 0 20px var(--accent-glow); }
+    .tariff-name { color:var(--text-primary); font-weight:600; flex:1; min-width:120px; }
+    .tariff-price { display:flex; flex-direction:column; align-items:flex-end; min-width:90px; }
+    .price-label { color:var(--text-dim); font-size:0.75rem; margin-bottom:0.2rem; }
+    .price-value { color:var(--text-primary); font-weight:600; font-size:1.05rem; }
+    .deviation { display:inline-block; padding:0.2rem 0.4rem; border-radius:6px; font-size:0.8rem; font-weight:600; margin-top:0.2rem; }
+    .deviation.positive { background:rgba(255,107,107,0.15); color:var(--danger); }
+    .deviation.negative { background:rgba(0,229,176,0.15); color:var(--accent); }
+    .button { background:var(--gradient-primary); color:var(--bg-primary); border:none; padding:0.75rem 1.5rem; border-radius:10px; font-family:'Space Mono',monospace; font-weight:700; font-size:0.9rem; cursor:pointer; transition:all 0.3s; text-transform:uppercase; letter-spacing:1px; }
+    .button:hover { transform:translateY(-2px); box-shadow:0 6px 24px var(--accent-glow-strong); }
+    .button:active { transform:translateY(0); }
+    .button:disabled { opacity:0.4; cursor:not-allowed; transform:none; }
+    .button-secondary { background:var(--bg-card); color:var(--text-primary); border:1px solid var(--border); }
+    .button-secondary:hover { background:var(--bg-tertiary); border-color:var(--accent); color:var(--accent); }
+    .actions-bar { display:flex; gap:1rem; justify-content:center; margin-bottom:2rem; flex-wrap:wrap; }
+    .chart-container { background:var(--bg-tertiary); border:1px solid var(--border); border-radius:12px; padding:2rem; margin-top:2rem; }
+    .modal-overlay { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(6,10,16,0.95); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; z-index:1000; padding:1rem; }
+    .modal { background:var(--bg-tertiary); border:1px solid var(--accent); border-radius:16px; padding:2rem; max-width:900px; width:100%; max-height:90vh; overflow-y:auto; box-shadow:0 20px 60px var(--accent-glow); }
+    .modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; }
+    .modal-title { font-family:'Space Mono',monospace; font-size:1.5rem; color:var(--accent); text-transform:uppercase; }
+    .modal-close { background:none; border:1px solid var(--border); color:var(--text-secondary); font-size:1.3rem; cursor:pointer; padding:0.4rem 0.65rem; line-height:1; border-radius:8px; }
+    .modal-close:hover { color:var(--danger); border-color:var(--danger); }
+    .modal-content { color:var(--text-secondary); line-height:1.8; }
+    .modal-content h3 { color:var(--accent); margin:1.5rem 0 0.75rem; font-size:1.1rem; }
+    .modal-content ul { margin-left:1.5rem; margin-bottom:1rem; }
+    .modal-content li { margin:0.5rem 0; }
+    .modal-instructions { background:var(--bg-secondary); border:1px solid var(--border); border-radius:10px; padding:1.25rem; margin-bottom:1.5rem; font-size:0.9rem; }
+    .debug-section { background:var(--bg-secondary); border:1px solid var(--border); border-radius:8px; padding:1rem; max-height:300px; overflow-y:auto; font-size:0.85rem; }
+    .debug-line { margin:0.2rem 0; color:var(--text-dim); } .debug-line.success{color:var(--success)} .debug-line.error{color:var(--danger)} .debug-line.warning{color:var(--warning)}
+    .progress-wrap { margin-bottom:0.75rem; }
+    .progress-bar-outer { background:var(--border); border-radius:6px; height:22px; overflow:hidden; position:relative; }
+    .progress-bar-inner { height:100%; border-radius:6px; background:var(--gradient-primary); transition:width 0.4s ease; box-shadow:0 0 12px var(--accent-glow); }
+    .progress-label { position:absolute; top:0; left:0; right:0; bottom:0; display:flex; align-items:center; justify-content:center; font-size:0.78rem; font-weight:600; color:var(--text-primary); text-shadow:0 1px 3px rgba(0,0,0,0.6); letter-spacing:0.5px; }
+    .progress-stats { display:flex; justify-content:space-between; margin-top:0.4rem; font-size:0.75rem; color:var(--text-dim); }
+    .range-slider-track-wrap { position:relative; height:6px; background:var(--border); border-radius:3px; margin:0.5rem 0 0.25rem; cursor:pointer; }
+    .range-slider-fill { position:absolute; height:100%; background:var(--gradient-primary); border-radius:3px; }
+    .range-slider-handle { position:absolute; top:50%; width:18px; height:18px; background:var(--accent); border:2px solid var(--bg-primary); border-radius:50%; transform:translate(-50%,-50%); cursor:grab; z-index:3; box-shadow:0 0 0 3px var(--accent-glow); }
+    .range-slider-handle:hover,.range-slider-handle.dragging { box-shadow:0 0 0 6px var(--accent-glow-strong); cursor:grabbing; }
+    @keyframes pulse-glow { 0%,100%{box-shadow:0 0 20px var(--accent-glow)} 50%{box-shadow:0 0 40px var(--accent-glow-strong)} }
+    .pulse-btn { animation:pulse-glow 2s ease-in-out infinite; }
+    ::-webkit-scrollbar{width:8px} ::-webkit-scrollbar-track{background:var(--bg-primary)} ::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+    @media (max-width:768px) {
+      .page-wrap{padding:0.75rem} .header h1{font-size:1.5rem} .stats-grid{grid-template-columns:repeat(2,1fr)}
+      .providers-grid,.top10-grid{grid-template-columns:1fr} .modal{padding:1.25rem}
+      .tariff-item{flex-direction:column;align-items:stretch} .tariff-price{align-items:flex-start}
+      .filters-bar{grid-template-columns:1fr} .tabs{gap:0.15rem;padding:0.25rem}
+      .tab{padding:0.65rem 0.75rem;font-size:0.75rem;letter-spacing:0}
+      .top-nav-btn{padding:0.75rem 1.5rem;font-size:0.85rem;letter-spacing:1px}
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    /* ═══ CONFIG ═══ */
+    const ELEC_REGIONS = {'Praha':'praha','Středočeský':'stredocesky','Jihočeský':'jihocesky','Západočeský':'zapadocesky','Severočeský':'severocesky','Východočeský':'vychodicesky','Jihomoravský':'jihomoravsky','Severomoravský':'severomoravsky'};
+    const ELEC_TARIFFS = ['D01d','D02d','D25d','D26d','D27d','D35d','D45d','D56d','D57d','D61d','C01d','C02d','C03d','C25d','C27d','C35d','C45d','C46d','C55d','C56d','C62d'];
+    const GAS_REGIONS = {'Praha':31,'Středočeský':32,'Jihočeský':33,'Západočeský':34,'Severočeský':35,'Východočeský':36,'Jihomoravský':37,'Severomoravský':38};
+
+    const CONFIGS = {
+      electricity: {
+        type:'electricity', icon:'⚡', label:'Elektřina CZ', version:'v6.1',
+        regions:ELEC_REGIONS, hasTariffs:true, tariffs:ELEC_TARIFFS, defaultTariff:'D02d', defaultRegion:'Praha',
+        storagePrefix:'electricity', mainUnit:'Kč/kWh', mainLabel:'kWh', hasM3:false, maxPages:40,
+        // Green theme
+        accent:'#00e5b0', accentAlt:'#00d4a0', accentGlow:'rgba(0,229,176,0.15)', accentGlowStrong:'rgba(0,229,176,0.3)',
+        chartColor:'#00e5b0', chartBg:'rgba(0,229,176,0.35)', chartBgSel:'rgba(0,229,176,0.9)', chartBorder:'#33ffd2',
+        buildUrl:(rSlug,tSlug,page)=>`https://www.kurzy.cz/elektrina/${tSlug}-${rSlug}?page=${page}`,
+        buildSourceLink:(r,t)=>`https://www.kurzy.cz/elektrina/${t.toLowerCase()}-${ELEC_REGIONS[r]}`,
+      },
+      gas: {
+        type:'gas', icon:'🔥', label:'Plyn CZ', version:'v6.1',
+        regions:GAS_REGIONS, hasTariffs:false, tariffs:[], defaultTariff:'', defaultRegion:'Praha',
+        storagePrefix:'gas', mainUnit:'Kč/MWh', mainLabel:'MWh', hasM3:true, maxPages:40,
+        // Blue theme
+        accent:'#3ba0e8', accentAlt:'#5bbaf0', accentGlow:'rgba(59,160,232,0.15)', accentGlowStrong:'rgba(59,160,232,0.3)',
+        chartColor:'#3ba0e8', chartBg:'rgba(59,160,232,0.35)', chartBgSel:'rgba(59,160,232,0.9)', chartBorder:'#7cc8ff',
+        buildUrl:(rCode,_,page)=>`https://www.kurzy.cz/plyn/srovnani-cen?kraje=${rCode}&mwhr=14.5&post=Zobrazit&page=${page}`,
+        buildSourceLink:(r)=>`https://www.kurzy.cz/plyn/srovnani-cen?kraje=${GAS_REGIONS[r]}&mwhr=14.5&post=Zobrazit`,
+      },
+    };
+
+    /* ═══ SHARED UI ═══ */
+    const StarEmpty=()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>;
+    const StarFilled=()=><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>;
+    function FavButton({active,onClick}){return <button className={`fav-star ${active?'active':''}`} onClick={onClick} title={active?'Odebrat':'Oblíbit'}>{active?<StarFilled/>:<StarEmpty/>}</button>;}
+
+    function RangeSlider({min,max,value,onChange,unit}){
+      const ref=useRef(null);const[drag,setDrag]=useState(null);
+      const[mnT,setMnT]=useState(value[0].toFixed(2));const[mxT,setMxT]=useState(value[1].toFixed(2));
+      useEffect(()=>setMnT(value[0].toFixed(2)),[value[0]]);useEffect(()=>setMxT(value[1].toFixed(2)),[value[1]]);
+      const cl=v=>Math.min(max,Math.max(min,Math.round(v*10)/10));const pc=v=>((v-min)/(max-min))*100;
+      const pos=e=>{const r=ref.current.getBoundingClientRect();const cx=e.touches?e.touches[0].clientX:e.clientX;return cl(min+Math.max(0,Math.min(1,(cx-r.left)/r.width))*(max-min));};
+      useEffect(()=>{if(!drag)return;const mv=e=>{const v=pos(e);if(drag==='min'&&v<value[1])onChange([v,value[1]]);if(drag==='max'&&v>value[0])onChange([value[0],v]);};const up=()=>setDrag(null);window.addEventListener('mousemove',mv);window.addEventListener('mouseup',up);window.addEventListener('touchmove',mv,{passive:true});window.addEventListener('touchend',up);return()=>{window.removeEventListener('mousemove',mv);window.removeEventListener('mouseup',up);window.removeEventListener('touchmove',mv);window.removeEventListener('touchend',up);};},[drag,value]);
+      const cMn=()=>{const v=parseFloat(mnT.replace(',','.'));if(!isNaN(v))onChange([cl(Math.min(v,value[1]-0.1)),value[1]]);else setMnT(value[0].toFixed(2));};
+      const cMx=()=>{const v=parseFloat(mxT.replace(',','.'));if(!isNaN(v))onChange([value[0],cl(Math.max(v,value[0]+0.1))]);else setMxT(value[1].toFixed(2));};
+      return <div><div style={{display:'flex',gap:'0.5rem',marginBottom:'0.75rem',alignItems:'center'}}><input className="filter-input" style={{width:'80px',padding:'0.4rem 0.5rem',textAlign:'center'}} value={mnT} onChange={e=>setMnT(e.target.value)} onBlur={cMn} onKeyDown={e=>e.key==='Enter'&&cMn()}/><span style={{color:'var(--text-dim)',fontSize:'0.85rem'}}>— do —</span><input className="filter-input" style={{width:'80px',padding:'0.4rem 0.5rem',textAlign:'center'}} value={mxT} onChange={e=>setMxT(e.target.value)} onBlur={cMx} onKeyDown={e=>e.key==='Enter'&&cMx()}/><span style={{color:'var(--text-dim)',fontSize:'0.8rem'}}>{unit}</span></div><div ref={ref} className="range-slider-track-wrap" onClick={e=>{const v=pos(e);Math.abs(v-value[0])<=Math.abs(v-value[1])&&v<value[1]?onChange([v,value[1]]):v>value[0]&&onChange([value[0],v]);}}><div className="range-slider-fill" style={{left:`${pc(value[0])}%`,width:`${pc(value[1])-pc(value[0])}%`}}/><div className={`range-slider-handle ${drag==='min'?'dragging':''}`} style={{left:`${pc(value[0])}%`}} onMouseDown={e=>{e.preventDefault();e.stopPropagation();setDrag('min');}} onTouchStart={e=>{e.stopPropagation();setDrag('min');}}/><div className={`range-slider-handle ${drag==='max'?'dragging':''}`} style={{left:`${pc(value[1])}%`}} onMouseDown={e=>{e.preventDefault();e.stopPropagation();setDrag('max');}} onTouchStart={e=>{e.stopPropagation();setDrag('max');}}/></div></div>;
+    }
+    const czTC=n=>n===1?'tarif':(n>=2&&n<=4)?'tarify':'tarifů';
+
+    /* ═══ PARSER ═══ */
+    const normName=n=>n.replace(/^(innogy\s+Energie,\s*s\.r\.o\.)-$/i,'$1').replace(/\s+/g,' ').trim();
+    function stripProv(prov,tar){
+      if(!tar)return tar;const nm=s=>s.toLowerCase().replace(/[,.\s]+/g,'').trim();const pN=nm(prov);
+      let tN=nm(tar);if(tN.startsWith(pN)){let c=0,m=0;for(let i=0;i<tar.length&&m<pN.length;i++){const ch=tar[i].toLowerCase();if(/[,.\s]/.test(ch))continue;if(ch===pN[m])m++;else break;c=i+1;}if(m===pN.length){const s=tar.substring(c).replace(/^[\s,.\-–]+/,'').trim();if(s.length>0)tar=s;}}
+      tN=nm(tar);if(tN.endsWith(pN)){let c=tar.length,m=pN.length-1;for(let i=tar.length-1;i>=0&&m>=0;i--){const ch=tar[i].toLowerCase();if(/[,.\s]/.test(ch))continue;if(ch===pN[m])m--;else break;c=i;}if(m<0){const s=tar.substring(0,c).replace(/[\s,.\-–]+$/,'').trim();if(s.length>0)tar=s;}}
+      return tar;
+    }
+
+    function parseHTML(html, cfg) {
+      const doc=new DOMParser().parseFromString(html,'text/html');const out=[];
+      const rows=doc.querySelectorAll('tr');
+      for(let i=0;i<rows.length;i++){
+        const cells=rows[i].querySelectorAll('td');if(cells.length<3)continue;
+        try{
+          const txts=Array.from(cells).map(c=>c.textContent.trim());
+          // kurzy.cz: v 1. buňce je odkaz „Dodavatel - Tarif“ a za ním obchodní jméno firmy, bereme jen odkaz
+          const link=cells[0].querySelector('a');const ft=(link?link.textContent:txts[0]||'').trim();if(!ft||ft.match(/^\d/))continue;
+          let prov='',tar='';
+          const im=ft.match(/^(innogy\s+Energie,\s*s\.r\.o\.)-(.+)/i);
+          if(im){prov='innogy Energie, s.r.o.';tar=im[2].trim();}
+          else{const d=ft.indexOf(' - ');if(d>0){prov=ft.substring(0,d).trim();tar=ft.substring(d+3).trim();}else{prov=ft.trim();tar='Základní';}}
+          if(!prov)continue;tar=stripProv(prov,tar);
+
+          let mainPrice=null, priceM3=null, monthly=null;
+
+          if(cfg.hasM3){
+            // GAS: cell[1] = "850.00 Kč/MWh 8.45 Kč/m3", cell[2] = "119.00 Kč/měs."
+            // Parse MWh and m³ from cell 1 only
+            const priceCell=txts[1]||'';
+            const mwhM=priceCell.match(/([\d\s]+[.,][\d]+)\s*Kč\/MWh/);
+            if(mwhM) mainPrice=parseFloat(mwhM[1].replace(/\s/g,'').replace(',','.'));
+            const m3M=priceCell.match(/([\d]+[.,][\d]+)\s*Kč\/m/);
+            if(m3M) priceM3=parseFloat(m3M[1].replace(',','.'));
+            // Parse monthly from cell 2 only (avoids "3" from m³ contaminating)
+            const monthCell=txts[2]||'';
+            const moM=monthCell.match(/([\d\s]+[.,]?[\d]+)\s*Kč\/měs/);
+            if(moM) monthly=parseFloat(moM[1].replace(/\s/g,'').replace(',','.'));
+            if(!mainPrice||!monthly)continue;
+          }else{
+            // ELECTRICITY: cell[1] = kWh price, cell[2] = monthly
+            const priceCell=txts[1]||'';const monthCell=txts[2]||'';
+            const kwM=priceCell.match(/([\d]+[.,][\d]+)\s*Kč\/kWh/);
+            if(kwM) mainPrice=parseFloat(kwM[1].replace(',','.'));
+            // Fallback: try whole row if cell structure differs
+            if(!mainPrice){const rt=txts.join(' ');const m2=rt.match(/([\d]+[.,][\d]+)\s*Kč\/kWh/);if(m2)mainPrice=parseFloat(m2[1].replace(',','.'));}
+            const moM=monthCell.match(/([\d\s]+[.,]?[\d]+)\s*Kč\/měs/);
+            if(moM) monthly=parseFloat(moM[1].replace(/\s/g,'').replace(',','.'));
+            if(!monthly){const rt=txts.join(' ');const m2=rt.match(/([\d\s]+[.,]?[\d]+)\s*Kč\/měs/);if(m2)monthly=parseFloat(m2[1].replace(/\s/g,'').replace(',','.'));}
+            if(!mainPrice||!monthly)continue;
+          }
+
+          const entry={name:normName(prov),tariff:tar,pricePerUnit:mainPrice,monthlyPrice:monthly};
+          if(cfg.hasM3) entry.pricePerM3=priceM3;
+          out.push(entry);
+        }catch(e){}
+      }
+      return out;
+    }
+
+    function groupProviders(providers,hasM3){
+      const g={};
+      providers.forEach(p=>{
+        if(!g[p.name])g[p.name]=[];
+        const dup=g[p.name].some(t=>t.tariff===p.tariff&&t.pricePerUnit===p.pricePerUnit&&t.monthlyPrice===p.monthlyPrice);
+        if(!dup){const e={tariff:p.tariff,pricePerUnit:p.pricePerUnit,monthlyPrice:p.monthlyPrice};if(hasM3)e.pricePerM3=p.pricePerM3;g[p.name].push(e);}
+      });
+      return g;
+    }
+
+    /* ═══ ENERGY TRACKER ═══ */
+    function EnergyTracker({config:cfg}){
+      const[data,setData]=useState(null);
+      const[selProv,setSelProv]=useState(new Set());
+      const[favs,setFavs]=useState(new Set());
+      const[showList,setShowList]=useState(true);
+      const[showHelp,setShowHelp]=useState(false);
+      const[showImport,setShowImport]=useState(false);
+      const[debugLog,setDebugLog]=useState([]);
+      const[history,setHistory]=useState([]);
+      const[lastUpd,setLastUpd]=useState(null);
+      const[search,setSearch]=useState('');
+      const[priceRange,setPriceRange]=useState([0,100]);
+      const[tab,setTab]=useState('providers');
+      const[expanded,setExpanded]=useState(new Set());
+      const[region,setRegion]=useState(cfg.defaultRegion);
+      const[tariff,setTariff]=useState(cfg.defaultTariff);
+      const[histBins,setHistBins]=useState([]);
+      const[selBins,setSelBins]=useState(new Set());
+      const[sort,setSort]=useState('az');
+      const[view,setView]=useState('grid');
+      const[progress,setProgress]=useState(null); // {page, total, found, status}
+      const chartRef=useRef(null);const histRef=useRef(null);
+      const chartInst=useRef(null);const histInst=useRef(null);const histBinsRef=useRef([]);
+
+      const SK=k=>`${cfg.storagePrefix}_${k}`;
+
+      // Per-section CSS custom properties
+      const theme={
+        '--accent':cfg.accent,'--accent-alt':cfg.accentAlt,
+        '--accent-glow':cfg.accentGlow,'--accent-glow-strong':cfg.accentGlowStrong,
+        '--border-glow':cfg.accentGlow,'--success':cfg.accent,
+        '--gradient-primary':`linear-gradient(135deg, ${cfg.accent} 0%, ${cfg.accentAlt} 100%)`,
+      };
+
+      useEffect(()=>{
+        try{
+          const cd=localStorage.getItem(SK('current_v5'));
+          if(cd){const p=JSON.parse(cd);setData(p);const a=Object.values(p).flat().map(t=>t.pricePerUnit);if(a.length)setPriceRange([Math.floor(Math.min(...a)*10)/10,Math.ceil(Math.max(...a)*10)/10]);}
+          const fd=localStorage.getItem(SK('favorites'));if(fd)setFavs(new Set(JSON.parse(fd)));
+          const lr=localStorage.getItem(SK('last_region'));if(lr)setRegion(lr);
+          const lt=localStorage.getItem(SK('last_tariff'));if(lt)setTariff(lt);
+          const lu=localStorage.getItem(SK('last_update'));if(lu)setLastUpd(lu);
+          const hd=localStorage.getItem(SK('history_v5'));if(hd)setHistory(JSON.parse(hd));
+        }catch(e){}
+      },[]);
+
+      const addLog=(msg,type='info')=>setDebugLog(p=>[...p,{time:new Date().toLocaleTimeString('cs-CZ'),message:msg,type}]);
+
+      const doImport=async()=>{
+        setDebugLog([]);setProgress({page:0,total:cfg.maxPages,found:0,status:'starting'});
+        const rVal=cfg.regions[region];
+        addLog(`=== IMPORT: ${cfg.label} / ${region}${cfg.hasTariffs?` / ${tariff}`:''} ===`);
+        try{
+          const all=[];const tSlug=cfg.hasTariffs?tariff.toLowerCase():'';
+          let emptyStreak=0;let lastSig=null;
+          for(let page=1;page<=cfg.maxPages;page++){
+            setProgress({page,total:cfg.maxPages,found:all.length,status:'loading'});
+            addLog(`Stránka ${page}/${cfg.maxPages}...`);
+            try{
+              const resp=await fetch(cfg.buildUrl(rVal,tSlug,page),{mode:'cors'});
+              if(!resp.ok){
+                addLog(`Stránka ${page}: HTTP ${resp.status} — přeskakuji`,'warning');
+                emptyStreak++;
+                if(emptyStreak>=2){addLog('2× po sobě bez dat — ukončuji stahování','warning');break;}
+                continue;
+              }
+              const html=await resp.text();const prov=parseHTML(html,cfg);
+              if(prov.length===0){
+                addLog(`Stránka ${page}: žádné tarify — konec dat`,'warning');
+                emptyStreak++;
+                if(emptyStreak>=2){addLog('2× po sobě bez dat — ukončuji stahování','warning');break;}
+                continue;
+              }
+              emptyStreak=0;
+              // kurzy.cz za poslední stránkou vrací pořád tu poslední, proto končíme, když se stránka opakuje
+              const sig=JSON.stringify(prov[0])+prov.length;
+              if(sig===lastSig){addLog(`Stránka ${page}: stejná jako předchozí — konec dat`,'success');break;}
+              lastSig=sig;
+              all.push(...prov);addLog(`✓ ${prov.length} tarifů (celkem ${all.length})`,'success');
+              if(prov.length<20){addLog('Poslední stránka — konec dat','success');break;}
+              setProgress({page,total:cfg.maxPages,found:all.length,status:'loading'});
+            }catch(pageErr){
+              addLog(`Stránka ${page}: ${pageErr.message} — přeskakuji`,'warning');
+              emptyStreak++;
+              if(emptyStreak>=2){addLog('2× po sobě chyba — ukončuji stahování','warning');break;}
+            }
+          }
+
+          if(all.length===0){
+            addLog('Žádná data nebyla nalezena!','error');
+            setProgress(null);
+            return;
+          }
+
+          setProgress({page:cfg.maxPages,total:cfg.maxPages,found:all.length,status:'processing'});
+          addLog(`CELKEM: ${all.length} (před deduplikací)`,'success');
+          const grouped=groupProviders(all,cfg.hasM3);
+          addLog(`Dodavatelé: ${Object.keys(grouped).length}, unikátní: ${Object.values(grouped).flat().length}`,'success');
+
+          const prev=localStorage.getItem(SK('current_v5'));
+          if(prev){const h=JSON.parse(localStorage.getItem(SK('history_v5'))||'[]');h.push({date:new Date().toISOString().split('T')[0],data:JSON.parse(prev)});localStorage.setItem(SK('history_v5'),JSON.stringify(h));setHistory(h);}
+
+          setData(grouped);
+          const ap=Object.values(grouped).flat().map(t=>t.pricePerUnit);
+          setPriceRange([Math.floor(Math.min(...ap)*10)/10,Math.ceil(Math.max(...ap)*10)/10]);
+          localStorage.setItem(SK('current_v5'),JSON.stringify(grouped));
+          localStorage.setItem(SK('last_region'),region);
+          if(cfg.hasTariffs)localStorage.setItem(SK('last_tariff'),tariff);
+          const today=new Date().toLocaleDateString('cs-CZ');localStorage.setItem(SK('last_update'),today);setLastUpd(today);
+          setProgress({page:cfg.maxPages,total:cfg.maxPages,found:Object.values(grouped).flat().length,status:'done'});
+          addLog('=== HOTOVO ===','success');setTimeout(()=>{setShowImport(false);setDebugLog([]);setProgress(null);},2500);
+        }catch(e){addLog(`CHYBA: ${e.message}`,'error');addLog('CORS může blokovat','warning');setProgress(null);}
+      };
+
+      // Format price based on energy type
+      const fmtMain=v=>cfg.hasM3?v.toFixed(0):v.toFixed(2);
+
+      const calcStats=()=>{
+        if(!data)return null;const all=Object.values(data).flat();if(all.length<3)return null;
+        const sU=[...all].sort((a,b)=>a.pricePerUnit-b.pricePerUnit);const sM=[...all].sort((a,b)=>a.monthlyPrice-b.monthlyPrice);
+        const fU=sU.slice(1,-1);const fM=sM.slice(1,-1);
+        const avg=(arr,fn)=>arr.reduce((s,x)=>s+fn(x),0)/arr.length;
+        const med=arr=>{const m=Math.floor(arr.length/2);return arr.length%2===0?(arr[m-1]+arr[m])/2:arr[m];};
+        const r={avgUnit:avg(fU,p=>p.pricePerUnit),avgMonthly:avg(fM,p=>p.monthlyPrice),
+          medUnit:med(sU.map(p=>p.pricePerUnit)),medMonthly:med(sM.map(p=>p.monthlyPrice)),total:all.length};
+        if(cfg.hasM3){
+          const wM3=all.filter(t=>t.pricePerM3!=null);
+          if(wM3.length>2){const s3=[...wM3].sort((a,b)=>a.pricePerM3-b.pricePerM3);const f3=s3.slice(1,-1);
+            r.avgM3=avg(f3,p=>p.pricePerM3);r.medM3=med(s3.map(p=>p.pricePerM3));}
+        }
+        return r;
+      };
+
+      const getTop10=()=>{if(!data)return[];const a=[];Object.entries(data).forEach(([n,ts])=>ts.forEach(t=>a.push({prov:n,...t})));return a.sort((a,b)=>a.pricePerUnit-b.pricePerUnit).slice(0,10);};
+      const getFavList=()=>{if(!data||favs.size===0)return[];const r=[];favs.forEach(k=>{const[pn,tn]=k.split('|||');if(data[pn]){const t=data[pn].find(x=>x.tariff===tn);if(t)r.push({prov:pn,...t});}});return r.sort((a,b)=>a.pricePerUnit-b.pricePerUnit);};
+      const getFiltered=()=>{
+        if(!data)return[];let f=Object.keys(data);
+        if(search)f=f.filter(n=>n.toLowerCase().includes(search.toLowerCase()));
+        f=f.filter(n=>data[n].some(t=>t.pricePerUnit>=priceRange[0]&&t.pricePerUnit<=priceRange[1]));
+        const cp=n=>Math.min(...data[n].map(t=>t.pricePerUnit));
+        switch(sort){case'za':f.sort((a,b)=>b.localeCompare(a,'cs'));break;case'cheapest':f.sort((a,b)=>cp(a)-cp(b));break;case'expensive':f.sort((a,b)=>cp(b)-cp(a));break;case'count':f.sort((a,b)=>data[b].length-data[a].length);break;default:f.sort((a,b)=>a.localeCompare(b,'cs'));}
+        return f;
+      };
+      const getHistTariffs=()=>{if(!data||selBins.size===0||histBins.length===0)return[];const r=[];Object.entries(data).forEach(([n,ts])=>ts.forEach(t=>{for(const bi of selBins){const b=histBins[bi];if(b&&t.pricePerUnit>=b.min&&t.pricePerUnit<b.max){r.push({prov:n,...t});break;}}}));return r.sort((a,b)=>a.pricePerUnit-b.pricePerUnit);};
+
+      const togProv=n=>{const s=new Set(selProv);s.has(n)?s.delete(n):s.add(n);setSelProv(s);};
+      const togFav=(pn,tn)=>{const k=`${pn}|||${tn}`;const s=new Set(favs);s.has(k)?s.delete(k):s.add(k);setFavs(s);localStorage.setItem(SK('favorites'),JSON.stringify(Array.from(s)));};
+      const isFav=(pn,tn)=>favs.has(`${pn}|||${tn}`);
+
+      const dlCSV=()=>{if(!data)return;const rows=[];Object.entries(data).forEach(([n,ts])=>ts.forEach(t=>{let r=`"${n}","${t.tariff}",${t.pricePerUnit},${t.monthlyPrice}`;if(cfg.hasM3)r+=`,${t.pricePerM3||''}`;rows.push(r);}));const hdr=cfg.hasM3?'Dodavatel,Tarif,Cena/MWh,Měsíčně,Cena/m³':'Dodavatel,Tarif,Cena/kWh,Měsíčně';const csv=[hdr,...rows].join('\n');const l=document.createElement('a');l.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));l.download=`${cfg.type}_${new Date().toISOString().split('T')[0]}.csv`;l.click();};
+
+      // Histogram — starts at data min, not 0
+      useEffect(()=>{
+        if(tab==='histogram'&&data&&histRef.current){
+          if(histInst.current)histInst.current.destroy();
+          const prices=Object.values(data).flat().map(t=>t.pricePerUnit);
+          const rawMin=Math.min(...prices),rawMax=Math.max(...prices);
+          const mn=cfg.hasM3?Math.floor(rawMin/10)*10:Math.floor(rawMin*10)/10;
+          const mx=cfg.hasM3?Math.ceil(rawMax/10)*10:Math.ceil(rawMax*10)/10;
+          const range=mx-mn;const binCount=20;const binSize=range/binCount||1;
+          const bins=Array(binCount).fill(0),ranges=[];
+          prices.forEach(p=>{const i=Math.min(Math.floor((p-mn)/binSize),binCount-1);bins[i]++;});
+          const labels=bins.map((_,i)=>{const s=mn+i*binSize,e=mn+(i+1)*binSize;ranges.push({min:s,max:e});return cfg.hasM3?`${s.toFixed(0)}-${e.toFixed(0)}`:`${s.toFixed(2)}-${e.toFixed(2)}`;});
+          setHistBins(ranges);histBinsRef.current=ranges;
+          histInst.current=new Chart(histRef.current.getContext('2d'),{
+            type:'bar',data:{labels,datasets:[{label:'Počet tarifů',data:bins,
+              backgroundColor:bins.map((_,i)=>selBins.has(i)?cfg.chartBgSel:cfg.chartBg),
+              borderColor:bins.map((_,i)=>selBins.has(i)?cfg.chartBorder:cfg.chartColor),
+              borderWidth:bins.map((_,i)=>selBins.has(i)?2:1),borderRadius:4}]},
+            options:{responsive:true,
+              onClick:(ev,el)=>{if(el.length>0){const idx=el[0].index;setSelBins(p=>{const n=new Set(p);n.has(idx)?n.delete(idx):n.add(idx);return n;});}},
+              plugins:{legend:{labels:{color:'#e6edf3'}},title:{display:true,text:selBins.size>0?`${selBins.size} pásem vybráno — klikni pro změnu`:`Rozložení cen (${cfg.mainUnit}) — klikni na sloupec`,color:cfg.chartColor,font:{size:14,family:'Space Mono'}},
+                tooltip:{callbacks:{afterLabel:c=>{const b=histBinsRef.current[c.dataIndex];return b?`${cfg.hasM3?b.min.toFixed(0):b.min.toFixed(2)} – ${cfg.hasM3?b.max.toFixed(0):b.max.toFixed(2)} ${cfg.mainUnit}`:'';}}}},
+              scales:{x:{ticks:{color:'#8b949e',maxRotation:45,minRotation:45},grid:{color:'#1c2128'}},y:{ticks:{color:'#8b949e'},grid:{color:'#1c2128'}}}}
+          });
+        }
+      },[tab,data,selBins]);
+
+      // History chart
+      useEffect(()=>{
+        if(tab==='chart'&&history.length>0&&chartRef.current){
+          if(chartInst.current)chartInst.current.destroy();
+          const dates=history.map(h=>h.date);
+          const avgD=history.map(h=>{const a=Object.values(h.data).flat();const s=[...a].sort((x,y)=>x.pricePerUnit-y.pricePerUnit);const f=s.slice(1,-1);return f.reduce((sm,p)=>sm+p.pricePerUnit,0)/f.length;});
+          chartInst.current=new Chart(chartRef.current.getContext('2d'),{
+            type:'line',data:{labels:dates,datasets:[{label:`Průměr (${cfg.mainUnit})`,data:avgD,borderColor:cfg.chartColor,backgroundColor:cfg.accentGlow,tension:0.4,fill:true,pointBackgroundColor:cfg.chartColor,pointBorderColor:'#060a10',pointBorderWidth:2,pointRadius:5}]},
+            options:{responsive:true,plugins:{legend:{labels:{color:'#e6edf3'}}},scales:{x:{ticks:{color:'#8b949e'},grid:{color:'#1c2128'}},y:{ticks:{color:cfg.chartColor},grid:{color:'#1c2128'}}}}
+          });
+        }
+      },[tab,history]);
+
+      const stats=calcStats();const top10=getTop10();const favList=getFavList();const filtered=getFiltered();
+      const regionLabel=region+(cfg.hasTariffs?`, tarif ${tariff}`:'');
+      const srcLink=cfg.hasTariffs?cfg.buildSourceLink(region,tariff):cfg.buildSourceLink(region);
+
+      /* ── PriceCard ── */
+      const PriceCard=({item,rank,style})=>(
+        <div className="top10-card" style={style}>
+          <FavButton active={isFav(item.prov,item.tariff)} onClick={()=>togFav(item.prov,item.tariff)}/>
+          {rank!=null&&<div className="top10-rank">#{rank}</div>}
+          <div className="top10-info">
+            <div className="top10-provider">{item.prov}</div>
+            <div className="top10-tariff">{item.tariff}</div>
+            <div className="top10-price">{fmtMain(item.pricePerUnit)} {cfg.mainUnit}</div>
+            {cfg.hasM3&&item.pricePerM3!=null&&<div className="top10-secondary">{item.pricePerM3.toFixed(2)} Kč/m³</div>}
+            <div className="top10-monthly">{item.monthlyPrice.toFixed(0)} Kč/měs.</div>
+          </div>
+        </div>
+      );
+
+      /* ── TariffRow ── */
+      const TariffRow=({name,t,st})=>{
+        const uD=((t.pricePerUnit-st.avgUnit)/st.avgUnit*100).toFixed(1);
+        const mD=((t.monthlyPrice-st.avgMonthly)/st.avgMonthly*100).toFixed(1);
+        const fav=isFav(name,t.tariff);
+        return(
+          <div className={`tariff-item ${fav?'favorite':''}`}>
+            <FavButton active={fav} onClick={()=>togFav(name,t.tariff)}/>
+            <div className="tariff-name">{t.tariff}</div>
+            <div className="tariff-price">
+              <div className="price-label">{cfg.mainLabel}</div>
+              <div className="price-value">{fmtMain(t.pricePerUnit)} Kč</div>
+              <span className={`deviation ${uD>0?'positive':'negative'}`}>{uD>0?'+':''}{uD}%</span>
+            </div>
+            {cfg.hasM3&&t.pricePerM3!=null&&(
+              <div className="tariff-price">
+                <div className="price-label">m³</div>
+                <div className="price-value">{t.pricePerM3.toFixed(2)} Kč</div>
+              </div>
+            )}
+            <div className="tariff-price">
+              <div className="price-label">Měsíčně</div>
+              <div className="price-value">{t.monthlyPrice.toFixed(0)} Kč</div>
+              <span className={`deviation ${mD>0?'positive':'negative'}`}>{mD>0?'+':''}{mD}%</span>
+            </div>
+          </div>
+        );
+      };
+
+      /* ── Progress + Debug rendering helper ── */
+      const ProgressAndLog=()=>(
+        <React.Fragment>
+          {progress&&(
+            <div className="progress-wrap">
+              <div className="progress-bar-outer">
+                <div className="progress-bar-inner" style={{width:`${Math.round(progress.page/progress.total*100)}%`}}></div>
+                <div className="progress-label">
+                  {progress.status==='done'?`✓ Hotovo — ${progress.found} tarifů`
+                    :progress.status==='processing'?'Zpracovávám...'
+                    :`Stránka ${progress.page}/${progress.total} — ${Math.round(progress.page/progress.total*100)}%`}
+                </div>
+              </div>
+              <div className="progress-stats">
+                <span>Nalezeno: {progress.found} tarifů</span>
+                <span>{progress.status==='done'?'✓':progress.status==='loading'?'⏳':''}</span>
+              </div>
+            </div>
+          )}
+          {debugLog.length>0&&<div className="debug-section">{debugLog.map((l,i)=><div key={i} className={`debug-line ${l.type}`}>[{l.time}] {l.message}</div>)}</div>}
+        </React.Fragment>
+      );
+
+      /* ── EMPTY STATE ── */
+      if(!data)return(
+        <div className="container" style={theme}>
+          <div className="header"><h1>{cfg.icon} {cfg.label}</h1><div className="subtitle">Sledování cen | {cfg.version}</div><div className="data-source">Data z <a href={srcLink} target="_blank">kurzy.cz</a></div></div>
+          <div style={{textAlign:'center',padding:'4rem 2rem'}}><p style={{color:'var(--text-secondary)',marginBottom:'2rem'}}>Žádná data. Klikni a stáhni tarify pro svůj kraj.</p><button className="button pulse-btn" onClick={()=>setShowImport(true)}>Načíst data</button></div>
+          {showImport&&<div className="modal-overlay" onClick={()=>setShowImport(false)}><div className="modal" onClick={e=>e.stopPropagation()}><div className="modal-header"><h2 className="modal-title">{cfg.icon} Import</h2><button className="modal-close" onClick={()=>setShowImport(false)}>×</button></div><div className="modal-instructions"><div style={{display:'grid',gridTemplateColumns:cfg.hasTariffs?'1fr 1fr':'1fr',gap:'1rem',marginBottom:'1rem'}}><div className="filter-group"><label className="filter-label">Kraj</label><select className="filter-input" value={region} onChange={e=>setRegion(e.target.value)} style={{background:'var(--bg-primary)',width:'100%'}}>{Object.keys(cfg.regions).map(r=><option key={r}>{r}</option>)}</select></div>{cfg.hasTariffs&&<div className="filter-group"><label className="filter-label">Tarif</label><select className="filter-input" value={tariff} onChange={e=>setTariff(e.target.value)} style={{background:'var(--bg-primary)',width:'100%'}}>{cfg.tariffs.map(t=><option key={t}>{t}</option>)}</select></div>}</div><button className="button" onClick={doImport} style={{width:'100%'}}>🚀 Stáhnout ({region}{cfg.hasTariffs?` / ${tariff}`:''})</button></div><ProgressAndLog/></div></div>}
+        </div>
+      );
+
+      /* ── MAIN ── */
+      return(
+        <div className="container" style={theme}>
+          <div className="header">
+            <button className="help-button" onClick={()=>setShowHelp(true)}>?</button>
+            <h1>{cfg.icon} {cfg.label}</h1>
+            <div className="subtitle">Sledování cen | {cfg.version}</div>
+            <div className="data-source">Data z <a href={srcLink} target="_blank">kurzy.cz</a> — {regionLabel}{lastUpd&&<span> | {lastUpd}</span>}</div>
+          </div>
+
+          <div className="filters-bar">
+            <div className="filter-group"><label className="filter-label">🔍 Vyhledat dodavatele</label><input type="text" className="filter-input" placeholder="Zadej název..." value={search} onChange={e=>setSearch(e.target.value)}/></div>
+            <div className="filter-group"><label className="filter-label">💰 Rozsah ({cfg.mainLabel})</label>{(()=>{const p=Object.values(data).flat().map(t=>t.pricePerUnit);return<RangeSlider min={Math.floor(Math.min(...p)*10)/10} max={Math.ceil(Math.max(...p)*10)/10} value={priceRange} onChange={setPriceRange} unit={cfg.mainUnit}/>;})()}</div>
+          </div>
+
+          {stats&&(
+            <div className="stats-grid">
+              <div className="stat-card"><div className="stat-label">Průměr {cfg.mainLabel}</div><div className="stat-value">{fmtMain(stats.avgUnit)}<span className="stat-unit">Kč</span></div></div>
+              <div className="stat-card"><div className="stat-label">Medián {cfg.mainLabel}</div><div className="stat-value">{fmtMain(stats.medUnit)}<span className="stat-unit">Kč</span></div></div>
+              {cfg.hasM3&&stats.avgM3!=null&&<React.Fragment>
+                <div className="stat-card"><div className="stat-label">Průměr m³</div><div className="stat-value">{stats.avgM3.toFixed(2)}<span className="stat-unit">Kč</span></div></div>
+                <div className="stat-card"><div className="stat-label">Medián m³</div><div className="stat-value">{stats.medM3.toFixed(2)}<span className="stat-unit">Kč</span></div></div>
+              </React.Fragment>}
+              <div className="stat-card"><div className="stat-label">Průměr měsíc</div><div className="stat-value">{stats.avgMonthly.toFixed(0)}<span className="stat-unit">Kč</span></div></div>
+              <div className="stat-card"><div className="stat-label">Medián měsíc</div><div className="stat-value">{stats.medMonthly.toFixed(0)}<span className="stat-unit">Kč</span></div></div>
+              <div className="stat-card"><div className="stat-label">Celkem tarifů</div><div className="stat-value">{stats.total}</div></div>
+            </div>
+          )}
+
+          <div className="tabs">
+            <button className={`tab ${tab==='favorites'?'active':''}`} onClick={()=>setTab('favorites')}>⭐ Oblíbené ({favList.length})</button>
+            <button className={`tab ${tab==='providers'?'active':''}`} onClick={()=>setTab('providers')}>Dodavatelé</button>
+            <button className={`tab ${tab==='top10'?'active':''}`} onClick={()=>setTab('top10')}>TOP 10</button>
+            <button className={`tab ${tab==='histogram'?'active':''}`} onClick={()=>setTab('histogram')}>Histogram{selBins.size>0?` (${selBins.size})`:''}</button>
+            <button className={`tab ${tab==='chart'?'active':''}`} onClick={()=>setTab('chart')} disabled={history.length===0}>Graf</button>
+          </div>
+
+          {tab==='favorites'&&(
+            <div className="providers-section">
+              <div className="section-title">Oblíbené ({favList.length})</div>
+              {favList.length===0?<p style={{color:'var(--text-dim)',textAlign:'center',padding:'2rem'}}>Žádné oblíbené. Klikni ★ u tarifu.</p>:
+                <div className="top10-grid">{favList.map((it,i)=><PriceCard key={i} item={it} rank={null} style={{borderColor:'var(--accent)',boxShadow:'0 0 16px var(--accent-glow)'}}/>)}</div>}
+            </div>
+          )}
+
+          {tab==='providers'&&(
+            <div className="providers-section">
+              <div className="section-title" style={{marginBottom:'0.5rem'}}>Dodavatelé ({filtered.length})</div>
+              {selProv.size>0&&stats&&(
+                <div className="selected-providers">
+                  <div className="section-title">Vybrané ({selProv.size})</div>
+                  {Array.from(selProv).map(name=>{
+                    if(!data[name])return null;
+                    const ts=[...data[name]].sort((a,b)=>a.pricePerUnit-b.pricePerUnit);
+                    const first=ts[0],rest=ts.slice(1);const isExp=expanded.has(name);
+                    return(
+                      <div key={name} className="provider-card">
+                        <div className="provider-header">
+                          <div className="provider-name">{name}</div>
+                          <div style={{display:'flex',gap:'0.75rem',alignItems:'center'}}>
+                            <div className="tariff-count">{ts.length} {czTC(ts.length)}</div>
+                            {rest.length>0&&<button className="button button-secondary" style={{padding:'0.25rem 0.75rem',fontSize:'0.85rem'}} onClick={()=>{const n=new Set(expanded);isExp?n.delete(name):n.add(name);setExpanded(n);}}>{isExp?'▲ Skrýt':`▼ +${rest.length}`}</button>}
+                            <button className="close-btn" onClick={()=>togProv(name)} title="Odznačit">✕</button>
+                          </div>
+                        </div>
+                        <div className="tariff-list">
+                          <TariffRow name={name} t={first} st={stats}/>
+                          {isExp&&rest.map((tr,i)=><TariffRow key={i} name={name} t={tr} st={stats}/>)}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+              <div className="toolbar">
+                <select className="toolbar-select" value={sort} onChange={e=>setSort(e.target.value)}>
+                  <option value="az">A → Z</option><option value="za">Z → A</option><option value="cheapest">Od nejlevnějšího</option><option value="expensive">Od nejdražšího</option><option value="count">Počet tarifů</option>
+                </select>
+                <div className="view-toggle"><button className={view==='grid'?'active':''} onClick={()=>setView('grid')}>▦</button><button className={view==='list'?'active':''} onClick={()=>setView('list')}>☰</button></div>
+                <div style={{marginLeft:'auto',display:'flex',gap:'0.5rem'}}>
+                  <button className="button button-secondary" onClick={()=>setSelProv(new Set(filtered))} style={{padding:'0.35rem 0.65rem',fontSize:'0.78rem'}}>Vybrat vše</button>
+                  <button className="button button-secondary" onClick={()=>setSelProv(new Set())} style={{padding:'0.35rem 0.65rem',fontSize:'0.78rem'}}>Zrušit vše</button>
+                  <button className="button button-secondary" onClick={()=>setShowList(!showList)} style={{padding:'0.35rem 0.65rem',fontSize:'0.78rem'}}>{showList?'▲ Skrýt':'▼ Zobrazit'}</button>
+                </div>
+              </div>
+              {showList&&view==='grid'&&<div className="providers-grid">{filtered.map(n=><div key={n} className="provider-checkbox"><input type="checkbox" id={`${cfg.type}-p-${n}`} checked={selProv.has(n)} onChange={()=>togProv(n)}/><label htmlFor={`${cfg.type}-p-${n}`}>{n} ({data[n].length})</label></div>)}</div>}
+              {showList&&view==='list'&&<div className="providers-list">{filtered.map(n=>{const cp=Math.min(...data[n].map(t=>t.pricePerUnit));return<div key={n} className="provider-checkbox"><input type="checkbox" id={`${cfg.type}-pl-${n}`} checked={selProv.has(n)} onChange={()=>togProv(n)}/><label htmlFor={`${cfg.type}-pl-${n}`}>{n} ({data[n].length} {czTC(data[n].length)})</label><span className="prov-list-price">od {fmtMain(cp)} {cfg.mainUnit}</span></div>;})}</div>}
+            </div>
+          )}
+
+          {tab==='top10'&&<div className="top10-grid">{top10.map((it,i)=><PriceCard key={i} item={it} rank={i+1}/>)}</div>}
+
+          {tab==='histogram'&&(
+            <div>
+              <div className="chart-container"><canvas ref={histRef}></canvas></div>
+              {selBins.size>0&&(()=>{const hT=getHistTariffs();return(
+                <div className="providers-section" style={{marginTop:'1rem'}}>
+                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'1rem'}}>
+                    <div className="section-title" style={{marginBottom:0}}>Tarify v pásmech ({hT.length})</div>
+                    <button className="button button-secondary" onClick={()=>setSelBins(new Set())} style={{padding:'0.4rem 0.75rem',fontSize:'0.8rem'}}>✕ Zrušit</button>
+                  </div>
+                  <div className="top10-grid">{hT.map((it,i)=><PriceCard key={i} item={it} rank={null}/>)}</div>
+                </div>);})()}
+            </div>
+          )}
+
+          {tab==='chart'&&<div className="chart-container"><canvas ref={chartRef}></canvas></div>}
+
+          <div className="actions-bar">
+            <button className="button" onClick={()=>setShowImport(true)}>Aktualizovat</button>
+            <button className="button button-secondary" onClick={dlCSV}>CSV</button>
+            {tab==='chart'&&<button className="button button-secondary" onClick={()=>{const l=document.createElement('a');l.href=chartRef.current.toDataURL('image/png');l.download=`${cfg.type}_graf.png`;l.click();}}>Graf PNG</button>}
+          </div>
+
+          {showImport&&<div className="modal-overlay" onClick={()=>setShowImport(false)}><div className="modal" onClick={e=>e.stopPropagation()}><div className="modal-header"><h2 className="modal-title">{cfg.icon} Import — {cfg.label}</h2><button className="modal-close" onClick={()=>setShowImport(false)}>×</button></div><div className="modal-instructions"><div style={{display:'grid',gridTemplateColumns:cfg.hasTariffs?'1fr 1fr':'1fr',gap:'1rem',marginBottom:'1rem'}}><div className="filter-group"><label className="filter-label">Kraj</label><select className="filter-input" value={region} onChange={e=>setRegion(e.target.value)} style={{background:'var(--bg-primary)',width:'100%'}}>{Object.keys(cfg.regions).map(r=><option key={r}>{r}</option>)}</select></div>{cfg.hasTariffs&&<div className="filter-group"><label className="filter-label">Tarif</label><select className="filter-input" value={tariff} onChange={e=>setTariff(e.target.value)} style={{background:'var(--bg-primary)',width:'100%'}}>{cfg.tariffs.map(t=><option key={t}>{t}</option>)}</select></div>}</div><button className="button" onClick={doImport} style={{width:'100%'}}>🚀 Stáhnout ({region}{cfg.hasTariffs?` / ${tariff}`:''})</button></div><ProgressAndLog/></div></div>}
+
+          {showHelp&&(
+            <div className="modal-overlay" onClick={()=>setShowHelp(false)}>
+              <div className="modal" onClick={e=>e.stopPropagation()}>
+                <div className="modal-header"><h2 className="modal-title">Nápověda — {cfg.label}</h2><button className="modal-close" onClick={()=>setShowHelp(false)}>×</button></div>
+                <div className="modal-content">
+                  <h3>📥 Import</h3><ul><li>Stáhne data ze všech 10 stránek kurzy.cz</li><li>Automatická deduplikace a seskupení</li><li>Archivace pro historický graf</li></ul>
+                  <h3>🔍 Filtry & řazení</h3><ul><li>Hledání, cenový rozsah, řazení, mřížka/seznam</li></ul>
+                  <h3>📊 Histogram</h3><ul><li>Klikni na sloupce pro výběr cenového pásma</li><li>Pod grafem se zobrazí tarify v daných pásmech</li></ul>
+                  {cfg.hasM3&&<div style={{marginTop:'1rem',padding:'1rem',background:'var(--bg-secondary)',borderRadius:'8px'}}><strong style={{color:'var(--accent)'}}>🔥 Plyn:</strong> Zobrazuje 3 cenové hodnoty: Kč/MWh, Kč/m³ a Kč/měs.</div>}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    /* ═══ ROOT ═══ */
+    function App(){
+      const[sec,setSec]=useState('electricity');
+      return(
+        <div>
+          <nav className="top-nav">
+            <button className={`top-nav-btn ${sec==='electricity'?'active-elec':''}`} onClick={()=>setSec('electricity')}>⚡ Elektřina</button>
+            <button className={`top-nav-btn ${sec==='gas'?'active-gas':''}`} onClick={()=>setSec('gas')}>🔥 Plyn</button>
+          </nav>
+          <div className="page-wrap" style={{display:sec==='electricity'?'block':'none'}}><EnergyTracker config={CONFIGS.electricity}/></div>
+          <div className="page-wrap" style={{display:sec==='gas'?'block':'none'}}><EnergyTracker config={CONFIGS.gas}/></div>
+        </div>
+      );
+    }
+    ReactDOM.render(<App/>,document.getElementById('root'));
+  </script>
+</body>
+</html>
