@@ -58,11 +58,30 @@
   .open-link svg { width: 14px; height: 14px; }
   body.tool-active .open-link { display: inline-flex; }
 
+  .tabs-wrap { position: relative; }
   .tabs {
     display: flex; gap: 4px;
     padding: 0 16px;
-    overflow-x: auto; scrollbar-width: thin;
+    overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth;
   }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tabs-wrap::before, .tabs-wrap::after {
+    content: ""; position: absolute; top: 0; bottom: 0; width: 40px; pointer-events: none;
+    opacity: 0; transition: opacity .15s; z-index: 1;
+  }
+  .tabs-wrap::before { left: 0; background: linear-gradient(90deg, #fff 30%, rgba(255,255,255,0)); }
+  .tabs-wrap::after { right: 0; background: linear-gradient(270deg, #fff 30%, rgba(255,255,255,0)); }
+  .tabs-wrap.more-left::before, .tabs-wrap.more-right::after { opacity: 1; }
+  .tabs-arrow {
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
+    width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--ffy-border);
+    background: #fff; color: var(--ffy-blue); cursor: pointer; display: none;
+    align-items: center; justify-content: center; padding: 0;
+  }
+  .tabs-arrow svg { width: 14px; height: 14px; }
+  .tabs-arrow.l { left: 6px; } .tabs-arrow.r { right: 6px; }
+  .tabs-wrap.more-left .tabs-arrow.l, .tabs-wrap.more-right .tabs-arrow.r { display: inline-flex; }
+  .tabs-arrow:hover { background: var(--ffy-bg); }
   .tab {
     flex: none;
     position: relative;
@@ -178,7 +197,11 @@
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3h4v4M13 3 7 9M11 9.5V13H3V5h3.5"/></svg>
     </a>
   </div>
-  <nav class="tabs" id="tabs" aria-label="Nástroje"></nav>
+  <div class="tabs-wrap" id="tabsWrap">
+    <button class="tabs-arrow l" type="button" data-dir="-1" aria-label="Posunout nástroje doleva" tabindex="-1"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3 5 8l5 5"/></svg></button>
+    <nav class="tabs" id="tabs" aria-label="Nástroje"></nav>
+    <button class="tabs-arrow r" type="button" data-dir="1" aria-label="Posunout nástroje doprava" tabindex="-1"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3l5 5-5 5"/></svg></button>
+  </div>
 </header>
 
 <main>
@@ -232,10 +255,11 @@
 
     Array.prototype.forEach.call(tabsEl.querySelectorAll('.tab'), function (a) {
       var active = tool ? a.getAttribute('data-file') === tool.file : !a.hasAttribute('data-file');
-      if (active) { a.setAttribute('aria-current', 'page'); a.scrollIntoView({ block: 'nearest', inline: 'nearest' }); }
+      if (active) { a.setAttribute('aria-current', 'page'); a.scrollIntoView({ block: 'nearest', inline: 'center' }); }
       else a.removeAttribute('aria-current');
     });
 
+    try { localStorage.setItem('ffy-tools-last', tool ? tool.file : ''); } catch (e) {}
     if (tool) {
       if (frame.getAttribute('src') !== tool.file) frame.setAttribute('src', tool.file);
       frame.title = tool.title;
@@ -255,7 +279,12 @@
     tools = (Array.isArray(data) ? data : data.tools || [])
       .filter(function (t) { return t && t.file; })
       .map(function (t) { return { file: t.file, title: t.title || t.file.replace(/\.html?$/i, ''), description: t.description || '' }; });
-    render(); route();
+    render();
+    if (!location.hash) {
+      var lastFile = null; try { lastFile = localStorage.getItem('ffy-tools-last'); } catch (e) {}
+      if (lastFile && tools.some(function (t) { return t.file === lastFile; })) { history.replaceState(null, '', '#' + encodeURIComponent(lastFile)); }
+    }
+    route(); fades();
   }
 
   fetch('tools.json', { cache: 'no-store' })
@@ -263,6 +292,16 @@
     .then(function (data) { useList(data && (data.length || (data.tools && data.tools.length)) ? data : FALLBACK); })
     .catch(function () { useList(FALLBACK); });
 
+  function fades() {
+    var w = document.getElementById('tabsWrap');
+    w.classList.toggle('more-left', tabsEl.scrollLeft > 4);
+    w.classList.toggle('more-right', tabsEl.scrollLeft + tabsEl.clientWidth < tabsEl.scrollWidth - 4);
+  }
+  tabsEl.addEventListener('scroll', fades, { passive: true });
+  Array.prototype.forEach.call(document.querySelectorAll('.tabs-arrow'), function (btn) {
+    btn.addEventListener('click', function () { tabsEl.scrollBy({ left: +btn.dataset.dir * Math.max(200, tabsEl.clientWidth * 0.6), behavior: 'smooth' }); });
+  });
+  window.addEventListener('resize', fades);
   window.addEventListener('hashchange', route);
 })();
 </script>

@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FFY · Generátor e-mailové kampaně</title>
+<title>Generátor e-mailové kampaně</title>
+<meta name="description" content="Vyplní šablonu e-mailové kampaně: karty, kroky, CTA a placeholdery.">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700;800&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
   --bg:#0f1318;--surface:#171c23;--surface2:#1e242d;--surface3:#232b36;
@@ -143,16 +144,69 @@ textarea{min-height:64px;line-height:1.6;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
 @media(max-width:600px){.field-row{grid-template-columns:1fr;}.cards-grid{grid-template-columns:1fr;}.gen-bar{flex-direction:column;align-items:stretch;}}
+
+/* ---- FREE for YOU brand (jen rozhraní nástroje; šablona e-mailu zůstává beze změny) ---- */
+:root{
+  --bg:#eff4fa;--surface:#ffffff;--surface2:#f4f7fb;--surface3:#eff4fa;
+  --border:#e3e8ef;--border2:#d0dff0;
+  --accent:#214571;--accent2:#214571;--accent-dim:rgba(69,231,163,.25);
+  --text:#214571;--muted:#548bc9;--label:#548bc9;--subtle:#31629B;
+  --success:#214571;--radius:21px 0 21px 0;
+}
+body,button,input,textarea,select,.btn-ph,.lock-btn,.btn-add,.btn-gen,.btn-toggle-vals{font-family:'Albert Sans','Segoe UI',-apple-system,Roboto,sans-serif !important;}
+.ph-count,.item-num,.color-opt-label,.fn-pre,.fn-suf,.fn-input,.ph-key{font-family:'Albert Sans','Segoe UI',-apple-system,Roboto,sans-serif !important;}
+.topbar h1{font-size:clamp(24px,4vw,32px);font-weight:800;}
+.topbar-icon{background:none;border-radius:0;width:auto;height:auto;}
+.topbar-icon svg{height:34px;width:auto;display:block;}
+.ph-count{background:#45e7a3;color:#0a141e;}
+.toggle input:checked~.toggle-track{background:#45e7a3;}
+.item-num{color:#1AC77F;}
+.color-opt.selected{border-color:#45e7a3;background:#edfdf6;}
+input:focus,textarea:focus{border-color:#45e7a3;box-shadow:0 0 0 3px rgba(69,231,163,.25);}
+.gen-bar{background:rgba(255,255,255,.92);border-color:#d0dff0;border-radius:21px 0 21px 0;box-shadow:0 6px 24px rgba(33,69,113,.12);}
+.btn-gen{background:#e8af46;color:#0a141e;font-weight:700;border-radius:8px;}
+.modal-overlay{background:rgba(10,20,30,.55);}
+.toast{background:#214571;}
+.embedded .topbar-icon{display:none;}
+.embedded body{padding-top:24px;}
 </style>
+<script>if(window.self!==window.top)document.documentElement.classList.add("embedded");</script>
 </head>
 <body>
 <div class="app">
 
 <div class="topbar">
   <div class="topbar-left">
-    <div class="topbar-icon">⚡</div>
+    <div class="topbar-icon"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 256 188.08">
+  <defs>
+    <style>
+      .em-st0 {
+        fill: none;
+      }
+
+      .em-st1 {
+        fill: #45e7a3;
+      }
+
+      .em-st2 {
+        fill: #30c487;
+      }
+
+      .em-st3 {
+        clip-path: url(#em-clip);
+      }
+    </style>
+    <clipPath id="em-clip">
+      <rect class="em-st0" width="256" height="188.08"/>
+    </clipPath>
+  </defs>
+  <g class="em-st3">
+    <path class="em-st2" d="M119.54,51.85c2.76-3.17,5.58-6.2,8.46-9.11C88.76,3.07,39.73-11.7,14.7,10.04-12.15,33.37-1.19,89.91,39.2,136.33c18.25,20.98,39.39,36.3,59.56,44.64-1.28-.86-2.52-1.8-3.7-2.83-26.86-23.33-15.89-79.87,24.49-126.29"/>
+    <path class="em-st1" d="M241.3,10.04c-25.02-21.74-74.05-6.96-113.3,32.7-2.88,2.9-5.7,5.94-8.46,9.11-40.38,46.42-51.35,102.96-24.49,126.29,1.18,1.03,2.42,1.96,3.7,2.83,10.16,4.2,20.07,6.63,29.25,7.11,9.17-.49,19.09-2.91,29.25-7.11,20.17-8.34,41.3-23.66,59.56-44.64,40.38-46.42,51.35-102.97,24.49-126.29"/>
+  </g>
+</svg></div>
     <div>
-      <h1>FFY · Generátor e-mailové kampaně</h1>
+      <h1>Generátor e-mailové kampaně</h1>
       <p>Sekce lze zapnout/vypnout a přetáhnout pro změnu pořadí</p>
     </div>
   </div>

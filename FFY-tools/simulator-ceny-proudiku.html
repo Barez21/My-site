@@ -1,4 +1,8 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}
+/* v rozcestníku FFY nástrojů se vlastní hlavička skryje */
+.embedded header{display:none}
+</style><script>if(window.self!==window.top)document.documentElement.classList.add("embedded");</script>
+</head><body>
 <title>Simulátor ceny Proudíku</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -50,7 +54,7 @@ input:focus-visible{outline:2px solid var(--bronze);outline-offset:2px}
 .hero{background:var(--band);color:var(--band-fg);border-radius:21px 0 21px 0;padding:24px;display:grid;gap:6px}
 .hero .k{font-size:13px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;opacity:.85}
 .hero .v{font-size:clamp(40px,7vw,60px);font-weight:800;color:var(--green);line-height:1.05;font-variant-numeric:tabular-nums}
-.hero .v small{font-size:.4em;font-weight:700;color:var(--band-fg);margin-left:6px}
+.hero .v small{font-size:.4em;font-weight:700;color:var(--band-fg)}
 .hero .f{font-size:14px;opacity:.9;font-variant-numeric:tabular-nums}
 .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px}
 @media (max-width:520px){.stats{grid-template-columns:1fr 1fr}}
@@ -243,7 +247,7 @@ function calc(n,e,p,s){
 function render(){
   const {n,e,p,s}=st, r=calc(n,e,p,s);
   keys.forEach(k=>{ if(document.activeElement!==$(k+'-num')) $(k+'-num').value=st[k]; $(k).value=st[k]; });
-  $('price').innerHTML=Number.isFinite(r.price)?fmt(r.price,2)+'<small>Kč</small>':'–';
+  $('price').innerHTML=Number.isFinite(r.price)?fmt(r.price,2)+'&nbsp;<small>Kč</small>':'–';
   $('formula').textContent=Number.isFinite(r.price)
     ? `${fmt(r.value)} Kč ÷ ${fmt(r.tokens,1)} Proudíků`
     : 'Zadej aspoň jedno odběrné místo nebo nenulový odběr.';

@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Podložení PDF pozadí</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<meta name="description" content="Podloží firemní pozadí pod PDF dokument, ukáže náhled a vyexportuje hotové PDF.">
 <style>
   :root {
     --paper: #f6f5f1;
@@ -161,6 +165,38 @@
   @keyframes spin { to { transform: rotate(360deg); } }
   footer { margin-top: 28px; font-size: 12px; color: var(--ink-soft); }
   code { font-family: var(--mono); font-size: .92em; background: #ecebe4; padding: 1px 5px; border-radius: 4px; }
+
+  /* ---- FREE for YOU brand ---- */
+  :root {
+    --paper:#eff4fa; --surface:#ffffff; --ink:#214571; --ink-soft:#548bc9;
+    --line:#e3e8ef; --line-strong:#b1cae7; --accent:#45e7a3; --accent-ink:#214571;
+    --ok:#15A268; --warn:#C88A19;
+    --mono:'Albert Sans','Segoe UI',-apple-system,Roboto,sans-serif;
+    --sans:'Albert Sans','Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,sans-serif;
+  }
+  .eyebrow { display:inline-block; background:#45e7a3; color:#0a141e; font-size:13px; font-weight:700; letter-spacing:0; text-transform:none; padding:3px 8px; border-radius:2px; }
+  h1 { font-size:clamp(28px,4.5vw,38px); font-weight:800; letter-spacing:0; line-height:1.15; }
+  .lede { color:#214571; font-size:17px; }
+  .panel { border-radius:21px 0 21px 0; border-color:#e3e8ef; }
+  .panel-title { font-size:12px; font-weight:700; letter-spacing:.06em; color:#214571; }
+  .step-no { background:#45e7a3; color:#0a141e; border-radius:50%; width:20px; height:20px; font-weight:800; }
+  .drop { border-radius:16px 0 16px 0; background:#fff; border-color:#b1cae7; }
+  .drop:hover, .drop.drag { border-color:#45e7a3; background:#edfdf6; }
+  .drop.set { border-color:#45e7a3; background:#edfdf6; }
+  .drop-tag { font-size:11px; font-weight:700; letter-spacing:.06em; color:#548bc9; }
+  .file-meta, .pager .count, .status { font-variant-numeric:tabular-nums; }
+  .btn { background:#e8af46; color:#0a141e; border-radius:8px; font-weight:700; }
+  .btn:hover:not(:disabled) { background:#e4a125; }
+  .btn:disabled { background:#d0dff0; color:#548bc9; }
+  select { border-radius:8px; border-color:#b1cae7; color:#214571; }
+  .canvas-hold { border-radius:16px 0 16px 0; border-color:#e3e8ef;
+    background: linear-gradient(45deg,#e6edf6 25%,transparent 25%) -8px 0/16px 16px, linear-gradient(-45deg,#e6edf6 25%,transparent 25%) -8px 0/16px 16px,
+      linear-gradient(45deg,transparent 75%,#e6edf6 75%) -8px 0/16px 16px, linear-gradient(-45deg,transparent 75%,#e6edf6 75%) -8px 0/16px 16px, #f4f7fb; }
+  .placeholder .sheet.s1 { background:#edfdf6; border-color:#93F1CA; }
+  .note { border-left:4px solid #45e7a3; padding:8px 12px; background:#fff; border-radius:0 0 16px 0; color:#214571; }
+  code { background:#eff4fa; font-family:ui-monospace,Menlo,Consolas,monospace; }
+  .spin { border-color:rgba(10,20,30,.25); border-top-color:#0a141e; }
+  .note:empty { display:none; }
 </style>
 </head>
 <body>
