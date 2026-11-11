@@ -1,0 +1,85 @@
+name: Aktualizovat seznam FFY nástrojů
+
+on:
+  push:
+    paths:
+      - 'FFY-tools/**'
+      - '.github/workflows/ffy-tools-manifest.yml'
+  workflow_dispatch:
+
+jobs:
+  update-tools:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        env:
+          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+      - name: Generovat tools.json
+        run: |
+          python3 << 'PYEOF'
+          import os, re, json, html
+
+          TOOLS_DIR = 'FFY-tools'
+          MANIFEST  = os.path.join(TOOLS_DIR, 'tools.json')
+
+          # Načíst existující seznam — ruční úpravy názvů, popisů a pořadí zůstanou
+          existing = []
+          if os.path.exists(MANIFEST):
+              with open(MANIFEST, 'r', encoding='utf-8') as f:
+                  data = json.load(f)
+              existing = data if isinstance(data, list) else data.get('tools', [])
+
+          def meta_from(path):
+              with open(path, 'r', encoding='utf-8', errors='ignore') as f:
+                  src = f.read(200_000)
+              m = re.search(r'<title[^>]*>(.*?)</title>', src, re.S | re.I)
+              title = html.unescape(re.sub(r'\s+', ' ', m.group(1)).strip()) if m else ''
+              m = re.search(r'<meta[^>]+name=["\']description["\'][^>]*content=["\'](.*?)["\']', src, re.S | re.I)
+              desc = html.unescape(m.group(1).strip()) if m else ''
+              return title, desc
+
+          files = sorted(
+              f for f in os.listdir(TOOLS_DIR)
+              if f.lower().endswith(('.html', '.htm')) and f.lower() not in ('index.html', 'index.htm')
+          )
+
+          tools = []
+          # 1) zachovat pořadí a ruční texty u souborů, které pořád existují
+          for t in existing:
+              if t.get('file') in files:
+                  tools.append(t)
+          known = {t['file'] for t in tools}
+          # 2) přidat nové soubory na konec, název a popis vzít z <title> a <meta description>
+          for f in files:
+              if f in known:
+                  continue
+              title, desc = meta_from(os.path.join(TOOLS_DIR, f))
+              tools.append({
+                  'file': f,
+                  'title': title or os.path.splitext(f)[0].replace('-', ' ').replace('_', ' '),
+                  'description': desc,
+              })
+
+          with open(MANIFEST, 'w', encoding='utf-8') as f:
+              json.dump(tools, f, ensure_ascii=False, indent=2)
+              f.write('\n')
+
+          print(f"Hotovo — {len(tools)} nástrojů v {MANIFEST}")
+          for t in tools:
+              print(f"  • {t['title']}  ({t['file']})")
+          PYEOF
+
+      - name: Commit tools.json
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add "FFY-tools/tools.json"
+          git diff --staged --quiet && exit 0
+          git commit -m "auto: aktualizovat seznam FFY nástrojů"
+          git pull --rebase origin main
+          git push

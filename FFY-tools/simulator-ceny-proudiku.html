@@ -1,0 +1,305 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Simulátor ceny Proudíku</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Layout: ovládání vlevo, výsledek a graf vpravo; na mobilu pod sebou. Barvy FREE for YOU. */
+:root{
+  --bg:#eff4fa; --arc:#dfe9f6; --card:#ffffff; --fg:#214571; --ink:#0a141e;
+  --muted:#548bc9; --line:#b1cae7; --soft:#d0dff0;
+  --green:#45e7a3; --green-d:#15a268; --bronze:#e8af46; --band:#214571; --band-fg:#ffffff;
+  --font:'Albert Sans','Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0a141e; --arc:#0e1e2f; --card:#0e1e2f; --fg:#ffffff; --ink:#0a141e;
+  --muted:#92b5dd; --line:#31629b; --soft:#18314e;
+  --green:#45e7a3; --green-d:#6fecb8; --bronze:#e8af46; --band:#18314e; --band-fg:#ffffff; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0a141e; --arc:#0e1e2f; --card:#0e1e2f; --fg:#ffffff; --ink:#0a141e;
+  --muted:#92b5dd; --line:#31629b; --soft:#18314e;
+  --green:#45e7a3; --green-d:#6fecb8; --bronze:#e8af46; --band:#18314e; --band-fg:#ffffff; color-scheme:dark}
+
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:15px;line-height:1.5;position:relative;overflow-x:hidden}
+.bgarc{position:fixed;top:0;right:0;height:100vh;width:auto;z-index:0;pointer-events:none}
+.wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding-block:28px 48px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:28px}
+header svg{height:30px;width:auto;display:block}
+.eyebrow{display:inline-block;background:var(--green);color:var(--ink);font-weight:700;font-size:12px;padding:3px 8px;border-radius:2px;letter-spacing:.02em}
+h1{font-size:clamp(30px,5vw,44px);font-weight:800;line-height:1.12;margin:10px 0 8px;text-wrap:balance}
+h1 u{text-decoration:none;box-shadow:inset 0 -4px 0 var(--green)}
+.lede{font-size:18px;max-width:62ch;margin:0 0 28px;color:var(--fg)}
+.grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:20px;align-items:start}
+@media (max-width:860px){.grid{grid-template-columns:1fr}}
+.box{background:var(--card);border-radius:21px 0 21px 0;padding:22px 24px;min-width:0}
+.box h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:var(--muted);margin:0 0 16px}
+.ctrl{display:grid;gap:6px;padding:14px 0;border-top:1px solid var(--soft)}
+.ctrl:first-of-type{border-top:0;padding-top:0}
+.ctrl .top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.ctrl label{font-weight:700}
+.ctrl .hint{font-size:13px;color:var(--muted)}
+.num{display:flex;align-items:center;gap:6px}
+.num input{width:110px;font:inherit;font-weight:700;font-variant-numeric:tabular-nums;text-align:right;color:var(--fg);
+  background:transparent;border:1px solid var(--line);border-radius:8px;padding:4px 8px}
+.num span{font-size:13px;color:var(--muted);white-space:nowrap}
+input[type=range]{width:100%;accent-color:var(--green-d);height:28px;margin:0}
+input:focus-visible{outline:2px solid var(--bronze);outline-offset:2px}
+.scale{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+
+.hero{background:var(--band);color:var(--band-fg);border-radius:21px 0 21px 0;padding:24px;display:grid;gap:6px}
+.hero .k{font-size:13px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;opacity:.85}
+.hero .v{font-size:clamp(40px,7vw,60px);font-weight:800;color:var(--green);line-height:1.05;font-variant-numeric:tabular-nums}
+.hero .v small{font-size:.4em;font-weight:700;color:var(--band-fg);margin-left:6px}
+.hero .f{font-size:14px;opacity:.9;font-variant-numeric:tabular-nums}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px}
+@media (max-width:520px){.stats{grid-template-columns:1fr 1fr}}
+.stat{background:var(--card);border-radius:21px 0 21px 0;padding:14px 16px;min-width:0}
+.stat .k{font-size:12px;color:var(--muted);font-weight:600}
+.stat .v{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.stat .s{font-size:12px;color:var(--muted)}
+.split{margin-top:16px}
+.bar{display:flex;height:14px;border-radius:7px;overflow:hidden;background:var(--soft)}
+.bar i{display:block;height:100%}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;margin-top:8px}
+.legend b{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.chartbox{margin-top:16px}
+.chartbox svg{width:100%;height:auto;display:block}
+.chartbox .cap{font-size:13px;color:var(--muted);margin:0 0 6px}
+.note{font-size:13px;color:var(--muted);margin-top:20px;max-width:70ch}
+.formula{font-variant-numeric:tabular-nums;background:var(--soft);padding:2px 6px;border-radius:4px;color:var(--fg)}
+.presets{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.presets button{font:inherit;font-size:13px;font-weight:600;background:transparent;color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:5px 10px;cursor:pointer}
+.presets button:hover{border-color:var(--green-d)}
+.presets button:focus-visible{outline:2px solid var(--bronze);outline-offset:2px}
+.lgd{display:none!important}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .lgl{display:none!important}:root:not([data-theme="light"]) .lgd{display:block!important}}
+:root[data-theme="dark"] .lgl{display:none!important}:root[data-theme="dark"] .lgd{display:block!important}
+</style>
+
+<svg class="bgarc" viewBox="0 0 210 297" preserveAspectRatio="xMaxYMid meet" aria-hidden="true"><path fill="var(--arc)" d="M210,0 H165 C120,22 98,75 104,135 C110,195 140,250 177,297 H210 Z"/></svg>
+
+<div class="wrap">
+  <header>
+    <div><svg class="logo lgl" role="img" aria-label="FREE for YOU" id="lglVrstva_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 843.92 139.49">
+  <defs>
+    <style>
+      .lglst0 {
+        fill: #214571;
+      }
+
+      .lglst1 {
+        fill: #45e7a3;
+      }
+
+      .lglst2 {
+        fill: #30c487;
+      }
+    </style>
+  </defs>
+  <g>
+    <path class="lglst2" d="M88.66,38.45c2.04-2.35,4.14-4.6,6.28-6.76C65.82,2.28,29.46-8.68,10.91,7.44-9.01,24.74-.89,66.68,29.06,101.11c13.54,15.56,29.21,26.93,44.17,33.11-.95-.64-1.87-1.34-2.75-2.1-19.92-17.3-11.78-59.23,18.17-93.66"/>
+    <path class="lglst1" d="M178.96,7.44c-18.56-16.12-54.92-5.16-84.02,24.25-2.14,2.16-4.22,4.4-6.28,6.76-29.95,34.43-38.09,76.37-18.17,93.67.88.76,1.79,1.45,2.75,2.1,7.54,3.12,14.89,4.91,21.7,5.27,6.8-.36,14.16-2.16,21.7-5.27,14.95-6.18,30.64-17.54,44.17-33.11,29.95-34.43,38.09-76.37,18.17-93.66"/>
+  </g>
+  <polygon class="lglst0" points="222.52 106.8 238.84 106.8 238.84 75.74 266.93 75.74 266.93 62.6 238.84 62.6 238.84 46.28 276.36 46.28 276.36 32.6 222.52 32.6 222.52 106.8"/>
+  <polygon class="lglst0" points="359.78 106.8 413.62 106.8 413.62 93.13 376.1 93.13 376.1 75.74 404.19 75.74 404.19 62.6 376.1 62.6 376.1 46.28 413.62 46.28 413.62 32.6 359.78 32.6 359.78 106.8"/>
+  <polygon class="lglst0" points="426.24 106.8 480.08 106.8 480.08 93.13 442.56 93.13 442.56 75.74 470.65 75.74 470.65 62.6 442.56 62.6 442.56 46.28 480.08 46.28 480.08 32.6 426.24 32.6 426.24 106.8"/>
+  <path class="lglst0" d="M303.82,46.28h15.26c3.74,0,6.52.88,8.32,2.65,1.8,1.77,2.7,4.17,2.7,7.21,0,2.05-.41,3.84-1.22,5.35-.81,1.52-2.03,2.67-3.66,3.44-1.63.78-3.71,1.17-6.25,1.17h-15.16v-19.82h0ZM332.01,77.76c3.39-1.34,6.18-3.16,8.37-5.46,2.19-2.29,3.82-4.84,4.88-7.63s1.59-5.64,1.59-8.53c0-4.24-1.01-8.14-3.02-11.71-2.02-3.57-5.02-6.43-9.01-8.59-3.99-2.15-8.99-3.23-15-3.23h-32.33v74.2h16.32v-27.03h10.51l15.67,27.03h18.23l-17.44-28.64c.41-.14.84-.25,1.23-.4"/>
+  <polygon class="lglst0" points="679.91 32.6 662.42 65.04 644.83 32.6 626.17 32.6 654.15 81.68 654.15 106.8 670.48 106.8 670.48 81.57 698.56 32.6 679.91 32.6"/>
+  <g>
+    <path class="lglst0" d="M751.32,82.05c-1.84,3.57-4.35,6.38-7.53,8.43-3.18,2.05-6.89,3.07-11.13,3.07s-7.86-1.02-11.08-3.07c-3.22-2.05-5.72-4.86-7.53-8.43-1.8-3.57-2.7-7.68-2.7-12.35s.9-8.89,2.7-12.45c1.8-3.57,4.31-6.36,7.53-8.37,3.21-2.01,6.91-3.02,11.08-3.02s7.95,1.01,11.13,3.02c3.18,2.01,5.69,4.81,7.53,8.37,1.84,3.57,2.76,7.72,2.76,12.45s-.92,8.78-2.76,12.35M759.59,42.41c-3.46-3.36-7.49-5.95-12.08-7.79s-9.54-2.76-14.84-2.76-10.14.92-14.73,2.76c-4.59,1.84-8.62,4.43-12.08,7.79s-6.18,7.35-8.16,11.98-2.97,9.74-2.97,15.32.99,10.69,2.97,15.32,4.7,8.62,8.16,11.98c3.46,3.36,7.49,5.95,12.08,7.79,4.59,1.84,9.5,2.76,14.73,2.76s10.24-.92,14.84-2.76c4.59-1.84,8.62-4.43,12.08-7.79,3.46-3.35,6.18-7.35,8.16-11.98s2.97-9.73,2.97-15.32-.99-10.69-2.97-15.32-4.7-8.62-8.16-11.98"/>
+    <path class="lglst0" d="M513.82,51.04c0-2.61.67-4.5,2.01-5.67s3.43-1.54,6.25-1.11v-13.78c-5.09-.64-9.4-.32-12.93.95-3.53,1.27-6.24,3.41-8.11,6.41s-2.81,7.01-2.81,12.03v3.92h-6.04v13.67h6.04v39.32h15.58v-39.32h8.8v-13.67h-8.8v-2.76h0Z"/>
+    <path class="lglst0" d="M827.49,32.6v46.32c0,3.18-.64,5.87-1.91,8.06-1.27,2.19-3.06,3.83-5.35,4.93-2.3,1.1-4.97,1.64-8,1.64s-5.48-.55-7.74-1.64-4.03-2.74-5.3-4.93c-1.27-2.19-1.91-4.88-1.91-8.06v-46.32h-16.43v45.05c0,6.72,1.43,12.28,4.29,16.69,2.86,4.42,6.64,7.72,11.34,9.91s9.87,3.29,15.53,3.29c4.1,0,8.07-.62,11.92-1.86s7.28-3.09,10.28-5.57c3-2.47,5.37-5.56,7.1-9.27,1.73-3.71,2.6-8.11,2.6-13.2v-45.05h-16.43,0Z"/>
+    <path class="lglst0" d="M617.06,53.75c-2.33.46-4.42,1.29-6.25,2.49-1.84,1.2-3.43,2.72-4.77,4.56l-1.06-7h-14.1v53h15.48v-23c0-3.53.58-6.41,1.75-8.64,1.17-2.23,2.7-3.92,4.61-5.09s3.92-1.87,6.04-2.12,4.1-.09,5.93.48v-14.63c-2.76-.49-5.3-.51-7.63-.05"/>
+    <path class="lglst0" d="M563.69,87.67c-1.1,1.94-2.47,3.41-4.13,4.4-1.66.99-3.41,1.48-5.25,1.48s-3.57-.49-5.19-1.48c-1.63-.99-2.88-2.47-3.76-4.45-.89-1.98-1.33-4.42-1.33-7.31s.46-5.42,1.38-7.37c.92-1.94,2.19-3.41,3.82-4.4,1.62-.99,3.39-1.49,5.3-1.49s3.67.5,5.3,1.49c1.62.99,2.95,2.47,3.98,4.45,1.02,1.98,1.54,4.42,1.54,7.31s-.55,5.42-1.64,7.37M568.51,56.4c-4.1-2.23-8.76-3.34-13.99-3.34s-9.79,1.11-13.89,3.34c-4.1,2.22-7.35,5.37-9.75,9.43-2.4,4.06-3.6,8.89-3.6,14.47s1.17,10.42,3.5,14.52c2.33,4.1,5.55,7.24,9.65,9.43,4.1,2.19,8.73,3.29,13.89,3.29s9.82-1.1,13.99-3.29,7.47-5.33,9.91-9.43,3.66-8.94,3.66-14.52-1.2-10.4-3.6-14.47c-2.41-4.06-5.66-7.21-9.75-9.43"/>
+  </g>
+</svg><svg class="logo lgd" role="img" aria-label="FREE for YOU" id="lgdVrstva_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 843.92 139.49">
+  <defs>
+    <style>
+      .lgdst0 {
+        fill: #ffffff;
+      }
+
+      .lgdst1 {
+        fill: #45e7a3;
+      }
+
+      .lgdst2 {
+        fill: #30c487;
+      }
+    </style>
+  </defs>
+  <g>
+    <path class="lgdst2" d="M88.66,38.45c2.04-2.35,4.14-4.6,6.28-6.76C65.82,2.28,29.46-8.68,10.91,7.44-9.01,24.74-.89,66.68,29.06,101.11c13.54,15.56,29.21,26.93,44.17,33.11-.95-.64-1.87-1.34-2.75-2.1-19.92-17.3-11.78-59.23,18.17-93.66"/>
+    <path class="lgdst1" d="M178.96,7.44c-18.56-16.12-54.92-5.16-84.02,24.25-2.14,2.16-4.22,4.4-6.28,6.76-29.95,34.43-38.09,76.37-18.17,93.67.88.76,1.79,1.45,2.75,2.1,7.54,3.12,14.89,4.91,21.7,5.27,6.8-.36,14.16-2.16,21.7-5.27,14.95-6.18,30.64-17.54,44.17-33.11,29.95-34.43,38.09-76.37,18.17-93.66"/>
+  </g>
+  <polygon class="lgdst0" points="222.52 106.8 238.84 106.8 238.84 75.74 266.93 75.74 266.93 62.6 238.84 62.6 238.84 46.28 276.36 46.28 276.36 32.6 222.52 32.6 222.52 106.8"/>
+  <polygon class="lgdst0" points="359.78 106.8 413.62 106.8 413.62 93.13 376.1 93.13 376.1 75.74 404.19 75.74 404.19 62.6 376.1 62.6 376.1 46.28 413.62 46.28 413.62 32.6 359.78 32.6 359.78 106.8"/>
+  <polygon class="lgdst0" points="426.24 106.8 480.08 106.8 480.08 93.13 442.56 93.13 442.56 75.74 470.65 75.74 470.65 62.6 442.56 62.6 442.56 46.28 480.08 46.28 480.08 32.6 426.24 32.6 426.24 106.8"/>
+  <path class="lgdst0" d="M303.82,46.28h15.26c3.74,0,6.52.88,8.32,2.65,1.8,1.77,2.7,4.17,2.7,7.21,0,2.05-.41,3.84-1.22,5.35-.81,1.52-2.03,2.67-3.66,3.44-1.63.78-3.71,1.17-6.25,1.17h-15.16v-19.82h0ZM332.01,77.76c3.39-1.34,6.18-3.16,8.37-5.46,2.19-2.29,3.82-4.84,4.88-7.63s1.59-5.64,1.59-8.53c0-4.24-1.01-8.14-3.02-11.71-2.02-3.57-5.02-6.43-9.01-8.59-3.99-2.15-8.99-3.23-15-3.23h-32.33v74.2h16.32v-27.03h10.51l15.67,27.03h18.23l-17.44-28.64c.41-.14.84-.25,1.23-.4"/>
+  <polygon class="lgdst0" points="679.91 32.6 662.42 65.04 644.83 32.6 626.17 32.6 654.15 81.68 654.15 106.8 670.48 106.8 670.48 81.57 698.56 32.6 679.91 32.6"/>
+  <g>
+    <path class="lgdst0" d="M751.32,82.05c-1.84,3.57-4.35,6.38-7.53,8.43-3.18,2.05-6.89,3.07-11.13,3.07s-7.86-1.02-11.08-3.07c-3.22-2.05-5.72-4.86-7.53-8.43-1.8-3.57-2.7-7.68-2.7-12.35s.9-8.89,2.7-12.45c1.8-3.57,4.31-6.36,7.53-8.37,3.21-2.01,6.91-3.02,11.08-3.02s7.95,1.01,11.13,3.02c3.18,2.01,5.69,4.81,7.53,8.37,1.84,3.57,2.76,7.72,2.76,12.45s-.92,8.78-2.76,12.35M759.59,42.41c-3.46-3.36-7.49-5.95-12.08-7.79s-9.54-2.76-14.84-2.76-10.14.92-14.73,2.76c-4.59,1.84-8.62,4.43-12.08,7.79s-6.18,7.35-8.16,11.98-2.97,9.74-2.97,15.32.99,10.69,2.97,15.32,4.7,8.62,8.16,11.98c3.46,3.36,7.49,5.95,12.08,7.79,4.59,1.84,9.5,2.76,14.73,2.76s10.24-.92,14.84-2.76c4.59-1.84,8.62-4.43,12.08-7.79,3.46-3.35,6.18-7.35,8.16-11.98s2.97-9.73,2.97-15.32-.99-10.69-2.97-15.32-4.7-8.62-8.16-11.98"/>
+    <path class="lgdst0" d="M513.82,51.04c0-2.61.67-4.5,2.01-5.67s3.43-1.54,6.25-1.11v-13.78c-5.09-.64-9.4-.32-12.93.95-3.53,1.27-6.24,3.41-8.11,6.41s-2.81,7.01-2.81,12.03v3.92h-6.04v13.67h6.04v39.32h15.58v-39.32h8.8v-13.67h-8.8v-2.76h0Z"/>
+    <path class="lgdst0" d="M827.49,32.6v46.32c0,3.18-.64,5.87-1.91,8.06-1.27,2.19-3.06,3.83-5.35,4.93-2.3,1.1-4.97,1.64-8,1.64s-5.48-.55-7.74-1.64-4.03-2.74-5.3-4.93c-1.27-2.19-1.91-4.88-1.91-8.06v-46.32h-16.43v45.05c0,6.72,1.43,12.28,4.29,16.69,2.86,4.42,6.64,7.72,11.34,9.91s9.87,3.29,15.53,3.29c4.1,0,8.07-.62,11.92-1.86s7.28-3.09,10.28-5.57c3-2.47,5.37-5.56,7.1-9.27,1.73-3.71,2.6-8.11,2.6-13.2v-45.05h-16.43,0Z"/>
+    <path class="lgdst0" d="M617.06,53.75c-2.33.46-4.42,1.29-6.25,2.49-1.84,1.2-3.43,2.72-4.77,4.56l-1.06-7h-14.1v53h15.48v-23c0-3.53.58-6.41,1.75-8.64,1.17-2.23,2.7-3.92,4.61-5.09s3.92-1.87,6.04-2.12,4.1-.09,5.93.48v-14.63c-2.76-.49-5.3-.51-7.63-.05"/>
+    <path class="lgdst0" d="M563.69,87.67c-1.1,1.94-2.47,3.41-4.13,4.4-1.66.99-3.41,1.48-5.25,1.48s-3.57-.49-5.19-1.48c-1.63-.99-2.88-2.47-3.76-4.45-.89-1.98-1.33-4.42-1.33-7.31s.46-5.42,1.38-7.37c.92-1.94,2.19-3.41,3.82-4.4,1.62-.99,3.39-1.49,5.3-1.49s3.67.5,5.3,1.49c1.62.99,2.95,2.47,3.98,4.45,1.02,1.98,1.54,4.42,1.54,7.31s-.55,5.42-1.64,7.37M568.51,56.4c-4.1-2.23-8.76-3.34-13.99-3.34s-9.79,1.11-13.89,3.34c-4.1,2.22-7.35,5.37-9.75,9.43-2.4,4.06-3.6,8.89-3.6,14.47s1.17,10.42,3.5,14.52c2.33,4.1,5.55,7.24,9.65,9.43,4.1,2.19,8.73,3.29,13.89,3.29s9.82-1.1,13.99-3.29,7.47-5.33,9.91-9.43,3.66-8.94,3.66-14.52-1.2-10.4-3.6-14.47c-2.41-4.06-5.66-7.21-9.75-9.43"/>
+  </g>
+</svg></div>
+    <span class="eyebrow">Simulace</span>
+  </header>
+
+  <h1>Kolik bude stát jeden <u>Proudík</u></h1>
+  <p class="lede">Posouvej šoupátky a uvidíš, jak cenu Proudíku mění počet odběrných míst, výroba zdrojů a cena energie.</p>
+
+  <div class="grid">
+    <section class="box" aria-label="Vstupy">
+      <h2>Vstupy za jeden měsíc</h2>
+
+      <div class="ctrl">
+        <div class="top"><label for="n">Počet odběrných míst</label>
+          <div class="num"><input id="n-num" type="number" min="0" step="1" aria-label="Počet odběrných míst"><span>OM</span></div></div>
+        <input id="n" type="range" min="0" max="20000" step="10">
+        <div class="scale"><span>0</span><span>20 000</span></div>
+        <div class="hint">Každé OM dostane 1 Proudík za měsíc.</div>
+      </div>
+
+      <div class="ctrl">
+        <div class="top"><label for="e">Výroba zdrojů</label>
+          <div class="num"><input id="e-num" type="number" min="0" step="1" aria-label="Výroba zdrojů v MWh"><span>MWh / měs.</span></div></div>
+        <input id="e" type="range" min="0" max="10000" step="10">
+        <div class="scale"><span>0</span><span>10 000 MWh</span></div>
+      </div>
+
+      <div class="ctrl">
+        <div class="top"><label for="p">Cena energie ze zdrojů</label>
+          <div class="num"><input id="p-num" type="number" min="0" step="1" aria-label="Cena za MWh v Kč"><span>Kč / MWh</span></div></div>
+        <input id="p" type="range" min="0" max="8000" step="50">
+        <div class="scale"><span>0</span><span>8 000 Kč</span></div>
+      </div>
+
+      <div class="ctrl">
+        <div class="top"><label for="s">Podíl výroby odebraný OM</label>
+          <div class="num"><input id="s-num" type="number" min="0" max="100" step="1" aria-label="Podíl odebrané výroby v procentech"><span>%</span></div></div>
+        <input id="s" type="range" min="0" max="100" step="1">
+        <div class="scale"><span>0 %</span><span>100 %</span></div>
+        <div class="hint">Za každou odebranou MWh získá OM 1,5 Proudíku. Při 100 % odeberou OM vše, co zdroje vyrobí.</div>
+      </div>
+
+      <div class="ctrl">
+        <div class="top"><label>Ukázkové scénáře</label></div>
+        <div class="presets">
+          <button type="button" data-p="500,300,2200,100">Malá komunita</button>
+          <button type="button" data-p="3000,1500,2500,100">Střední</button>
+          <button type="button" data-p="15000,6000,2400,90">Velká síť</button>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="Výsledek" style="min-width:0">
+      <div class="hero" aria-live="polite">
+        <div class="k">Cena 1 Proudíku</div>
+        <div class="v" id="price">–</div>
+        <div class="f" id="formula"></div>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><div class="k">Hodnota výroby</div><div class="v" id="value">–</div><div class="s">za měsíc</div></div>
+        <div class="stat"><div class="k">Vydané Proudíky</div><div class="v" id="tokens">–</div><div class="s">za měsíc</div></div>
+        <div class="stat"><div class="k">Na 1 odběrné místo</div><div class="v" id="perom">–</div><div class="s" id="perom-s"></div></div>
+      </div>
+
+      <div class="box split">
+        <h2>Odkud Proudíky pocházejí</h2>
+        <div class="bar"><i id="b1" style="background:var(--fg)"></i><i id="b2" style="background:var(--green)"></i></div>
+        <div class="legend">
+          <span><b style="background:var(--fg)"></b>Za odběrná místa: <strong id="t1"></strong></span>
+          <span><b style="background:var(--green)"></b>Za odebrané MWh: <strong id="t2"></strong></span>
+        </div>
+
+        <div class="chartbox">
+          <p class="cap">Cena Proudíku podle počtu odběrných míst (ostatní vstupy beze změny)</p>
+          <svg id="chart" viewBox="0 0 560 250" role="img" aria-label="Graf ceny Proudíku podle počtu odběrných míst"></svg>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <p class="note">Výpočet: cena Proudíku = hodnota vyrobené energie ÷ počet vydaných Proudíků, tedy
+    <span class="formula">(MWh × Kč/MWh) ÷ (OM × 1 + odebrané MWh × 1,5)</span>. Vše za jeden měsíc. Odebrané MWh = výroba × podíl odebraný OM.</p>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const fmt=(x,d=0)=>Number.isFinite(x)?x.toLocaleString('cs-CZ',{minimumFractionDigits:d,maximumFractionDigits:d}):'–';
+const st={n:3000,e:1500,p:2500,s:100};
+const keys=['n','e','p','s'];
+
+function calc(n,e,p,s){
+  const used=e*s/100, tokens=n*1+used*1.5, value=e*p;
+  return {used,tokens,value,price:tokens>0?value/tokens:NaN};
+}
+
+function render(){
+  const {n,e,p,s}=st, r=calc(n,e,p,s);
+  keys.forEach(k=>{ if(document.activeElement!==$(k+'-num')) $(k+'-num').value=st[k]; $(k).value=st[k]; });
+  $('price').innerHTML=Number.isFinite(r.price)?fmt(r.price,2)+'<small>Kč</small>':'–';
+  $('formula').textContent=Number.isFinite(r.price)
+    ? `${fmt(r.value)} Kč ÷ ${fmt(r.tokens,1)} Proudíků`
+    : 'Zadej aspoň jedno odběrné místo nebo nenulový odběr.';
+  $('value').textContent=fmt(r.value)+' Kč';
+  $('tokens').textContent=fmt(r.tokens,1);
+  if(n>0){
+    const t=r.tokens/n;
+    $('perom').textContent=fmt(t,2)+' P';
+    $('perom-s').textContent=`${fmt(r.used/n,3)} MWh, hodnota ${fmt(t*(r.price||0))} Kč`;
+  }else{$('perom').textContent='–';$('perom-s').textContent='žádná OM';}
+  const a=n, b=r.used*1.5, tot=a+b||1;
+  $('b1').style.width=(a/tot*100)+'%'; $('b2').style.width=(b/tot*100)+'%';
+  $('t1').textContent=fmt(a)+' ('+fmt(a/tot*100)+' %)';
+  $('t2').textContent=fmt(b,1)+' ('+fmt(b/tot*100)+' %)';
+  chart();
+}
+
+function niceMax(v){ if(!(v>0)) return 1; const e=Math.pow(10,Math.floor(Math.log10(v))); const m=v/e; return (m<=1?1:m<=2?2:m<=2.5?2.5:m<=5?5:10)*e; }
+
+function chart(){
+  const svg=$('chart'), W=560,H=250, L=58,R=16,T=14,B=38, w=W-L-R, h=H-T-B;
+  const nMax=Math.max(20000,st.n), pts=[], steps=120;
+  for(let i=0;i<=steps;i++){ const n=Math.max(1,nMax*i/steps); const c=calc(n,st.e,st.p,st.s); pts.push([n,c.price]); }
+  const yTop=niceMax(Math.max(...pts.map(q=>q[1]).filter(Number.isFinite),0.01));
+  const x=n=>L+n/nMax*w, y=v=>T+h-(Math.min(v,yTop)/yTop)*h;
+  let g='';
+  for(let i=0;i<=4;i++){ const v=yTop*i/4, yy=y(v);
+    g+=`<line x1="${L}" x2="${W-R}" y1="${yy}" y2="${yy}" stroke="var(--soft)" stroke-width="1"/>`;
+    g+=`<text x="${L-8}" y="${yy+4}" text-anchor="end" font-size="11" fill="var(--muted)">${fmt(v,v<10?2:0)}</text>`; }
+  for(let i=0;i<=4;i++){ const n=nMax*i/4, xx=x(n);
+    g+=`<text x="${xx}" y="${H-B+18}" text-anchor="middle" font-size="11" fill="var(--muted)">${fmt(n)}</text>`; }
+  g+=`<text x="${L+w/2}" y="${H-4}" text-anchor="middle" font-size="11" fill="var(--muted)">odběrná místa</text>`;
+  g+=`<text x="12" y="${T+h/2}" text-anchor="middle" font-size="11" fill="var(--muted)" transform="rotate(-90 12 ${T+h/2})">Kč / Proudík</text>`;
+  const line=pts.map((q,i)=>(i?'L':'M')+x(q[0]).toFixed(1)+','+y(q[1]).toFixed(1)).join(' ');
+  g+=`<path d="${line} L${x(nMax)},${T+h} L${x(0)},${T+h} Z" fill="var(--green)" opacity=".18"/>`;
+  g+=`<path d="${line}" fill="none" stroke="var(--green-d)" stroke-width="2.5" stroke-linejoin="round"/>`;
+  const cur=calc(st.n,st.e,st.p,st.s);
+  if(st.n>0 && Number.isFinite(cur.price)){
+    const cx=x(st.n), cy=y(cur.price);
+    g+=`<line x1="${cx}" x2="${cx}" y1="${T}" y2="${T+h}" stroke="var(--fg)" stroke-dasharray="3 3" stroke-width="1"/>`;
+    g+=`<circle cx="${cx}" cy="${cy}" r="6" fill="var(--bronze)" stroke="var(--card)" stroke-width="2"/>`;
+    const anchor=cx>L+w*0.7?'end':'start', dx=anchor==='end'?-10:10;
+    g+=`<text x="${cx+dx}" y="${Math.max(T+12,cy-10)}" text-anchor="${anchor}" font-size="12" font-weight="700" fill="var(--fg)">${fmt(cur.price,2)} Kč</text>`;
+  }
+  svg.innerHTML=g;
+}
+
+keys.forEach(k=>{
+  $(k).addEventListener('input',e=>{st[k]=+e.target.value;render();});
+  $(k+'-num').addEventListener('input',e=>{const v=parseFloat(e.target.value); if(Number.isFinite(v)&&v>=0){st[k]=k==='s'?Math.min(100,v):v;render();}});
+  $(k+'-num').addEventListener('blur',()=>render());
+});
+document.querySelectorAll('.presets button').forEach(b=>b.addEventListener('click',()=>{
+  const [n,e,p,s]=b.dataset.p.split(',').map(Number); Object.assign(st,{n,e,p,s}); render();
+}));
+render();
+</script>
+
+</body></html>

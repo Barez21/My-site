@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>FFY nástroje</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iVnJzdHZhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjI1NiIgaGVpZ2h0PSIxODguMDgiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAyNTYgMTg4LjA4Ij4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLnN0MCB7CiAgICAgICAgZmlsbDogbm9uZTsKICAgICAgfQoKICAgICAgLnN0MSB7CiAgICAgICAgZmlsbDogIzQ1ZTdhMzsKICAgICAgfQoKICAgICAgLnN0MiB7CiAgICAgICAgZmlsbDogIzMwYzQ4NzsKICAgICAgfQoKICAgICAgLnN0MyB7CiAgICAgICAgY2xpcC1wYXRoOiB1cmwoI2NsaXBwYXRoKTsKICAgICAgfQogICAgPC9zdHlsZT4KICAgIDxjbGlwUGF0aCBpZD0iY2xpcHBhdGgiPgogICAgICA8cmVjdCBjbGFzcz0ic3QwIiB3aWR0aD0iMjU2IiBoZWlnaHQ9IjE4OC4wOCIvPgogICAgPC9jbGlwUGF0aD4KICA8L2RlZnM+CiAgPGcgY2xhc3M9InN0MyI+CiAgICA8cGF0aCBjbGFzcz0ic3QyIiBkPSJNMTE5LjU0LDUxLjg1YzIuNzYtMy4xNyw1LjU4LTYuMiw4LjQ2LTkuMTFDODguNzYsMy4wNywzOS43My0xMS43LDE0LjcsMTAuMDQtMTIuMTUsMzMuMzctMS4xOSw4OS45MSwzOS4yLDEzNi4zM2MxOC4yNSwyMC45OCwzOS4zOSwzNi4zLDU5LjU2LDQ0LjY0LTEuMjgtLjg2LTIuNTItMS44LTMuNy0yLjgzLTI2Ljg2LTIzLjMzLTE1Ljg5LTc5Ljg3LDI0LjQ5LTEyNi4yOSIvPgogICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTI0MS4zLDEwLjA0Yy0yNS4wMi0yMS43NC03NC4wNS02Ljk2LTExMy4zLDMyLjctMi44OCwyLjktNS43LDUuOTQtOC40Niw5LjExLTQwLjM4LDQ2LjQyLTUxLjM1LDEwMi45Ni0yNC40OSwxMjYuMjksMS4xOCwxLjAzLDIuNDIsMS45NiwzLjcsMi44MywxMC4xNiw0LjIsMjAuMDcsNi42MywyOS4yNSw3LjExLDkuMTctLjQ5LDE5LjA5LTIuOTEsMjkuMjUtNy4xMSwyMC4xNy04LjM0LDQxLjMtMjMuNjYsNTkuNTYtNDQuNjQsNDAuMzgtNDYuNDIsNTEuMzUtMTAyLjk3LDI0LjQ5LTEyNi4yOSIvPgogIDwvZz4KPC9zdmc+">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ffy-blue:   #214571;
+    --ffy-green:  #45e7a3;
+    --ffy-ink:    #0a141e;
+    --ffy-white:  #ffffff;
+    --ffy-bg:     #eff4fa;
+    --ffy-arc:    #dfe9f6;
+    --ffy-muted:  #548bc9;
+    --ffy-border: #e3e8ef;
+    --ffy-line:   #b1cae7;
+    --header-h:   auto;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    display: flex; flex-direction: column;
+    height: 100dvh;
+    font-family: 'Albert Sans', 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    color: var(--ffy-blue);
+    background: var(--ffy-bg);
+  }
+
+  /* ---------- Horní lišta (vždy viditelná) ---------- */
+  .topbar {
+    flex: none;
+    position: relative; z-index: 10;
+    background: var(--ffy-white);
+    border-bottom: 1px solid var(--ffy-border);
+  }
+  .topbar-row {
+    display: flex; align-items: center; gap: 16px;
+    padding: 12px 24px 8px;
+  }
+  .brand { display: flex; align-items: center; gap: 14px; text-decoration: none; color: inherit; }
+  .brand-logo { height: 31px; width: auto; display: block; flex: none; } /* min. šířka 180 px dle manuálu */
+  .brand-sep { width: 1px; height: 22px; background: var(--ffy-line); }
+  .brand-label { font-weight: 700; font-size: 15px; letter-spacing: .01em; }
+  .spacer { flex: 1; }
+  .open-link {
+    display: none; align-items: center; gap: 6px;
+    font-size: 14px; font-weight: 600; color: var(--ffy-blue);
+    text-decoration: none; padding: 7px 12px; border-radius: 8px;
+    border: 1px solid var(--ffy-border);
+  }
+  .open-link:hover { background: var(--ffy-bg); }
+  .open-link svg { width: 14px; height: 14px; }
+  body.tool-active .open-link { display: inline-flex; }
+
+  .tabs {
+    display: flex; gap: 4px;
+    padding: 0 16px;
+    overflow-x: auto; scrollbar-width: thin;
+  }
+  .tab {
+    flex: none;
+    position: relative;
+    padding: 10px 12px 12px;
+    font-size: 15px; font-weight: 600;
+    color: var(--ffy-blue); text-decoration: none; white-space: nowrap;
+    opacity: .72;
+  }
+  .tab:hover { opacity: 1; }
+  .tab[aria-current="page"] { opacity: 1; }
+  .tab[aria-current="page"]::after {
+    content: ""; position: absolute; left: 12px; right: 12px; bottom: 0;
+    height: 4px; background: var(--ffy-green); border-radius: 2px 2px 0 0;
+  }
+  .tab:focus-visible, .open-link:focus-visible, .card:focus-visible {
+    outline: 2px solid var(--ffy-muted); outline-offset: 2px;
+  }
+
+  /* ---------- Obsah ---------- */
+  main { flex: 1; min-height: 0; position: relative; }
+  #frame {
+    display: none; width: 100%; height: 100%; border: 0; background: var(--ffy-white);
+  }
+  body.tool-active #frame { display: block; }
+  body.tool-active #home { display: none; }
+
+  #home { height: 100%; overflow-y: auto; position: relative; }
+  .arc {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    z-index: 0; pointer-events: none;
+  }
+  .home-inner { position: relative; z-index: 1; max-width: 1080px; margin: 0 auto; padding: 48px 24px 64px; }
+  .eyebrow {
+    display: inline-block; background: var(--ffy-green); color: var(--ffy-ink);
+    font-size: 13px; font-weight: 700; padding: 3px 8px; border-radius: 2px;
+  }
+  h1 { font-size: clamp(32px, 5vw, 44px); font-weight: 800; line-height: 1.15; margin: 14px 0 10px; }
+  .perex { font-size: 18px; line-height: 1.45; margin: 0 0 32px; max-width: 46ch; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+  .card {
+    display: flex; flex-direction: column; gap: 8px;
+    background: var(--ffy-white); border: 1px solid var(--ffy-border);
+    border-radius: 21px 0 21px 0;
+    padding: 20px 22px; text-decoration: none; color: var(--ffy-blue);
+    transition: border-color .15s, transform .15s;
+  }
+  .card:hover { border-color: var(--ffy-green); transform: translateY(-2px); }
+  .card-title { font-size: 18px; font-weight: 700; line-height: 1.25; }
+  .card-desc { font-size: 14px; line-height: 1.5; color: var(--ffy-blue); opacity: .85; }
+  .card-file { margin-top: auto; padding-top: 6px; font-size: 12px; color: var(--ffy-muted); }
+
+  .note {
+    background: var(--ffy-white); border-left: 4px solid var(--ffy-green);
+    border-radius: 0 0 21px 0; padding: 16px 20px; font-size: 15px; line-height: 1.5; max-width: 640px;
+  }
+  .note code { background: var(--ffy-bg); padding: 1px 5px; border-radius: 4px; }
+
+  @media (max-width: 640px) {
+    .topbar-row { padding: 10px 16px 6px; gap: 10px; }
+    .brand-label { font-size: 14px; }
+    .open-link span { display: none; }
+    .tabs { padding: 0 8px; }
+    .tab { font-size: 14px; padding: 9px 10px 11px; }
+    .home-inner { padding: 32px 16px 48px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-row">
+    <a class="brand" href="#" aria-label="Rozcestník FFY nástrojů">
+      <svg class="brand-logo" role="img" aria-label="FREE for YOU" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 843.92 139.49">
+  <defs>
+    <style>
+      .lg-st0 {
+        fill: #214571;
+      }
+
+      .lg-st1 {
+        fill: #45e7a3;
+      }
+
+      .lg-st2 {
+        fill: #30c487;
+      }
+    </style>
+  </defs>
+  <g>
+    <path class="lg-st2" d="M88.66,38.45c2.04-2.35,4.14-4.6,6.28-6.76C65.82,2.28,29.46-8.68,10.91,7.44-9.01,24.74-.89,66.68,29.06,101.11c13.54,15.56,29.21,26.93,44.17,33.11-.95-.64-1.87-1.34-2.75-2.1-19.92-17.3-11.78-59.23,18.17-93.66"/>
+    <path class="lg-st1" d="M178.96,7.44c-18.56-16.12-54.92-5.16-84.02,24.25-2.14,2.16-4.22,4.4-6.28,6.76-29.95,34.43-38.09,76.37-18.17,93.67.88.76,1.79,1.45,2.75,2.1,7.54,3.12,14.89,4.91,21.7,5.27,6.8-.36,14.16-2.16,21.7-5.27,14.95-6.18,30.64-17.54,44.17-33.11,29.95-34.43,38.09-76.37,18.17-93.66"/>
+  </g>
+  <polygon class="lg-st0" points="222.52 106.8 238.84 106.8 238.84 75.74 266.93 75.74 266.93 62.6 238.84 62.6 238.84 46.28 276.36 46.28 276.36 32.6 222.52 32.6 222.52 106.8"/>
+  <polygon class="lg-st0" points="359.78 106.8 413.62 106.8 413.62 93.13 376.1 93.13 376.1 75.74 404.19 75.74 404.19 62.6 376.1 62.6 376.1 46.28 413.62 46.28 413.62 32.6 359.78 32.6 359.78 106.8"/>
+  <polygon class="lg-st0" points="426.24 106.8 480.08 106.8 480.08 93.13 442.56 93.13 442.56 75.74 470.65 75.74 470.65 62.6 442.56 62.6 442.56 46.28 480.08 46.28 480.08 32.6 426.24 32.6 426.24 106.8"/>
+  <path class="lg-st0" d="M303.82,46.28h15.26c3.74,0,6.52.88,8.32,2.65,1.8,1.77,2.7,4.17,2.7,7.21,0,2.05-.41,3.84-1.22,5.35-.81,1.52-2.03,2.67-3.66,3.44-1.63.78-3.71,1.17-6.25,1.17h-15.16v-19.82h0ZM332.01,77.76c3.39-1.34,6.18-3.16,8.37-5.46,2.19-2.29,3.82-4.84,4.88-7.63s1.59-5.64,1.59-8.53c0-4.24-1.01-8.14-3.02-11.71-2.02-3.57-5.02-6.43-9.01-8.59-3.99-2.15-8.99-3.23-15-3.23h-32.33v74.2h16.32v-27.03h10.51l15.67,27.03h18.23l-17.44-28.64c.41-.14.84-.25,1.23-.4"/>
+  <polygon class="lg-st0" points="679.91 32.6 662.42 65.04 644.83 32.6 626.17 32.6 654.15 81.68 654.15 106.8 670.48 106.8 670.48 81.57 698.56 32.6 679.91 32.6"/>
+  <g>
+    <path class="lg-st0" d="M751.32,82.05c-1.84,3.57-4.35,6.38-7.53,8.43-3.18,2.05-6.89,3.07-11.13,3.07s-7.86-1.02-11.08-3.07c-3.22-2.05-5.72-4.86-7.53-8.43-1.8-3.57-2.7-7.68-2.7-12.35s.9-8.89,2.7-12.45c1.8-3.57,4.31-6.36,7.53-8.37,3.21-2.01,6.91-3.02,11.08-3.02s7.95,1.01,11.13,3.02c3.18,2.01,5.69,4.81,7.53,8.37,1.84,3.57,2.76,7.72,2.76,12.45s-.92,8.78-2.76,12.35M759.59,42.41c-3.46-3.36-7.49-5.95-12.08-7.79s-9.54-2.76-14.84-2.76-10.14.92-14.73,2.76c-4.59,1.84-8.62,4.43-12.08,7.79s-6.18,7.35-8.16,11.98-2.97,9.74-2.97,15.32.99,10.69,2.97,15.32,4.7,8.62,8.16,11.98c3.46,3.36,7.49,5.95,12.08,7.79,4.59,1.84,9.5,2.76,14.73,2.76s10.24-.92,14.84-2.76c4.59-1.84,8.62-4.43,12.08-7.79,3.46-3.35,6.18-7.35,8.16-11.98s2.97-9.73,2.97-15.32-.99-10.69-2.97-15.32-4.7-8.62-8.16-11.98"/>
+    <path class="lg-st0" d="M513.82,51.04c0-2.61.67-4.5,2.01-5.67s3.43-1.54,6.25-1.11v-13.78c-5.09-.64-9.4-.32-12.93.95-3.53,1.27-6.24,3.41-8.11,6.41s-2.81,7.01-2.81,12.03v3.92h-6.04v13.67h6.04v39.32h15.58v-39.32h8.8v-13.67h-8.8v-2.76h0Z"/>
+    <path class="lg-st0" d="M827.49,32.6v46.32c0,3.18-.64,5.87-1.91,8.06-1.27,2.19-3.06,3.83-5.35,4.93-2.3,1.1-4.97,1.64-8,1.64s-5.48-.55-7.74-1.64-4.03-2.74-5.3-4.93c-1.27-2.19-1.91-4.88-1.91-8.06v-46.32h-16.43v45.05c0,6.72,1.43,12.28,4.29,16.69,2.86,4.42,6.64,7.72,11.34,9.91s9.87,3.29,15.53,3.29c4.1,0,8.07-.62,11.92-1.86s7.28-3.09,10.28-5.57c3-2.47,5.37-5.56,7.1-9.27,1.73-3.71,2.6-8.11,2.6-13.2v-45.05h-16.43,0Z"/>
+    <path class="lg-st0" d="M617.06,53.75c-2.33.46-4.42,1.29-6.25,2.49-1.84,1.2-3.43,2.72-4.77,4.56l-1.06-7h-14.1v53h15.48v-23c0-3.53.58-6.41,1.75-8.64,1.17-2.23,2.7-3.92,4.61-5.09s3.92-1.87,6.04-2.12,4.1-.09,5.93.48v-14.63c-2.76-.49-5.3-.51-7.63-.05"/>
+    <path class="lg-st0" d="M563.69,87.67c-1.1,1.94-2.47,3.41-4.13,4.4-1.66.99-3.41,1.48-5.25,1.48s-3.57-.49-5.19-1.48c-1.63-.99-2.88-2.47-3.76-4.45-.89-1.98-1.33-4.42-1.33-7.31s.46-5.42,1.38-7.37c.92-1.94,2.19-3.41,3.82-4.4,1.62-.99,3.39-1.49,5.3-1.49s3.67.5,5.3,1.49c1.62.99,2.95,2.47,3.98,4.45,1.02,1.98,1.54,4.42,1.54,7.31s-.55,5.42-1.64,7.37M568.51,56.4c-4.1-2.23-8.76-3.34-13.99-3.34s-9.79,1.11-13.89,3.34c-4.1,2.22-7.35,5.37-9.75,9.43-2.4,4.06-3.6,8.89-3.6,14.47s1.17,10.42,3.5,14.52c2.33,4.1,5.55,7.24,9.65,9.43,4.1,2.19,8.73,3.29,13.89,3.29s9.82-1.1,13.99-3.29,7.47-5.33,9.91-9.43,3.66-8.94,3.66-14.52-1.2-10.4-3.6-14.47c-2.41-4.06-5.66-7.21-9.75-9.43"/>
+  </g>
+</svg>
+      <span class="brand-sep" aria-hidden="true"></span>
+      <span class="brand-label">Nástroje</span>
+    </a>
+    <span class="spacer"></span>
+    <a class="open-link" id="openLink" href="#" target="_blank" rel="noopener" title="Otevřít nástroj samostatně v nové záložce">
+      <span>Otevřít samostatně</span>
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3h4v4M13 3 7 9M11 9.5V13H3V5h3.5"/></svg>
+    </a>
+  </div>
+  <nav class="tabs" id="tabs" aria-label="Nástroje"></nav>
+</header>
+
+<main>
+  <section id="home">
+    <svg class="arc" viewBox="0 0 210 297" preserveAspectRatio="xMaxYMid meet" aria-hidden="true">
+      <path fill="#DFE9F6" d="M210,0 H165 C120,22 98,75 104,135 C110,195 140,250 177,297 H210 Z"/>
+    </svg>
+    <div class="home-inner">
+      <span class="eyebrow">Interní</span>
+      <h1>FFY nástroje</h1>
+      <p class="perex">Kalkulačky, generátory a pomůcky pro práci FREE for YOU. Vyber nástroj nahoře nebo tady.</p>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+  <iframe id="frame" title="Nástroj"></iframe>
+</main>
+
+<script>
+(function () {
+  var tabsEl = document.getElementById('tabs');
+  var gridEl = document.getElementById('grid');
+  var frame  = document.getElementById('frame');
+  var openLink = document.getElementById('openLink');
+  var tools = [];
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+  function hrefFor(t) { return '#' + encodeURIComponent(t.file); }
+
+  function render() {
+    var tabs = '<a class="tab" href="#">Přehled</a>';
+    var cards = '';
+    tools.forEach(function (t) {
+      tabs += '<a class="tab" href="' + hrefFor(t) + '" data-file="' + esc(t.file) + '">' + esc(t.title) + '</a>';
+      cards += '<a class="card" href="' + hrefFor(t) + '">' +
+                 '<span class="card-title">' + esc(t.title) + '</span>' +
+                 (t.description ? '<span class="card-desc">' + esc(t.description) + '</span>' : '') +
+                 '<span class="card-file">' + esc(t.file) + '</span>' +
+               '</a>';
+    });
+    tabsEl.innerHTML = tabs;
+    gridEl.innerHTML = cards || '<div class="note">Zatím tu nejsou žádné nástroje. Nahraj HTML soubor do složky a přidej ho do <code>tools.json</code>.</div>';
+  }
+
+  function route() {
+    var file = decodeURIComponent(location.hash.replace(/^#/, ''));
+    var tool = tools.filter(function (t) { return t.file === file; })[0];
+
+    Array.prototype.forEach.call(tabsEl.querySelectorAll('.tab'), function (a) {
+      var active = tool ? a.getAttribute('data-file') === tool.file : !a.hasAttribute('data-file');
+      if (active) { a.setAttribute('aria-current', 'page'); a.scrollIntoView({ block: 'nearest', inline: 'nearest' }); }
+      else a.removeAttribute('aria-current');
+    });
+
+    if (tool) {
+      if (frame.getAttribute('src') !== tool.file) frame.setAttribute('src', tool.file);
+      frame.title = tool.title;
+      openLink.href = tool.file;
+      document.title = tool.title + ' · FFY nástroje';
+      document.body.classList.add('tool-active');
+    } else {
+      document.body.classList.remove('tool-active');
+      document.title = 'FFY nástroje';
+    }
+  }
+
+  // Záložní seznam pro případ, že tools.json chybí. Hlavní zdroj je tools.json (doplňuje ho GitHub Action).
+  var FALLBACK = [{"file": "simulator-ceny-proudiku.html", "title": "Simulátor Proudíku", "description": "Cena Proudíku podle počtu odběrných míst, výroby zdrojů a ceny za MWh. Šoupátka, scénáře a graf."}, {"file": "kalkulacka-eoz.html", "title": "Kalkulačka EOZ", "description": "Rozdělení přetoků ze zdrojů mezi odběrná místa podle proudíků, obě iterace metodiky."}, {"file": "psc-distributor.html", "title": "Distributor podle PSČ", "description": "Zjistí distributora elektřiny a plynu podle PSČ odběrného místa."}, {"file": "qr-generator.html", "title": "QR generátor", "description": "Odkazy, platební QR, vizitky a kampaně s UTM. Stažení v PNG i SVG."}, {"file": "generator-emailu.html", "title": "Generátor e-mailů", "description": "Vyplní šablonu e-mailové kampaně: karty, kroky, CTA a placeholdery."}, {"file": "pdf-pozadi.html", "title": "PDF pozadí", "description": "Podloží firemní pozadí pod PDF dokument, ukáže náhled a vyexportuje hotové PDF."}, {"file": "okenka-se-jmeny.html", "title": "Okénka se jmény", "description": "Jmenovky s pozicí jako PNG s průhledným pozadím, hromadně v ZIPu."}];
+
+  function useList(data) {
+    tools = (Array.isArray(data) ? data : data.tools || [])
+      .filter(function (t) { return t && t.file; })
+      .map(function (t) { return { file: t.file, title: t.title || t.file.replace(/\.html?$/i, ''), description: t.description || '' }; });
+    render(); route();
+  }
+
+  fetch('tools.json', { cache: 'no-store' })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (data) { useList(data && (data.length || (data.tools && data.tools.length)) ? data : FALLBACK); })
+    .catch(function () { useList(FALLBACK); });
+
+  window.addEventListener('hashchange', route);
+})();
+</script>
+</body>
+</html>

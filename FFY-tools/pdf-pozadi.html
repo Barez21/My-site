@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Podložení PDF pozadí</title>
+<style>
+  :root {
+    --paper: #f6f5f1;
+    --surface: #ffffff;
+    --ink: #16161d;
+    --ink-soft: #5a5a66;
+    --line: #d9d7cf;
+    --line-strong: #c4c2b8;
+    --accent: #2f5bff;
+    --accent-ink: #1b3bc9;
+    --ok: #1f7a4d;
+    --warn: #9a5b00;
+    --mono: ui-monospace, "SF Mono", "Cascadia Mono", "Roboto Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 32px 24px 80px; }
+
+  header { margin-bottom: 28px; }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--accent-ink); margin: 0 0 8px;
+  }
+  h1 { font-size: 30px; line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 8px; font-weight: 650; }
+  .lede { color: var(--ink-soft); margin: 0; max-width: 60ch; }
+
+  .grid { display: grid; grid-template-columns: 360px 1fr; gap: 24px; align-items: start; }
+  @media (max-width: 820px) { .grid { grid-template-columns: 1fr; } }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .panel + .panel { margin-top: 18px; }
+  .panel-title {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--ink-soft); margin: 0 0 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .step-no {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 18px; height: 18px; border-radius: 5px;
+    background: var(--ink); color: #fff; font-size: 10px; letter-spacing: 0;
+  }
+
+  /* drop zones with a stacked-sheet feel */
+  .drop {
+    position: relative;
+    border: 1.5px dashed var(--line-strong);
+    border-radius: 10px;
+    background: #fcfbf8;
+    padding: 18px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color .15s, background .15s, transform .05s;
+  }
+  .drop + .drop { margin-top: 12px; }
+  .drop:hover { border-color: var(--accent); background: #f7f9ff; }
+  .drop.drag { border-color: var(--accent); background: #eef2ff; }
+  .drop.set { border-style: solid; border-color: var(--ok); background: #f3faf6; cursor: default; text-align: left; }
+  .drop-label { font-weight: 600; font-size: 14px; }
+  .drop-hint { color: var(--ink-soft); font-size: 12.5px; margin-top: 2px; }
+  .drop-tag {
+    position: absolute; top: -9px; left: 14px;
+    font-family: var(--mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase;
+    background: var(--surface); padding: 0 6px; color: var(--ink-soft);
+  }
+  .file-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .file-name { font-weight: 600; font-size: 14px; word-break: break-all; }
+  .file-meta { font-family: var(--mono); font-size: 11px; color: var(--ink-soft); white-space: nowrap; }
+  .file-change {
+    margin-top: 8px; font-size: 12px; color: var(--accent-ink);
+    background: none; border: none; padding: 0; cursor: pointer; text-decoration: underline;
+  }
+
+  .field { margin-top: 14px; }
+  .field-label { font-size: 12.5px; color: var(--ink-soft); display: block; margin-bottom: 6px; }
+  select {
+    width: 100%; font-family: var(--sans); font-size: 14px;
+    padding: 9px 10px; border: 1px solid var(--line-strong); border-radius: 8px;
+    background: var(--surface); color: var(--ink);
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; font-family: var(--sans); font-size: 15px; font-weight: 600;
+    padding: 12px 16px; border-radius: 9px; border: 1px solid transparent;
+    background: var(--accent); color: #fff; cursor: pointer; transition: background .15s;
+  }
+  .btn:hover:not(:disabled) { background: var(--accent-ink); }
+  .btn:disabled { background: #cfd2dd; cursor: not-allowed; }
+  .btn-wrap { margin-top: 18px; }
+
+  /* preview */
+  .stage { min-height: 420px; display: flex; flex-direction: column; }
+  .stage-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    margin-bottom: 12px;
+  }
+  .pager { display: flex; align-items: center; gap: 8px; }
+  .pager button {
+    width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 7px;
+    background: var(--surface); cursor: pointer; font-size: 15px; color: var(--ink); line-height: 1;
+  }
+  .pager button:disabled { opacity: .4; cursor: not-allowed; }
+  .pager .count { font-family: var(--mono); font-size: 12px; color: var(--ink-soft); min-width: 56px; text-align: center; }
+
+  .canvas-hold {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    background:
+      linear-gradient(45deg, #eceae3 25%, transparent 25%) -8px 0/16px 16px,
+      linear-gradient(-45deg, #eceae3 25%, transparent 25%) -8px 0/16px 16px,
+      linear-gradient(45deg, transparent 75%, #eceae3 75%) -8px 0/16px 16px,
+      linear-gradient(-45deg, transparent 75%, #eceae3 75%) -8px 0/16px 16px,
+      #f3f1ea;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px; overflow: auto;
+  }
+  canvas#preview { max-width: 100%; height: auto; box-shadow: 0 6px 24px rgba(0,0,0,.12); background: #fff; display: none; }
+
+  .placeholder { text-align: center; color: var(--ink-soft); padding: 40px 20px; }
+  .placeholder .stack {
+    width: 84px; height: 96px; margin: 0 auto 16px; position: relative;
+  }
+  .placeholder .sheet {
+    position: absolute; width: 64px; height: 84px; border-radius: 6px;
+    border: 1.5px solid var(--line-strong); background: var(--surface);
+  }
+  .placeholder .sheet.s1 { left: 0; top: 12px; transform: rotate(-6deg); background: #eef2ff; border-color: #b9c5ff; }
+  .placeholder .sheet.s2 { left: 16px; top: 0; transform: rotate(5deg); }
+  .placeholder p { margin: 0; font-size: 13.5px; }
+
+  .note {
+    margin-top: 12px; font-size: 12.5px; color: var(--ink-soft);
+    border-left: 2px solid var(--line-strong); padding-left: 10px;
+  }
+  .status { font-family: var(--mono); font-size: 11.5px; }
+  .status.ok { color: var(--ok); }
+  .status.warn { color: var(--warn); }
+  .status.err { color: #b42318; }
+  .hidden { display: none !important; }
+  .spin { display: inline-block; width: 13px; height: 13px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  footer { margin-top: 28px; font-size: 12px; color: var(--ink-soft); }
+  code { font-family: var(--mono); font-size: .92em; background: #ecebe4; padding: 1px 5px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">PDF · lokálně v prohlížeči</p>
+    <h1>Podložení pozadí pod PDF</h1>
+    <p class="lede">Nahraj grafické pozadí a obsahové PDF. Pozadí se vloží pod každou stránku, uvidíš náhled výsledku a stáhneš hotový soubor. Nic se nikam neodesílá — vše běží u tebe.</p>
+  </header>
+
+  <div class="grid">
+    <!-- LEVÝ SLOUPEC: vstupy -->
+    <div>
+      <div class="panel">
+        <p class="panel-title"><span class="step-no">1</span> Vstupní soubory</p>
+
+        <div class="drop" id="drop-bg">
+          <span class="drop-tag">Pozadí</span>
+          <div id="bg-empty">
+            <div class="drop-label">Přetáhni sem pozadí (PDF)</div>
+            <div class="drop-hint">nebo klikni a vyber soubor</div>
+          </div>
+          <div id="bg-set" class="hidden">
+            <div class="file-row">
+              <span class="file-name" id="bg-name"></span>
+              <span class="file-meta" id="bg-meta"></span>
+            </div>
+            <button type="button" class="file-change" data-target="bg">vyměnit soubor</button>
+          </div>
+          <input type="file" accept="application/pdf,.pdf" id="bg-input" class="hidden">
+        </div>
+
+        <div class="drop" id="drop-fg">
+          <span class="drop-tag">Popředí / obsah</span>
+          <div id="fg-empty">
+            <div class="drop-label">Přetáhni sem obsahové PDF</div>
+            <div class="drop-hint">dokument, který má jít navrch</div>
+          </div>
+          <div id="fg-set" class="hidden">
+            <div class="file-row">
+              <span class="file-name" id="fg-name"></span>
+              <span class="file-meta" id="fg-meta"></span>
+            </div>
+            <button type="button" class="file-change" data-target="fg">vyměnit soubor</button>
+          </div>
+          <input type="file" accept="application/pdf,.pdf" id="fg-input" class="hidden">
+        </div>
+
+        <div class="field hidden" id="map-field">
+          <label class="field-label" for="map-mode">Vícestránkové pozadí</label>
+          <select id="map-mode"></select>
+        </div>
+      </div>
+
+      <div class="panel">
+        <p class="panel-title"><span class="step-no">2</span> Export</p>
+        <button class="btn" id="export-btn" disabled>Stáhnout PDF s pozadím</button>
+        <div class="btn-wrap" style="margin-top:10px;">
+          <span class="status" id="status">Čekám na oba soubory.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRAVÝ SLOUPEC: náhled -->
+    <div class="panel stage">
+      <div class="stage-head">
+        <p class="panel-title" style="margin:0;">Náhled výsledku</p>
+        <div class="pager" id="pager" style="visibility:hidden;">
+          <button id="prev" aria-label="Předchozí strana">‹</button>
+          <span class="count" id="count">— / —</span>
+          <button id="next" aria-label="Další strana">›</button>
+        </div>
+      </div>
+      <div class="canvas-hold">
+        <div class="placeholder" id="placeholder">
+          <div class="stack"><span class="sheet s1"></span><span class="sheet s2"></span></div>
+          <p>Náhled se objeví, jakmile nahraješ pozadí i obsah.</p>
+        </div>
+        <canvas id="preview"></canvas>
+      </div>
+      <p class="note" id="info-note"></p>
+    </div>
+  </div>
+
+  <footer>
+    Pozadí musí mít vespod stránky dokumentu průhledné nebo žádné — PDF z Wordu i InDesignu to tak skoro vždy mají. Knihovny <code>pdf-lib</code> a <code>pdf.js</code> se načítají z internetu, takže první otevření vyžaduje připojení.
+  </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  // --- kontrola, že se knihovny načetly ---
+  var libsOk = !!(window.PDFLib && window.pdfjsLib);
+  if (window.pdfjsLib) {
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+  }
+
+  var el = function (id) { return document.getElementById(id); };
+
+  var state = {
+    bgBytes: null, bgName: "", bgPages: 0, bgDims: null,
+    fgBytes: null, fgName: "", fgPages: 0, fgDims: null,
+    mergedBytes: null, renderDoc: null, page: 1, total: 0,
+    busy: false
+  };
+
+  var statusEl = el("status");
+  function setStatus(text, kind) {
+    statusEl.textContent = text;
+    statusEl.className = "status" + (kind ? " " + kind : "");
+  }
+
+  function fmtSize(bytes) {
+    if (bytes < 1024) return bytes + " B";
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(0) + " kB";
+    return (bytes / 1024 / 1024).toFixed(1) + " MB";
+  }
+  function fmtDims(d) {
+    if (!d) return "";
+    // PDF body -> mm (1 pt = 0.3528 mm)
+    var w = Math.round(d.w * 0.3528), h = Math.round(d.h * 0.3528);
+    return w + "×" + h + " mm";
+  }
+
+  if (!libsOk) {
+    setStatus("Nepodařilo se načíst knihovny. Zkontroluj připojení k internetu a stránku načti znovu.", "err");
+  }
+
+  // --- čtení nahraného PDF ---
+  async function readPdf(file) {
+    var buf = await file.arrayBuffer();
+    var bytes = new Uint8Array(buf);
+    var doc = await PDFLib.PDFDocument.load(bytes, { ignoreEncryption: true });
+    var first = doc.getPage(0).getSize();
+    return { bytes: bytes, pages: doc.getPageCount(), dims: { w: first.width, h: first.height } };
+  }
+
+  function refreshSlot(which) {
+    var isBg = which === "bg";
+    var hasFile = isBg ? state.bgBytes : state.fgBytes;
+    el("drop-" + (isBg ? "bg" : "fg")).classList.toggle("set", !!hasFile);
+    el((isBg ? "bg" : "fg") + "-empty").classList.toggle("hidden", !!hasFile);
+    el((isBg ? "bg" : "fg") + "-set").classList.toggle("hidden", !hasFile);
+    if (hasFile) {
+      el((isBg ? "bg" : "fg") + "-name").textContent = isBg ? state.bgName : state.fgName;
+      var pages = isBg ? state.bgPages : state.fgPages;
+      var dims = isBg ? state.bgDims : state.fgDims;
+      el((isBg ? "bg" : "fg") + "-meta").textContent =
+        pages + (pages === 1 ? " strana · " : (pages < 5 ? " strany · " : " stran · ")) + fmtDims(dims);
+    }
+  }
+
+  async function handleFile(which, file) {
+    if (!file) return;
+    if (file.type && file.type !== "application/pdf" && !/\.pdf$/i.test(file.name)) {
+      setStatus("Tohle není PDF: " + file.name, "warn");
+      return;
+    }
+    try {
+      var info = await readPdf(file);
+      if (which === "bg") {
+        state.bgBytes = info.bytes; state.bgName = file.name; state.bgPages = info.pages; state.bgDims = info.dims;
+      } else {
+        state.fgBytes = info.bytes; state.fgName = file.name; state.fgPages = info.pages; state.fgDims = info.dims;
+      }
+      refreshSlot(which);
+      buildMapOptions();
+      await regenerate();
+    } catch (e) {
+      setStatus("Soubor nejde načíst (možná poškozené nebo zaheslované PDF).", "err");
+    }
+  }
+
+  // --- volba mapování vícestránkového pozadí ---
+  function buildMapOptions() {
+    var field = el("map-field");
+    if (!state.bgPages || state.bgPages < 2) { field.classList.add("hidden"); return; }
+    field.classList.remove("hidden");
+    var sel = el("map-mode");
+    var prev = sel.value;
+    var opts = [];
+    if (state.fgPages && state.bgPages === state.fgPages) {
+      opts.push(["1to1", "Mapovat 1:1 (strana na stranu)"]);
+    }
+    for (var i = 1; i <= state.bgPages; i++) {
+      opts.push(["fixed-" + i, "Použít stránku pozadí č. " + i + " na vše"]);
+    }
+    sel.innerHTML = "";
+    opts.forEach(function (o) {
+      var op = document.createElement("option");
+      op.value = o[0]; op.textContent = o[1];
+      sel.appendChild(op);
+    });
+    if (prev && Array.prototype.some.call(sel.options, function (o) { return o.value === prev; })) {
+      sel.value = prev;
+    }
+  }
+
+  function chosenBgIndex(i) {
+    // i = index stránky obsahu (0-based) -> index stránky pozadí (0-based)
+    var sel = el("map-mode");
+    var mode = (state.bgPages >= 2 && sel.value) ? sel.value : (state.bgPages === 1 ? "fixed-1" : "auto");
+    if (mode === "1to1") return i;
+    if (mode.indexOf("fixed-") === 0) return parseInt(mode.slice(6), 10) - 1;
+    // auto: 1 strana -> 0; stejný počet -> i; jinak -> 0
+    if (state.bgPages === 1) return 0;
+    if (state.fgPages && state.bgPages === state.fgPages) return i;
+    return 0;
+  }
+
+  // --- jádro: podložení pozadí (shodné s testovaným pdf-lib postupem) ---
+  async function mergeBackground() {
+    var contentDoc = await PDFLib.PDFDocument.load(state.fgBytes, { ignoreEncryption: true });
+    var bgDoc = await PDFLib.PDFDocument.load(state.bgBytes, { ignoreEncryption: true });
+    var out = await PDFLib.PDFDocument.create();
+    var contentPages = contentDoc.getPages();
+
+    for (var i = 0; i < contentPages.length; i++) {
+      var cp = contentPages[i];
+      var size = cp.getSize();
+      var w = size.width, h = size.height;
+      var bgIdx = chosenBgIndex(i);
+      if (bgIdx < 0) bgIdx = 0;
+      if (bgIdx > bgDoc.getPageCount() - 1) bgIdx = bgDoc.getPageCount() - 1;
+
+      var page = out.addPage([w, h]);
+      var eBg = await out.embedPage(bgDoc.getPage(bgIdx));
+      var eContent = await out.embedPage(cp);
+      page.drawPage(eBg, { x: 0, y: 0, width: w, height: h });   // pozadí dole, roztažené na stránku
+      page.drawPage(eContent, { x: 0, y: 0, width: w, height: h }); // obsah navrch
+    }
+    return await out.save();
+  }
+
+  // --- náhled přes pdf.js ---
+  async function renderPage(n) {
+    if (!state.renderDoc) return;
+    var page = await state.renderDoc.getPage(n);
+    var holder = el("preview").parentElement;
+    var avail = holder.clientWidth - 36;
+    var base = page.getViewport({ scale: 1 });
+    var scale = Math.min(avail / base.width, 2);
+    if (!isFinite(scale) || scale <= 0) scale = 1;
+    var vp = page.getViewport({ scale: scale * (window.devicePixelRatio || 1) });
+    var canvas = el("preview");
+    var ctx = canvas.getContext("2d");
+    canvas.width = vp.width; canvas.height = vp.height;
+    canvas.style.width = (vp.width / (window.devicePixelRatio || 1)) + "px";
+    canvas.style.display = "block";
+    await page.render({ canvasContext: ctx, viewport: vp }).promise;
+    el("placeholder").classList.add("hidden");
+    el("count").textContent = n + " / " + state.total;
+    el("prev").disabled = n <= 1;
+    el("next").disabled = n >= state.total;
+  }
+
+  async function regenerate() {
+    if (!state.bgBytes || !state.fgBytes) {
+      setStatus(state.bgBytes || state.fgBytes ? "Chybí ještě jeden soubor." : "Čekám na oba soubory.");
+      el("export-btn").disabled = true;
+      el("info-note").textContent = "";
+      return;
+    }
+    if (!libsOk || state.busy) return;
+    state.busy = true;
+    setStatus("Skládám náhled…");
+    el("export-btn").disabled = true;
+    try {
+      state.mergedBytes = await mergeBackground();
+
+      // pdf.js detachuje vstup, proto posílám kopii
+      var copy = state.mergedBytes.slice();
+      state.renderDoc = await pdfjsLib.getDocument({ data: copy }).promise;
+      state.total = state.renderDoc.numPages;
+      state.page = Math.min(state.page, state.total) || 1;
+
+      el("pager").style.visibility = state.total > 1 ? "visible" : "hidden";
+      await renderPage(state.page);
+
+      el("export-btn").disabled = false;
+      setStatus("Hotovo k exportu · " + state.total + (state.total === 1 ? " strana" : " stran"), "ok");
+      el("info-note").textContent = mappingDescription();
+    } catch (e) {
+      setStatus("Náhled se nepodařilo vytvořit. Zkontroluj, že jsou oba soubory platná PDF.", "err");
+      el("info-note").textContent = "";
+    } finally {
+      state.busy = false;
+    }
+  }
+
+  function mappingDescription() {
+    var d = "Pozadí se přizpůsobuje velikosti každé stránky obsahu.";
+    if (state.bgPages >= 2) {
+      var sel = el("map-mode");
+      if (sel.value === "1to1") d += " Stránky pozadí se mapují 1:1.";
+      else if (sel.value.indexOf("fixed-") === 0) d += " Na všechny stránky se použije pozadí č. " + sel.value.slice(6) + ".";
+    }
+    return d;
+  }
+
+  function download() {
+    if (!state.mergedBytes) return;
+    var base = state.fgName.replace(/\.pdf$/i, "") || "dokument";
+    var blob = new Blob([state.mergedBytes], { type: "application/pdf" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url; a.download = base + "_s-pozadim.pdf";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+  }
+
+  // --- propojení UI ---
+  function wireDrop(which) {
+    var zone = el("drop-" + which);
+    var input = el(which + "-input");
+    zone.addEventListener("click", function (ev) {
+      if (ev.target.classList.contains("file-change")) return;
+      if (zone.classList.contains("set") && !ev.target.classList.contains("drop")) {
+        if (ev.target.closest("#" + which + "-set")) return;
+      }
+      input.click();
+    });
+    input.addEventListener("change", function () {
+      if (input.files && input.files[0]) handleFile(which, input.files[0]);
+      input.value = "";
+    });
+    ["dragenter", "dragover"].forEach(function (t) {
+      zone.addEventListener(t, function (e) { e.preventDefault(); zone.classList.add("drag"); });
+    });
+    ["dragleave", "drop"].forEach(function (t) {
+      zone.addEventListener(t, function (e) { e.preventDefault(); zone.classList.remove("drag"); });
+    });
+    zone.addEventListener("drop", function (e) {
+      var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+      if (f) handleFile(which, f);
+    });
+  }
+  wireDrop("bg");
+  wireDrop("fg");
+
+  Array.prototype.forEach.call(document.querySelectorAll(".file-change"), function (b) {
+    b.addEventListener("click", function (e) {
+      e.stopPropagation();
+      el(b.dataset.target + "-input").click();
+    });
+  });
+
+  el("map-mode").addEventListener("change", function () {
+    el("info-note").textContent = mappingDescription();
+    regenerate();
+  });
+  el("export-btn").addEventListener("click", download);
+  el("prev").addEventListener("click", function () { if (state.page > 1) { state.page--; renderPage(state.page); } });
+  el("next").addEventListener("click", function () { if (state.page < state.total) { state.page++; renderPage(state.page); } });
+
+  var rt;
+  window.addEventListener("resize", function () {
+    clearTimeout(rt);
+    rt = setTimeout(function () { if (state.renderDoc) renderPage(state.page); }, 150);
+  });
+})();
+</script>
+</body>
+</html>

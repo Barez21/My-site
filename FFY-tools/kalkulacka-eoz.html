@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kalkulačka EOZ — Elektřina ze Zdroje</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#214571; --green:#45e7a3; --green-d:#31c587; --bronze:#e8af46;
+  --ink:#0a141e; --white:#fff; --bg:#eff4fa; --wave:#dbe7f5;
+  --muted:#548bc9; --border:#b1cae7; --soft:#f3f8fd; --soft2:#eaf7f1;
+  --bronze-soft:#fdf6e8;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Albert Sans','Segoe UI',-apple-system,Roboto,sans-serif;
+  background:var(--bg); color:var(--ink); line-height:1.5;
+  -webkit-font-smoothing:antialiased; min-height:100vh; position:relative; overflow-x:hidden;
+}
+body::before{
+  content:""; position:fixed; top:0; right:0; height:100%; width:46vw; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(120% 90% at 100% 8%, var(--wave) 0%, transparent 55%),
+    radial-gradient(90% 70% at 120% 75%, #e4eef9 0%, transparent 60%);
+  opacity:.85;
+}
+.wrap{position:relative; z-index:1; max-width:1080px; margin:0 auto; padding:34px 22px 80px}
+
+/* ---- header ---- */
+header{display:flex; align-items:center; gap:16px; margin-bottom:8px; flex-wrap:wrap}
+.logo{display:flex; align-items:center; gap:11px}
+.logo svg{display:block}
+.word{font-weight:800; font-size:23px; letter-spacing:-.5px; color:var(--blue)}
+.word .f{color:var(--blue)} .word .for{font-weight:400; color:var(--muted)} .word .y{color:var(--blue)}
+.tag-pill{margin-left:auto; font-size:12.5px; font-weight:600; color:var(--blue);
+  background:var(--soft2); border:1px solid #bdeed8; padding:5px 12px; border-radius:30px}
+.title-block{margin:22px 0 26px}
+h1{font-size:38px; font-weight:800; letter-spacing:-1px; color:var(--blue); line-height:1.05}
+h1 .em{color:var(--green-d)}
+.lead{margin-top:10px; font-size:16px; color:var(--muted); max-width:640px}
+.lead b{color:var(--blue); font-weight:600}
+
+/* ---- cards ---- */
+.card{background:var(--white); border:1px solid var(--border); border-radius:16px;
+  padding:22px 22px 20px; margin-bottom:18px; box-shadow:0 1px 0 rgba(33,69,113,.04), 0 10px 30px -22px rgba(33,69,113,.35)}
+.card-h{display:flex; align-items:center; gap:11px; margin-bottom:14px}
+.step-num{flex:none; width:30px; height:30px; border-radius:9px; background:var(--blue); color:#fff;
+  font-weight:700; font-size:15px; display:grid; place-items:center}
+.card-h h2{font-size:18px; font-weight:700; color:var(--blue)}
+.card-h .sub{font-size:13px; color:var(--muted); margin-left:auto; font-weight:500}
+
+/* ---- inputs / tables ---- */
+table{width:100%; border-collapse:collapse}
+.in-table th{font-size:11.5px; text-transform:uppercase; letter-spacing:.4px; color:var(--muted);
+  text-align:left; font-weight:700; padding:0 8px 7px}
+.in-table th.num,.in-table td.num{text-align:right}
+.in-table td{padding:4px 4px}
+input[type=text],input[type=number]{
+  width:100%; font-family:inherit; font-size:14.5px; color:var(--ink);
+  border:1px solid var(--border); border-radius:9px; padding:8px 10px; background:#fff; transition:border-color .15s, box-shadow .15s}
+input[type=number]{text-align:right}
+input:focus{outline:none; border-color:var(--green-d); box-shadow:0 0 0 3px rgba(69,231,163,.22)}
+input.compact{padding:7px 9px; font-size:14px}
+.del-btn{flex:none; width:30px; height:30px; border:none; background:#f5e8e8; color:#c0392b;
+  border-radius:8px; cursor:pointer; font-size:16px; line-height:1; display:grid; place-items:center; transition:background .15s}
+.del-btn:hover{background:#f1d9d9}
+.add-btn{margin-top:10px; display:inline-flex; align-items:center; gap:7px; cursor:pointer;
+  font-family:inherit; font-size:13.5px; font-weight:600; color:var(--blue);
+  background:var(--soft); border:1px dashed var(--border); border-radius:9px; padding:8px 14px; transition:.15s}
+.add-btn:hover{background:#e8f1fb; border-color:var(--muted)}
+.add-btn.green{color:var(--green-d); border-color:#9fe7c6; background:var(--soft2)}
+.add-btn.green:hover{background:#d9f5e8}
+
+/* profile blocks */
+.profile{border:1px solid var(--border); border-radius:13px; padding:14px; margin-bottom:13px; background:#fbfdff}
+.profile-top{display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap; margin-bottom:11px}
+.field{display:flex; flex-direction:column; gap:4px}
+.field label{font-size:11.5px; text-transform:uppercase; letter-spacing:.4px; color:var(--muted); font-weight:700}
+.f-name{flex:1 1 200px} .f-pr{flex:0 0 120px}
+.elig{display:flex; align-items:center; gap:7px; font-size:13px; color:var(--blue); font-weight:500; cursor:pointer; user-select:none; padding-bottom:8px}
+.elig input{width:17px; height:17px; accent-color:var(--green-d); cursor:pointer}
+.om-head{font-size:11.5px; text-transform:uppercase; letter-spacing:.4px; color:var(--muted); font-weight:700; margin:4px 0 6px}
+.om-row{display:flex; gap:8px; align-items:center; margin-bottom:7px}
+.om-row .om-name{flex:1 1 auto} .om-row .om-cons{flex:0 0 130px}
+.prof-del{margin-left:auto; background:none; border:none; color:#b04a4a; font-size:12.5px; font-weight:600; cursor:pointer; padding:4px 2px}
+.prof-del:hover{text-decoration:underline}
+
+.price-row{display:flex; gap:18px; flex-wrap:wrap}
+.price-row .field{flex:1 1 200px}
+.hint{font-size:12.5px; color:var(--muted); margin-top:8px}
+
+/* ---- results ---- */
+#results .card-h h2{color:var(--blue)}
+.stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-bottom:18px}
+.stat{border:1px solid var(--border); border-radius:12px; padding:13px 15px; background:var(--soft)}
+.stat .lbl{font-size:12px; color:var(--muted); font-weight:600; letter-spacing:.2px}
+.stat .val{font-size:24px; font-weight:800; color:var(--blue); margin-top:3px; letter-spacing:-.5px}
+.stat .val small{font-size:13px; font-weight:600; color:var(--muted)}
+.stat.green{background:var(--soft2); border-color:#bdeed8} .stat.green .val{color:var(--green-d)}
+.stat.bronze{background:var(--bronze-soft); border-color:#f0dcab} .stat.bronze .val{color:#b8841f}
+
+.res-scroll{overflow-x:auto; border:1px solid var(--border); border-radius:12px}
+.res-table{min-width:760px; font-size:13.5px}
+.res-table th{background:var(--blue); color:#fff; font-weight:600; font-size:11.5px; text-transform:uppercase; letter-spacing:.3px;
+  padding:10px 10px; text-align:right; white-space:nowrap}
+.res-table th.l{text-align:left}
+.res-table td{padding:9px 10px; text-align:right; border-bottom:1px solid #e6eef7; white-space:nowrap}
+.res-table td.l{text-align:left}
+.res-table tr:nth-child(even) td{background:var(--soft)}
+.res-table .prof-tag{font-size:11px; color:var(--muted); display:block}
+.res-table .om-nm{font-weight:600; color:var(--blue)}
+.res-table .pos{color:var(--green-d); font-weight:600}
+.res-table .neg{color:#b8841f; font-weight:600}
+.res-table tfoot td{font-weight:800; color:var(--blue); border-top:2px solid var(--border); background:#fff; border-bottom:none}
+.res-table tfoot td.l{text-align:left}
+.res-table .excl td{opacity:.45}
+.col-it1{background:rgba(33,69,113,.04)} .col-it2{background:rgba(69,231,163,.08)}
+
+.legend{margin-top:20px; border-top:1px solid var(--border); padding-top:16px}
+.legend h3{font-size:13px; color:var(--blue); text-transform:uppercase; letter-spacing:.5px; margin-bottom:10px}
+.legend dl{display:grid; grid-template-columns:auto 1fr; gap:7px 14px; font-size:13.5px}
+.legend dt{font-weight:700; color:var(--green-d); white-space:nowrap}
+.legend dd{color:#3a4a5a}
+.legend code{font-family:'Albert Sans',sans-serif; background:var(--soft); border:1px solid var(--border); border-radius:6px; padding:1px 7px; font-size:13px; color:var(--blue); font-weight:600}
+
+.note{margin-top:14px; font-size:13px; color:var(--muted); background:var(--bronze-soft); border-left:4px solid var(--bronze);
+  border-radius:0 10px 10px 0; padding:11px 15px}
+.note b{color:#b8841f}
+
+footer{margin-top:26px; text-align:right; color:var(--green-d); font-weight:700; font-style:italic; font-size:16px}
+footer .src{display:block; font-style:normal; font-weight:500; font-size:12px; color:var(--muted); margin-top:5px}
+
+@media(max-width:560px){
+  h1{font-size:30px}
+  .om-row .om-cons{flex:0 0 110px}
+  .stat .val{font-size:21px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="logo">
+      <svg width="34" height="31" viewBox="0 0 34 31" aria-hidden="true">
+        <path d="M17 30.5C17 30.5 1 21 1 9.7 1 4.4 5.1 1 9.4 1 13 1 15.6 3 17 5.4V30.5Z" fill="#31c587"/>
+        <path d="M17 30.5C17 30.5 33 21 33 9.7 33 4.4 28.9 1 24.6 1 21 1 18.4 3 17 5.4V30.5Z" fill="#45e7a3"/>
+      </svg>
+      <span class="word"><span class="f">FREE</span><span class="for">for</span><span class="y">YOU</span></span>
+    </div>
+    <span class="tag-pill">Interní nástroj</span>
+  </header>
+
+  <div class="title-block">
+    <h1>Kalkulačka <span class="em">EOZ</span></h1>
+    <p class="lead">Rozdělí vyrobené <b>přetoky</b> z vlastních výroben mezi odběrná místa ve dvou iteracích — nejdřív podle <b>proudíků</b>, pak podle <b>zbývající spotřeby</b>. Zadejte výrobu a profily; výsledek se počítá průběžně.</p>
+  </div>
+
+  <!-- 1. ZDROJE -->
+  <div class="card">
+    <div class="card-h"><span class="step-num">1</span><h2>Zdroje — výroba EOZ</h2><span class="sub">suma za zvolené období</span></div>
+    <table class="in-table">
+      <thead><tr><th>Název zdroje (FVE)</th><th class="num" style="width:160px">Výroba (kWh)</th><th style="width:36px"></th></tr></thead>
+      <tbody id="sources"></tbody>
+    </table>
+    <button class="add-btn" data-act="add-source">+ Přidat zdroj</button>
+  </div>
+
+  <!-- 2. PROFILY -->
+  <div class="card">
+    <div class="card-h"><span class="step-num">2</span><h2>Profily a odběrná místa</h2><span class="sub">spotřeba za stejné období</span></div>
+    <div id="profiles"></div>
+    <button class="add-btn green" data-act="add-profile">+ Přidat profil</button>
+    <p class="hint">Proudíky se v rámci profilu rozdělí mezi jeho OM poměrem spotřeby. Do výpočtu nároku vstupují jen profily s <b>účinnou smlouvou na elektřinu</b> (zaškrtnuto).</p>
+  </div>
+
+  <!-- 3. CENY -->
+  <div class="card">
+    <div class="card-h"><span class="step-num">3</span><h2>Ceny</h2><span class="sub">volitelné — pro ocenění</span></div>
+    <div class="price-row">
+      <div class="field">
+        <label>Cena EOZ pro zákazníka (Kč/kWh)</label>
+        <input type="number" id="priceEoz" value="1.5" step="0.1" min="0">
+      </div>
+      <div class="field">
+        <label>Tržní cena výkupu do sítě (Kč/kWh)</label>
+        <input type="number" id="priceGrid" value="2.5" step="0.1" min="0">
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="card" id="results">
+    <div class="card-h"><span class="step-num" style="background:var(--green-d)">=</span><h2>Výsledek rozdělení</h2></div>
+    <div class="stats" id="stats"></div>
+    <div class="res-scroll">
+      <table class="res-table">
+        <thead>
+          <tr>
+            <th class="l">Odběrné místo</th>
+            <th>Spotřeba</th>
+            <th>Proudíky</th>
+            <th class="col-it1">Nárok N (1.it.)</th>
+            <th class="col-it1">Zbytek Z</th>
+            <th class="col-it2">Nárok N′ (2.it.)</th>
+            <th>Přetoky celkem</th>
+            <th>Zbytek ze sítě</th>
+            <th>Hodnota EOZ</th>
+          </tr>
+        </thead>
+        <tbody id="resBody"></tbody>
+        <tfoot id="resFoot"></tfoot>
+      </table>
+    </div>
+    <div class="note" id="gridNote"></div>
+
+    <div class="legend">
+      <h3>Vzorce</h3>
+      <dl>
+        <dt>Proudíky OM</dt><dd><code>P_OM = (spotřeba OM / suma spotřeb profilu) × proudíky profilu</code></dd>
+        <dt>Nárok 1. it.</dt><dd><code>N_OM = (P_OM / ∑P) × V</code> &nbsp;— V = celková výroba, ∑P = proudíky všech účinných profilů</dd>
+        <dt>Zbytek</dt><dd><code>Z_OM = spotřeba − N_OM</code> &nbsp;— záporné Z znamená přebytek k dorozdělení</dd>
+        <dt>Nárok 2. it.</dt><dd><code>N′_OM = (Z_OM / ∑Z⁺) × zbylé přetoky</code> &nbsp;(jen OM se zbytkovou spotřebou)</dd>
+      </dl>
+    </div>
+  </div>
+
+  <footer>S námi jste volní.
+    <span class="src">Podle interní metodiky „Elektřina ze Zdroje (EOZ)" · výpočet platí pro jednu čtvrthodinu / období.</span>
+  </footer>
+</div>
+
+<script>
+/* ---------- formatting ---------- */
+const nf = (n,d=1)=> (isFinite(n)?n:0).toLocaleString('cs-CZ',{minimumFractionDigits:d,maximumFractionDigits:d});
+const num = v => { const x=parseFloat(String(v).replace(',','.')); return isFinite(x)?x:0; };
+
+/* ---------- default data ---------- */
+const defaults = {
+  sources:[
+    {name:'FVE Hrách (virtuální zdroj)', kwh:800},
+    {name:'FVE střecha sklad', kwh:400},
+  ],
+  profiles:[
+    {name:'Sklad (vysoký podíl proudíků)', proudiky:400, eligible:true, oms:[{name:'Sklad — OM 1', cons:100}]},
+    {name:'Bytový dům', proudiky:120, eligible:true, oms:[{name:'Byt 1', cons:500},{name:'Byt 2', cons:400}]},
+    {name:'Kavárna', proudiky:80, eligible:true, oms:[{name:'Kavárna', cons:900}]},
+  ]
+};
+
+/* ---------- builders ---------- */
+const elSources = document.getElementById('sources');
+const elProfiles = document.getElementById('profiles');
+
+function sourceRow(d={name:'',kwh:0}){
+  const tr=document.createElement('tr'); tr.className='source-row';
+  tr.innerHTML=`<td><input type="text" class="src-name" value="${esc(d.name)}" placeholder="Název zdroje"></td>
+    <td class="num"><input type="number" class="src-kwh" value="${d.kwh}" step="0.1" min="0"></td>
+    <td><button class="del-btn" data-act="del-source" title="Odebrat">×</button></td>`;
+  return tr;
+}
+function omRow(d={name:'',cons:0}){
+  const div=document.createElement('div'); div.className='om-row';
+  div.innerHTML=`<input type="text" class="om-name compact" value="${esc(d.name)}" placeholder="Odběrné místo">
+    <input type="number" class="om-cons compact" value="${d.cons}" step="0.1" min="0" title="Spotřeba (kWh)">
+    <button class="del-btn" data-act="del-om" title="Odebrat OM">×</button>`;
+  return div;
+}
+function profileBlock(d={name:'',proudiky:0,eligible:true,oms:[{name:'',cons:0}]}){
+  const div=document.createElement('div'); div.className='profile';
+  div.innerHTML=`
+    <div class="profile-top">
+      <div class="field f-name"><label>Profil</label><input type="text" class="prof-name" value="${esc(d.name)}" placeholder="Název profilu"></div>
+      <div class="field f-pr"><label>Proudíky</label><input type="number" class="prof-proudiky" value="${d.proudiky}" step="1" min="0"></div>
+      <label class="elig"><input type="checkbox" class="prof-elig" ${d.eligible?'checked':''}> účinná smlouva el.</label>
+      <button class="prof-del" data-act="del-profile">✕ profil</button>
+    </div>
+    <div class="om-head">Odběrná místa (spotřeba v kWh)</div>
+    <div class="om-list"></div>
+    <button class="add-btn" data-act="add-om">+ Přidat OM</button>`;
+  const list=div.querySelector('.om-list');
+  d.oms.forEach(o=>list.appendChild(omRow(o)));
+  return div;
+}
+function esc(s){return String(s).replace(/"/g,'&quot;');}
+
+/* ---------- init ---------- */
+defaults.sources.forEach(s=>elSources.appendChild(sourceRow(s)));
+defaults.profiles.forEach(p=>elProfiles.appendChild(profileBlock(p)));
+
+/* ---------- events ---------- */
+document.body.addEventListener('click',e=>{
+  const b=e.target.closest('[data-act]'); if(!b) return;
+  const act=b.dataset.act;
+  if(act==='add-source') elSources.appendChild(sourceRow());
+  else if(act==='del-source'){ const r=b.closest('.source-row'); if(elSources.children.length>1) r.remove(); }
+  else if(act==='add-profile') elProfiles.appendChild(profileBlock({name:'',proudiky:0,eligible:true,oms:[{name:'',cons:0}]}));
+  else if(act==='del-profile'){ const p=b.closest('.profile'); if(elProfiles.children.length>1) p.remove(); }
+  else if(act==='add-om'){ b.closest('.profile').querySelector('.om-list').appendChild(omRow()); }
+  else if(act==='del-om'){ const list=b.closest('.om-list'); if(list.children.length>1) b.closest('.om-row').remove(); }
+  compute();
+});
+document.body.addEventListener('input',compute);
+document.body.addEventListener('change',compute);
+
+/* ---------- core calculation ---------- */
+function compute(){
+  // sources -> V
+  let V=0;
+  document.querySelectorAll('.source-row').forEach(r=> V+=num(r.querySelector('.src-kwh').value));
+
+  // read profiles + OMs
+  const oms=[]; // flat list of all OMs
+  let totalProudiky=0, totalCons=0;
+  document.querySelectorAll('.profile').forEach(pb=>{
+    const pname=pb.querySelector('.prof-name').value||'Profil';
+    const proudiky=num(pb.querySelector('.prof-proudiky').value);
+    const eligible=pb.querySelector('.prof-elig').checked;
+    const rows=[...pb.querySelectorAll('.om-row')].map(r=>({
+      name:r.querySelector('.om-name').value||'OM',
+      cons:num(r.querySelector('.om-cons').value)
+    }));
+    const profSum=rows.reduce((a,o)=>a+o.cons,0);
+    rows.forEach(o=>{
+      const ratio = profSum>0 ? o.cons/profSum : 0;
+      const pOM = ratio*proudiky;
+      const rec={profile:pname, name:o.name, cons:o.cons, eligible, pOM, ratio};
+      oms.push(rec);
+      totalCons+=o.cons;
+      if(eligible){ totalProudiky+=pOM; }
+    });
+  });
+
+  // ---- iteration 1: by proudíky ----
+  let leftover=0;
+  oms.forEach(o=>{
+    o.N1 = (o.eligible && totalProudiky>0) ? (o.pOM/totalProudiky)*V : 0;
+    o.used1 = Math.min(o.N1, o.cons);
+    o.over1 = Math.max(0, o.N1 - o.cons);   // surplus this OM received but can't use
+    o.Z = o.cons - o.N1;                     // residual consumption (can be negative)
+    leftover += o.over1;
+  });
+
+  // ---- iteration 2: leftover by remaining positive consumption ----
+  const sumZpos = oms.reduce((a,o)=> a + (o.Z>0 ? o.Z : 0), 0);
+  let dist2=0;
+  oms.forEach(o=>{
+    if(o.Z>0 && sumZpos>0){
+      const raw=(o.Z/sumZpos)*leftover;
+      o.N2=Math.min(raw, o.Z);   // cap at remaining consumption
+    } else o.N2=0;
+    dist2+=o.N2;
+  });
+
+  // ---- finals ----
+  const priceEoz=num(document.getElementById('priceEoz').value);
+  const priceGrid=num(document.getElementById('priceGrid').value);
+  let totSurplus=0, totRemain=0, totValue=0;
+  oms.forEach(o=>{
+    o.surplus = o.used1 + o.N2;             // total surplus delivered to this OM
+    o.remain  = Math.max(0, o.cons - o.surplus); // bought from grid/EOS
+    o.value   = o.surplus*priceEoz;
+    totSurplus+=o.surplus; totRemain+=o.remain; totValue+=o.value;
+  });
+  const toGrid = Math.max(0, V - totSurplus);   // unused surplus -> sold to grid
+  const gridValue = toGrid*priceGrid;
+
+  renderStats({V, totalProudiky, totalCons, totSurplus, toGrid});
+  renderTable(oms);
+  renderFoot({totalCons, totSurplus, totRemain, totValue});
+  renderGridNote(toGrid, gridValue, V, totSurplus);
+}
+
+/* ---------- render ---------- */
+function renderStats(s){
+  const cover = s.totalCons>0 ? Math.min(100,(s.totSurplus/s.totalCons)*100) : 0;
+  document.getElementById('stats').innerHTML=`
+    <div class="stat"><div class="lbl">Celková výroba (V)</div><div class="val">${nf(s.V)} <small>kWh</small></div></div>
+    <div class="stat"><div class="lbl">Proudíky celkem (∑P)</div><div class="val">${nf(s.totalProudiky,1)}</div></div>
+    <div class="stat"><div class="lbl">Spotřeba účinných OM</div><div class="val">${nf(s.totalCons)} <small>kWh</small></div></div>
+    <div class="stat green"><div class="lbl">Rozděleno přetoků</div><div class="val">${nf(s.totSurplus)} <small>kWh · ${nf(cover,0)} %</small></div></div>
+    <div class="stat bronze"><div class="lbl">Zbylo do sítě</div><div class="val">${nf(s.toGrid)} <small>kWh</small></div></div>`;
+}
+function renderTable(oms){
+  document.getElementById('resBody').innerHTML = oms.map(o=>{
+    const zCls = o.Z<0?'neg':'pos';
+    return `<tr class="${o.eligible?'':'excl'}">
+      <td class="l"><span class="om-nm">${escTxt(o.name)}</span><span class="prof-tag">${escTxt(o.profile)}${o.eligible?'':' · bez účinné smlouvy'}</span></td>
+      <td>${nf(o.cons)}</td>
+      <td>${nf(o.pOM,1)}</td>
+      <td class="col-it1">${nf(o.N1)}</td>
+      <td class="col-it1 ${zCls}">${nf(o.Z)}</td>
+      <td class="col-it2 pos">${o.N2>0?nf(o.N2):'—'}</td>
+      <td><b>${nf(o.surplus)}</b></td>
+      <td>${nf(o.remain)}</td>
+      <td>${nf(o.value,0)} Kč</td>
+    </tr>`;
+  }).join('');
+}
+function renderFoot(t){
+  document.getElementById('resFoot').innerHTML=`
+    <tr>
+      <td class="l">Celkem</td>
+      <td>${nf(t.totalCons)}</td>
+      <td colspan="4"></td>
+      <td>${nf(t.totSurplus)}</td>
+      <td>${nf(t.totRemain)}</td>
+      <td>${nf(t.totValue,0)} Kč</td>
+    </tr>`;
+}
+function renderGridNote(toGrid, gridValue, V, totSurplus){
+  const el=document.getElementById('gridNote');
+  if(toGrid>0.05){
+    el.style.display='block';
+    el.innerHTML=`Kapacita odběrných míst je naplněna a zbývá <b>${nf(toGrid)} kWh</b> přetoků — ty se prodají do sítě za tržní cenu, tj. <b>${nf(gridValue,0)} Kč</b>.`;
+  } else {
+    el.style.display='block';
+    el.innerHTML=`Veškerá výroba (<b>${nf(V)} kWh</b>) se rozdělila mezi odběrná místa — do sítě nezbylo nic. Spotřeba nad rámec přetoků se dokoupí ze sítě / EOS.`;
+  }
+}
+function escTxt(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+compute();
+</script>
+</body>
+</html>

@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FFY · Generátor e-mailové kampaně</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0f1318;--surface:#171c23;--surface2:#1e242d;--surface3:#232b36;
+  --border:#262d38;--border2:#2e3848;
+  --accent:#3293AD;--accent2:#1E5D73;--accent-dim:rgba(50,147,173,.15);
+  --text:#e2e8f0;--muted:#4e6070;--label:#7a92a6;--subtle:#94a3b8;
+  --success:#22c55e;--radius:10px;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:36px 20px 120px;}
+.app{max-width:880px;margin:0 auto;}
+
+/* TOP BAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--border);flex-wrap:wrap;}
+.topbar-left{display:flex;align-items:center;gap:14px;}
+.topbar-icon{width:42px;height:42px;flex-shrink:0;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;}
+.topbar h1{font-size:18px;font-weight:600;line-height:1.2;}
+.topbar p{font-size:12px;color:var(--label);margin-top:2px;}
+.btn-ph{display:flex;align-items:center;gap:7px;background:var(--surface2);border:1px solid var(--border2);color:var(--subtle);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;padding:9px 16px;border-radius:8px;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s,border-color .15s;}
+.btn-ph:hover{background:var(--surface3);color:var(--text);border-color:var(--accent);}
+.ph-count{background:var(--accent);color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:20px;font-family:'DM Mono',monospace;}
+
+/* SECTIONS */
+#sections-list{display:flex;flex-direction:column;gap:8px;}
+.section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:visible;transition:box-shadow .2s,border-color .2s,opacity .15s;}
+.section.dragging{opacity:.4;}
+.section.drag-over{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-dim);}
+.section.disabled .section-body{display:none !important;}
+.section.disabled{opacity:.5;}
+.section.locked-section .section-body input,
+.section.locked-section .section-body textarea{opacity:.5;pointer-events:none;user-select:none;color:var(--muted);}
+
+.section-header{display:flex;align-items:center;user-select:none;border-bottom:1px solid transparent;transition:border-color .15s;}
+.section.open .section-header{border-bottom-color:var(--border);}
+
+.drag-handle{padding:16px 10px 16px 14px;cursor:grab;color:var(--muted);flex-shrink:0;display:flex;flex-direction:column;gap:3.5px;align-items:center;justify-content:center;}
+.drag-handle span{display:block;width:14px;height:1.5px;background:currentColor;border-radius:2px;}
+.drag-handle:active{cursor:grabbing;}
+.no-handle{width:38px;flex-shrink:0;}
+
+.toggle-wrap{padding:14px 10px 14px 4px;flex-shrink:0;}
+.toggle{position:relative;width:32px;height:18px;cursor:pointer;display:inline-block;}
+.toggle input{opacity:0;width:0;height:0;position:absolute;}
+.toggle-track{position:absolute;inset:0;border-radius:18px;background:var(--border2);transition:background .2s;}
+.toggle input:checked~.toggle-track{background:var(--accent);}
+.toggle-thumb{position:absolute;top:3px;left:3px;width:12px;height:12px;border-radius:50%;background:#fff;transition:transform .2s;pointer-events:none;}
+.toggle input:checked~.toggle-thumb{transform:translateX(14px);}
+.no-toggle{width:46px;flex-shrink:0;}
+
+.section-title-area{display:flex;align-items:center;gap:9px;flex:1;padding:14px 12px 14px 2px;cursor:pointer;min-width:0;}
+.section-icon{font-size:15px;flex-shrink:0;}
+.section-label{font-size:13.5px;font-weight:500;color:var(--subtle);transition:color .15s;}
+.section.open .section-label{color:var(--text);}
+.section-badge{font-size:11px;font-weight:500;color:var(--muted);background:var(--surface2);border:1px solid var(--border);padding:2px 8px;border-radius:20px;white-space:nowrap;}
+
+.lock-btn{display:flex;align-items:center;gap:5px;background:var(--surface2);border:1px solid var(--border2);color:var(--label);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;padding:4px 10px;border-radius:6px;cursor:pointer;white-space:nowrap;margin-right:8px;transition:border-color .15s,color .15s;}
+.lock-btn:hover{border-color:var(--accent);color:var(--text);}
+
+.section-chevron{margin-left:auto;padding:14px 16px 14px 8px;color:var(--muted);font-size:11px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;}
+.section-chevron::before{content:'▶';display:block;transition:transform .2s;}
+.section.open .section-chevron::before{transform:rotate(90deg);}
+
+.section-body{display:none;padding:20px;flex-direction:column;gap:14px;}
+.section.open .section-body{display:flex;}
+
+/* FIELDS */
+.field{display:flex;flex-direction:column;gap:5px;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+label{font-size:11px;font-weight:600;color:var(--label);letter-spacing:.5px;text-transform:uppercase;}
+input[type="text"],input[type="email"],input[type="url"],input[type="tel"],textarea{
+  background:var(--bg);border:1px solid var(--border2);border-radius:7px;color:var(--text);
+  font-family:'DM Sans',sans-serif;font-size:13.5px;padding:9px 12px;width:100%;
+  transition:border-color .15s,box-shadow .15s;resize:vertical;
+}
+input:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim);}
+textarea{min-height:64px;line-height:1.6;}
+.hint{font-size:11px;color:var(--muted);margin-top:1px;font-style:italic;}
+
+/* DYNAMIC ITEMS */
+.dynamic-item{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;position:relative;}
+.item-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px;}
+.item-num{font-size:10.5px;font-weight:600;color:var(--accent);font-family:'DM Mono',monospace;letter-spacing:.5px;}
+.btn-remove{background:none;border:1px solid var(--border2);color:var(--muted);font-size:11px;padding:2px 8px;border-radius:5px;cursor:pointer;transition:border-color .15s,color .15s;}
+.btn-remove:hover{border-color:#ef4444;color:#ef4444;}
+.btn-add{display:flex;align-items:center;gap:6px;background:var(--surface2);border:1px dashed var(--border2);color:var(--label);font-family:'DM Sans',sans-serif;font-size:12.5px;font-weight:500;padding:10px 16px;border-radius:8px;cursor:pointer;width:100%;justify-content:center;transition:border-color .15s,color .15s;}
+.btn-add:hover{border-color:var(--accent);color:var(--accent);}
+.dynamic-items-wrap{display:flex;flex-direction:column;gap:8px;}
+.cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+
+/* COLOR PICKER */
+.color-opts{display:flex;gap:10px;flex-wrap:wrap;}
+.color-opt{display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:8px;border:1px solid var(--border2);cursor:pointer;transition:border-color .15s;}
+.color-opt.selected{border-color:var(--accent);background:var(--accent-dim);}
+.color-swatch{width:18px;height:18px;border-radius:4px;flex-shrink:0;}
+.color-opt-label{font-size:12px;font-family:'DM Mono',monospace;color:var(--subtle);}
+.color-opt.selected .color-opt-label{color:var(--text);}
+
+/* GENERATE BAR */
+.gen-bar{position:sticky;bottom:20px;margin-top:24px;display:flex;gap:10px;align-items:center;background:rgba(15,19,24,.9);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--border2);border-radius:14px;padding:12px 16px;}
+.filename-wrap{display:flex;align-items:center;flex:1;background:var(--bg);border:1px solid var(--border2);border-radius:8px;overflow:hidden;min-width:0;}
+.fn-pre{padding:9px 11px;font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);border-right:1px solid var(--border2);background:var(--surface2);white-space:nowrap;flex-shrink:0;}
+.fn-input{border:none !important;border-radius:0 !important;background:transparent !important;padding:9px 11px !important;font-family:'DM Mono',monospace !important;font-size:12px !important;flex:1;min-width:0;}
+.fn-suf{padding:9px 11px;font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);border-left:1px solid var(--border2);background:var(--surface2);white-space:nowrap;flex-shrink:0;}
+.btn-gen{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;padding:10px 22px;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:7px;transition:opacity .15s,transform .1s;}
+.btn-gen:hover{opacity:.9;}.btn-gen:active{transform:scale(.97);}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:none;align-items:flex-start;justify-content:center;z-index:1000;padding:40px 20px;overflow-y:auto;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--surface);border:1px solid var(--border2);border-radius:14px;width:100%;max-width:660px;overflow:hidden;flex-shrink:0;}
+.modal-head{display:flex;align-items:flex-start;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--border);gap:16px;}
+.modal-head-left{flex:1;}
+.modal-head-left h2{font-size:15px;font-weight:600;}
+.modal-head-left p{font-size:12px;color:var(--label);margin-top:2px;}
+.modal-head-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.btn-toggle-vals{background:var(--surface2);border:1px solid var(--border2);color:var(--subtle);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;padding:6px 12px;border-radius:7px;cursor:pointer;white-space:nowrap;transition:border-color .15s,color .15s;}
+.btn-toggle-vals:hover{border-color:var(--accent);color:var(--text);}
+.modal-close{background:var(--surface2);border:1px solid var(--border);color:var(--subtle);width:30px;height:30px;border-radius:7px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:background .15s;flex-shrink:0;}
+.modal-close:hover{background:var(--surface3);}
+.modal-body{padding:20px 22px;display:flex;flex-direction:column;gap:4px;max-height:68vh;overflow-y:auto;}
+.modal-copy-all{display:flex;align-items:center;justify-content:space-between;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:10px 14px;margin-bottom:12px;cursor:pointer;transition:border-color .15s;}
+.modal-copy-all:hover{border-color:var(--accent);}
+.modal-copy-all span{font-size:12.5px;font-weight:500;color:var(--subtle);}
+.ph-section-head{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);padding:10px 4px 4px;}
+.ph-row{display:flex;align-items:baseline;gap:10px;padding:7px 8px;border-radius:6px;cursor:pointer;transition:background .1s;}
+.ph-row:hover{background:var(--surface2);}
+.ph-key{font-family:'DM Sans',monospace;font-size:12.5px;font-weight:500;color:var(--text);white-space:nowrap;flex-shrink:0;}
+.ph-val{font-size:11.5px;color:var(--label);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;display:none;}
+.ph-val::before{content:'→ ';color:var(--muted);}
+.modal-body.show-vals .ph-val{display:block;}
+.ph-copied{font-size:11px;color:var(--success);margin-left:auto;flex-shrink:0;display:none;white-space:nowrap;}
+.ph-row.copied .ph-copied{display:block;}
+
+/* TOAST */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--success);color:#fff;font-size:13px;font-weight:500;padding:9px 20px;border-radius:30px;pointer-events:none;opacity:0;transition:opacity .25s,transform .25s;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+@media(max-width:600px){.field-row{grid-template-columns:1fr;}.cards-grid{grid-template-columns:1fr;}.gen-bar{flex-direction:column;align-items:stretch;}}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-icon">⚡</div>
+    <div>
+      <h1>FFY · Generátor e-mailové kampaně</h1>
+      <p>Sekce lze zapnout/vypnout a přetáhnout pro změnu pořadí</p>
+    </div>
+  </div>
+  <button class="btn-ph" onclick="openModal()">
+    📋 Aktivní placeholdery <span class="ph-count" id="ph-count">0</span>
+  </button>
+</div>
+
+<div id="sections-list"></div>
+
+<div class="gen-bar">
+  <div class="filename-wrap">
+    <span class="fn-pre">📄</span>
+    <input class="fn-input" type="text" id="f-filename" placeholder="nazev_kampane">
+    <span class="fn-suf">.html</span>
+  </div>
+  <button class="btn-gen" onclick="generate()">⬇ Vygenerovat &amp; stáhnout</button>
+</div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-head-left">
+        <h2>Aktivní placeholdery</h2>
+        <p>Kliknutím na řádek zkopírujete hodnotu</p>
+      </div>
+      <div class="modal-head-right">
+        <button class="btn-toggle-vals" id="btn-toggle-vals" onclick="toggleModalVals()">👁 Zobrazit hodnoty</button>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── DEFINITIONS ────────────────────────────────────────────────────────────────
+
+const DEFS = {
+  hlavicka: {
+    label:'Hlavička', icon:'📧', badge:'title · preheader',
+    fixed:true, defaultOpen:true, defaultEnabled:true,
+    fields:[
+      {id:'title',     phLabel:'Předmět e-mailu',     type:'text',
+       def:'Váš účet Energobanking čeká na aktivaci'},
+      {id:'preheader', phLabel:'Skrytý preheader text', type:'text',
+       def:'Máte účet v Energobankingu – ale proudíky zatím ne. Přidejte se ke komunitě, která šetří společně.',
+       hint:'Zobrazuje se v přehledu doručené pošty, v e-mailu neviditelný.'},
+    ]
+  },
+  hero: {
+    label:'Hero', icon:'🎯', badge:'badge · nadpis · perex',
+    defaultOpen:true, defaultEnabled:true,
+    fields:[
+      {id:'badge',    phLabel:'Text statusu (badge)',      type:'text',     def:'Členství FFY — Neaktivní'},
+      {id:'hero_h1',  phLabel:'Hlavní nadpis',             type:'text',     def:'Váš účet je připravený.'},
+      {id:'hero_h2',  phLabel:'Podnadpis (světlejší)',     type:'text',     def:'Začít je na vás.'},
+      {id:'hero_lead',phLabel:'Perex',                     type:'textarea', def:'Tisíce lidí napříč Českem už sbírají proudíky a společně budují energetickou komunitu, kde se spotřeba mění ve skutečné slevy. Přidejte se – místo pro vás tu je.'},
+    ]
+  },
+  kroky: {
+    label:'Kroky', icon:'📋', badge:'kroky',
+    defaultOpen:false, defaultEnabled:true,
+    dynamic:true, itemUnit:'kroků',
+    defaultItems:[
+      {t:'Převeďte odběrné místo k nám', d:'Provedeme vás celým procesem krok za krokem. Většinu administrativy vyřídíme za vás – vy jen potvrdíte.'},
+      {t:'Za odběr automaticky získáváte proudíky', d:'Proudíky se připisují samy za každou spotřebovanou kWh. Nic nenastavujete, nic nehlídáte.'},
+      {t:'Přizvěte ostatní – komunita roste společně', d:'Když doporučíte dalšího odběratele, získáte proudíky i za jeho spotřebu. A navíc rovnou slevu na vaše energie.'},
+      {t:'Proudíky = sleva na čistou elektřinu', d:'Nasbírané proudíky se promění v slevu na elektřinu z našich fotovoltaických elektráren. Čím déle sbíráte, tím víc ušetříte.'},
+    ]
+  },
+  karty: {
+    label:'Karty', icon:'💡', badge:'karty',
+    defaultOpen:false, defaultEnabled:true,
+    dynamic:true, itemUnit:'karet', layout:'grid',
+    defaultItems:[
+      {t:'Stabilní dodavatel od roku 2017',       d:'Energetickou krizi jsme zvládli bez újmy pro zákazníky. Na trhu jsme se osvědčili, když to bylo nejtěžší.'},
+      {t:'Ceny dlouhodobě pod průměrem trhu',     d:'Bez akcionářů netlačíme na maximální zisky. Férovost vůči zákazníkům je pro nás důležitější.'},
+      {t:'Zákaznická linka bez robotů',           d:'Žádné automatické smyčky, žádné dlouhé čekání. Na druhém konci je vždy skutečný člověk.'},
+      {t:'50 % zisku do obnovitelných zdrojů',    d:'Každý odběr u nás přispívá k zelené budoucnosti. Budujeme elektrárny, ze kterých budete jednou odebírat se slevou.'},
+    ]
+  },
+  cta: {
+    label:'CTA', icon:'🚀', badge:'tlačítko · instrukce',
+    defaultOpen:true, defaultEnabled:true,
+    fields:[
+      {id:'cta_h',   phLabel:'Nadpis CTA sekce',      type:'text',     def:'Přidejte se ke komunitě, která šetří společně'},
+      {id:'cta_sub', phLabel:'Podtext CTA sekce',      type:'textarea', def:'Váš účet v Energobankingu čeká. Přihlaste se, aktivujte členství FFY a začněte sbírat proudíky. Provedeme vás celým procesem.'},
+      {id:'btn_txt', phLabel:'Text tlačítka',          type:'text',     def:'Přihlásit se do Energobankingu'},
+      {id:'btn_url', phLabel:'URL tlačítka',           type:'url',      def:'https://www.energobanking.cz/account/'},
+      {id:'instr',   phLabel:'Instrukce po přihlášení',type:'textarea', def:'1.  V levém menu zvolte Členství FFY, nebo klikněte na Aktivovat členství vpravo nahoře\n2.  Přihlaste odběrné místo nebo zažádejte o nezávaznou nabídku',
+       hint:'„Členství FFY" a „Aktivovat členství" budou automaticky tučně.'},
+      {id:'btn_color',phLabel:'Barva tlačítka',        type:'_color',   def:'#3293AD'},
+    ]
+  },
+  cistytext: {
+    label:'Čistý text', icon:'📝', badge:'volný blok',
+    defaultOpen:true, defaultEnabled:false,
+    fields:[
+      {id:'ct_h',   phLabel:'Nadpis textového bloku',  type:'text',     def:''},
+      {id:'ct_body',phLabel:'Tělo textového bloku',    type:'textarea', def:'Napište libovolný text, který se vloží jako samostatný blok e-mailu.',
+       hint:'Nové řádky se zachovají. Nadpis nechte prázdný pokud ho nechcete.'},
+    ]
+  },
+  kontakt: {
+    label:'Kontakt & patička', icon:'📬', badge:'vždy připojena',
+    fixed:true, lockable:true, defaultOpen:false,
+    fields:[
+      {id:'email',      phLabel:'Kontaktní e-mail',      type:'email', def:'info@freeforyou.cz'},
+      {id:'phone',      phLabel:'Telefon (zobrazení)',   type:'tel',   def:'+420 227 072 290', hint:'Mezery jsou ok.'},
+      {id:'phone_href', phLabel:'Telefon (tel: odkaz)',  type:'tel',   def:'+420227072290',    hint:'Bez mezer, pro href="tel:..."'},
+      {id:'co_name',    phLabel:'Název firmy',           type:'text',  def:'FREE for YOU s.r.o.'},
+      {id:'ico',        phLabel:'IČ firmy',              type:'text',  def:'25336665'},
+      {id:'address',    phLabel:'Adresa firmy',          type:'text',  def:'Českomoravská 2255/12a, Praha 9 – Libeň'},
+      {id:'unsub',      phLabel:'URL odhlášení z odběru',type:'text',  def:'*|UNSUB|*',
+       hint:'Mailchimp: *|UNSUB|*  ·  Brevo: {{ unsubscribe }}  ·  SmartEmailing: {unsubscribe}'},
+      {id:'gdpr',       phLabel:'URL zásad ochrany OOÚ', type:'url',   def:'https://www.energobanking.cz/site/filemanager/dokumenty_2026/Souhlas%20se%20zpracov%C3%A1n%C3%ADm%20osobn%C3%ADch%20%C3%BAdaj%C5%AF.pdf'},
+    ]
+  },
+};
+
+const ORD_KROK  = ['prvního','druhého','třetího','čtvrtého','pátého','šestého','sedmého','osmého','devátého','desátého'];
+const ORD_KARTA = ['první','druhé','třetí','čtvrté','páté','šesté','sedmé','osmé','deváté','desáté'];
+
+// ── STATE ───────────────────────────────────────────────────────────────────────
+
+let order = ['hlavicka','hero','kroky','karty','cta','cistytext','kontakt'];
+
+function initState() {
+  const s = {};
+  order.forEach(id => {
+    const d = DEFS[id];
+    if (d.dynamic) {
+      s[id] = { open:d.defaultOpen, enabled:d.defaultEnabled, items:d.defaultItems.map(i=>({...i})) };
+    } else {
+      s[id] = {
+        open:    d.defaultOpen,
+        enabled: d.defaultEnabled !== undefined ? d.defaultEnabled : true,
+        locked:  d.lockable ? true : false,
+        values:  Object.fromEntries(d.fields.map(f=>[f.id, f.def]))
+      };
+    }
+  });
+  return s;
+}
+let state = initState();
+
+// ── MODAL STATE ─────────────────────────────────────────────────────────────────
+let showModalVals = false;
+
+// ── RENDER ──────────────────────────────────────────────────────────────────────
+function render() {
+  // preserve values from DOM before wipe
+  document.querySelectorAll('#sections-list input,#sections-list textarea').forEach(el => {
+    const fid = el.dataset.fid, sid = el.dataset.sid;
+    if (!fid || !sid) return;
+    if (DEFS[sid]?.dynamic) {
+      const idx = parseInt(el.dataset.idx);
+      if (!isNaN(idx)) state[sid].items[idx][fid] = el.value;
+    } else {
+      if (state[sid]?.values) state[sid].values[fid] = el.value;
+    }
+  });
+
+  const list = document.getElementById('sections-list');
+  list.innerHTML = '';
+  order.forEach(id => list.appendChild(buildSection(id)));
+  updatePhCount();
+}
+
+function buildSection(id) {
+  const def = DEFS[id], s = state[id];
+  const wrap = document.createElement('div');
+  const locked = s.locked || false;
+  wrap.className = 'section' +
+    (s.open    ? ' open'    : '') +
+    ((def.dynamic ? !s.enabled : !s.enabled) ? ' disabled' : '') +
+    (locked    ? ' locked-section' : '');
+  wrap.dataset.id = id;
+
+  if (!def.fixed) {
+    wrap.draggable = true;
+    wrap.addEventListener('dragstart', onDragStart);
+    wrap.addEventListener('dragend',   onDragEnd);
+    wrap.addEventListener('dragover',  onDragOver);
+    wrap.addEventListener('dragleave', onDragLeave);
+    wrap.addEventListener('drop',      onDrop);
+  }
+
+  // Header
+  const hdr = document.createElement('div');
+  hdr.className = 'section-header';
+
+  // drag handle or spacer
+  if (!def.fixed) {
+    hdr.innerHTML += `<div class="drag-handle" title="Přetáhnout"><span></span><span></span><span></span></div>`;
+  } else {
+    hdr.innerHTML += `<div class="no-handle"></div>`;
+  }
+
+  // toggle or spacer
+  if (!def.fixed) {
+    hdr.innerHTML += `<div class="toggle-wrap"><label class="toggle"><input type="checkbox" ${s.enabled?'checked':''} onchange="toggleSection('${id}',this.checked)"><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>`;
+  } else {
+    hdr.innerHTML += `<div class="no-toggle"></div>`;
+  }
+
+  // title area
+  hdr.innerHTML += `<div class="section-title-area" onclick="toggleOpen('${id}')"><span class="section-icon">${def.icon}</span><span class="section-label">${def.label}</span><span class="section-badge">${def.badge}</span></div>`;
+
+  // lock button for kontakt
+  if (def.lockable) {
+    hdr.innerHTML += locked
+      ? `<button class="lock-btn" onclick="unlockSection('${id}');event.stopPropagation()">🔒 Změnit patičku</button>`
+      : `<button class="lock-btn" onclick="lockSection('${id}');event.stopPropagation()">🔓 Zamknout patičku</button>`;
+  }
+
+  // chevron
+  hdr.innerHTML += `<div class="section-chevron" onclick="toggleOpen('${id}')"></div>`;
+
+  wrap.appendChild(hdr);
+
+  // Body
+  const body = document.createElement('div');
+  body.className = 'section-body';
+
+  if (id === 'kroky') {
+    body.appendChild(buildDynamicItems(id, 'Krok', ORD_KROK, false));
+  } else if (id === 'karty') {
+    body.appendChild(buildDynamicItems(id, 'Karta', ORD_KARTA, true));
+  } else {
+    def.fields.forEach(f => {
+      if (f.type === '_color') {
+        body.appendChild(buildColorPicker(id, f, s));
+      } else {
+        const d = document.createElement('div');
+        d.className = 'field';
+        d.innerHTML = buildFieldHtml(id, f, s, locked);
+        body.appendChild(d);
+      }
+    });
+  }
+
+  wrap.appendChild(body);
+  return wrap;
+}
+
+function buildDynamicItems(id, unitLabel, ords, grid) {
+  const frag = document.createDocumentFragment();
+  const wrapDiv = document.createElement('div');
+  wrapDiv.className = grid ? 'cards-grid' : 'dynamic-items-wrap';
+
+  state[id].items.forEach((item, i) => {
+    const blk = document.createElement('div');
+    blk.className = 'dynamic-item';
+    const ordLabel = ords[i] ? (grid ? ords[i].charAt(0).toUpperCase()+ords[i].slice(1) : ords[i].charAt(0).toUpperCase()+ords[i].slice(1)) : (i+1)+'.';
+    const canRemove = state[id].items.length > 1;
+    blk.innerHTML = `
+      <div class="item-header">
+        <span class="item-num">${unitLabel.toUpperCase()} ${i+1}</span>
+        ${canRemove ? `<button class="btn-remove" onclick="removeItem('${id}',${i})">Odebrat</button>` : ''}
+      </div>
+      <div class="field">
+        <label>Nadpis</label>
+        <input type="text" data-sid="${id}" data-fid="t" data-idx="${i}" value="${escAttr(item.t)}" oninput="updateItem('${id}',${i},'t',this.value)">
+      </div>
+      <div class="field">
+        <label>Popis</label>
+        <textarea data-sid="${id}" data-fid="d" data-idx="${i}" rows="3" oninput="updateItem('${id}',${i},'d',this.value)">${escText(item.d)}</textarea>
+      </div>`;
+    wrapDiv.appendChild(blk);
+  });
+
+  frag.appendChild(wrapDiv);
+
+  const addBtn = document.createElement('button');
+  addBtn.className = 'btn-add';
+  addBtn.innerHTML = `+ Přidat ${unitLabel === 'Krok' ? 'krok' : 'kartu'}`;
+  addBtn.onclick = () => addItem(id, unitLabel === 'Krok' ? {t:'Nový krok',d:'Popis nového kroku.'} : {t:'Nová karta',d:'Popis nové karty.'});
+  frag.appendChild(addBtn);
+
+  return frag;
+}
+
+function buildColorPicker(id, f, s) {
+  const wrap = document.createElement('div');
+  wrap.className = 'field';
+  const cur = s.values[f.id] || '#3293AD';
+  wrap.innerHTML = `<label>${f.phLabel}</label>
+    <div class="color-opts">
+      <div class="color-opt ${cur==='#3293AD'?'selected':''}" onclick="setColor('${id}','${f.id}','#3293AD',this)">
+        <div class="color-swatch" style="background:#3293AD"></div>
+        <span class="color-opt-label">#3293AD — výchozí modrá</span>
+      </div>
+      <div class="color-opt ${cur==='#30e499'?'selected':''}" onclick="setColor('${id}','${f.id}','#30e499',this)">
+        <div class="color-swatch" style="background:#30e499"></div>
+        <span class="color-opt-label">#30e499 — zelená</span>
+      </div>
+    </div>`;
+  return wrap;
+}
+
+function buildFieldHtml(id, f, s, locked) {
+  const val = (s.values[f.id] || '').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+  const dis = locked ? ' disabled' : '';
+  const inp = f.type === 'textarea'
+    ? `<textarea data-sid="${id}" data-fid="${f.id}" rows="3"${dis} oninput="updateVal('${id}','${f.id}',this.value)">${val}</textarea>`
+    : `<input type="${f.type}" data-sid="${id}" data-fid="${f.id}" value="${val}"${dis} oninput="updateVal('${id}','${f.id}',this.value)">`;
+  return `<label>${f.phLabel}</label>${inp}${f.hint?`<span class="hint">${f.hint}</span>`:''}`;
+}
+
+// ── MUTATIONS ────────────────────────────────────────────────────────────────────
+function toggleOpen(id) {
+  state[id].open = !state[id].open;
+  document.querySelector(`.section[data-id="${id}"]`).classList.toggle('open', state[id].open);
+}
+function toggleSection(id, checked) {
+  state[id].enabled = checked;
+  document.querySelector(`.section[data-id="${id}"]`).classList.toggle('disabled', !checked);
+  updatePhCount();
+}
+function updateVal(sid, fid, val) {
+  if (state[sid]?.values) state[sid].values[fid] = val;
+  updatePhCount();
+}
+function updateItem(sid, idx, field, val) {
+  if (state[sid]?.items?.[idx]) state[sid].items[idx][field] = val;
+}
+function setColor(sid, fid, color, el) {
+  state[sid].values[fid] = color;
+  el.closest('.color-opts').querySelectorAll('.color-opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+function addItem(sid, template) {
+  state[sid].items.push({...template});
+  render();
+}
+function removeItem(sid, idx) {
+  if (state[sid].items.length <= 1) return;
+  state[sid].items.splice(idx, 1);
+  render();
+}
+function unlockSection(id) {
+  state[id].locked = false;
+  render();
+}
+function lockSection(id) {
+  state[id].locked = true;
+  render();
+}
+
+// ── DRAG & DROP ───────────────────────────────────────────────────────────────────
+let dragSrc = null;
+function onDragStart(e) {
+  dragSrc = e.currentTarget.dataset.id;
+  setTimeout(()=>e.currentTarget.classList.add('dragging'),0);
+  e.dataTransfer.effectAllowed = 'move';
+}
+function onDragEnd(e) {
+  e.currentTarget.classList.remove('dragging');
+  document.querySelectorAll('.section.drag-over').forEach(el=>el.classList.remove('drag-over'));
+}
+function onDragOver(e) {
+  e.preventDefault(); e.dataTransfer.dropEffect='move';
+  const tid = e.currentTarget.dataset.id;
+  if (tid!==dragSrc && !DEFS[tid]?.fixed) {
+    document.querySelectorAll('.section.drag-over').forEach(el=>el.classList.remove('drag-over'));
+    e.currentTarget.classList.add('drag-over');
+  }
+}
+function onDragLeave(e) { e.currentTarget.classList.remove('drag-over'); }
+function onDrop(e) {
+  e.preventDefault();
+  const tid = e.currentTarget.dataset.id;
+  if (!dragSrc || dragSrc===tid || DEFS[tid]?.fixed) return;
+  const si=order.indexOf(dragSrc), ti=order.indexOf(tid);
+  order.splice(si,1); order.splice(ti,0,dragSrc);
+  dragSrc=null;
+  render();
+}
+
+// ── PH COUNT & MODAL ──────────────────────────────────────────────────────────────
+function updatePhCount() {
+  let n = 0;
+  order.forEach(id => {
+    if (id === 'kontakt') return; // locked by default, not counted; unlocked would add
+    const s = state[id];
+    if (DEFS[id].dynamic) {
+      if (s.enabled) n += s.items.length * 2;
+    } else {
+      if (s.enabled && !s.locked) n += DEFS[id].fields.filter(f=>f.type!=='_color').length;
+      if (s.enabled && !s.locked && DEFS[id].fields.some(f=>f.type==='_color')) n += 1;
+    }
+  });
+  // add unlocked kontakt
+  if (!state.kontakt.locked) {
+    n += DEFS.kontakt.fields.length;
+  }
+  document.getElementById('ph-count').textContent = n;
+}
+
+function toggleModalVals() {
+  showModalVals = !showModalVals;
+  const body = document.getElementById('modal-body');
+  body.classList.toggle('show-vals', showModalVals);
+  document.getElementById('btn-toggle-vals').textContent =
+    showModalVals ? '🙈 Skrýt hodnoty' : '👁 Zobrazit hodnoty';
+  // update copy-all label
+  const ca = document.querySelector('.modal-copy-all span');
+  if (ca) ca.textContent = showModalVals
+    ? '📋 Zkopírovat vše (s hodnotami)'
+    : '📋 Zkopírovat vše (pouze názvy)';
+}
+
+function openModal() {
+  const body = document.getElementById('modal-body');
+  body.innerHTML = '';
+  body.classList.toggle('show-vals', showModalVals);
+
+  const allItems = []; // {label, val}
+
+  order.forEach(id => {
+    const def = DEFS[id];
+    const s   = state[id];
+
+    // skip disabled, skip locked kontakt
+    if (id !== 'kontakt' && !s.enabled) return;
+    if (id === 'kontakt' && s.locked) return;
+
+    const head = document.createElement('div');
+    head.className = 'ph-section-head';
+    head.textContent = def.label.toUpperCase();
+    body.appendChild(head);
+
+    if (def.dynamic) {
+      const ords = id === 'kroky' ? ORD_KROK : ORD_KARTA;
+      const unitGen = id === 'kroky' ? 'kroku' : 'karty';
+      s.items.forEach((item, i) => {
+        const ord = ords[i] || (i+1)+'.';
+        const capOrd = ord.charAt(0).toUpperCase()+ord.slice(1);
+        [
+          {label:`Nadpis ${ord} ${unitGen}`, val:item.t},
+          {label:`Popis ${ord} ${unitGen}`,  val:item.d},
+        ].forEach(({label, val}) => {
+          allItems.push({label, val});
+          body.appendChild(makePhRow(label, val));
+        });
+      });
+    } else {
+      def.fields.forEach(f => {
+        const val = s.values[f.id] || '';
+        allItems.push({label:f.phLabel, val});
+        body.appendChild(makePhRow(f.phLabel, val));
+      });
+    }
+  });
+
+  // Copy all button at top
+  const ca = document.createElement('div');
+  ca.className = 'modal-copy-all';
+  ca.innerHTML = `<span>${showModalVals ? '📋 Zkopírovat vše (s hodnotami)' : '📋 Zkopírovat vše (pouze názvy)'}</span><span>⧉</span>`;
+  ca.onclick = () => {
+    const text = showModalVals
+      ? allItems.map(({label,val}) => `${label}: ${val}`).join('\n')
+      : allItems.map(({label}) => label).join('\n');
+    navigator.clipboard.writeText(text).then(() => {
+      ca.querySelector('span').textContent = '✓ Zkopírováno!';
+      setTimeout(()=>{ ca.querySelector('span').textContent = showModalVals ? '📋 Zkopírovat vše (s hodnotami)' : '📋 Zkopírovat vše (pouze názvy)'; }, 2000);
+    });
+  };
+  body.insertBefore(ca, body.firstChild);
+
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function makePhRow(label, val) {
+  const row = document.createElement('div');
+  row.className = 'ph-row';
+  row.innerHTML = `<span class="ph-key">${escText(label)}</span><span class="ph-val">${escText(val)||'(prázdné)'}</span><span class="ph-copied">✓ zkopírováno</span>`;
+  row.onclick = () => {
+    navigator.clipboard.writeText(val).then(() => {
+      row.classList.add('copied');
+      setTimeout(()=>row.classList.remove('copied'), 1800);
+    });
+  };
+  return row;
+}
+
+function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
+function closeModalOutside(e) { if (e.target===document.getElementById('modal-overlay')) closeModal(); }
+
+// ── ESCAPING ──────────────────────────────────────────────────────────────────────
+function escAttr(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
+function escText(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function esc(s)    { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function v(id) {
+  for (const sid of order) {
+    const s = state[sid];
+    if (s.values && id in s.values) return s.values[id];
+  }
+  return '';
+}
+function ve(id){ return esc(v(id)); }
+
+// ── HTML GENERATION ───────────────────────────────────────────────────────────────
+function sectionHtml(id) {
+  if (id === 'hlavicka' || id === 'kontakt') return ''; // handled separately
+  const s = state[id];
+  if (!s.enabled) return '';
+  const map = { hero:htmlHero, kroky:htmlKroky, karty:htmlKarty, cta:htmlCta, cistytext:htmlCistyText };
+  return map[id] ? map[id]() : '';
+}
+
+function htmlHero() {
+  return `
+                    <tr><td class="mobile-pad" style="background-color:#2A6E84;background-image:linear-gradient(135deg,#3293AD 0%,#33798E 45%,#1E5D73 100%);padding:40px 40px 48px;">
+                        <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:26px;"><tr><td style="background-color:#1A4F65;border:1px solid rgba(255,255,255,0.25);border-radius:20px;padding:6px 16px 6px 11px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td width="8" style="padding-right:8px;"><div style="width:8px;height:8px;border-radius:50%;background-color:#F5C842;"></div></td><td><a href="https://www.energobanking.cz/" style="font-family:'Ubuntu',Arial,sans-serif;font-size:11.5px;color:rgba(255,255,255,0.78);text-decoration:none;white-space:nowrap;font-weight:400;">${ve('badge')}</a></td></tr></table></td></tr></table>
+                        <p class="hero-headline" style="font-family:'Ubuntu',Arial,sans-serif;font-size:28px;font-weight:700;color:#ffffff;line-height:1.25;margin:0 0 16px;letter-spacing:-0.5px;">${ve('hero_h1')}<br><span style="color:rgba(255,255,255,0.48);font-weight:300;">${ve('hero_h2')}</span></p>
+                        <p style="font-family:'Ubuntu',Arial,sans-serif;font-size:14px;font-weight:300;color:rgba(255,255,255,0.68);line-height:1.75;margin:0;max-width:440px;">${ve('hero_lead')}</p>
+                    </td></tr>`;
+}
+
+function htmlKroky() {
+  const items = state.kroky.items;
+  const rows = items.map((item, i) => {
+    const mb = i < items.length-1 ? 'margin-bottom:4px;' : '';
+    return `
+                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#F3F8FA;border-left:3px solid #3293AD;border-radius:0 8px 8px 0;${mb}"><tr>
+                                <td style="padding:15px 16px;" width="42" valign="top"><div style="width:28px;height:28px;background-color:#1E5D73;border-radius:50%;text-align:center;line-height:28px;font-family:'Ubuntu',Arial,sans-serif;font-size:11px;font-weight:700;color:#ffffff;">${i+1}</div></td>
+                                <td style="padding:15px 16px 15px 0;" valign="top"><p style="font-family:'Ubuntu',Arial,sans-serif;font-size:13px;font-weight:700;color:#1E5D73;margin:0 0 4px;line-height:1.3;">${esc(item.t)}</p><p style="font-family:'Ubuntu',Arial,sans-serif;font-size:12.5px;font-weight:300;color:#7BAABB;margin:0;line-height:1.65;">${esc(item.d)}</p></td>
+                            </tr></table>`;
+  }).join('');
+  return `
+                    <tr><td class="mobile-pad" style="background-color:#ffffff;padding:36px 40px 32px;">
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-bottom:2px solid #EAF4F7;margin-bottom:22px;padding-bottom:14px;"><tr><td style="font-family:'Ubuntu',Arial,sans-serif;font-size:17px;font-weight:700;color:#1E5D73;letter-spacing:-0.2px;">Jak to celé funguje</td><td align="right" style="font-family:'Ubuntu',Arial,sans-serif;font-size:11px;font-weight:500;color:#9BBCCA;letter-spacing:0.5px;text-transform:uppercase;">${items.length} ${items.length===1?'krok':items.length<5?'kroky':'kroků'}</td></tr></table>
+                        ${rows}
+                    </td></tr>`;
+}
+
+function htmlKarty() {
+  const items = state.karty.items;
+  // pair up into rows of 2
+  let rows = '';
+  for (let i = 0; i < items.length; i += 2) {
+    const a = items[i], b = items[i+1];
+    const cardCell = (item) =>
+      `<td class="why-col" width="49%" valign="top" style="background-color:#ffffff;border:1px solid #D4E8EE;border-top:3px solid #3293AD;border-radius:8px;padding:18px;"><p style="font-family:'Ubuntu',Arial,sans-serif;font-size:12.5px;font-weight:700;color:#1E5D73;margin:0 0 6px;line-height:1.3;">${esc(item.t)}</p><p style="font-family:'Ubuntu',Arial,sans-serif;font-size:12px;font-weight:300;color:#7BAABB;margin:0;line-height:1.65;">${esc(item.d)}</p></td>`;
+    const spacer = `<td class="why-spacer" width="2%"></td>`;
+    const emptyCell = `<td width="49%"></td>`;
+    rows += `<tr>${cardCell(a)}${b ? spacer+cardCell(b) : spacer+emptyCell}</tr>`;
+    if (i + 2 < items.length) rows += `<tr><td colspan="3" style="height:12px;line-height:12px;font-size:12px;">&nbsp;</td></tr>`;
+  }
+  return `
+                    <tr><td class="mobile-pad" style="background-color:#F3F8FA;padding:32px 40px 36px;border-top:1px solid #D4E8EE;border-bottom:1px solid #D4E8EE;">
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-bottom:2px solid #E0EEF3;margin-bottom:22px;padding-bottom:14px;"><tr><td style="font-family:'Ubuntu',Arial,sans-serif;font-size:17px;font-weight:700;color:#1E5D73;letter-spacing:-0.2px;">Proč FREE for YOU</td></tr></table>
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">${rows}</table>
+                    </td></tr>`;
+}
+
+function htmlCta() {
+  const btnColor = v('btn_color') || '#3293AD';
+  const instrHtml = (v('instr')||'')
+    .replace(/Členství FFY/g,'<strong style="font-weight:700;color:#1E5D73;">Členství FFY</strong>')
+    .replace(/Aktivovat členství/g,'<strong style="font-weight:700;color:#1E5D73;">Aktivovat členství</strong>')
+    .split('\n').filter(l=>l.trim()).join('<br> ');
+  return `
+                    <tr><td class="mobile-pad" style="background-color:#ffffff;padding:36px 40px 40px;">
+                        <p style="font-family:'Ubuntu',Arial,sans-serif;font-size:19px;font-weight:700;color:#1E5D73;text-align:center;margin:0 0 16px;letter-spacing:-0.3px;">${ve('cta_h')}</p>
+                        <p style="font-family:'Ubuntu',Arial,sans-serif;font-size:13.5px;font-weight:300;color:#33798E;line-height:1.75;margin:0 0 28px;text-align:center;">${ve('cta_sub')}</p>
+                        <table role="presentation" class="cta-btn-wrap" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto 28px;"><tr><td style="background-color:${btnColor};border-radius:8px;"><!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="${ve('btn_url')}" style="height:52px;v-text-anchor:middle;width:300px;" arcsize="8%" strokecolor="${btnColor}" fillcolor="${btnColor}"><w:anchorlock/><center><![endif]--><a href="${ve('btn_url')}" style="display:inline-block;background-color:${btnColor};color:#ffffff;font-family:'Ubuntu',Arial,sans-serif;font-size:15px;font-weight:700;text-decoration:none;padding:17px 36px;border-radius:8px;letter-spacing:-0.1px;">${ve('btn_txt')}</a><!--[if mso]></center></v:roundrect><![endif]--></td></tr></table>
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#F3F8FA;border:1px solid #D4E8EE;border-left:3px solid #3293AD;border-radius:0 8px 8px 0;"><tr><td style="padding:16px 20px;"><p style="font-family:'Ubuntu',Arial,sans-serif;font-size:10px;font-weight:700;color:#9BBCCA;letter-spacing:1.5px;text-transform:uppercase;margin:0 0 10px;">Po přihlášení pokračujte takto</p><p style="font-family:'Ubuntu',Arial,sans-serif;font-size:12.5px;color:#33798E;line-height:1.85;margin:0;">${instrHtml}</p></td></tr></table>
+                    </td></tr>`;
+}
+
+function htmlCistyText() {
+  const heading = ve('ct_h');
+  const body    = esc((v('ct_body')||'').replace(/\n/g,'<br>'));
+  const hh = heading ? `<p style="font-family:'Ubuntu',Arial,sans-serif;font-size:17px;font-weight:700;color:#1E5D73;margin:0 0 14px;">${heading}</p>` : '';
+  return `
+                    <tr><td class="mobile-pad" style="background-color:#ffffff;padding:32px 40px;">${hh}<p style="font-family:'Ubuntu',Arial,sans-serif;font-size:14px;font-weight:300;color:#33798E;line-height:1.8;margin:0;">${body}</p></td></tr>`;
+}
+
+function htmlKontakt() {
+  const sv = state.kontakt.values;
+  const e  = (s)=>(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  const phone = e(sv.phone||'').replace(/ /g,'&nbsp;');
+  return `
+                    <tr><td class="mobile-pad" style="background-color:#F3F8FA;border-top:1px solid #D4E8EE;padding:22px 40px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td class="contact-left" style="font-family:'Ubuntu',Arial,sans-serif;font-size:12px;font-weight:500;color:#9BBCCA;">Máte otázky? Rádi vám pomůžeme.</td><td class="contact-right" align="right"><a href="mailto:${e(sv.email)}" style="font-family:'Ubuntu',Arial,sans-serif;font-size:13px;font-weight:500;color:#1E5D73;text-decoration:none;margin-right:18px;">${e(sv.email)}</a><a href="tel:${e(sv.phone_href)}" style="font-family:'Ubuntu',Arial,sans-serif;font-size:13px;font-weight:500;color:#1E5D73;text-decoration:none;">${phone}</a></td></tr></table></td></tr>
+                    <tr><td class="mobile-pad" style="background-color:#EAF4F7;border-top:1px solid #D4E8EE;padding:22px 40px;text-align:center;"><p style="font-family:'Ubuntu',Arial,sans-serif;font-size:11px;color:#9BBCCA;line-height:1.9;margin:0;">Tento e-mail byl odeslán na základě souhlasu se zasíláním obchodních sdělení<br>uděleného při registraci v&nbsp;systému Energobanking.<br><br>Odesílatel: ${e(sv.co_name)}, IČ:&nbsp;${e(sv.ico)},<br>${e(sv.address)}.<br><br><a href="${sv.unsub||''}" style="color:#3293AD;text-decoration:underline;">Odhlásit se z odběru</a> &nbsp;&nbsp;·&nbsp;&nbsp; <a href="${e(sv.gdpr)}" style="color:#3293AD;text-decoration:underline;">Zásady ochrany osobních údajů</a></p></td></tr>`;
+}
+
+function generate() {
+  const rows = order.map(id => sectionHtml(id)).join('');
+  const footer = htmlKontakt();
+
+  const html = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="cs">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="x-apple-disable-message-reformatting">
+    <title>${ve('title')}</title><!--[if mso]><noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript><![endif]-->
+    <style type="text/css">
+        body,table,td,p,a{margin:0;padding:0;}
+        body{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;background-color:#DDE9EF;}
+        table{border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;}
+        img{border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;display:block;}
+        @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');
+        u+.email-wrap{min-width:600px;}
+        div[style*="margin: 16px 0"]{margin:0 !important;}
+        a[x-apple-data-detectors],.x-gmail-data-detectors a{color:inherit !important;text-decoration:none !important;}
+        @media only screen and (max-width:600px){
+            .email-wrap{width:100% !important;}
+            .mobile-pad{padding-left:20px !important;padding-right:20px !important;}
+            .why-col{display:block !important;width:100% !important;margin-bottom:10px !important;}
+            .why-spacer{display:none !important;width:0 !important;max-width:0 !important;overflow:hidden !important;padding:0 !important;mso-hide:all !important;}
+            .contact-left,.contact-right{display:block !important;width:100% !important;}
+            .contact-right{text-align:left !important;padding-top:8px !important;}
+            .cta-btn-wrap{width:100% !important;text-align:center !important;}
+            .cta-btn-wrap td{width:100% !important;}
+            .cta-btn-wrap a{display:block !important;box-sizing:border-box !important;text-align:center !important;padding-left:20px !important;padding-right:20px !important;}
+            .hero-headline{font-size:22px !important;}
+        }
+    </style>
+</head>
+<body style="margin:0;padding:0;background-color:#DDE9EF;">
+    <div style="display:none;max-height:0;overflow:hidden;font-size:1px;line-height:1px;color:#DDE9EF;">${ve('preheader')}</div>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#DDE9EF;margin:0;padding:0;">
+        <tr><td align="center" style="padding:28px 0;">
+            <table class="email-wrap" role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;max-width:600px;background-color:#ffffff;font-family:'Ubuntu',Arial,sans-serif;">
+                <tr><td style="background-image:linear-gradient(90deg,#3293AD 0%,#33798E 50%,#1E5D73 100%);height:4px;font-size:4px;line-height:4px;">&nbsp;</td></tr>
+                <tr><td style="background-color:#ffffff;padding:20px 40px 18px;border-bottom:1px solid #D4E8EE;"><a href="https://www.freeforyou.cz" style="display:block;text-decoration:none;"><img src="https://i.imgur.com/wOysVdZ.png" alt="FREE for YOU" width="200" height="53" style="height:53px;width:auto;max-width:200px;"></a></td></tr>
+                ${rows}
+                ${footer}
+                <tr><td style="background-image:linear-gradient(90deg,#1E5D73 0%,#33798E 50%,#3293AD 100%);height:4px;font-size:4px;line-height:4px;">&nbsp;</td></tr>
+            </table>
+        </td></tr>
+    </table>
+</body>
+</html>`;
+
+  const raw = document.getElementById('f-filename').value.trim() || 'kampan';
+  const filename = raw.replace(/\s+/g,'_') + '.html';
+  const blob = new Blob([html], {type:'text/html;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href=url; a.download=filename; a.click();
+  URL.revokeObjectURL(url);
+  showToast('✓ '+filename+' stažen');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2600);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>

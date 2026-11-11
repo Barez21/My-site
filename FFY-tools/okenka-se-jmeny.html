@@ -1,0 +1,229 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Okénka se jmény</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: brand tool, controls in a left rail, rendered PNG previews in a grid on the right. Single light look (FFY brand). */
+:root{
+  --blue:#214571; --mint:#45e7a3; --mint-d:#1AC77F; --ink:#0a141e;
+  --bg:#EFF4FA; --surface:#ffffff; --line:#D0DFF0; --muted:#548bc9; --bronze:#e8af46;
+  --font:'Albert Sans','Segoe UI',-apple-system,Roboto,sans-serif;
+  --r:16px 0 16px 0;
+  color-scheme:light;
+}
+html,body{background:var(--bg);color:var(--blue)}
+body{font-family:var(--font);font-size:15px;line-height:1.45;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 48px}
+.wrap{max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:24px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px}
+.eyebrow{display:inline-block;background:var(--mint);color:var(--ink);font-weight:800;font-size:11px;letter-spacing:.06em;padding:4px 9px;border-radius:2px;text-transform:uppercase}
+h1{font-size:34px;font-weight:800;line-height:1.1;margin:10px 0 4px;text-wrap:balance}
+header p{margin:0;color:var(--muted);max-width:60ch}
+.grid{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--surface);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:22px;min-width:0}
+.group{display:flex;flex-direction:column;gap:10px}
+.group h2{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin:0;color:var(--blue)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{font:inherit;font-weight:600;font-size:14px;border:1.5px solid var(--line);background:var(--surface);color:var(--blue);padding:7px 12px;border-radius:8px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.seg button:focus-visible,.btn:focus-visible,input:focus-visible,.rm:focus-visible{outline:3px solid var(--mint);outline-offset:2px}
+.swatch{display:inline-block;width:14px;height:14px;border-radius:4px 0 4px 0;border:1px solid var(--line);vertical-align:-2px;margin-right:6px}
+.rows{display:flex;flex-direction:column;gap:10px}
+.row{display:grid;grid-template-columns:22px minmax(0,1fr) 30px;gap:8px;align-items:start}
+.row .n{font-weight:800;color:var(--muted);padding-top:9px;font-variant-numeric:tabular-nums}
+.row .f{display:flex;flex-direction:column;gap:6px;min-width:0}
+input[type=text]{font:inherit;width:100%;box-sizing:border-box;border:1.5px solid var(--line);border-radius:8px;padding:8px 10px;color:var(--blue);background:#fff}
+input.pos{color:#15A268;font-weight:600}
+input.nm{font-weight:700}
+.rm{font:inherit;border:0;background:none;color:var(--muted);cursor:pointer;font-size:20px;line-height:1;padding:8px 4px;border-radius:6px}
+.rm:hover{color:var(--blue)}
+.btn{font:inherit;font-weight:700;font-size:15px;border-radius:8px;padding:10px 16px;cursor:pointer;border:0;display:inline-flex;align-items:center;gap:8px}
+.btn.primary{background:var(--bronze);color:var(--ink)}
+.btn.ghost{background:var(--surface);color:var(--blue);border:1.5px solid var(--line)}
+.btn[disabled]{opacity:.5;cursor:default}
+.range{display:flex;align-items:center;gap:10px}
+.range input{flex:1;accent-color:var(--blue)}
+.range output{font-variant-numeric:tabular-nums;min-width:48px;text-align:right;font-weight:600}
+.previews{display:flex;flex-direction:column;gap:16px;min-width:0}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.bar .meta{color:var(--muted);font-size:14px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.card{background:var(--surface);border-radius:var(--r);padding:12px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.check{border-radius:10px 0 10px 0;padding:12px;background-color:#f4f7fb;background-image:linear-gradient(45deg,#e6edf6 25%,transparent 25%,transparent 75%,#e6edf6 75%),linear-gradient(45deg,#e6edf6 25%,transparent 25%,transparent 75%,#e6edf6 75%);background-size:16px 16px;background-position:0 0,8px 8px}
+.check img{display:block;width:100%;height:auto}
+.card .foot{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.card .fn{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.card .btn{padding:7px 12px;font-size:13px}
+.note{font-size:13px;color:var(--muted)}
+[hidden]{display:none!important}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--blue);color:#fff;padding:10px 16px;border-radius:10px;font-weight:600;font-size:14px}
+@media (prefers-reduced-motion:no-preference){.card{transition:opacity .2s}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <span class="eyebrow">FREE for YOU</span>
+      <h1>Okénka se jmény</h1>
+      <p>Vyplňte jména a pozice. Každé okénko se vykreslí jako PNG s průhledným pozadím a značkovými rohy.</p>
+    </div>
+  </header>
+
+  <div class="grid">
+    <section class="panel" aria-label="Nastavení">
+      <div class="group">
+        <h2>Lidé</h2>
+        <div class="rows" id="rows"></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn ghost" id="add" type="button">+ Přidat okénko</button>
+        </div>
+      </div>
+
+      <div class="group">
+        <h2>Formát</h2>
+        <div class="seg" id="ratio" role="group" aria-label="Formát">
+          <button type="button" data-v="2x1">2 : 1</button>
+          <button type="button" data-v="5x3">5 : 3</button>
+          <button type="button" data-v="3x1">3 : 1</button>
+        </div>
+      </div>
+
+      <div class="group">
+        <h2>Barva okénka</h2>
+        <div class="seg" id="fill" role="group" aria-label="Barva okénka">
+          <button type="button" data-v="white"><span class="swatch" style="background:#fff"></span>Bílá</button>
+          <button type="button" data-v="light"><span class="swatch" style="background:#EFF4FA"></span>Světle modrá</button>
+          <button type="button" data-v="blue"><span class="swatch" style="background:#214571"></span>Modrá</button>
+        </div>
+        <p class="note" id="fillNote"></p>
+      </div>
+
+      <div class="group">
+        <h2>Zarovnání textu</h2>
+        <div class="seg" id="align" role="group" aria-label="Zarovnání">
+          <button type="button" data-v="left">Vlevo</button>
+          <button type="button" data-v="center">Na střed</button>
+        </div>
+      </div>
+
+      <div class="group">
+        <h2>Velikost písma</h2>
+        <div class="range"><input type="range" id="scale" min="70" max="130" step="5" aria-label="Velikost písma"><output id="scaleOut"></output></div>
+        <p class="note">Dlouhá jména se navíc samy zmenší, aby se vešla.</p>
+      </div>
+    </section>
+
+    <section class="previews" aria-label="Náhledy">
+      <div class="bar">
+        <span class="meta" id="meta"></span>
+        <button class="btn primary" id="all" type="button">Stáhnout vše (ZIP)</button>
+      </div>
+      <div class="cards" id="cards"></div>
+      <p class="note" id="dlNote" hidden>Stahování tady není dostupné. Obrázek uložíte pravým tlačítkem myši na náhledu a volbou „Uložit obrázek jako…“.</p>
+    </section>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+const RATIOS={'2x1':[1800,900],'5x3':[1500,900],'3x1':[1800,600]};
+const FILLS={white:{bg:'#ffffff',name:'#214571',pos:'#45e7a3'},light:{bg:'#EFF4FA',name:'#214571',pos:'#45e7a3'},blue:{bg:'#214571',name:'#ffffff',pos:'#45e7a3'}};
+const DEFAULT={ratio:'2x1',fill:'white',align:'left',scale:100,people:[
+  {name:'Tomáš Alvarez',pos:'Marketing & Analýza'},
+  {name:'Lukáš Artur Vagner',pos:'Jednatel'},
+  {name:'Jméno Příjmení',pos:'Pozice'},
+  {name:'Jméno Příjmení',pos:'Pozice'},
+  {name:'Jméno Příjmení',pos:'Pozice'},
+  {name:'Jméno Příjmení',pos:'Pozice'}]};
+let S;
+try{S=JSON.parse(localStorage.getItem('ffy-okenka'))}catch(e){}
+if(!S||!Array.isArray(S.people))S=JSON.parse(JSON.stringify(DEFAULT));
+function save(){try{localStorage.setItem('ffy-okenka',JSON.stringify(S))}catch(e){}}
+
+const $=id=>document.getElementById(id);
+function slug(s){return (s||'okenko').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'okenko'}
+function fileName(p,i){return `okenko-${String(i+1).padStart(2,'0')}-${slug(p.name)}.png`}
+
+function shape(ctx,w,h,r){ // rounded top-left + bottom-right, sharp others
+  ctx.beginPath();ctx.moveTo(r,0);ctx.lineTo(w,0);ctx.lineTo(w,h-r);ctx.arcTo(w,h,w-r,h,r);ctx.lineTo(0,h);ctx.lineTo(0,r);ctx.arcTo(0,0,r,0,r);ctx.closePath();
+}
+function render(p){
+  const [w,h]=RATIOS[S.ratio],f=FILLS[S.fill],k=S.scale/100;
+  const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');
+  shape(x,w,h,120);x.fillStyle=f.bg;x.fill();
+  const pad=Math.round(Math.min(h*.2,160)),maxW=w-2*pad;
+  let ns=Math.round(h*.2*k);
+  const fit=(txt,size,wt)=>{x.font=`${wt} ${size}px "Albert Sans","Segoe UI",Arial,sans-serif`;while(size>20&&x.measureText(txt).width>maxW){size-=2;x.font=`${wt} ${size}px "Albert Sans","Segoe UI",Arial,sans-serif`}return size};
+  ns=fit(p.name||' ',ns,800);
+  let ps=fit(p.pos||' ',Math.round(ns*.6),700);
+  const gap=Math.round(ns*.22),block=ns*1.0+gap+ps*1.0,top=(h-block)/2;
+  x.textBaseline='alphabetic';x.textAlign=S.align==='center'?'center':'left';
+  const tx=S.align==='center'?w/2:pad;
+  x.fillStyle=f.name;x.font=`800 ${ns}px "Albert Sans","Segoe UI",Arial,sans-serif`;x.fillText(p.name||'',tx,top+ns*.82);
+  x.fillStyle=f.pos;x.font=`700 ${ps}px "Albert Sans","Segoe UI",Arial,sans-serif`;x.fillText(p.pos||'',tx,top+ns+gap+ps*.82);
+  return c;
+}
+
+function renderRows(){
+  $('rows').innerHTML='';
+  S.people.forEach((p,i)=>{
+    const r=document.createElement('div');r.className='row';
+    r.innerHTML=`<span class="n">${i+1}</span><div class="f"><input type="text" class="nm" id="nm${i}" aria-label="Jméno ${i+1}" placeholder="Jméno Příjmení"><input type="text" class="pos" id="pos${i}" aria-label="Pozice ${i+1}" placeholder="Pozice"></div><button class="rm" type="button" aria-label="Odebrat okénko ${i+1}">×</button>`;
+    const nm=r.querySelector('.nm'),ps=r.querySelector('.pos');nm.value=p.name;ps.value=p.pos;
+    nm.addEventListener('input',()=>{p.name=nm.value;update()});
+    ps.addEventListener('input',()=>{p.pos=ps.value;update()});
+    r.querySelector('.rm').addEventListener('click',()=>{S.people.splice(i,1);renderRows();update()});
+    $('rows').appendChild(r);
+  });
+}
+let downloads=null, native=false; // native = page opened as a local file, outside the Claude viewer
+const canSave=()=>!!downloads||native;
+function update(){
+  save();
+  const [w,h]=RATIOS[S.ratio];
+  $('meta').textContent=`${S.people.length} ${S.people.length===1?'okénko':S.people.length<5&&S.people.length>0?'okénka':'okének'} · ${w} × ${h} px · PNG`;
+  $('cards').innerHTML='';
+  S.people.forEach((p,i)=>{
+    const c=render(p),url=c.toDataURL('image/png');
+    const d=document.createElement('div');d.className='card';
+    d.innerHTML=`<div class="check"><img alt="Okénko: ${(p.name||'').replace(/"/g,'')}"></div><div class="foot"><span class="fn"></span><button class="btn ghost" type="button">Stáhnout PNG</button></div>`;
+    d.querySelector('img').src=url;d.querySelector('.fn').textContent=fileName(p,i);
+    const b=d.querySelector('button');b.hidden=!canSave();
+    b.addEventListener('click',()=>c.toBlob(bl=>saveFile(fileName(p,i),bl),'image/png'));
+    $('cards').appendChild(d);
+  });
+  $('all').disabled=!canSave()||!S.people.length;
+  $('fillNote').textContent=S.fill==='blue'?'Na modrém je jméno bílé, pozice zůstává zelená.':'Jméno modré, pozice zelená.';
+  $('scaleOut').textContent=S.scale+' %';
+  for(const [id,key] of [['ratio','ratio'],['fill','fill'],['align','align']])
+    $(id).querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===S[key])));
+}
+function toast(t){const e=document.createElement('div');e.className='toast';e.textContent=t;document.body.appendChild(e);setTimeout(()=>e.remove(),2600)}
+async function saveFile(name,data){
+  if(native){const u=URL.createObjectURL(data),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);return}
+  if(!downloads)return;
+  try{const r=await downloads.save({filename:name,data});if(r.status==='saved')toast('Uloženo: '+name)}
+  catch(e){if(e&&e.code==='declined')return;if(e&&e.code==='rate_limited'){toast('Jedno stahování už čeká na potvrzení.');return}
+    toast('Stažení se nepovedlo.');if(e&&['unavailable','not_granted','capability_disabled','capability_removed'].includes(e.code)){downloads=null;$('dlNote').hidden=false;update()}}
+}
+$('all').addEventListener('click',async()=>{
+  if(typeof JSZip==='undefined'){toast('Balíček ZIP se nenačetl, stáhněte okénka jednotlivě.');return}
+  const z=new JSZip();
+  for(const [i,p] of S.people.entries()){const bl=await new Promise(r=>render(p).toBlob(r,'image/png'));z.file(fileName(p,i),bl)}
+  saveFile('okenka-ffy.zip',await z.generateAsync({type:'blob'}));
+});
+for(const [id,key] of [['ratio','ratio'],['fill','fill'],['align','align']])
+  $(id).addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;S[key]=b.dataset.v;update()});
+$('scale').value=S.scale;$('scale').addEventListener('input',e=>{S.scale=+e.target.value;update()});
+$('add').addEventListener('click',()=>{S.people.push({name:'Jméno Příjmení',pos:'Pozice'});renderRows();update();const i=S.people.length-1;const el=$('nm'+i);if(el){el.focus();el.select()}});
+
+renderRows();update();
+document.fonts.load('800 100px "Albert Sans"').then(()=>document.fonts.load('700 100px "Albert Sans"')).then(update).catch(()=>{});
+(async()=>{for(let i=0;i<20&&!window.claude;i++)await new Promise(r=>setTimeout(r,100));
+  try{downloads=window.claude?await window.claude.use('downloads'):null}catch(e){downloads=null}
+  if(!window.claude)native=true;
+  $('dlNote').hidden=canSave();update()})();
+</script>
+
+</body></html>
