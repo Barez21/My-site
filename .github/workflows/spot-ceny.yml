@@ -1,0 +1,30 @@
+name: Stáhnout spotové ceny (OTE + ČNB)
+
+on:
+  schedule:
+    - cron: '17 13 * * *'      # denně kolem 14:17 našeho času, denní trh na zítřek už je zveřejněný
+  workflow_dispatch:            # ruční spuštění (první naplnění dat za 2 roky)
+
+jobs:
+  stahnout:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        env:
+          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+      - name: Stáhnout data
+        run: python3 .github/scripts/stahni_spot.py --dny 730 --slozka FFY-tools/data
+
+      - name: Commit
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add FFY-tools/data
+          git diff --staged --quiet && exit 0
+          git commit -m "auto: spotové ceny $(date +%Y-%m-%d)"
+          git pull --rebase origin main
+          git push

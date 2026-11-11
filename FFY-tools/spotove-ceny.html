@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spotové ceny</title>
+<meta name="description" content="Spotové ceny elektřiny a plynu z OTE za poslední dva roky. Graf s odečtem ceny v libovolné chvíli.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script>if (window.self !== window.top) document.documentElement.classList.add('embedded');</script>
+<style>
+  :root {
+    --blue:#214571; --blue-d:#18314E; --green:#45e7a3; --green-d:#1AC77F; --ink:#0a141e; --bronze:#e8af46; --bronze-d:#C88A19;
+    --bg:#eff4fa; --white:#fff; --muted:#548bc9; --line:#d0dff0; --border:#e3e8ef; --grid:#e6edf6; --band:#d0dff0;
+  }
+  * { box-sizing:border-box; }
+  html,body { margin:0; }
+  body { font-family:'Albert Sans','Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,sans-serif; background:var(--bg); color:var(--blue); line-height:1.45; }
+  .wrap { max-width:1180px; margin:0 auto; padding:32px 16px 56px; position:relative; z-index:1; }
+  .arc { position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; }
+  .brand svg { height:31px; width:auto; display:block; margin-bottom:24px; }
+  .embedded .brand { display:none; }
+  .embedded .wrap { padding-top:24px; }
+  .eyebrow { display:inline-block; background:var(--green); color:var(--ink); font-size:13px; font-weight:700; padding:3px 8px; border-radius:2px; }
+  h1 { font-size:clamp(28px,4.5vw,38px); font-weight:800; line-height:1.15; margin:12px 0 6px; }
+  .perex { font-size:16px; margin:0 0 20px; color:var(--blue); }
+  .perex small { color:var(--muted); }
+
+  /* ovládání */
+  .bar { display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; justify-content:space-between; margin-bottom:14px; }
+  .seg { display:inline-flex; background:var(--white); border:1px solid var(--border); border-radius:10px; padding:3px; gap:2px; }
+  .seg button { font:inherit; font-size:14px; font-weight:600; color:var(--blue); background:none; border:0; border-radius:7px; padding:7px 12px; cursor:pointer; white-space:nowrap; }
+  .seg button[aria-pressed="true"] { background:var(--blue); color:#fff; }
+  .seg button:focus-visible, .btn:focus-visible { outline:2px solid var(--green); outline-offset:2px; }
+  .seg.big button { font-size:15px; padding:8px 16px; }
+  .btn { font:inherit; font-size:14px; font-weight:600; color:var(--ink); background:var(--white); border:1px solid var(--border); border-radius:8px; padding:8px 12px; cursor:pointer; }
+  .btn:hover { background:var(--bg); }
+
+  /* karty */
+  .kpis { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin-bottom:14px; }
+  .kpi { background:var(--white); border:1px solid var(--border); border-radius:21px 0 21px 0; padding:14px 16px; min-width:0; }
+  .kpi.dark { background:var(--blue); border-color:var(--blue); color:#fff; }
+  .kpi .k { font-size:12px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); }
+  .kpi.dark .k { color:var(--green); }
+  .kpi .v { font-size:26px; font-weight:800; line-height:1.15; margin-top:4px; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .kpi .v small { font-size:13px; font-weight:700; margin-left:4px; }
+  .kpi .s { font-size:13px; margin-top:2px; color:var(--muted); font-variant-numeric:tabular-nums; }
+  .kpi.dark .s { color:#b1cae7; }
+  @media (max-width:820px) { .kpis { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+
+  /* graf */
+  .chart-box { background:var(--white); border:1px solid var(--border); border-radius:21px 0 21px 0; padding:14px 14px 10px; }
+  .chart-head { display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin:0 4px 8px; }
+  .chart-head .range { font-weight:700; font-variant-numeric:tabular-nums; }
+  .chart-head .mode { font-size:13px; color:var(--muted); }
+  .main { position:relative; height:400px; touch-action:pan-y; cursor:crosshair; user-select:none; -webkit-user-select:none; }
+  .main.drag { cursor:grabbing; }
+  canvas { display:block; width:100%; height:100%; }
+  .nav { position:relative; height:64px; margin-top:10px; touch-action:none; user-select:none; -webkit-user-select:none; }
+  .tip {
+    position:absolute; pointer-events:none; background:var(--ink); color:#fff; border-radius:10px 0 10px 0;
+    padding:8px 11px; font-size:13px; line-height:1.35; white-space:nowrap; z-index:2; display:none; box-shadow:0 6px 18px rgba(10,20,30,.18);
+  }
+  .tip b { font-size:17px; font-weight:800; font-variant-numeric:tabular-nums; }
+  .tip .t { color:#b1cae7; }
+  .tip .x { color:#93F1CA; font-variant-numeric:tabular-nums; }
+  .hint { font-size:13px; color:var(--muted); margin:8px 4px 0; }
+  .foot { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; font-size:13px; color:var(--muted); margin-top:16px; }
+  .msg { background:var(--white); border-left:4px solid var(--bronze); border-radius:0 0 21px 0; padding:14px 18px; margin:20px 0; }
+  @media (max-width:600px) {
+    .main { height:300px; }
+    .kpi { padding:12px 14px; }
+    .kpi .v { font-size:21px; white-space:normal; }
+    .kpi .v small { display:block; margin:0; font-size:12px; }
+    .seg button { padding:7px 9px; font-size:13px; }
+    #presets { width:100%; display:grid; grid-template-columns:repeat(3,1fr); }
+    .bar .seg { flex:1 1 auto; } .bar .seg button { flex:1; }
+    .chart-box { padding:12px 8px 8px; }
+  }
+  .chart-head > * { min-width:0; }
+  .kpi .v { overflow-wrap:anywhere; }
+</style>
+</head>
+<body>
+<svg class="arc" viewBox="0 0 210 297" preserveAspectRatio="xMaxYMid meet" aria-hidden="true">
+  <path fill="#DFE9F6" d="M210,0 H165 C120,22 98,75 104,135 C110,195 140,250 177,297 H210 Z"/>
+</svg>
+<div class="wrap">
+  <div class="brand"><svg class="brand-logo" role="img" aria-label="FREE for YOU" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 843.92 139.49">
+  <defs>
+    <style>
+      .lg-st0 {
+        fill: #214571;
+      }
+
+      .lg-st1 {
+        fill: #45e7a3;
+      }
+
+      .lg-st2 {
+        fill: #30c487;
+      }
+    </style>
+  </defs>
+  <g>
+    <path class="lg-st2" d="M88.66,38.45c2.04-2.35,4.14-4.6,6.28-6.76C65.82,2.28,29.46-8.68,10.91,7.44-9.01,24.74-.89,66.68,29.06,101.11c13.54,15.56,29.21,26.93,44.17,33.11-.95-.64-1.87-1.34-2.75-2.1-19.92-17.3-11.78-59.23,18.17-93.66"/>
+    <path class="lg-st1" d="M178.96,7.44c-18.56-16.12-54.92-5.16-84.02,24.25-2.14,2.16-4.22,4.4-6.28,6.76-29.95,34.43-38.09,76.37-18.17,93.67.88.76,1.79,1.45,2.75,2.1,7.54,3.12,14.89,4.91,21.7,5.27,6.8-.36,14.16-2.16,21.7-5.27,14.95-6.18,30.64-17.54,44.17-33.11,29.95-34.43,38.09-76.37,18.17-93.66"/>
+  </g>
+  <polygon class="lg-st0" points="222.52 106.8 238.84 106.8 238.84 75.74 266.93 75.74 266.93 62.6 238.84 62.6 238.84 46.28 276.36 46.28 276.36 32.6 222.52 32.6 222.52 106.8"/>
+  <polygon class="lg-st0" points="359.78 106.8 413.62 106.8 413.62 93.13 376.1 93.13 376.1 75.74 404.19 75.74 404.19 62.6 376.1 62.6 376.1 46.28 413.62 46.28 413.62 32.6 359.78 32.6 359.78 106.8"/>
+  <polygon class="lg-st0" points="426.24 106.8 480.08 106.8 480.08 93.13 442.56 93.13 442.56 75.74 470.65 75.74 470.65 62.6 442.56 62.6 442.56 46.28 480.08 46.28 480.08 32.6 426.24 32.6 426.24 106.8"/>
+  <path class="lg-st0" d="M303.82,46.28h15.26c3.74,0,6.52.88,8.32,2.65,1.8,1.77,2.7,4.17,2.7,7.21,0,2.05-.41,3.84-1.22,5.35-.81,1.52-2.03,2.67-3.66,3.44-1.63.78-3.71,1.17-6.25,1.17h-15.16v-19.82h0ZM332.01,77.76c3.39-1.34,6.18-3.16,8.37-5.46,2.19-2.29,3.82-4.84,4.88-7.63s1.59-5.64,1.59-8.53c0-4.24-1.01-8.14-3.02-11.71-2.02-3.57-5.02-6.43-9.01-8.59-3.99-2.15-8.99-3.23-15-3.23h-32.33v74.2h16.32v-27.03h10.51l15.67,27.03h18.23l-17.44-28.64c.41-.14.84-.25,1.23-.4"/>
+  <polygon class="lg-st0" points="679.91 32.6 662.42 65.04 644.83 32.6 626.17 32.6 654.15 81.68 654.15 106.8 670.48 106.8 670.48 81.57 698.56 32.6 679.91 32.6"/>
+  <g>
+    <path class="lg-st0" d="M751.32,82.05c-1.84,3.57-4.35,6.38-7.53,8.43-3.18,2.05-6.89,3.07-11.13,3.07s-7.86-1.02-11.08-3.07c-3.22-2.05-5.72-4.86-7.53-8.43-1.8-3.57-2.7-7.68-2.7-12.35s.9-8.89,2.7-12.45c1.8-3.57,4.31-6.36,7.53-8.37,3.21-2.01,6.91-3.02,11.08-3.02s7.95,1.01,11.13,3.02c3.18,2.01,5.69,4.81,7.53,8.37,1.84,3.57,2.76,7.72,2.76,12.45s-.92,8.78-2.76,12.35M759.59,42.41c-3.46-3.36-7.49-5.95-12.08-7.79s-9.54-2.76-14.84-2.76-10.14.92-14.73,2.76c-4.59,1.84-8.62,4.43-12.08,7.79s-6.18,7.35-8.16,11.98-2.97,9.74-2.97,15.32.99,10.69,2.97,15.32,4.7,8.62,8.16,11.98c3.46,3.36,7.49,5.95,12.08,7.79,4.59,1.84,9.5,2.76,14.73,2.76s10.24-.92,14.84-2.76c4.59-1.84,8.62-4.43,12.08-7.79,3.46-3.35,6.18-7.35,8.16-11.98s2.97-9.73,2.97-15.32-.99-10.69-2.97-15.32-4.7-8.62-8.16-11.98"/>
+    <path class="lg-st0" d="M513.82,51.04c0-2.61.67-4.5,2.01-5.67s3.43-1.54,6.25-1.11v-13.78c-5.09-.64-9.4-.32-12.93.95-3.53,1.27-6.24,3.41-8.11,6.41s-2.81,7.01-2.81,12.03v3.92h-6.04v13.67h6.04v39.32h15.58v-39.32h8.8v-13.67h-8.8v-2.76h0Z"/>
+    <path class="lg-st0" d="M827.49,32.6v46.32c0,3.18-.64,5.87-1.91,8.06-1.27,2.19-3.06,3.83-5.35,4.93-2.3,1.1-4.97,1.64-8,1.64s-5.48-.55-7.74-1.64-4.03-2.74-5.3-4.93c-1.27-2.19-1.91-4.88-1.91-8.06v-46.32h-16.43v45.05c0,6.72,1.43,12.28,4.29,16.69,2.86,4.42,6.64,7.72,11.34,9.91s9.87,3.29,15.53,3.29c4.1,0,8.07-.62,11.92-1.86s7.28-3.09,10.28-5.57c3-2.47,5.37-5.56,7.1-9.27,1.73-3.71,2.6-8.11,2.6-13.2v-45.05h-16.43,0Z"/>
+    <path class="lg-st0" d="M617.06,53.75c-2.33.46-4.42,1.29-6.25,2.49-1.84,1.2-3.43,2.72-4.77,4.56l-1.06-7h-14.1v53h15.48v-23c0-3.53.58-6.41,1.75-8.64,1.17-2.23,2.7-3.92,4.61-5.09s3.92-1.87,6.04-2.12,4.1-.09,5.93.48v-14.63c-2.76-.49-5.3-.51-7.63-.05"/>
+    <path class="lg-st0" d="M563.69,87.67c-1.1,1.94-2.47,3.41-4.13,4.4-1.66.99-3.41,1.48-5.25,1.48s-3.57-.49-5.19-1.48c-1.63-.99-2.88-2.47-3.76-4.45-.89-1.98-1.33-4.42-1.33-7.31s.46-5.42,1.38-7.37c.92-1.94,2.19-3.41,3.82-4.4,1.62-.99,3.39-1.49,5.3-1.49s3.67.5,5.3,1.49c1.62.99,2.95,2.47,3.98,4.45,1.02,1.98,1.54,4.42,1.54,7.31s-.55,5.42-1.64,7.37M568.51,56.4c-4.1-2.23-8.76-3.34-13.99-3.34s-9.79,1.11-13.89,3.34c-4.1,2.22-7.35,5.37-9.75,9.43-2.4,4.06-3.6,8.89-3.6,14.47s1.17,10.42,3.5,14.52c2.33,4.1,5.55,7.24,9.65,9.43,4.1,2.19,8.73,3.29,13.89,3.29s9.82-1.1,13.99-3.29,7.47-5.33,9.91-9.43,3.66-8.94,3.66-14.52-1.2-10.4-3.6-14.47c-2.41-4.06-5.66-7.21-9.75-9.43"/>
+  </g>
+</svg></div>
+  <span class="eyebrow">Trh</span>
+  <h1>Spotové ceny</h1>
+  <p class="perex">Ceny z krátkodobého trhu OTE za poslední dva roky. Najeďte na graf a uvidíte cenu v danou chvíli. <small id="stamp"></small></p>
+
+  <div class="bar">
+    <div class="seg big" id="komodita" role="group" aria-label="Komodita">
+      <button type="button" data-v="el" aria-pressed="true">Elektřina</button>
+      <button type="button" data-v="gas" aria-pressed="false">Plyn</button>
+    </div>
+    <div class="seg" id="mena" role="group" aria-label="Jednotka">
+      <button type="button" data-v="eur" aria-pressed="true">EUR/MWh</button>
+      <button type="button" data-v="czk" aria-pressed="false">Kč/MWh</button>
+    </div>
+  </div>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="chart-box">
+    <div class="chart-head">
+      <div><span class="range" id="rangeLbl"></span> <span class="mode" id="modeLbl"></span></div>
+      <div class="seg" id="presets" role="group" aria-label="Období">
+        <button type="button" data-d="2">2 dny</button>
+        <button type="button" data-d="7">Týden</button>
+        <button type="button" data-d="31">Měsíc</button>
+        <button type="button" data-d="92">3 měsíce</button>
+        <button type="button" data-d="366">Rok</button>
+        <button type="button" data-d="all">2 roky</button>
+      </div>
+    </div>
+    <div class="main" id="main"><canvas id="cv"></canvas><div class="tip" id="tip"></div></div>
+    <div class="nav" id="navBox"><canvas id="nv"></canvas></div>
+    <p class="hint" id="hint">Kolečkem myši graf přiblížíte, tažením posunete. Spodní pruh ukazuje celé období, výřez v něm jde posouvat i roztahovat.</p>
+  </div>
+
+  <div id="err"></div>
+  <div class="foot">
+    <span id="src"></span>
+    <button class="btn" id="csv" type="button">Stáhnout zobrazené období (CSV)</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var TZ = 'Europe/Prague', DAY = 864e5;
+  var COL = { blue:'#214571', band:'rgba(84,139,201,.18)', grid:'#e6edf6', axis:'#548bc9', green:'#45e7a3', greenD:'#1AC77F', bronze:'#e8af46', neg:'rgba(232,175,70,.28)', ink:'#0a141e', navBand:'rgba(69,231,163,.22)' };
+  var isTouch = matchMedia('(pointer:coarse)').matches;
+  if (isTouch) $('hint').textContent = 'Posunem prstu po grafu odečtete cenu. Období vyberete tlačítky nebo posunutím výřezu ve spodním pruhu.';
+
+  /* ---------- čas v pražském pásmu ---------- */
+  var offFmt = new Intl.DateTimeFormat('en-US', { timeZone: TZ, timeZoneName: 'shortOffset' });
+  function offsetMin(ms) { var p = offFmt.formatToParts(new Date(ms)).find(function (x) { return x.type === 'timeZoneName'; }).value; var m = p.match(/GMT([+-]\d+)(?::(\d+))?/); return m ? (+m[1]) * 60 + (m[1][0] === '-' ? -1 : 1) * (+(m[2] || 0)) : 0; }
+  function midnight(key) { var y = +key.slice(0, 4), mo = +key.slice(5, 7) - 1, d = +key.slice(8, 10); var u = Date.UTC(y, mo, d); return u - offsetMin(u - 2 * 36e5) * 6e4; }
+  var fDay = new Intl.DateTimeFormat('cs-CZ', { timeZone: TZ, weekday: 'short', day: 'numeric', month: 'numeric', year: 'numeric' });
+  var fDate = new Intl.DateTimeFormat('cs-CZ', { timeZone: TZ, day: 'numeric', month: 'numeric', year: 'numeric' });
+  var fTime = new Intl.DateTimeFormat('cs-CZ', { timeZone: TZ, hour: '2-digit', minute: '2-digit' });
+  var fMon = new Intl.DateTimeFormat('cs-CZ', { timeZone: TZ, month: 'short', year: 'numeric' });
+  var fDM = new Intl.DateTimeFormat('cs-CZ', { timeZone: TZ, day: 'numeric', month: 'numeric' });
+  function nf(v, d) { return v == null || !isFinite(v) ? '–' : v.toLocaleString('cs-CZ', { minimumFractionDigits: d, maximumFractionDigits: d }); }
+
+  /* ---------- stav ---------- */
+  var RAW = { el: null, gas: null, kurz: null };
+  var st = { kom: 'el', cur: 'eur', x0: 0, x1: 0 };
+  try { var sv = JSON.parse(localStorage.getItem('ffy-spot') || '{}'); if (sv.kom) st.kom = sv.kom; if (sv.cur) st.cur = sv.cur; } catch (e) {}
+  var S = null;   // připravené řady pro zvolenou komoditu a měnu
+
+  function rateFor(key, rates, keys) {
+    if (rates[key]) return rates[key];
+    var lo = 0, hi = keys.length - 1, best = null;           // poslední známý kurz ke dni (víkendy, svátky)
+    while (lo <= hi) { var m = (lo + hi) >> 1; if (keys[m] <= key) { best = keys[m]; lo = m + 1; } else hi = m - 1; }
+    return best ? rates[best] : (keys.length ? rates[keys[0]] : 1);
+  }
+
+  function build() {
+    var kom = st.kom, czk = st.cur === 'czk';
+    var src = RAW[kom]; if (!src) return null;
+    var rates = (RAW.kurz && RAW.kurz.dny) || {}, rk = Object.keys(rates).sort();
+    var days = Object.keys(src.dny).sort();
+    var t = [], v = [], dur = [], dt = [], dAvg = [], dMin = [], dMax = [], dKey = [];
+    days.forEach(function (key) {
+      var m0 = midnight(key), k = czk ? rateFor(key, rates, rk) : 1, val = src.dny[key];
+      if (kom === 'gas') {
+        var g = val * k; t.push(m0); v.push(g); dur.push(DAY); dt.push(m0); dAvg.push(g); dMin.push(g); dMax.push(g); dKey.push(key);
+      } else {
+        var r = val.r * 6e4, sum = 0, n = 0, mn = Infinity, mx = -Infinity;
+        val.p.forEach(function (x, i) {
+          if (x == null) return; var y = x * k;
+          t.push(m0 + i * r); v.push(y); dur.push(r); sum += y; n++; if (y < mn) mn = y; if (y > mx) mx = y;
+        });
+        if (n) { dt.push(m0); dAvg.push(sum / n); dMin.push(mn); dMax.push(mx); dKey.push(key); }
+      }
+    });
+    var end = t.length ? t[t.length - 1] + dur[dur.length - 1] : Date.now();
+    return { t: t, v: v, dur: dur, dt: dt, dAvg: dAvg, dMin: dMin, dMax: dMax, dKey: dKey, start: t[0] || end - DAY, end: end, unit: czk ? 'Kč/MWh' : 'EUR/MWh', dec: czk ? 0 : 2, kom: kom };
+  }
+
+  function lowerIdx(arr, x) { var lo = 0, hi = arr.length; while (lo < hi) { var m = (lo + hi) >> 1; if (arr[m] < x) lo = m + 1; else hi = m; } return lo; }
+
+  /* ---------- canvas ---------- */
+  var cv = $('cv'), ctx = cv.getContext('2d'), nv = $('nv'), nctx = nv.getContext('2d'), main = $('main'), tip = $('tip');
+  var W = 0, H = 0, NW = 0, NH = 0, DPR = 1;
+  var PAD = { l: 58, r: 14, t: 12, b: 28 };
+  function size() {
+    DPR = Math.min(2, window.devicePixelRatio || 1);
+    W = main.clientWidth; H = main.clientHeight; NW = $('navBox').clientWidth; NH = $('navBox').clientHeight;
+    PAD.l = W < 500 ? 46 : 58;
+    [[cv, W, H], [nv, NW, NH]].forEach(function (a) { a[0].width = Math.round(a[1] * DPR); a[0].height = Math.round(a[2] * DPR); });
+  }
+  var hover = null;   // {x, idx, daily}
+
+  function xs(t) { return PAD.l + (t - st.x0) / (st.x1 - st.x0) * (W - PAD.l - PAD.r); }
+  function xt(px) { return st.x0 + (px - PAD.l) / (W - PAD.l - PAD.r) * (st.x1 - st.x0); }
+  function niceStep(span, n) { var raw = span / n, p = Math.pow(10, Math.floor(Math.log10(raw))), m = raw / p; return (m <= 1 ? 1 : m <= 2 ? 2 : m <= 2.5 ? 2.5 : m <= 5 ? 5 : 10) * p; }
+
+  function dailyMode() { return S.kom === 'gas' || (st.x1 - st.x0) > 21 * DAY; }
+
+  function draw() {
+    if (!S) return;
+    var c = ctx; c.setTransform(DPR, 0, 0, DPR, 0, 0); c.clearRect(0, 0, W, H);
+    var daily = dailyMode();
+    // viditelná data
+    var i0, i1, lo = Infinity, hi = -Infinity;
+    if (daily) {
+      i0 = Math.max(0, lowerIdx(S.dt, st.x0 - DAY)); i1 = Math.min(S.dt.length, lowerIdx(S.dt, st.x1) + 1);
+      for (var i = i0; i < i1; i++) { var a = S.kom === 'gas' ? S.dAvg[i] : S.dMin[i], b = S.kom === 'gas' ? S.dAvg[i] : S.dMax[i]; if (a < lo) lo = a; if (b > hi) hi = b; }
+    } else {
+      i0 = Math.max(0, lowerIdx(S.t, st.x0) - 1); i1 = Math.min(S.t.length, lowerIdx(S.t, st.x1) + 1);
+      for (var j = i0; j < i1; j++) { if (S.v[j] < lo) lo = S.v[j]; if (S.v[j] > hi) hi = S.v[j]; }
+    }
+    if (!isFinite(lo)) { lo = 0; hi = 100; }
+    if (lo > 0 && lo < hi * 0.35) lo = 0;
+    var padY = (hi - lo) * 0.08 || 5; lo -= padY; hi += padY;
+    var ys = function (v) { return PAD.t + (hi - v) / (hi - lo) * (H - PAD.t - PAD.b); };
+    S._ys = ys;
+
+    // mřížka Y
+    var step = niceStep(hi - lo, H < 340 ? 4 : 6);
+    c.font = '12px "Albert Sans", system-ui, sans-serif'; c.textBaseline = 'middle'; c.textAlign = 'right';
+    for (var gv = Math.ceil(lo / step) * step; gv <= hi; gv += step) {
+      var y = Math.round(ys(gv)) + .5;
+      c.strokeStyle = Math.abs(gv) < step / 1e6 ? '#b1cae7' : COL.grid; c.lineWidth = 1;
+      c.beginPath(); c.moveTo(PAD.l, y); c.lineTo(W - PAD.r, y); c.stroke();
+      c.fillStyle = COL.axis; c.fillText(nf(Math.abs(gv) < step / 1e6 ? 0 : gv, step < 1 ? 1 : 0), PAD.l - 8, y);
+    }
+    // osa X
+    drawXAxis(c);
+
+    c.save(); c.beginPath(); c.rect(PAD.l, PAD.t, W - PAD.l - PAD.r, H - PAD.t - PAD.b); c.clip();
+    var y0 = ys(0);
+    if (daily) {
+      if (S.kom !== 'gas') {   // pásmo min–max dne
+        c.fillStyle = COL.band; c.beginPath();
+        for (var k = i0; k < i1; k++) { var x = xs(S.dt[k] + DAY / 2); k === i0 ? c.moveTo(x, ys(S.dMax[k])) : c.lineTo(x, ys(S.dMax[k])); }
+        for (var k2 = i1 - 1; k2 >= i0; k2--) c.lineTo(xs(S.dt[k2] + DAY / 2), ys(S.dMin[k2]));
+        c.closePath(); c.fill();
+      }
+      c.strokeStyle = COL.blue; c.lineWidth = 2; c.lineJoin = 'round'; c.beginPath();
+      for (var m = i0; m < i1; m++) { var xx = xs(S.dt[m] + DAY / 2), yy = ys(S.dAvg[m]); m === i0 ? c.moveTo(xx, yy) : c.lineTo(xx, yy); }
+      c.stroke();
+    } else {
+      // záporné ceny zvýraznit
+      c.fillStyle = COL.neg;
+      for (var n = i0; n < i1; n++) if (S.v[n] < 0) { var xa = xs(S.t[n]), xb = xs(S.t[n] + S.dur[n]); c.fillRect(xa, y0, xb - xa, ys(S.v[n]) - y0); }
+      c.strokeStyle = COL.blue; c.lineWidth = (st.x1 - st.x0) < 3 * DAY ? 2 : 1.5; c.lineJoin = 'miter'; c.beginPath();
+      for (var p = i0; p < i1; p++) {
+        var xa2 = xs(S.t[p]), xb2 = xs(S.t[p] + S.dur[p]), yv = ys(S.v[p]);
+        if (p === i0) c.moveTo(xa2, yv); else c.lineTo(xa2, yv);
+        c.lineTo(xb2, yv);
+      }
+      c.stroke();
+    }
+    // čára „teď“
+    var now = Date.now();
+    if (now > st.x0 && now < st.x1) { var xn = Math.round(xs(now)) + .5; c.strokeStyle = COL.bronze; c.setLineDash([4, 4]); c.lineWidth = 1.5; c.beginPath(); c.moveTo(xn, PAD.t); c.lineTo(xn, H - PAD.b); c.stroke(); c.setLineDash([]); }
+    c.restore();
+
+    // kurzor
+    if (hover) drawHover(c, daily);
+    $('modeLbl').textContent = daily ? (S.kom === 'gas' ? '· denní index' : '· denní průměr, pásmo = min–max dne') : '· ' + (S.dur[Math.max(0, i0)] === 9e5 ? 'čtvrthodiny' : 'hodiny');
+  }
+
+  function drawXAxis(c) {
+    var span = st.x1 - st.x0, y = H - PAD.b + 16, plotW = W - PAD.l - PAD.r, maxTicks = Math.max(3, Math.floor(plotW / 62));
+    c.textAlign = 'center'; c.fillStyle = COL.axis; c.font = '12px "Albert Sans", system-ui, sans-serif';
+    var ticks = [];
+    if (span <= 2.5 * DAY) {          // hodiny
+      var stepH = [1, 2, 3, 4, 6, 12, 24].find(function (s) { return span / (s * 36e5) <= maxTicks; }) || 24;
+      var d0 = midnight(dayKey(st.x0 - DAY));
+      for (var t = d0; t < st.x1; t += 36e5) { var h = +fTime.format(t).slice(0, 2); if (h % stepH === 0 && t >= st.x0) ticks.push([t, h === 0 ? fDM.format(t) : fTime.format(t)]); }
+    } else if (span <= 70 * DAY) {    // dny
+      var stepD = [1, 2, 3, 5, 7, 14].find(function (s) { return span / (s * DAY) <= maxTicks; }) || 14;
+      var k = dayKey(st.x0), cnt = 0;
+      for (var tt = midnight(k); tt < st.x1; tt = midnight(dayKey(tt + DAY * 1.5))) { if (tt >= st.x0 && cnt++ % stepD === 0) ticks.push([tt, fDM.format(tt)]); }
+    } else {                          // měsíce
+      var stepM = [1, 2, 3, 4, 6, 12].find(function (s) { return span / (s * 30.4 * DAY) <= maxTicks; }) || 12;
+      var dd = new Date(st.x0), yy = +dayKey(st.x0).slice(0, 4), mm = +dayKey(st.x0).slice(5, 7);
+      for (var q = 0; q < 40; q++) {
+        var key = yy + '-' + String(mm).padStart(2, '0') + '-01', tm = midnight(key);
+        if (tm > st.x1) break;
+        if (tm >= st.x0 && (mm - 1) % stepM === 0) ticks.push([tm, mm === 1 ? String(yy) : fMon.format(tm).replace(/\s\d{4}$/, '')]);
+        mm++; if (mm > 12) { mm = 1; yy++; }
+      }
+    }
+    ticks.forEach(function (tk) {
+      var x = xs(tk[0]); if (x < PAD.l + 10 || x > W - PAD.r - 10) return;
+      c.strokeStyle = COL.grid; c.beginPath(); c.moveTo(Math.round(x) + .5, PAD.t); c.lineTo(Math.round(x) + .5, H - PAD.b); c.stroke();
+      c.fillText(tk[1], x, y);
+    });
+  }
+  var fKey = new Intl.DateTimeFormat('en-CA', { timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit' });
+  function dayKey(ms) { return fKey.format(new Date(ms)); }
+
+  function drawHover(c, daily) {
+    var ys = S._ys, x, y, html;
+    if (daily) {
+      var i = hover.idx; if (i < 0 || i >= S.dt.length) return;
+      x = xs(S.dt[i] + DAY / 2); y = ys(S.dAvg[i]);
+      html = '<span class="t">' + fDay.format(S.dt[i]) + '</span><br><b>' + nf(S.dAvg[i], S.dec) + '</b> ' + S.unit +
+        (S.kom === 'gas' ? '' : '<br><span class="x">min ' + nf(S.dMin[i], S.dec) + ' · max ' + nf(S.dMax[i], S.dec) + '</span>');
+    } else {
+      var j = hover.idx; if (j < 0 || j >= S.t.length) return;
+      x = xs(S.t[j] + S.dur[j] / 2); y = ys(S.v[j]);
+      var di = lowerIdx(S.dt, S.t[j] + 1) - 1;
+      html = '<span class="t">' + fDay.format(S.t[j]) + ' · ' + fTime.format(S.t[j]) + '–' + fTime.format(S.t[j] + S.dur[j]) + '</span><br><b>' + nf(S.v[j], S.dec) + '</b> ' + S.unit +
+        (di >= 0 ? '<br><span class="x">průměr dne ' + nf(S.dAvg[di], S.dec) + '</span>' : '');
+    }
+    c.strokeStyle = 'rgba(33,69,113,.45)'; c.lineWidth = 1; c.beginPath(); c.moveTo(Math.round(x) + .5, PAD.t); c.lineTo(Math.round(x) + .5, H - PAD.b); c.stroke();
+    c.fillStyle = COL.green; c.strokeStyle = COL.blue; c.lineWidth = 2; c.beginPath(); c.arc(x, y, 5, 0, Math.PI * 2); c.fill(); c.stroke();
+    tip.innerHTML = html; tip.style.display = 'block';
+    var tw = tip.offsetWidth, th = tip.offsetHeight, tx = x + 14, ty = Math.max(4, Math.min(H - th - 4, y - th - 12));
+    if (tx + tw > W - 4) tx = x - tw - 14;
+    if (hover.touch) { ty = 2; tx = Math.max(4, Math.min(W - tw - 4, x - tw / 2)); }
+    tip.style.left = tx + 'px'; tip.style.top = ty + 'px';
+  }
+
+  /* ---------- navigátor ---------- */
+  var NP = { l: 0, r: 0 };
+  function nx(t) { return NP.l + (t - S.start) / (S.end - S.start) * (NW - NP.l - NP.r); }
+  function ntx(px) { return S.start + (px - NP.l) / (NW - NP.l - NP.r) * (S.end - S.start); }
+  function drawNav() {
+    if (!S) return;
+    var c = nctx; c.setTransform(DPR, 0, 0, DPR, 0, 0); c.clearRect(0, 0, NW, NH);
+    var lo = Math.min.apply(null, S.dAvg), hi = Math.max.apply(null, S.dAvg); if (hi === lo) hi = lo + 1;
+    var ys = function (v) { return 4 + (hi - v) / (hi - lo) * (NH - 8); };
+    c.fillStyle = '#f4f7fb'; c.fillRect(0, 0, NW, NH);
+    c.strokeStyle = '#92B5DD'; c.lineWidth = 1; c.beginPath();
+    S.dt.forEach(function (t, i) { var x = nx(t + DAY / 2), y = ys(S.dAvg[i]); i ? c.lineTo(x, y) : c.moveTo(x, y); }); c.stroke();
+    var a = nx(st.x0), b = nx(st.x1);
+    c.fillStyle = 'rgba(239,244,250,.75)'; c.fillRect(0, 0, a, NH); c.fillRect(b, 0, NW - b, NH);
+    c.fillStyle = COL.navBand; c.fillRect(a, 0, b - a, NH);
+    if (b - a < 10) { var mid = (a + b) / 2; a = Math.max(0, mid - 5); b = Math.min(NW, mid + 5); }
+    c.strokeStyle = COL.greenD; c.lineWidth = 2; c.strokeRect(a + 1, 1, Math.max(2, b - a - 2), NH - 2);
+    c.fillStyle = COL.greenD; [a, b].forEach(function (x) { c.fillRect(x - 3, NH / 2 - 10, 6, 20); });
+  }
+
+  /* ---------- interakce ---------- */
+  function clamp() {
+    var span = Math.min(Math.max(st.x1 - st.x0, 6 * 36e5), S.end - S.start);
+    if (st.x0 < S.start) { st.x0 = S.start; st.x1 = st.x0 + span; }
+    if (st.x1 > S.end) { st.x1 = S.end; st.x0 = st.x1 - span; }
+    if (st.x1 - st.x0 !== span) st.x1 = st.x0 + span;
+  }
+  var raf = 0;
+  function redraw() { if (raf) return; raf = requestAnimationFrame(function () { raf = 0; clamp(); draw(); drawNav(); kpis(); label(); syncPresets(); }); }
+
+  function setRange(days) {
+    if (days === 'all') { st.x0 = S.start; st.x1 = S.end; }
+    else {
+      var endT = S.end, now = Date.now();
+      if (S.kom === 'el' && endT > now) endT = Math.min(S.end, midnight(dayKey(now + DAY)) + DAY);   // včetně zítřka, pokud je
+      st.x1 = endT; st.x0 = endT - days * DAY;
+    }
+    hover = null; tip.style.display = 'none'; redraw();
+  }
+  function syncPresets() {
+    var span = (st.x1 - st.x0) / DAY;
+    [].forEach.call($('presets').querySelectorAll('button'), function (b) {
+      var d = b.dataset.d, on = d === 'all' ? Math.abs(st.x1 - st.x0 - (S.end - S.start)) < DAY : Math.abs(span - +d) < 0.01 && Math.abs(st.x1 - S.end) < 2 * DAY;
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+  $('presets').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) setRange(b.dataset.d === 'all' ? 'all' : +b.dataset.d); });
+
+  function pick(px) {
+    var t = xt(px);
+    if (dailyMode()) { var i = lowerIdx(S.dt, t + 1) - 1; return { idx: Math.max(0, Math.min(S.dt.length - 1, i)) }; }
+    var j = lowerIdx(S.t, t + 1) - 1; return { idx: Math.max(0, Math.min(S.t.length - 1, j)) };
+  }
+  function localX(e) { var r = main.getBoundingClientRect(); return (e.touches ? e.touches[0].clientX : e.clientX) - r.left; }
+
+  // myš: najetí = odečet, tažení = posun, kolečko = zoom
+  var drag = null;
+  main.addEventListener('pointerdown', function (e) {
+    if (e.pointerType === 'touch') return;
+    drag = { x: e.clientX, x0: st.x0, x1: st.x1, moved: false }; main.setPointerCapture(e.pointerId);
+  });
+  main.addEventListener('pointermove', function (e) {
+    if (e.pointerType === 'touch') return;
+    var px = localX(e);
+    if (drag) {
+      var dx = e.clientX - drag.x; if (Math.abs(dx) > 3) { drag.moved = true; main.classList.add('drag'); }
+      if (drag.moved) { var dt = dx / (W - PAD.l - PAD.r) * (drag.x1 - drag.x0); st.x0 = drag.x0 - dt; st.x1 = drag.x1 - dt; hover = null; tip.style.display = 'none'; redraw(); return; }
+    }
+    if (px < PAD.l || px > W - PAD.r) { hover = null; tip.style.display = 'none'; redraw(); return; }
+    hover = pick(px); redraw();
+  });
+  main.addEventListener('pointerup', function () { drag = null; main.classList.remove('drag'); });
+  main.addEventListener('pointerleave', function (e) { if (e.pointerType === 'touch') return; if (!drag) { hover = null; tip.style.display = 'none'; redraw(); } });
+  main.addEventListener('wheel', function (e) {
+    e.preventDefault();
+    var px = localX(e), tc = xt(px), f = Math.exp((e.deltaY || e.deltaX) * 0.0015);
+    st.x0 = tc - (tc - st.x0) * f; st.x1 = tc + (st.x1 - tc) * f;
+    if (st.x1 - st.x0 < 6 * 36e5) { st.x0 = tc - 3 * 36e5; st.x1 = tc + 3 * 36e5; }
+    hover = pick(px); redraw();
+  }, { passive: false });
+  // dotyk: posun prstem = odečet (svislý posun stránky zůstává)
+  main.addEventListener('touchstart', function (e) { hover = pick(localX(e)); hover.touch = true; redraw(); }, { passive: true });
+  main.addEventListener('touchmove', function (e) { hover = pick(localX(e)); hover.touch = true; redraw(); }, { passive: true });
+  // klávesnice
+  main.tabIndex = 0;
+  main.addEventListener('keydown', function (e) {
+    var span = st.x1 - st.x0, k = e.key;
+    if (k === 'ArrowLeft' || k === 'ArrowRight') { var d = (k === 'ArrowLeft' ? -1 : 1) * span * 0.15; st.x0 += d; st.x1 += d; e.preventDefault(); redraw(); }
+    if (k === '+' || k === '=' || k === '-') { var c = (st.x0 + st.x1) / 2, f = k === '-' ? 1.5 : 1 / 1.5; st.x0 = c - span / 2 * f; st.x1 = c + span / 2 * f; redraw(); }
+  });
+
+  // navigátor
+  var nd = null, navBox = $('navBox');
+  navBox.addEventListener('pointerdown', function (e) {
+    var r = navBox.getBoundingClientRect(), px = e.clientX - r.left, a = nx(st.x0), b = nx(st.x1), hit = e.pointerType === 'touch' ? 14 : 8;
+    var mode = Math.abs(px - a) < hit ? 'l' : Math.abs(px - b) < hit ? 'r' : (px > a && px < b) ? 'm' : 'jump';
+    if (mode === 'jump') { var span = st.x1 - st.x0, c = ntx(px); st.x0 = c - span / 2; st.x1 = c + span / 2; mode = 'm'; redraw(); }
+    nd = { mode: mode, px: px, x0: st.x0, x1: st.x1 }; navBox.setPointerCapture(e.pointerId); e.preventDefault();
+  });
+  navBox.addEventListener('pointermove', function (e) {
+    var r = navBox.getBoundingClientRect(), px = e.clientX - r.left;
+    if (!nd) { var a = nx(st.x0), b = nx(st.x1); navBox.style.cursor = (Math.abs(px - a) < 8 || Math.abs(px - b) < 8) ? 'ew-resize' : (px > a && px < b ? 'grab' : 'pointer'); return; }
+    var dt = (px - nd.px) / (NW - NP.l - NP.r) * (S.end - S.start);
+    if (nd.mode === 'm') { st.x0 = nd.x0 + dt; st.x1 = nd.x1 + dt; }
+    else if (nd.mode === 'l') st.x0 = Math.min(nd.x0 + dt, st.x1 - 6 * 36e5);
+    else st.x1 = Math.max(nd.x1 + dt, st.x0 + 6 * 36e5);
+    hover = null; tip.style.display = 'none'; redraw();
+  });
+  navBox.addEventListener('pointerup', function () { nd = null; });
+  navBox.addEventListener('pointercancel', function () { nd = null; });
+
+  /* ---------- karty a popisky ---------- */
+  function kpis() {
+    var html = '', d = S.dec, u = S.unit;
+    // poslední / zítřek
+    var lastI = S.dt.length - 1, todayKey = dayKey(Date.now()), ti = S.dKey.indexOf(todayKey), tomI = S.dKey.indexOf(dayKey(Date.now() + DAY));
+    if (S.kom === 'el') {
+      var nowI = lowerIdx(S.t, Date.now() + 1) - 1, nowOk = nowI >= 0 && S.t[nowI] + S.dur[nowI] > Date.now();
+      html += card(true, 'Právě teď', nowOk ? S.v[nowI] : null, nowOk ? fTime.format(S.t[nowI]) + '–' + fTime.format(S.t[nowI] + S.dur[nowI]) : 'data pro dnešek chybí');
+      html += card(false, 'Zítra průměr', tomI >= 0 ? S.dAvg[tomI] : null, tomI >= 0 ? 'min ' + nf(S.dMin[tomI], d) + ' · max ' + nf(S.dMax[tomI], d) : 'zveřejní se odpoledne');
+    } else {
+      html += card(true, 'Poslední index', S.dAvg[lastI], fDay.format(S.dt[lastI]));
+      var prev = S.dAvg[Math.max(0, lastI - 7)];
+      html += card(false, 'Změna za týden', S.dAvg[lastI] - prev, (S.dAvg[lastI] >= prev ? '▲ ' : '▼ ') + nf((S.dAvg[lastI] / prev - 1) * 100, 1) + ' %', true);
+    }
+    // zobrazené období
+    var sum = 0, n = 0, mn = Infinity, mnT = 0, mx = -Infinity, mxT = 0, neg = 0, negDur = 0;
+    if (S.kom === 'el') {
+      var a = lowerIdx(S.t, st.x0), b = lowerIdx(S.t, st.x1);
+      for (var i = a; i < b; i++) { var v = S.v[i]; sum += v * S.dur[i]; n += S.dur[i]; if (v < mn) { mn = v; mnT = S.t[i]; } if (v > mx) { mx = v; mxT = S.t[i]; } if (v < 0) { neg++; negDur += S.dur[i]; } }
+      html += card(false, 'Průměr období', n ? sum / n : null, n ? 'záporná cena ' + nf(negDur / 36e5, 0) + ' h' : '');
+      html += card(false, 'Min / max období', null, '', false, n ? nf(mn, d) + ' / ' + nf(mx, d) : '–', n ? 'min ' + fDM.format(mnT) + ' ' + fTime.format(mnT) + ' · max ' + fDM.format(mxT) + ' ' + fTime.format(mxT) : '');
+    } else {
+      var a2 = lowerIdx(S.dt, st.x0), b2 = lowerIdx(S.dt, st.x1);
+      for (var j = a2; j < b2; j++) { var g = S.dAvg[j]; sum += g; n++; if (g < mn) { mn = g; mnT = S.dt[j]; } if (g > mx) { mx = g; mxT = S.dt[j]; } }
+      html += card(false, 'Průměr období', n ? sum / n : null, n + ' dní');
+      html += card(false, 'Min / max období', null, '', false, n ? nf(mn, d) + ' / ' + nf(mx, d) : '–', n ? fDM.format(mnT) + ' · ' + fDM.format(mxT) : '');
+    }
+    $('kpis').innerHTML = html;
+    function card(dark, k, v, s, sign, raw, s2) {
+      var val = raw != null ? raw : (v == null || !isFinite(v) ? '–' : (sign && v > 0 ? '+' : '') + nf(v, d));
+      return '<div class="kpi' + (dark ? ' dark' : '') + '"><div class="k">' + k + '</div><div class="v">' + val + '<small>' + u + '</small></div><div class="s">' + (s2 != null ? s2 : s) + '</div></div>';
+    }
+  }
+  function label() {
+    var a = st.x0, b = st.x1 - 1;
+    $('rangeLbl').textContent = (st.x1 - st.x0) <= 1.5 * DAY ? fDay.format(a) + ' ' + fTime.format(a) + ' – ' + fTime.format(b) : fDate.format(a) + ' – ' + fDate.format(b);
+  }
+
+  /* ---------- přepínače ---------- */
+  function seg(id, key) {
+    var el = $(id);
+    [].forEach.call(el.querySelectorAll('button'), function (b) { b.setAttribute('aria-pressed', b.dataset.v === st[key] ? 'true' : 'false'); });
+    el.onclick = function (e) {
+      var b = e.target.closest('button'); if (!b || st[key] === b.dataset.v) return;
+      var span = st.x1 - st.x0, endWas = st.x1;
+      st[key] = b.dataset.v; seg(id, key);
+      try { localStorage.setItem('ffy-spot', JSON.stringify({ kom: st.kom, cur: st.cur })); } catch (err) {}
+      S = build();
+      if (key === 'kom') setRange(st.kom === 'gas' ? 366 : 31); else redraw();
+    };
+  }
+
+  /* ---------- CSV ---------- */
+  $('csv').addEventListener('click', function () {
+    var rows = [['cas_od', 'cas_do', 'cena_' + (st.cur === 'czk' ? 'kc_mwh' : 'eur_mwh')]];
+    var iso = function (t) { var d = new Date(t), o = offsetMin(t), l = new Date(t + o * 6e4); return l.toISOString().slice(0, 16).replace('T', ' '); };
+    if (S.kom === 'gas') { for (var i = lowerIdx(S.dt, st.x0); i < lowerIdx(S.dt, st.x1); i++) rows.push([S.dKey[i], S.dKey[i], S.dAvg[i].toFixed(2)]); }
+    else { for (var j = lowerIdx(S.t, st.x0); j < lowerIdx(S.t, st.x1); j++) rows.push([iso(S.t[j]), iso(S.t[j] + S.dur[j]), S.v[j].toFixed(2)]); }
+    var blob = new Blob(['﻿' + rows.map(function (r) { return r.join(';'); }).join('\n')], { type: 'text/csv;charset=utf-8' });
+    var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'spot-' + (S.kom === 'gas' ? 'plyn' : 'elektrina') + '-' + dayKey(st.x0) + '_' + dayKey(st.x1 - 1) + '.csv';
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(a.href); }, 3000);
+  });
+
+  /* ---------- start ---------- */
+  function load(f) { return fetch('data/' + f, { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(f + ': ' + r.status); return r.json(); }); }
+  Promise.all([load('spot-elektrina.json'), load('spot-plyn.json'), load('kurz-eur.json').catch(function () { return null; })]).then(function (res) {
+    RAW.el = res[0]; RAW.gas = res[1]; RAW.kurz = res[2];
+    if (!RAW.kurz) { $('mena').style.display = 'none'; st.cur = 'eur'; }
+    seg('komodita', 'kom'); seg('mena', 'cur');
+    var upd = RAW.el.aktualizace ? new Date(RAW.el.aktualizace) : null;
+    $('stamp').textContent = upd ? 'Aktualizováno ' + fDate.format(upd) + ' ' + fTime.format(upd) + '.' : '';
+    $('src').textContent = 'Zdroj: OTE, a.s. (denní trh s elektřinou, vnitrodenní trh s plynem), kurz EUR/CZK: ČNB.';
+    size(); S = build(); setRange(st.kom === 'gas' ? 366 : 31);
+  }).catch(function (e) {
+    $('err').innerHTML = '<div class="msg">Data se nepodařilo načíst (' + e.message + '). Zkontrolujte, že ve složce <b>data</b> jsou soubory ze stahovacího skriptu.</div>';
+  });
+  var rt = 0; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { size(); redraw(); }, 80); });
+  if (document.fonts) document.fonts.ready.then(function () { if (S) redraw(); });
+})();
+</script>
+</body>
+</html>
