@@ -15,6 +15,7 @@
     --bg:#eff4fa; --white:#fff; --muted:#548bc9; --line:#d0dff0; --border:#e3e8ef; --grid:#e6edf6; --band:#d0dff0;
   }
   * { box-sizing:border-box; }
+  [hidden] { display:none !important; }
   html,body { margin:0; }
   body { font-family:'Albert Sans','Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,sans-serif; background:var(--bg); color:var(--blue); line-height:1.45; }
   .wrap { max-width:1180px; margin:0 auto; padding:32px 16px 56px; position:relative; z-index:1; }
@@ -541,7 +542,12 @@
     $('src').textContent = 'Zdroj: OTE, a.s. (denní trh s elektřinou, vnitrodenní trh s plynem), kurz EUR/CZK: ČNB.';
     size(); S = build(); setRange(st.kom === 'gas' ? 366 : 31);
   }).catch(function (e) {
-    $('err').innerHTML = '<div class="msg">Data se nepodařilo načíst (' + e.message + '). Zkontrolujte, že ve složce <b>data</b> jsou soubory ze stahovacího skriptu.</div>';
+    var missing = /404/.test(e.message);
+    $('kpis').hidden = true; $('navBox').hidden = true; $('hint').hidden = true; $('csv').hidden = true; $('presets').hidden = true;
+    $('main').style.height = 'auto'; $('main').style.cursor = 'default';
+    $('main').innerHTML = '<div class="msg" style="margin:8px 0">' + (missing
+      ? '<b>Data zatím nejsou stažená.</b><br>Spotové ceny stahuje GitHub Action „Stáhnout spotové ceny (OTE + ČNB)“. V repozitáři otevřete záložku <b>Actions</b>, vyberte ji a klikněte na <b>Run workflow</b>. První stažení trvá 5–10 minut, potom se data aktualizují sama každý den odpoledne.'
+      : '<b>Data se nepodařilo načíst.</b><br>' + e.message + '. Zkuste stránku obnovit.') + '</div>';
   });
   var rt = 0; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { size(); redraw(); }, 80); });
   if (document.fonts) document.fonts.ready.then(function () { if (S) redraw(); });
