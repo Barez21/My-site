@@ -20,6 +20,8 @@ může mít víc produktů (např. varianty s fixací na 12, 24 a 36 měsíců).
 
 Celé stažení: ~50 dotazů na ceny + jeden dotaz na detail každého produktu (detaily se obnovují
 jednou za DETAIL_DNU dní nebo když se produkt objeví poprvé), běžně 1–3 minuty.
+POZOR: detail produktu srovnávač vydá jen hned po vyhledávání, které produkt vrátilo (jinak HTTP 204),
+proto se detaily stahují průběžně po každém vyhledávání.
 
 Spuštění:  python3 stahni_ceniky.py [--slozka FFY-tools/data] [--vsechny-detaily]
 Jen standardní knihovna Pythonu.
@@ -81,6 +83,9 @@ def produkty(sid, **kw):
 
 def detail(sid, pid):
     _, txt = http(f"{BASE}/api/v1/products/{urllib.parse.quote(pid)}?userSessionId={sid}")
+    if not txt.strip():
+        # HTTP 204: server vydá detail jen pro produkty z posledního vyhledávání v této session
+        raise ValueError("prázdná odpověď (produkt není v posledním vyhledávání)")
     d = json.loads(txt)
     info = d.get("productTabInfo") or {}
     par = {}
@@ -121,7 +126,43 @@ def zaznam(tab, p):
                                 "fixace_mes": fixace(p), "ceny": {}})
 
 
-def stahni(sid, budouci=False):
+class Detaily:
+    """Stahuje detail produktu (PDF, typ zákazníka) hned po vyhledávání, ve kterém se produkt objevil.
+    Srovnávač totiž vrací detail jen pro produkty z posledního vyhledávání dané session."""
+    POLE = ("dokumenty", "zakaznici", "smlouva", "web", "detail_ze_dne")
+
+    def __init__(self, sid, stare, vse=False):
+        self.sid, self.stare, self.vse = sid, stare, vse
+        self.hranice = (dt.date.today() - dt.timedelta(days=DETAIL_DNU)).isoformat()
+        self.hotovo, self.stazeno, self.chyby = {}, 0, 0
+
+    def po_vyhledavani(self, L):
+        for p in L:
+            pid = p.get("productId")
+            if not pid or pid in self.hotovo:
+                continue
+            s = self.stare.get(pid)
+            if s and not self.vse and (s.get("detail_ze_dne") or "") > self.hranice and s.get("dokumenty"):
+                self.hotovo[pid] = {k: s.get(k) for k in self.POLE}
+                continue
+            try:
+                self.hotovo[pid] = detail(self.sid, pid); self.stazeno += 1
+            except Exception as e:
+                self.chyby += 1
+                print(f"  detail {p.get('supplierName')} – {p.get('productName')}: {e}", file=sys.stderr)
+            time.sleep(PAUZA_DETAIL)
+
+    def doplnit(self, *tabulky):
+        for tab in tabulky:
+            for pid, r in tab.items():
+                if pid in self.hotovo:
+                    r.update(self.hotovo[pid])
+                elif pid in self.stare:   # detail se nepodařil, necháme starý
+                    r.update({k: self.stare[pid].get(k) for k in self.POLE})
+        print(f"Detaily produktů: {self.stazeno} staženo, {len(self.hotovo) - self.stazeno} z minula, {self.chyby} chyb", flush=True)
+
+
+def stahni(sid, budouci=False, det=None):
     el, gas = {}, {}
     for did, dn in EL_DIST.items():
         for tid, sn in SAZBY.items():
@@ -133,6 +174,8 @@ def stahni(sid, budouci=False):
                 c = slozky(p)
                 zaznam(el, p)["ceny"].setdefault(dn, {})[sn] = [c.get("ETS-01"), c.get("ETP-01"),
                                                                  None if sn in JEDNOTARIF else c.get("ETP-02")]
+            if det:
+                det.po_vyhledavani(L)
             print(f"  elektřina {dn} {sn}: {len(L)}", flush=True)
             time.sleep(PAUZA)
     for did, dn in GAS_DIST.items():
@@ -143,31 +186,11 @@ def stahni(sid, budouci=False):
             for p in L:
                 c = slozky(p)
                 zaznam(gas, p)["ceny"].setdefault(dn, {})[pasmo] = [c.get("PTS-01"), c.get("PTP-01")]
+            if det:
+                det.po_vyhledavani(L)
             print(f"  plyn {dn} {pasmo}: {len(L)}", flush=True)
             time.sleep(PAUZA)
     return el, gas
-
-
-def doplnit_detaily(sid, tabulky, stare, vse=False):
-    """Detail produktu (PDF, typ zákazníka). Známé produkty bere z minula, pokud detail není starší než DETAIL_DNU."""
-    hranice = (dt.date.today() - dt.timedelta(days=DETAIL_DNU)).isoformat()
-    hotovo, nove = {}, 0
-    for tab in tabulky:
-        for pid, r in tab.items():
-            if pid in hotovo:
-                r.update(hotovo[pid]); continue
-            s = stare.get(pid)
-            if s and not vse and s.get("detail_ze_dne", "") > hranice and s.get("dokumenty") is not None:
-                hotovo[pid] = {k: s.get(k) for k in ("dokumenty", "zakaznici", "smlouva", "web", "detail_ze_dne")}
-            else:
-                try:
-                    hotovo[pid] = detail(sid, pid); nove += 1
-                except Exception as e:
-                    print(f"  detail {r['dodavatel']} – {r['produkt']}: {e}", file=sys.stderr)
-                    hotovo[pid] = {k: (s or {}).get(k) for k in ("dokumenty", "zakaznici", "smlouva", "web", "detail_ze_dne")}
-                time.sleep(PAUZA_DETAIL)
-            r.update(hotovo[pid])
-    print(f"Detaily produktů: {nove} staženo, {len(hotovo) - nove} z minula", flush=True)
 
 
 def rozdil(stare, nove, komodita, datum):
@@ -224,10 +247,11 @@ def main():
     s_el, s_gas = podle_id(stare.get("elektrina")), podle_id(stare.get("plyn"))
 
     print("Elektřina a plyn, aktuální ceny", flush=True)
-    el, gas = stahni(sid)
+    det = Detaily(sid, {**s_el, **s_gas}, a.vsechny_detaily)
+    el, gas = stahni(sid, det=det)
     if len(el) < 20 or len(gas) < 20:
         sys.exit(f"Podezřele málo produktů (elektřina {len(el)}, plyn {len(gas)}), nic neukládám.")
-    doplnit_detaily(sid, [el, gas], {**s_el, **s_gas}, a.vsechny_detaily)
+    det.doplnit(el, gas)
 
     # srovnávač umí i „budoucí ceny“ (např. po vydání regulovaných cen na příští rok)
     budouci = None
