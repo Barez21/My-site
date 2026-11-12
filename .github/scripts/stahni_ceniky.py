@@ -5,25 +5,32 @@ Stáhne obchodní ceny všech dodavatelů ze srovnávače ERÚ (srovnavac.eru.go
   elektřina – distributoři ČEZ, PRE, EG.D × sazby D01d–D61d
   plyn      – distributoři GasNet, EG.D (Gas Distribution), PPD × 6 pásem spotřeby do 63 MWh
 
-Ukládá jen obchodní (tržní) složku: stálý měsíční plat a cenu za MWh (u elektřiny VT a NT).
-Regulované ceny bere kalkulačka ze souboru regulovane-ceny-RRRR.json, takže se dají
-kdykoli přepočítat pro jinou spotřebu nebo jistič.
+U každého produktu ukládá obchodní (tržní) složku – stálý měsíční plat a cenu za MWh (u elektřiny VT a NT),
+všechno bez DPH – a z detailu produktu odkazy na PDF (ceník, obchodní podmínky, vzor smlouvy),
+typ zákazníka (noví / stávající / retenční) a délku smlouvy.
+Regulované ceny bere kalkulačka ze souboru regulovane-ceny-RRRR.json.
 
 Výstup:
   ceniky-eru.json      – aktuální stav
-  ceniky-zmeny.json    – historie změn (nový produkt, zrušený produkt, změna ceny)
+  ceniky-zmeny.json    – historie změn (nový produkt, zrušený produkt, změna ceny, nový ceník)
 
 Srovnávač nemá veřejné API ani export; skript volá stejné JSON rozhraní, které používá jeho webová stránka.
-Je to ~50 dotazů s pauzou, celé stažení trvá zhruba minutu.
+Produkt se pozná podle productId – to je stejné pro všechny distributory i sazby. Stejný název
+může mít víc produktů (např. varianty s fixací na 12, 24 a 36 měsíců).
 
-Spuštění:  python3 stahni_ceniky.py [--slozka FFY-tools/data]
+Celé stažení: ~50 dotazů na ceny + jeden dotaz na detail každého produktu (detaily se obnovují
+jednou za DETAIL_DNU dní nebo když se produkt objeví poprvé), běžně 1–3 minuty.
+
+Spuštění:  python3 stahni_ceniky.py [--slozka FFY-tools/data] [--vsechny-detaily]
 Jen standardní knihovna Pythonu.
 """
-import argparse, datetime as dt, json, os, re, secrets, sys, time, urllib.request, urllib.error
+import argparse, datetime as dt, json, os, re, secrets, sys, time, urllib.parse, urllib.request, urllib.error
 
 BASE = "https://srovnavac.eru.gov.cz"
-UA = {"User-Agent": "FFY-ceniky/1.0 (+https://b-place.org/FFY-tools/)", "Accept": "application/json"}
-PAUZA = 0.8
+UA = {"User-Agent": "FFY-ceniky/1.1 (+https://b-place.org/FFY-tools/)", "Accept": "application/json"}
+PAUZA = 0.8          # mezi dotazy na ceny
+PAUZA_DETAIL = 0.35  # mezi dotazy na detail produktu
+DETAIL_DNU = 3       # jak často obnovit detail (odkazy na PDF, typ zákazníka) u známého produktu
 
 EL_DIST = {12: "CEZ", 13: "PRE", 17: "EGD"}
 GAS_DIST = {4: "GN", 5: "EGD", 6: "PPD"}
@@ -35,6 +42,7 @@ PASMA = {"0-1.89": 1, "1.89-7.56": 5, "7.56-15": 10, "15-25": 20, "25-45": 35, "
 JISTIC_3x25 = {"circuitBreakerBackupId": "3|20,00000|25,00000", "circuitBreakerCategory": -1,
                "circuitBreakerId": 13188, "circuitBreakerValue": 0}
 BEZ_JISTICE = {"circuitBreakerBackupId": "", "circuitBreakerCategory": 0, "circuitBreakerId": 0, "circuitBreakerValue": 0}
+DOKUMENTY = {"ceník": "cenik", "obchodní podmínky": "vop", "smlouv": "smlouva"}
 
 
 def http(url, data=None, pokusy=3):
@@ -71,6 +79,29 @@ def produkty(sid, **kw):
     return json.loads(txt).get("productResponseList") or []
 
 
+def detail(sid, pid):
+    _, txt = http(f"{BASE}/api/v1/products/{urllib.parse.quote(pid)}?userSessionId={sid}")
+    d = json.loads(txt)
+    info = d.get("productTabInfo") or {}
+    par = {}
+    for g in info.get("parameterGroups") or []:
+        for x in g.get("parameters") or []:
+            if x.get("name"):
+                par[x["name"].strip()] = str(x.get("value") or "").strip()
+    docs = {}
+    for doc in info.get("productDocuments") or []:
+        nm = (doc.get("documentName") or "").lower()
+        for k, v in DOKUMENTY.items():
+            if k in nm and doc.get("documentUrl") and v not in docs:
+                docs[v] = doc["documentUrl"]
+    web = ""
+    for x in (d.get("productTabSupplier") or {}).get("parameters") or []:
+        if (x.get("name") or "").startswith("Webové"):
+            web = str(x.get("value") or "")
+    return {"dokumenty": docs, "zakaznici": par.get("Typ zákazníka", ""), "smlouva": par.get("Délka smlouvy", ""),
+            "web": web, "detail_ze_dne": dt.date.today().isoformat()}
+
+
 def slozky(p):
     """Vrátí {kód: jednotková cena} z rozpadu ceny (rámec FrameType 0 = souhrn)."""
     for fr in p.get("productPriceDetails") or []:
@@ -84,6 +115,12 @@ def fixace(p):
     return int(m.group()) if m else 0
 
 
+def zaznam(tab, p):
+    pid = p.get("productId") or f"{p['supplierName']}|{p['productName']}"
+    return tab.setdefault(pid, {"id": pid, "dodavatel": p["supplierName"].strip(), "produkt": p["productName"].strip(),
+                                "fixace_mes": fixace(p), "ceny": {}})
+
+
 def stahni(sid, budouci=False):
     el, gas = {}, {}
     for did, dn in EL_DIST.items():
@@ -94,11 +131,8 @@ def stahni(sid, budouci=False):
                                       "high": 2, "low": 0 if sn in JEDNOTARIF else 2, "unit": 1})
             for p in L:
                 c = slozky(p)
-                k = f"{p['supplierName'].strip()}|{p['productName'].strip()}"
-                r = el.setdefault(k, {"dodavatel": p["supplierName"].strip(), "produkt": p["productName"].strip(),
-                                      "fixace_mes": fixace(p), "id": p.get("productId"), "ceny": {}})
-                r["ceny"].setdefault(dn, {})[sn] = [c.get("ETS-01"), c.get("ETP-01"),
-                                                     None if sn in JEDNOTARIF else c.get("ETP-02")]
+                zaznam(el, p)["ceny"].setdefault(dn, {})[sn] = [c.get("ETS-01"), c.get("ETP-01"),
+                                                                 None if sn in JEDNOTARIF else c.get("ETP-02")]
             print(f"  elektřina {dn} {sn}: {len(L)}", flush=True)
             time.sleep(PAUZA)
     for did, dn in GAS_DIST.items():
@@ -108,21 +142,41 @@ def stahni(sid, budouci=False):
                                       "high": mwh, "low": 0, "unit": 1})
             for p in L:
                 c = slozky(p)
-                k = f"{p['supplierName'].strip()}|{p['productName'].strip()}"
-                r = gas.setdefault(k, {"dodavatel": p["supplierName"].strip(), "produkt": p["productName"].strip(),
-                                       "fixace_mes": fixace(p), "id": p.get("productId"), "ceny": {}})
-                r["ceny"].setdefault(dn, {})[pasmo] = [c.get("PTS-01"), c.get("PTP-01")]
+                zaznam(gas, p)["ceny"].setdefault(dn, {})[pasmo] = [c.get("PTS-01"), c.get("PTP-01")]
             print(f"  plyn {dn} {pasmo}: {len(L)}", flush=True)
             time.sleep(PAUZA)
     return el, gas
 
 
+def doplnit_detaily(sid, tabulky, stare, vse=False):
+    """Detail produktu (PDF, typ zákazníka). Známé produkty bere z minula, pokud detail není starší než DETAIL_DNU."""
+    hranice = (dt.date.today() - dt.timedelta(days=DETAIL_DNU)).isoformat()
+    hotovo, nove = {}, 0
+    for tab in tabulky:
+        for pid, r in tab.items():
+            if pid in hotovo:
+                r.update(hotovo[pid]); continue
+            s = stare.get(pid)
+            if s and not vse and s.get("detail_ze_dne", "") > hranice and s.get("dokumenty") is not None:
+                hotovo[pid] = {k: s.get(k) for k in ("dokumenty", "zakaznici", "smlouva", "web", "detail_ze_dne")}
+            else:
+                try:
+                    hotovo[pid] = detail(sid, pid); nove += 1
+                except Exception as e:
+                    print(f"  detail {r['dodavatel']} – {r['produkt']}: {e}", file=sys.stderr)
+                    hotovo[pid] = {k: (s or {}).get(k) for k in ("dokumenty", "zakaznici", "smlouva", "web", "detail_ze_dne")}
+                time.sleep(PAUZA_DETAIL)
+            r.update(hotovo[pid])
+    print(f"Detaily produktů: {nove} staženo, {len(hotovo) - nove} z minula", flush=True)
+
+
 def rozdil(stare, nove, komodita, datum):
     zmeny = []
+    zaklad = lambda r: {"dodavatel": r["dodavatel"], "produkt": r["produkt"], "fixace_mes": r.get("fixace_mes")}
     for k in nove.keys() - stare.keys():
-        zmeny.append({"datum": datum, "komodita": komodita, "typ": "nový", "dodavatel": nove[k]["dodavatel"], "produkt": nove[k]["produkt"]})
+        zmeny.append({"datum": datum, "komodita": komodita, "typ": "nový", **zaklad(nove[k])})
     for k in stare.keys() - nove.keys():
-        zmeny.append({"datum": datum, "komodita": komodita, "typ": "zrušen", "dodavatel": stare[k]["dodavatel"], "produkt": stare[k]["produkt"]})
+        zmeny.append({"datum": datum, "komodita": komodita, "typ": "zrušen", **zaklad(stare[k])})
     for k in nove.keys() & stare.keys():
         a, b = stare[k]["ceny"], nove[k]["ceny"]
         detail = []
@@ -131,8 +185,10 @@ def rozdil(stare, nove, komodita, datum):
                 if a.get(d, {}).get(s) != b[d][s]:
                     detail.append({"distributor": d, "tarif": s, "z": a.get(d, {}).get(s), "na": b[d][s]})
         if detail:
-            zmeny.append({"datum": datum, "komodita": komodita, "typ": "změna ceny", "dodavatel": nove[k]["dodavatel"],
-                          "produkt": nove[k]["produkt"], "detail": detail[:40]})
+            zmeny.append({"datum": datum, "komodita": komodita, "typ": "změna ceny", **zaklad(nove[k]), "detail": detail[:40]})
+        ca, cb = (stare[k].get("dokumenty") or {}).get("cenik"), (nove[k].get("dokumenty") or {}).get("cenik")
+        if ca and cb and ca != cb:
+            zmeny.append({"datum": datum, "komodita": komodita, "typ": "nový ceník", **zaklad(nove[k]), "cenik": cb})
     return zmeny
 
 
@@ -150,18 +206,28 @@ def save(path, obj):
     os.replace(path + ".tmp", path)
 
 
+def podle_id(seznam):
+    return {x.get("id") or f"{x['dodavatel']}|{x['produkt']}": x for x in seznam or []}
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--slozka", default="FFY-tools/data")
+    ap.add_argument("--vsechny-detaily", action="store_true", help="stáhnout detail všech produktů znovu")
     a = ap.parse_args()
     os.makedirs(a.slozka, exist_ok=True)
     dnes = dt.date.today().isoformat()
     sid = session_id()
+    p_akt = os.path.join(a.slozka, "ceniky-eru.json")
+    p_zm = os.path.join(a.slozka, "ceniky-zmeny.json")
+    stare = load(p_akt, {})
+    s_el, s_gas = podle_id(stare.get("elektrina")), podle_id(stare.get("plyn"))
 
     print("Elektřina a plyn, aktuální ceny", flush=True)
     el, gas = stahni(sid)
     if len(el) < 20 or len(gas) < 20:
         sys.exit(f"Podezřele málo produktů (elektřina {len(el)}, plyn {len(gas)}), nic neukládám.")
+    doplnit_detaily(sid, [el, gas], {**s_el, **s_gas}, a.vsechny_detaily)
 
     # srovnávač umí i „budoucí ceny“ (např. po vydání regulovaných cen na příští rok)
     budouci = None
@@ -175,29 +241,33 @@ def main():
     except Exception as e:
         print(f"budoucí ceny: {e}", file=sys.stderr)
 
-    p_akt = os.path.join(a.slozka, "ceniky-eru.json")
-    p_zm = os.path.join(a.slozka, "ceniky-zmeny.json")
-    stare = load(p_akt, {})
     zmeny = load(p_zm, [])
+    pred = len(zmeny)
     if stare:
-        zmeny += rozdil({f"{x['dodavatel']}|{x['produkt']}": x for x in stare.get("elektrina", [])}, el, "elektřina", dnes)
-        zmeny += rozdil({f"{x['dodavatel']}|{x['produkt']}": x for x in stare.get("plyn", [])}, gas, "plyn", dnes)
+        # starší formát (klíč dodavatel|produkt bez id) neporovnáváme, jen založíme historii
+        if all(x.get("id") for x in stare.get("elektrina", [])[:5]):
+            zmeny += rozdil(s_el, el, "elektřina", dnes)
+            zmeny += rozdil(s_gas, gas, "plyn", dnes)
 
+    srt = lambda t: sorted(t.values(), key=lambda x: (x["dodavatel"].lower(), x["produkt"].lower(), x.get("fixace_mes") or 0))
     out = {
+        "verze": 2,
         "zdroj": "Srovnávač ERÚ, srovnavac.eru.gov.cz – domácnosti, standardní produkty",
         "stazeno": dt.datetime.now(dt.timezone.utc).isoformat(timespec="minutes"),
-        "jednotky": "Kč bez DPH; [stálý plat Kč/měs, cena Kč/MWh] u plynu, [stálý plat Kč/měs, VT Kč/MWh, NT Kč/MWh] u elektřiny",
+        "dph": 0.21,
+        "jednotky": "Kč BEZ DPH; plyn [stálý plat Kč/měs, cena Kč/MWh], elektřina [stálý plat Kč/měs, VT Kč/MWh, NT Kč/MWh]",
         "pozn": "Elektřina dotazována s jističem 3x25 A; obchodní ceny na jističi obvykle nezávisí.",
-        "elektrina": sorted(el.values(), key=lambda x: (x["dodavatel"], x["produkt"])),
-        "plyn": sorted(gas.values(), key=lambda x: (x["dodavatel"], x["produkt"])),
+        "elektrina": srt(el),
+        "plyn": srt(gas),
     }
     if budouci:
         out["budouci"] = budouci
-    pred = len(load(p_zm, []))
     save(p_akt, out)
     save(p_zm, zmeny[-5000:])
+    bez_ceniku = sum(1 for x in out["elektrina"] + out["plyn"] if not (x.get("dokumenty") or {}).get("cenik"))
     print(f"Hotovo: elektřina {len(el)} produktů, plyn {len(gas)} produktů, "
-          f"{len({x['dodavatel'] for x in out['elektrina'] + out['plyn']})} dodavatelů, změn od minula {len(zmeny) - pred}")
+          f"{len({x['dodavatel'] for x in out['elektrina'] + out['plyn']})} dodavatelů, bez odkazu na ceník {bez_ceniku}, "
+          f"změn od minula {len(zmeny) - pred}")
 
 
 if __name__ == "__main__":

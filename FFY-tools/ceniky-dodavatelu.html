@@ -77,6 +77,12 @@
   .ch .det { grid-column:2; font-size:13px; color:var(--muted); font-variant-numeric:tabular-nums; }
   .ch .det b.up { color:#A3711A; } .ch .det b.dn { color:#107E51; }
   @media (max-width:560px) { .ch li { grid-template-columns:minmax(0,1fr); } .ch .det { grid-column:1; } }
+  .pdf { display:inline-flex; align-items:center; gap:4px; font-size:13px; font-weight:700; color:var(--blue); text-decoration:none; border:1px solid var(--line); border-radius:6px; padding:3px 8px; background:var(--white); }
+  .pdf:hover { border-color:var(--green); background:var(--green-l); }
+  .pdf svg { width:13px; height:13px; }
+  .tag.z { background:#F8E8C9; color:#5B3F0B; }
+  .b.cenik { background:#B7F6DB; color:var(--ink); }
+  .ch .det a { color:var(--blue); font-weight:700; }
   .empty { padding:24px; text-align:center; color:var(--muted); }
 </style>
 </head>
@@ -120,7 +126,7 @@
 </svg></div>
   <span class="eyebrow">Trh</span>
   <h1>Ceníky dodavatelů</h1>
-  <p class="perex">Obchodní ceny všech dodavatelů pro domácnosti, jak je mají zadané ve srovnávači ERÚ. Bez distribuce a bez DPH.
+  <p class="perex">Obchodní ceny všech dodavatelů pro domácnosti, jak je mají zadané ve srovnávači ERÚ, bez distribuce. ERÚ je uvádí bez DPH, přepínačem je zobrazíte i s DPH.
     <small id="src">Načítám…</small></p>
   <div id="err" class="msg" hidden></div>
 
@@ -134,6 +140,10 @@
         <button type="button" data-view="t" aria-pressed="true">Ceníky</button>
         <button type="button" data-view="z" aria-pressed="false">Změny</button>
       </div>
+      <div class="seg" role="group" aria-label="DPH">
+        <button type="button" data-dph="0" aria-pressed="true">bez DPH</button>
+        <button type="button" data-dph="1" aria-pressed="false">s DPH</button>
+      </div>
     </div>
 
     <div id="vT">
@@ -143,6 +153,9 @@
         <label class="f grow">Hledat dodavatele nebo produkt <input id="q" type="search" autocomplete="off" placeholder="např. ČEZ, fix 24"></label>
         <label class="f">Fixace
           <select id="fx"><option value="">vše</option><option value="0">bez fixace</option><option value="1-12">do 12 měsíců</option><option value="13-24">13–24 měsíců</option><option value="25-999">přes 24 měsíců</option></select>
+        </label>
+        <label class="f">Zákazníci
+          <select id="zk"><option value="">všechny produkty</option><option value="n">dostupné pro nové</option><option value="s">jen stávající a retenční</option></select>
         </label>
       </div>
       <div class="kpis" id="kpis"></div>
@@ -174,7 +187,9 @@
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]; }); };
   var norm = function (s) { return String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(); };
   var ls = { g:function (k) { try { return localStorage.getItem('ffy-ceniky-' + k); } catch (e) { return null; } }, s:function (k, v) { try { localStorage.setItem('ffy-ceniky-' + k, v); } catch (e) {} } };
-  var D = null, Z = [], S = { kom:ls.g('kom') || 'el', view:'t', sort:'rok', dir:1 };
+  var D = null, Z = [], S = { kom:ls.g('kom') || 'el', view:'t', sort:'rok', dir:1, dph:ls.g('dph') === '1' };
+  var PDF_ICO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>';
+  var zakT = function (p) { var z = (p.zakaznici || '').toLowerCase(); return !z || /nov/.test(z) ? '' : /retenč/.test(z) ? 'retenční' : 'jen stávající'; };
 
   Promise.all([
     fetch('data/ceniky-eru.json', { cache:'no-cache' }).then(function (r) { if (!r.ok) throw 0; return r.json(); }),
@@ -205,14 +220,16 @@
   function rows() {
     var L = S.kom === 'el' ? D.elektrina : D.plyn, d = $('dist').value, t = $('tar').value, two = S.kom === 'el' && ['D01d','D02d'].indexOf(t) < 0;
     var q = norm($('q').value.trim()).split(/\s+/).filter(Boolean), fx = $('fx').value, fr = fx && fx !== '0' ? fx.split('-').map(Number) : null;
-    var m = S.kom === 'el' ? MODEL.el[t] : MODEL.gas[t];
+    var m = S.kom === 'el' ? MODEL.el[t] : MODEL.gas[t], f = S.dph ? 1.21 : 1, zk = $('zk').value;
     return L.map(function (p) {
       var c = p.ceny && p.ceny[d] && p.ceny[d][t]; if (!c) return null;
       var rok = S.kom === 'el' ? c[0] * 12 + m[0] * c[1] + m[1] * (c[2] != null ? c[2] : c[1]) : c[0] * 12 + m * c[1];
-      return { p:p, mes:c[0], vt:c[1], nt:two ? c[2] : null, rok:rok, fix:p.fixace_mes || 0, ffy:FFY.test(p.dodavatel) };
+      return { p:p, mes:(c[0] || 0) * f, vt:(c[1] || 0) * f, nt:two && c[2] != null ? c[2] * f : null, rok:rok * f, fix:p.fixace_mes || 0, ffy:FFY.test(p.dodavatel), zak:zakT(p) };
     }).filter(function (r) {
       if (!r) return false;
       if (q.length) { var n = norm(r.p.dodavatel + ' ' + r.p.produkt); if (!q.every(function (w) { return n.indexOf(w) >= 0; })) return false; }
+      if (zk === 'n' && r.zak) return false;
+      if (zk === 's' && !r.zak) return false;
       if (fx === '0' && r.fix) return false;
       if (fr && (r.fix < fr[0] || r.fix > fr[1])) return false;
       return true;
@@ -232,18 +249,18 @@
     $('kpis').innerHTML =
       kpi('Produktů', nf0.format(all.length), new Set(all.map(function (r) { return r.p.dodavatel; })).size + ' dodavatelů') +
       kpi('Nejlevnější', all.length ? nf0.format(all[0].rok) + ' Kč' : '–', all.length ? esc(all[0].p.dodavatel) : '') +
-      kpi('Medián', all.length ? nf0.format(med) + ' Kč' : '–', 'obchodní část za rok, ' + mtxt) +
+      kpi('Medián', all.length ? nf0.format(med) + ' Kč' : '–', 'obchodní část za rok ' + (S.dph ? 's' : 'bez') + ' DPH, ' + mtxt) +
       kpi('FFY', ffy ? nf0.format(ffy.rok) + ' Kč' : 'není', ffy ? (all.indexOf(ffy) + 1) + '. z ' + all.length + ' · ' + esc(ffy.p.produkt) : 'FFY tu nemá produkt', true);
     var th = function (k, l, cls) { var on = S.sort === k; return '<th class="' + (cls || '') + '"' + (on ? ' aria-sort="' + (S.dir > 0 ? 'ascending' : 'descending') + '"' : '') + '><button type="button" data-s="' + k + '">' + l + '<span class="ar">' + (on ? (S.dir > 0 ? '▲' : '▼') : '↕') + '</span></button></th>'; };
     var h = '<thead><tr><th class="l">#</th>' + th('dod', 'Dodavatel a produkt', 'l') + th('fix', 'Fixace') + th('mes', 'Stálý plat<br>Kč/měs') +
-      th('vt', S.kom === 'el' ? (two ? 'VT Kč/MWh' : 'Cena Kč/MWh') : 'Cena Kč/MWh') + (two ? th('nt', 'NT Kč/MWh') : '') + th('rok', 'Obchodní část<br>za rok') + '</tr></thead><tbody>';
+      th('vt', S.kom === 'el' ? (two ? 'VT Kč/MWh' : 'Cena Kč/MWh') : 'Cena Kč/MWh') + (two ? th('nt', 'NT Kč/MWh') : '') + th('rok', 'Obchodní část<br>za rok') + '<th>Ceník</th></tr></thead><tbody>';
     h += R.length ? R.map(function (r) {
-      return '<tr' + (r.ffy ? ' class="ffy"' : '') + '><td class="rank">' + rk(r) + '</td><td class="l">' + esc(r.p.dodavatel) + (r.ffy ? '<span class="tag ffy">FFY</span>' : '') +
-        '<span class="sub">' + esc(r.p.produkt) + '</span></td><td>' + (r.fix ? r.fix + ' měs.' : '–') + '</td><td>' + nf2.format(r.mes || 0) + '</td><td>' + nfP.format(r.vt || 0) + '</td>' +
-        (two ? '<td>' + (r.nt != null ? nfP.format(r.nt) : '–') + '</td>' : '') + '<td><b>' + nf0.format(r.rok) + '</b></td></tr>';
-    }).join('') : '<tr><td colspan="7" class="empty">Nic neodpovídá filtru.</td></tr>';
+      return '<tr' + (r.ffy ? ' class="ffy"' : '') + '><td class="rank">' + rk(r) + '</td><td class="l">' + esc(r.p.dodavatel) + (r.ffy ? '<span class="tag ffy">FFY</span>' : '') + (r.zak ? '<span class="tag z">' + r.zak + '</span>' : '') +
+        '<span class="sub">' + esc(r.p.produkt) + (r.p.smlouva && r.p.smlouva !== 'na dobu neurčitou' ? ' · smlouva ' + esc(r.p.smlouva) : '') + '</span></td><td>' + (r.fix ? r.fix + ' měs.' : '–') + '</td><td>' + nf2.format(r.mes || 0) + '</td><td>' + nfP.format(r.vt || 0) + '</td>' +
+        (two ? '<td>' + (r.nt != null ? nfP.format(r.nt) : '–') + '</td>' : '') + '<td><b>' + nf0.format(r.rok) + '</b></td><td>' + (r.p.dokumenty && r.p.dokumenty.cenik ? '<a class="pdf" href="' + esc(r.p.dokumenty.cenik) + '" target="_blank" rel="noopener" title="Ceník ' + esc(r.p.produkt) + ' (PDF)">' + PDF_ICO + 'PDF</a>' : '–') + '</td></tr>';
+    }).join('') : '<tr><td colspan="8" class="empty">Nic neodpovídá filtru.</td></tr>';
     $('tbl').innerHTML = h + '</tbody>';
-    $('cnt').textContent = 'Zobrazeno ' + R.length + ' z ' + all.length + '. „Obchodní část za rok“ je stálý plat × 12 + cena × modelová spotřeba ' + mtxt + ', bez DPH. Pořadí # je podle ní.';
+    $('cnt').textContent = 'Zobrazeno ' + R.length + ' z ' + all.length + '. „Obchodní část za rok“ je stálý plat × 12 + cena × modelová spotřeba ' + mtxt + ', ' + (S.dph ? 's DPH 21 %' : 'bez DPH') + '. Pořadí # je podle ní. Všechny ceny v tabulce jsou ' + (S.dph ? 's DPH.' : 'bez DPH.');
     S.last = R;
   }
   function kpi(k, v, s, dark) { return '<div class="kpi' + (dark ? ' dark' : '') + '"><div class="k">' + k + '</div><div class="v">' + v + '</div><div class="s">' + s + '</div></div>'; }
@@ -252,14 +269,14 @@
     var q = norm($('qz').value.trim()).split(/\s+/).filter(Boolean), kom = S.kom === 'el' ? 'elektřina' : 'plyn';
     var L = Z.filter(function (z) { if (z.komodita !== kom) return false; var n = norm(z.dodavatel + ' ' + z.produkt); return q.every(function (w) { return n.indexOf(w) >= 0; }); }).slice().reverse().slice(0, 300);
     $('changes').innerHTML = L.length ? L.map(function (z) {
-      var b = z.typ === 'změna ceny' ? 'změna' : z.typ, det = '';
+      var b = z.typ === 'změna ceny' ? 'změna' : z.typ === 'nový ceník' ? 'cenik' : z.typ, det = z.cenik ? '<div class="det"><a href="' + esc(z.cenik) + '" target="_blank" rel="noopener">Otevřít nový ceník (PDF)</a></div>' : '';
       if (z.detail) det = '<div class="det">' + z.detail.slice(0, 6).map(function (x) {
         var a = x.z || [], n = x.na || [], i = a[1] != null && n[1] != null ? n[1] - a[1] : null;
         return DN[x.distributor] + ' ' + x.tarif.replace('-', '–') + ': ' + (a[1] != null ? nf2.format(a[1]) : '–') + ' → ' + (n[1] != null ? nf2.format(n[1]) : '–') + ' Kč/MWh' +
           (i ? ' <b class="' + (i > 0 ? 'up' : 'dn') + '">(' + (i > 0 ? '+' : '−') + nf2.format(Math.abs(i)) + ')</b>' : '') + (a[0] !== n[0] ? ', stálý plat ' + nf2.format(a[0] || 0) + ' → ' + nf2.format(n[0] || 0) + ' Kč' : '');
       }).join('<br>') + (z.detail.length > 6 ? '<br>… a dalších ' + (z.detail.length - 6) : '') + '</div>';
       var d = z.datum.split('-');
-      return '<li><span class="d">' + (+d[2]) + '. ' + (+d[1]) + '. ' + d[0] + '</span><span class="t"><span class="b ' + b + '">' + esc(z.typ) + '</span>' + esc(z.dodavatel) + ' – ' + esc(z.produkt) + '</span>' + det + '</li>';
+      return '<li><span class="d">' + (+d[2]) + '. ' + (+d[1]) + '. ' + d[0] + '</span><span class="t"><span class="b ' + b + '">' + esc(z.typ) + '</span>' + esc(z.dodavatel) + ' – ' + esc(z.produkt) + (z.fixace_mes ? ' (fixace ' + z.fixace_mes + ' měs.)' : '') + '</span>' + det + '</li>';
     }).join('') : '<li class="empty" style="display:block">Zatím žádné změny. Historie se plní od prvního stažení, každý den se porovná s předchozím.</li>';
   }
 
@@ -272,12 +289,17 @@
   $('tar').addEventListener('change', function () { ls.s('tar-' + S.kom, $('tar').value); render(); });
   $('q').addEventListener('input', render);
   $('fx').addEventListener('change', render);
+  $('zk').addEventListener('change', render);
+  function setDph(v) { S.dph = v; ls.s('dph', v ? '1' : '0'); document.querySelectorAll('[data-dph]').forEach(function (b) { b.setAttribute('aria-pressed', String((b.dataset.dph === '1') === v)); }); if (D) render(); }
+  document.querySelectorAll('[data-dph]').forEach(function (b) { b.addEventListener('click', function () { setDph(b.dataset.dph === '1'); }); });
+  setDph(S.dph);
   $('qz').addEventListener('input', renderZ);
   $('tbl').addEventListener('click', function (e) { var b = e.target.closest('button[data-s]'); if (!b) return; if (S.sort === b.dataset.s) S.dir *= -1; else { S.sort = b.dataset.s; S.dir = 1; } render(); });
   $('csv').addEventListener('click', function () {
     var two = S.kom === 'el' && ['D01d','D02d'].indexOf($('tar').value) < 0;
-    var lines = [['Dodavatel','Produkt','Fixace měs.','Stálý plat Kč/měs', two ? 'VT Kč/MWh' : 'Cena Kč/MWh'].concat(two ? ['NT Kč/MWh'] : []).concat(['Obchodní část za rok Kč'])];
-    (S.last || []).forEach(function (r) { lines.push([r.p.dodavatel, r.p.produkt, r.fix, r.mes, r.vt].concat(two ? [r.nt] : []).concat([Math.round(r.rok)])); });
+    var sd = S.dph ? ' s DPH' : ' bez DPH', r2 = function (v) { return v == null ? null : Math.round(v * 100) / 100; };
+    var lines = [['Dodavatel','Produkt','Fixace měs.','Zákazníci','Stálý plat Kč/měs' + sd, (two ? 'VT Kč/MWh' : 'Cena Kč/MWh') + sd].concat(two ? ['NT Kč/MWh' + sd] : []).concat(['Obchodní část za rok Kč' + sd, 'Ceník PDF'])];
+    (S.last || []).forEach(function (r) { lines.push([r.p.dodavatel, r.p.produkt, r.fix, r.p.zakaznici || '', r2(r.mes), r2(r.vt)].concat(two ? [r2(r.nt)] : []).concat([Math.round(r.rok), (r.p.dokumenty || {}).cenik || ''])); });
     var csv = '﻿' + lines.map(function (l) { return l.map(function (v) { v = v == null ? '' : typeof v === 'number' ? String(v).replace('.', ',') : String(v); return /[;"\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }).join(';'); }).join('\r\n');
     var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type:'text/csv;charset=utf-8' }));
     a.download = 'ceniky-' + S.kom + '-' + $('dist').value + '-' + $('tar').value + '.csv'; document.body.appendChild(a); a.click(); a.remove();
