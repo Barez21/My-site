@@ -8,6 +8,7 @@ on:
 jobs:
   stahnout:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     permissions:
       contents: write
     steps:
@@ -17,6 +18,7 @@ jobs:
           FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
       - name: Stáhnout ceníky
+        timeout-minutes: 15
         run: python3 .github/scripts/stahni_ceniky.py --slozka FFY-tools/data
 
       - name: Commit

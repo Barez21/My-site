@@ -33,6 +33,14 @@ UA = {"User-Agent": "FFY-ceniky/1.1 (+https://b-place.org/FFY-tools/)", "Accept"
 PAUZA = 0.8          # mezi dotazy na ceny
 PAUZA_DETAIL = 0.35  # mezi dotazy na detail produktu
 DETAIL_DNU = 3       # jak často obnovit detail (odkazy na PDF, typ zákazníka) u známého produktu
+MAX_DETAILU = 80     # nejvýš tolik detailů za jeden běh, zbytek dotáhne další běh (šetrnost k ERÚ)
+LIMIT_MIN = 12       # celkový časový limit běhu; detaily se po jeho vyčerpání přeskočí a uloží se, co je
+TIMEOUT = 25         # s na jeden dotaz
+START = time.monotonic()
+
+
+def zbyva():
+    return LIMIT_MIN * 60 - (time.monotonic() - START)
 
 EL_DIST = {12: "CEZ", 13: "PRE", 17: "EGD"}
 GAS_DIST = {4: "GN", 5: "EGD", 6: "PPD"}
@@ -49,14 +57,25 @@ DOKUMENTY = {"ceník": "cenik", "obchodní podmínky": "vop", "smlouv": "smlouva
 
 def http(url, data=None, pokusy=3):
     for i in range(pokusy):
+        t0 = time.monotonic()
         try:
             req = urllib.request.Request(url, data=data, headers={**UA, **({"Content-Type": "application/json"} if data else {})})
-            with urllib.request.urlopen(req, timeout=60) as r:
+            with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
                 return r.geturl(), r.read().decode("utf-8")
-        except (urllib.error.URLError, TimeoutError):
-            if i == pokusy - 1:
-                raise
-            time.sleep(3 * (i + 1))
+        except urllib.error.HTTPError as e:
+            duvod = f"HTTP {e.code}"
+            cekej = 20 if e.code in (429, 503) else 3 * (i + 1)
+            ra = e.headers.get("Retry-After") if e.headers else None
+            if ra and ra.isdigit():
+                cekej = min(int(ra), 60)
+            if e.code < 500 and e.code != 429:
+                raise                      # 4xx kromě 429 nemá smysl opakovat
+        except (urllib.error.URLError, TimeoutError, ConnectionError) as e:
+            duvod, cekej = f"{type(e).__name__}: {getattr(e, 'reason', e)}", 3 * (i + 1)
+        print(f"    ! {duvod} po {time.monotonic() - t0:.0f} s ({url.split('?')[0][-40:]}), pokus {i + 1}/{pokusy}", flush=True)
+        if i == pokusy - 1 or zbyva() < cekej + 30:
+            raise RuntimeError(duvod)
+        time.sleep(cekej)
 
 
 def session_id():
@@ -134,7 +153,7 @@ class Detaily:
     def __init__(self, sid, stare, vse=False):
         self.sid, self.stare, self.vse = sid, stare, vse
         self.hranice = (dt.date.today() - dt.timedelta(days=DETAIL_DNU)).isoformat()
-        self.hotovo, self.stazeno, self.chyby = {}, 0, 0
+        self.hotovo, self.stazeno, self.chyby, self.odlozeno = {}, 0, 0, set()
 
     def po_vyhledavani(self, L):
         for p in L:
@@ -144,6 +163,9 @@ class Detaily:
             s = self.stare.get(pid)
             if s and not self.vse and (s.get("detail_ze_dne") or "") > self.hranice and s.get("dokumenty"):
                 self.hotovo[pid] = {k: s.get(k) for k in self.POLE}
+                continue
+            if self.stazeno >= MAX_DETAILU or zbyva() < 180:
+                self.odlozeno.add(pid)
                 continue
             try:
                 self.hotovo[pid] = detail(self.sid, pid); self.stazeno += 1
@@ -159,38 +181,50 @@ class Detaily:
                     r.update(self.hotovo[pid])
                 elif pid in self.stare:   # detail se nepodařil, necháme starý
                     r.update({k: self.stare[pid].get(k) for k in self.POLE})
-        print(f"Detaily produktů: {self.stazeno} staženo, {len(self.hotovo) - self.stazeno} z minula, {self.chyby} chyb", flush=True)
+        print(f"Detaily produktů: {self.stazeno} staženo, {len(self.hotovo) - self.stazeno} z minula, {self.chyby} chyb, "
+              f"{len(self.odlozeno - set(self.hotovo))} odloženo na příští běh (limit {MAX_DETAILU} za běh)", flush=True)
 
 
 def stahni(sid, budouci=False, det=None):
-    el, gas = {}, {}
+    """Vrátí (el, gas, nepovedene) – nepovedene je seznam (komodita, distributor, tarif), kde dotaz selhal."""
+    el, gas, nepovedene = {}, {}, []
     for did, dn in EL_DIST.items():
         for tid, sn in SAZBY.items():
-            L = produkty(sid, budouci=budouci, powerType=1, productType=1, distributorId=did, tariffId=tid,
-                         tariffName=sn.replace("D", "D "), circuitBreaker=JISTIC_3x25,
-                         consumption={"consumptionPattern": [], "deliveryDiagramId": 0, "deliveryDiagramRegion": "",
-                                      "high": 2, "low": 0 if sn in JEDNOTARIF else 2, "unit": 1})
+            t0 = time.monotonic()
+            try:
+                L = produkty(sid, budouci=budouci, powerType=1, productType=1, distributorId=did, tariffId=tid,
+                             tariffName=sn.replace("D", "D "), circuitBreaker=JISTIC_3x25,
+                             consumption={"consumptionPattern": [], "deliveryDiagramId": 0, "deliveryDiagramRegion": "",
+                                          "high": 2, "low": 0 if sn in JEDNOTARIF else 2, "unit": 1})
+            except Exception as e:
+                print(f"  elektřina {dn} {sn}: CHYBA {e}", flush=True)
+                nepovedene.append(("elektrina", dn, sn)); continue
             for p in L:
                 c = slozky(p)
                 zaznam(el, p)["ceny"].setdefault(dn, {})[sn] = [c.get("ETS-01"), c.get("ETP-01"),
                                                                  None if sn in JEDNOTARIF else c.get("ETP-02")]
             if det:
                 det.po_vyhledavani(L)
-            print(f"  elektřina {dn} {sn}: {len(L)}", flush=True)
+            print(f"  elektřina {dn} {sn}: {len(L)} produktů ({time.monotonic() - t0:.1f} s, celkem {time.monotonic() - START:.0f} s)", flush=True)
             time.sleep(PAUZA)
     for did, dn in GAS_DIST.items():
         for pasmo, mwh in PASMA.items():
-            L = produkty(sid, budouci=budouci, powerType=2, productType=6, distributorId=did, circuitBreaker=BEZ_JISTICE,
-                         consumption={"consumptionPattern": [], "deliveryDiagramId": 0, "deliveryDiagramRegion": "",
-                                      "high": mwh, "low": 0, "unit": 1})
+            t0 = time.monotonic()
+            try:
+                L = produkty(sid, budouci=budouci, powerType=2, productType=6, distributorId=did, circuitBreaker=BEZ_JISTICE,
+                             consumption={"consumptionPattern": [], "deliveryDiagramId": 0, "deliveryDiagramRegion": "",
+                                          "high": mwh, "low": 0, "unit": 1})
+            except Exception as e:
+                print(f"  plyn {dn} {pasmo}: CHYBA {e}", flush=True)
+                nepovedene.append(("plyn", dn, pasmo)); continue
             for p in L:
                 c = slozky(p)
                 zaznam(gas, p)["ceny"].setdefault(dn, {})[pasmo] = [c.get("PTS-01"), c.get("PTP-01")]
             if det:
                 det.po_vyhledavani(L)
-            print(f"  plyn {dn} {pasmo}: {len(L)}", flush=True)
+            print(f"  plyn {dn} {pasmo}: {len(L)} produktů ({time.monotonic() - t0:.1f} s, celkem {time.monotonic() - START:.0f} s)", flush=True)
             time.sleep(PAUZA)
-    return el, gas
+    return el, gas, nepovedene
 
 
 def rozdil(stare, nove, komodita, datum):
@@ -248,9 +282,19 @@ def main():
 
     print("Elektřina a plyn, aktuální ceny", flush=True)
     det = Detaily(sid, {**s_el, **s_gas}, a.vsechny_detaily)
-    el, gas = stahni(sid, det=det)
-    if len(el) < 20 or len(gas) < 20:
-        sys.exit(f"Podezřele málo produktů (elektřina {len(el)}, plyn {len(gas)}), nic neukládám.")
+    el, gas, nepovedene = stahni(sid, det=det)
+    if len(nepovedene) > (len(EL_DIST) * len(SAZBY) + len(GAS_DIST) * len(PASMA)) // 2 or len(el) < 20 or len(gas) < 20:
+        sys.exit(f"Srovnávač ERÚ neodpovídá (nepovedlo se {len(nepovedene)} dotazů, elektřina {len(el)}, plyn {len(gas)} produktů), "
+                 "nic neukládám, data zůstávají z minula.")
+    if nepovedene:
+        # kde dotaz selhal, ponecháme ceny z minula
+        for kom, dn, tarif in nepovedene:
+            nove, stara = (el, s_el) if kom == "elektrina" else (gas, s_gas)
+            for pid, r in stara.items():
+                c = (r.get("ceny") or {}).get(dn, {}).get(tarif)
+                if c is not None and pid in nove:
+                    nove[pid]["ceny"].setdefault(dn, {})[tarif] = c
+        print(f"Nepovedené dotazy ({len(nepovedene)}), ponechány ceny z minula: " + ", ".join(f"{a} {b} {c}" for a, b, c in nepovedene), flush=True)
     det.doplnit(el, gas)
 
     # srovnávač umí i „budoucí ceny“ (např. po vydání regulovaných cen na příští rok)
@@ -258,9 +302,9 @@ def main():
     try:
         _, t1 = http(BASE + "/api/v1/products/price-status?powerType=1")
         _, t2 = http(BASE + "/api/v1/products/price-status?powerType=2")
-        if json.loads(t1).get("hasUpcomingPrices") or json.loads(t2).get("hasUpcomingPrices"):
+        if (json.loads(t1).get("hasUpcomingPrices") or json.loads(t2).get("hasUpcomingPrices")) and zbyva() > 300:
             print("Srovnávač má budoucí ceny, stahuji i ty", flush=True)
-            bel, bgas = stahni(sid, budouci=True)
+            bel, bgas, _ = stahni(sid, budouci=True)
             budouci = {"elektrina": list(bel.values()), "plyn": list(bgas.values())}
     except Exception as e:
         print(f"budoucí ceny: {e}", file=sys.stderr)
