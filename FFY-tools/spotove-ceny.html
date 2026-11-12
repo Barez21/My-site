@@ -385,7 +385,7 @@
     if (st.x1 - st.x0 !== span) st.x1 = st.x0 + span;
   }
   var raf = 0;
-  function redraw() { if (raf) return; raf = requestAnimationFrame(function () { raf = 0; clamp(); draw(); drawNav(); kpis(); label(); syncPresets(); }); }
+  function redraw() { if (raf) return; raf = requestAnimationFrame(function () { raf = 0; if (!S) return; clamp(); draw(); drawNav(); kpis(); label(); syncPresets(); }); }
 
   function setRange(days) {
     if (days === 'all') { st.x0 = S.start; st.x1 = S.end; }
@@ -549,7 +549,7 @@
       ? '<b>Data zatím nejsou stažená.</b><br>Spotové ceny stahuje GitHub Action „Stáhnout spotové ceny (OTE + ČNB)“. V repozitáři otevřete záložku <b>Actions</b>, vyberte ji a klikněte na <b>Run workflow</b>. První stažení trvá 5–10 minut, potom se data aktualizují sama každý den odpoledne.'
       : '<b>Data se nepodařilo načíst.</b><br>' + e.message + '. Zkuste stránku obnovit.') + '</div>';
   });
-  var rt = 0; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { size(); redraw(); }, 80); });
+  var rt = 0; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { if (!S) return; size(); redraw(); }, 80); });
   if (document.fonts) document.fonts.ready.then(function () { if (S) redraw(); });
 })();
 </script>
