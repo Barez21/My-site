@@ -1,0 +1,30 @@
+name: Stáhnout ceníky dodavatelů (srovnávač ERÚ)
+
+on:
+  schedule:
+    - cron: '43 5 * * *'       # denně kolem 6:43 našeho času, srovnávač ERÚ se aktualizuje přes noc
+  workflow_dispatch:            # ruční spuštění
+
+jobs:
+  stahnout:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        env:
+          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+      - name: Stáhnout ceníky
+        run: python3 .github/scripts/stahni_ceniky.py --slozka FFY-tools/data
+
+      - name: Commit
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add FFY-tools/data/ceniky-eru.json FFY-tools/data/ceniky-zmeny.json
+          git diff --staged --quiet && exit 0
+          git commit -m "auto: ceníky dodavatelů z ERÚ $(date +%Y-%m-%d)"
+          git pull --rebase origin main
+          git push
