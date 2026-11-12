@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ceníky dodavatelů</title>
+<meta name="description" content="Obchodní ceny všech dodavatelů elektřiny a plynu ze srovnávače ERÚ, denně aktualizované, s historií změn.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script>if (window.self !== window.top) document.documentElement.classList.add('embedded');</script>
+<style>
+  :root { --blue:#214571; --blue-d:#18314E; --green:#45e7a3; --green-l:#EDFDF6; --ink:#0a141e; --bronze:#e8af46; --bronze-l:#FDF7ED;
+          --bg:#eff4fa; --white:#fff; --muted:#548bc9; --line:#d0dff0; --border:#e3e8ef; --err:#e0786a; --err-bg:#fff4f2; }
+  * { box-sizing:border-box; }
+  [hidden] { display:none !important; }
+  html,body { margin:0; }
+  body { font-family:'Albert Sans','Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,sans-serif; background:var(--bg); color:var(--blue); line-height:1.45; }
+  .wrap { max-width:1180px; margin:0 auto; padding:32px 16px 64px; position:relative; z-index:1; }
+  .arc { position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; }
+  .brand svg { height:31px; width:auto; display:block; margin-bottom:24px; }
+  .embedded .brand { display:none; }
+  .embedded .wrap { padding-top:24px; }
+  .eyebrow { display:inline-block; background:var(--green); color:var(--ink); font-size:13px; font-weight:700; padding:3px 8px; border-radius:2px; }
+  h1 { font-size:clamp(28px,4.5vw,38px); font-weight:800; line-height:1.15; margin:12px 0 6px; }
+  .perex { font-size:16px; margin:0 0 20px; max-width:72ch; }
+  .perex small { color:var(--muted); display:block; margin-top:4px; }
+  .seg { display:inline-flex; background:var(--white); border:1px solid var(--border); border-radius:10px; padding:3px; gap:2px; flex-wrap:wrap; }
+  .seg button { font:inherit; font-size:15px; font-weight:700; color:var(--blue); background:none; border:0; border-radius:7px; padding:8px 14px; cursor:pointer; }
+  .seg button[aria-pressed="true"] { background:var(--blue); color:#fff; }
+  .bar { display:flex; flex-wrap:wrap; gap:10px 12px; align-items:flex-end; margin-bottom:14px; }
+  label.f { display:grid; gap:4px; font-size:13px; font-weight:700; min-width:0; }
+  input, select { font:inherit; font-size:15px; font-weight:600; color:var(--blue); background:var(--white); border:1.5px solid var(--line); border-radius:10px; padding:8px 10px; min-width:0; }
+  input:focus, select:focus { outline:none; border-color:var(--green); }
+  .grow { flex:1 1 220px; }
+  .grow input { width:100%; }
+  .check { display:flex; gap:8px; align-items:center; font-size:14px; font-weight:600; padding-bottom:9px; }
+  .check input { width:18px; height:18px; accent-color:var(--blue); }
+  :focus-visible { outline:2px solid var(--muted); outline-offset:2px; }
+  .kpis { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin-bottom:14px; }
+  .kpi { background:var(--white); border:1px solid var(--border); border-radius:21px 0 21px 0; padding:14px 16px; min-width:0; }
+  .kpi.dark { background:var(--blue); color:#fff; border-color:var(--blue); }
+  .kpi .k { font-size:12px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); }
+  .kpi.dark .k { color:var(--green); }
+  .kpi .v { font-size:22px; font-weight:800; margin-top:4px; font-variant-numeric:tabular-nums; overflow-wrap:anywhere; }
+  .kpi .s { font-size:13px; color:var(--muted); }
+  .kpi.dark .s { color:#B1CAE7; }
+  @media (max-width:820px) { .kpis { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+  .tbl-wrap { overflow-x:auto; background:var(--white); border:1px solid var(--border); border-radius:21px 0 21px 0; }
+  table { border-collapse:collapse; width:100%; font-size:14px; font-variant-numeric:tabular-nums; }
+  th, td { padding:9px 12px; text-align:right; white-space:nowrap; }
+  th.l, td.l { text-align:left; white-space:normal; }
+  thead th { background:var(--blue); color:#fff; font-weight:700; position:sticky; top:0; }
+  thead th button { all:unset; cursor:pointer; display:inline-flex; gap:4px; align-items:center; }
+  thead th button:focus-visible { outline:2px solid var(--green); }
+  thead th .ar { font-size:11px; opacity:.6; }
+  thead th[aria-sort] .ar { opacity:1; color:var(--green); }
+  tbody tr:nth-child(even) td { background:var(--bg); }
+  tbody tr.ffy td { background:var(--green-l) !important; }
+  tbody tr.ffy td:first-child { box-shadow:inset 4px 0 0 var(--green); font-weight:800; }
+  td.rank { color:var(--muted); width:1%; }
+  td .sub { display:block; font-size:12px; color:var(--muted); }
+  .tag { display:inline-block; font-size:11px; font-weight:800; padding:1px 6px; border-radius:4px; background:var(--bg); color:var(--blue); margin-left:6px; vertical-align:1px; }
+  .tag.ffy { background:var(--green); color:var(--ink); }
+  .foot { display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; font-size:13px; color:var(--muted); margin-top:10px; }
+  .btn { font:inherit; font-size:14px; font-weight:700; color:var(--ink); background:var(--white); border:1px solid var(--border); border-radius:8px; padding:8px 12px; cursor:pointer; }
+  .btn:hover { background:var(--bg); }
+  .msg { padding:12px 16px; border-left:4px solid var(--err); border-radius:0 0 21px 0; background:var(--err-bg); }
+  .ch { list-style:none; margin:0; padding:0; display:grid; gap:8px; }
+  .ch li { background:var(--white); border:1px solid var(--border); border-radius:21px 0 21px 0; padding:12px 16px; display:grid; grid-template-columns:110px minmax(0,1fr); gap:4px 14px; }
+  .ch .d { font-weight:800; font-variant-numeric:tabular-nums; }
+  .ch .t { font-weight:700; }
+  .ch .b { display:inline-block; font-size:12px; font-weight:800; padding:1px 7px; border-radius:4px; margin-right:6px; }
+  .b.nový { background:var(--green); color:var(--ink); }
+  .b.zrušen { background:#F3D9A5; color:var(--ink); }
+  .b.změna { background:var(--line); color:var(--blue); }
+  .ch .det { grid-column:2; font-size:13px; color:var(--muted); font-variant-numeric:tabular-nums; }
+  .ch .det b.up { color:#A3711A; } .ch .det b.dn { color:#107E51; }
+  @media (max-width:560px) { .ch li { grid-template-columns:minmax(0,1fr); } .ch .det { grid-column:1; } }
+  .empty { padding:24px; text-align:center; color:var(--muted); }
+</style>
+</head>
+<body>
+<svg class="arc" viewBox="0 0 210 297" preserveAspectRatio="xMaxYMid meet" aria-hidden="true">
+  <path fill="#DFE9F6" d="M210,0 H165 C120,22 98,75 104,135 C110,195 140,250 177,297 H210 Z"/>
+</svg>
+<div class="wrap">
+  <div class="brand"><svg id="Vrstva_1" xmlns="http://www.w3.org/2000/svg" width="843.92" height="139.49" version="1.1" viewBox="0 0 843.92 139.49">
+  <defs>
+    <style>
+      .st0 {
+        fill: #214571;
+      }
+
+      .st1 {
+        fill: #45e7a3;
+      }
+
+      .st2 {
+        fill: #30c487;
+      }
+    </style>
+  </defs>
+  <g>
+    <path class="st2" d="M88.66,38.45c2.04-2.35,4.14-4.6,6.28-6.76C65.82,2.28,29.46-8.68,10.91,7.44-9.01,24.74-.89,66.68,29.06,101.11c13.54,15.56,29.21,26.93,44.17,33.11-.95-.64-1.87-1.34-2.75-2.1-19.92-17.3-11.78-59.23,18.17-93.66"/>
+    <path class="st1" d="M178.96,7.44c-18.56-16.12-54.92-5.16-84.02,24.25-2.14,2.16-4.22,4.4-6.28,6.76-29.95,34.43-38.09,76.37-18.17,93.67.88.76,1.79,1.45,2.75,2.1,7.54,3.12,14.89,4.91,21.7,5.27,6.8-.36,14.16-2.16,21.7-5.27,14.95-6.18,30.64-17.54,44.17-33.11,29.95-34.43,38.09-76.37,18.17-93.66"/>
+  </g>
+  <polygon class="st0" points="222.52 106.8 238.84 106.8 238.84 75.74 266.93 75.74 266.93 62.6 238.84 62.6 238.84 46.28 276.36 46.28 276.36 32.6 222.52 32.6 222.52 106.8"/>
+  <polygon class="st0" points="359.78 106.8 413.62 106.8 413.62 93.13 376.1 93.13 376.1 75.74 404.19 75.74 404.19 62.6 376.1 62.6 376.1 46.28 413.62 46.28 413.62 32.6 359.78 32.6 359.78 106.8"/>
+  <polygon class="st0" points="426.24 106.8 480.08 106.8 480.08 93.13 442.56 93.13 442.56 75.74 470.65 75.74 470.65 62.6 442.56 62.6 442.56 46.28 480.08 46.28 480.08 32.6 426.24 32.6 426.24 106.8"/>
+  <path class="st0" d="M303.82,46.28h15.26c3.74,0,6.52.88,8.32,2.65,1.8,1.77,2.7,4.17,2.7,7.21,0,2.05-.41,3.84-1.22,5.35-.81,1.52-2.03,2.67-3.66,3.44-1.63.78-3.71,1.17-6.25,1.17h-15.16v-19.82h0ZM332.01,77.76c3.39-1.34,6.18-3.16,8.37-5.46,2.19-2.29,3.82-4.84,4.88-7.63s1.59-5.64,1.59-8.53c0-4.24-1.01-8.14-3.02-11.71-2.02-3.57-5.02-6.43-9.01-8.59-3.99-2.15-8.99-3.23-15-3.23h-32.33v74.2h16.32v-27.03h10.51l15.67,27.03h18.23l-17.44-28.64c.41-.14.84-.25,1.23-.4"/>
+  <polygon class="st0" points="679.91 32.6 662.42 65.04 644.83 32.6 626.17 32.6 654.15 81.68 654.15 106.8 670.48 106.8 670.48 81.57 698.56 32.6 679.91 32.6"/>
+  <g>
+    <path class="st0" d="M751.32,82.05c-1.84,3.57-4.35,6.38-7.53,8.43-3.18,2.05-6.89,3.07-11.13,3.07s-7.86-1.02-11.08-3.07c-3.22-2.05-5.72-4.86-7.53-8.43-1.8-3.57-2.7-7.68-2.7-12.35s.9-8.89,2.7-12.45c1.8-3.57,4.31-6.36,7.53-8.37,3.21-2.01,6.91-3.02,11.08-3.02s7.95,1.01,11.13,3.02c3.18,2.01,5.69,4.81,7.53,8.37,1.84,3.57,2.76,7.72,2.76,12.45s-.92,8.78-2.76,12.35M759.59,42.41c-3.46-3.36-7.49-5.95-12.08-7.79s-9.54-2.76-14.84-2.76-10.14.92-14.73,2.76c-4.59,1.84-8.62,4.43-12.08,7.79s-6.18,7.35-8.16,11.98-2.97,9.74-2.97,15.32.99,10.69,2.97,15.32,4.7,8.62,8.16,11.98c3.46,3.36,7.49,5.95,12.08,7.79,4.59,1.84,9.5,2.76,14.73,2.76s10.24-.92,14.84-2.76c4.59-1.84,8.62-4.43,12.08-7.79,3.46-3.35,6.18-7.35,8.16-11.98s2.97-9.73,2.97-15.32-.99-10.69-2.97-15.32-4.7-8.62-8.16-11.98"/>
+    <path class="st0" d="M513.82,51.04c0-2.61.67-4.5,2.01-5.67s3.43-1.54,6.25-1.11v-13.78c-5.09-.64-9.4-.32-12.93.95-3.53,1.27-6.24,3.41-8.11,6.41s-2.81,7.01-2.81,12.03v3.92h-6.04v13.67h6.04v39.32h15.58v-39.32h8.8v-13.67h-8.8v-2.76h0Z"/>
+    <path class="st0" d="M827.49,32.6v46.32c0,3.18-.64,5.87-1.91,8.06-1.27,2.19-3.06,3.83-5.35,4.93-2.3,1.1-4.97,1.64-8,1.64s-5.48-.55-7.74-1.64-4.03-2.74-5.3-4.93c-1.27-2.19-1.91-4.88-1.91-8.06v-46.32h-16.43v45.05c0,6.72,1.43,12.28,4.29,16.69,2.86,4.42,6.64,7.72,11.34,9.91s9.87,3.29,15.53,3.29c4.1,0,8.07-.62,11.92-1.86s7.28-3.09,10.28-5.57c3-2.47,5.37-5.56,7.1-9.27,1.73-3.71,2.6-8.11,2.6-13.2v-45.05h-16.43,0Z"/>
+    <path class="st0" d="M617.06,53.75c-2.33.46-4.42,1.29-6.25,2.49-1.84,1.2-3.43,2.72-4.77,4.56l-1.06-7h-14.1v53h15.48v-23c0-3.53.58-6.41,1.75-8.64,1.17-2.23,2.7-3.92,4.61-5.09s3.92-1.87,6.04-2.12,4.1-.09,5.93.48v-14.63c-2.76-.49-5.3-.51-7.63-.05"/>
+    <path class="st0" d="M563.69,87.67c-1.1,1.94-2.47,3.41-4.13,4.4-1.66.99-3.41,1.48-5.25,1.48s-3.57-.49-5.19-1.48c-1.63-.99-2.88-2.47-3.76-4.45-.89-1.98-1.33-4.42-1.33-7.31s.46-5.42,1.38-7.37c.92-1.94,2.19-3.41,3.82-4.4,1.62-.99,3.39-1.49,5.3-1.49s3.67.5,5.3,1.49c1.62.99,2.95,2.47,3.98,4.45,1.02,1.98,1.54,4.42,1.54,7.31s-.55,5.42-1.64,7.37M568.51,56.4c-4.1-2.23-8.76-3.34-13.99-3.34s-9.79,1.11-13.89,3.34c-4.1,2.22-7.35,5.37-9.75,9.43-2.4,4.06-3.6,8.89-3.6,14.47s1.17,10.42,3.5,14.52c2.33,4.1,5.55,7.24,9.65,9.43,4.1,2.19,8.73,3.29,13.89,3.29s9.82-1.1,13.99-3.29,7.47-5.33,9.91-9.43,3.66-8.94,3.66-14.52-1.2-10.4-3.6-14.47c-2.41-4.06-5.66-7.21-9.75-9.43"/>
+  </g>
+</svg></div>
+  <span class="eyebrow">Trh</span>
+  <h1>Ceníky dodavatelů</h1>
+  <p class="perex">Obchodní ceny všech dodavatelů pro domácnosti, jak je mají zadané ve srovnávači ERÚ. Bez distribuce a bez DPH.
+    <small id="src">Načítám…</small></p>
+  <div id="err" class="msg" hidden></div>
+
+  <div id="app" hidden>
+    <div class="bar">
+      <div class="seg" role="group" aria-label="Komodita">
+        <button type="button" data-kom="el" aria-pressed="true">Elektřina</button>
+        <button type="button" data-kom="gas" aria-pressed="false">Plyn</button>
+      </div>
+      <div class="seg" role="group" aria-label="Pohled">
+        <button type="button" data-view="t" aria-pressed="true">Ceníky</button>
+        <button type="button" data-view="z" aria-pressed="false">Změny</button>
+      </div>
+    </div>
+
+    <div id="vT">
+      <div class="bar">
+        <label class="f">Distributor <select id="dist"></select></label>
+        <label class="f" id="tarL">Sazba <select id="tar"></select></label>
+        <label class="f grow">Hledat dodavatele nebo produkt <input id="q" type="search" autocomplete="off" placeholder="např. ČEZ, fix 24"></label>
+        <label class="f">Fixace
+          <select id="fx"><option value="">vše</option><option value="0">bez fixace</option><option value="1-12">do 12 měsíců</option><option value="13-24">13–24 měsíců</option><option value="25-999">přes 24 měsíců</option></select>
+        </label>
+      </div>
+      <div class="kpis" id="kpis"></div>
+      <div class="tbl-wrap"><table id="tbl"></table></div>
+      <div class="foot"><span id="cnt"></span><button class="btn" type="button" id="csv">Stáhnout CSV</button></div>
+    </div>
+
+    <div id="vZ" hidden>
+      <div class="bar"><label class="f grow">Hledat <input id="qz" type="search" autocomplete="off" placeholder="dodavatel nebo produkt"></label></div>
+      <ul class="ch" id="changes"></ul>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var EL_N = { CEZ:'ČEZ Distribuce', EGD:'EG.D', PRE:'PREdistribuce' };
+  var GAS_N = { GN:'GasNet', EGD:'EG.D', PPD:'PPD' };
+  var DN = { CEZ:'ČEZ', EGD:'EG.D', PRE:'PRE', GN:'GasNet', PPD:'PPD' };
+  var SAZBY = ['D01d','D02d','D25d','D26d','D27d','D35d','D45d','D56d','D57d','D61d'];
+  var PASMA = [['0-1.89','do 1,89 MWh'],['1.89-7.56','1,89–7,56 MWh'],['7.56-15','7,56–15 MWh'],['15-25','15–25 MWh'],['25-45','25–45 MWh'],['45-63','45–63 MWh']];
+  var MODEL = { el:{ D01d:[1,0], D02d:[2.5,0], D25d:[2,2], D26d:[2,6], D27d:[2,3], D35d:[3,8], D45d:[2,10], D56d:[2,8], D57d:[2,8], D61d:[1,1] },
+                gas:{ '0-1.89':1, '1.89-7.56':5, '7.56-15':10, '15-25':20, '25-45':35, '45-63':55 } };
+  var FFY = /free\s*for\s*you/i;
+  var $ = function (i) { return document.getElementById(i); };
+  var nf0 = new Intl.NumberFormat('cs-CZ', { maximumFractionDigits:0 }), nf2 = new Intl.NumberFormat('cs-CZ', { minimumFractionDigits:0, maximumFractionDigits:2 });
+  var nfP = new Intl.NumberFormat('cs-CZ', { minimumFractionDigits:2, maximumFractionDigits:2 });
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]; }); };
+  var norm = function (s) { return String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(); };
+  var ls = { g:function (k) { try { return localStorage.getItem('ffy-ceniky-' + k); } catch (e) { return null; } }, s:function (k, v) { try { localStorage.setItem('ffy-ceniky-' + k, v); } catch (e) {} } };
+  var D = null, Z = [], S = { kom:ls.g('kom') || 'el', view:'t', sort:'rok', dir:1 };
+
+  Promise.all([
+    fetch('data/ceniky-eru.json', { cache:'no-cache' }).then(function (r) { if (!r.ok) throw 0; return r.json(); }),
+    fetch('data/ceniky-zmeny.json', { cache:'no-cache' }).then(function (r) { return r.ok ? r.json() : []; }).catch(function () { return []; })
+  ]).then(function (r) {
+    D = r[0]; Z = r[1] || [];
+    var d = new Date(D.stazeno);
+    $('src').textContent = 'Staženo ' + (isNaN(d) ? '?' : d.toLocaleString('cs-CZ', { day:'numeric', month:'numeric', year:'numeric', hour:'2-digit', minute:'2-digit' })) + ' ze srovnávače ERÚ. Dodavatelé si ceníky zadávají sami, u některých mohou být starší.';
+    $('app').hidden = false; setKom(S.kom);
+  }).catch(function () {
+    $('src').textContent = '';
+    $('err').textContent = 'Ceníky zatím nejsou stažené. Na GitHubu spusťte Actions → „Stáhnout ceníky dodavatelů (srovnávač ERÚ)“ → Run workflow a po pár minutách stránku obnovte.';
+    $('err').hidden = false;
+  });
+
+  function setKom(k) {
+    S.kom = k; ls.s('kom', k);
+    document.querySelectorAll('[data-kom]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.kom === k)); });
+    var N = k === 'el' ? EL_N : GAS_N, pd = ls.g('dist-' + k);
+    $('dist').innerHTML = Object.keys(N).map(function (c) { return '<option value="' + c + '">' + N[c] + '</option>'; }).join('');
+    if (pd && N[pd]) $('dist').value = pd;
+    $('tarL').firstChild.nodeValue = k === 'el' ? 'Sazba ' : 'Pásmo spotřeby ';
+    $('tar').innerHTML = k === 'el' ? SAZBY.map(function (s) { return '<option>' + s + '</option>'; }).join('') : PASMA.map(function (p) { return '<option value="' + p[0] + '">' + p[1] + '</option>'; }).join('');
+    var pt = ls.g('tar-' + k); $('tar').value = pt && [].some.call($('tar').options, function (o) { return o.value === pt; }) ? pt : (k === 'el' ? 'D02d' : '7.56-15');
+    render(); renderZ();
+  }
+
+  function rows() {
+    var L = S.kom === 'el' ? D.elektrina : D.plyn, d = $('dist').value, t = $('tar').value, two = S.kom === 'el' && ['D01d','D02d'].indexOf(t) < 0;
+    var q = norm($('q').value.trim()).split(/\s+/).filter(Boolean), fx = $('fx').value, fr = fx && fx !== '0' ? fx.split('-').map(Number) : null;
+    var m = S.kom === 'el' ? MODEL.el[t] : MODEL.gas[t];
+    return L.map(function (p) {
+      var c = p.ceny && p.ceny[d] && p.ceny[d][t]; if (!c) return null;
+      var rok = S.kom === 'el' ? c[0] * 12 + m[0] * c[1] + m[1] * (c[2] != null ? c[2] : c[1]) : c[0] * 12 + m * c[1];
+      return { p:p, mes:c[0], vt:c[1], nt:two ? c[2] : null, rok:rok, fix:p.fixace_mes || 0, ffy:FFY.test(p.dodavatel) };
+    }).filter(function (r) {
+      if (!r) return false;
+      if (q.length) { var n = norm(r.p.dodavatel + ' ' + r.p.produkt); if (!q.every(function (w) { return n.indexOf(w) >= 0; })) return false; }
+      if (fx === '0' && r.fix) return false;
+      if (fr && (r.fix < fr[0] || r.fix > fr[1])) return false;
+      return true;
+    });
+  }
+
+  function render() {
+    var t = $('tar').value, two = S.kom === 'el' && ['D01d','D02d'].indexOf(t) < 0, R = rows();
+    var key = { dod:function (r) { return norm(r.p.dodavatel + r.p.produkt); }, fix:function (r) { return r.fix; }, mes:function (r) { return r.mes; }, vt:function (r) { return r.vt; }, nt:function (r) { return r.nt || 0; }, rok:function (r) { return r.rok; } }[S.sort];
+    R.sort(function (a, b) { var x = key(a), y = key(b); return (x < y ? -1 : x > y ? 1 : 0) * S.dir; });
+    var all = rows().slice().sort(function (a, b) { return a.rok - b.rok; });
+    var rk = function (r) { for (var i = 0; i < all.length; i++) if (all[i].p === r.p) return i + 1; return ''; };
+    var ffy = all.filter(function (r) { return r.ffy; })[0];
+    var m = S.kom === 'el' ? MODEL.el[t] : MODEL.gas[t];
+    var mtxt = S.kom === 'el' ? nf2.format(m[0]) + ' MWh VT' + (two ? ' + ' + nf2.format(m[1]) + ' MWh NT' : '') : nf2.format(m) + ' MWh';
+    var med = all.length ? all[Math.floor(all.length / 2)].rok : 0;
+    $('kpis').innerHTML =
+      kpi('Produktů', nf0.format(all.length), new Set(all.map(function (r) { return r.p.dodavatel; })).size + ' dodavatelů') +
+      kpi('Nejlevnější', all.length ? nf0.format(all[0].rok) + ' Kč' : '–', all.length ? esc(all[0].p.dodavatel) : '') +
+      kpi('Medián', all.length ? nf0.format(med) + ' Kč' : '–', 'obchodní část za rok, ' + mtxt) +
+      kpi('FFY', ffy ? nf0.format(ffy.rok) + ' Kč' : 'není', ffy ? (all.indexOf(ffy) + 1) + '. z ' + all.length + ' · ' + esc(ffy.p.produkt) : 'FFY tu nemá produkt', true);
+    var th = function (k, l, cls) { var on = S.sort === k; return '<th class="' + (cls || '') + '"' + (on ? ' aria-sort="' + (S.dir > 0 ? 'ascending' : 'descending') + '"' : '') + '><button type="button" data-s="' + k + '">' + l + '<span class="ar">' + (on ? (S.dir > 0 ? '▲' : '▼') : '↕') + '</span></button></th>'; };
+    var h = '<thead><tr><th class="l">#</th>' + th('dod', 'Dodavatel a produkt', 'l') + th('fix', 'Fixace') + th('mes', 'Stálý plat<br>Kč/měs') +
+      th('vt', S.kom === 'el' ? (two ? 'VT Kč/MWh' : 'Cena Kč/MWh') : 'Cena Kč/MWh') + (two ? th('nt', 'NT Kč/MWh') : '') + th('rok', 'Obchodní část<br>za rok') + '</tr></thead><tbody>';
+    h += R.length ? R.map(function (r) {
+      return '<tr' + (r.ffy ? ' class="ffy"' : '') + '><td class="rank">' + rk(r) + '</td><td class="l">' + esc(r.p.dodavatel) + (r.ffy ? '<span class="tag ffy">FFY</span>' : '') +
+        '<span class="sub">' + esc(r.p.produkt) + '</span></td><td>' + (r.fix ? r.fix + ' měs.' : '–') + '</td><td>' + nf2.format(r.mes || 0) + '</td><td>' + nfP.format(r.vt || 0) + '</td>' +
+        (two ? '<td>' + (r.nt != null ? nfP.format(r.nt) : '–') + '</td>' : '') + '<td><b>' + nf0.format(r.rok) + '</b></td></tr>';
+    }).join('') : '<tr><td colspan="7" class="empty">Nic neodpovídá filtru.</td></tr>';
+    $('tbl').innerHTML = h + '</tbody>';
+    $('cnt').textContent = 'Zobrazeno ' + R.length + ' z ' + all.length + '. „Obchodní část za rok“ je stálý plat × 12 + cena × modelová spotřeba ' + mtxt + ', bez DPH. Pořadí # je podle ní.';
+    S.last = R;
+  }
+  function kpi(k, v, s, dark) { return '<div class="kpi' + (dark ? ' dark' : '') + '"><div class="k">' + k + '</div><div class="v">' + v + '</div><div class="s">' + s + '</div></div>'; }
+
+  function renderZ() {
+    var q = norm($('qz').value.trim()).split(/\s+/).filter(Boolean), kom = S.kom === 'el' ? 'elektřina' : 'plyn';
+    var L = Z.filter(function (z) { if (z.komodita !== kom) return false; var n = norm(z.dodavatel + ' ' + z.produkt); return q.every(function (w) { return n.indexOf(w) >= 0; }); }).slice().reverse().slice(0, 300);
+    $('changes').innerHTML = L.length ? L.map(function (z) {
+      var b = z.typ === 'změna ceny' ? 'změna' : z.typ, det = '';
+      if (z.detail) det = '<div class="det">' + z.detail.slice(0, 6).map(function (x) {
+        var a = x.z || [], n = x.na || [], i = a[1] != null && n[1] != null ? n[1] - a[1] : null;
+        return DN[x.distributor] + ' ' + x.tarif.replace('-', '–') + ': ' + (a[1] != null ? nf2.format(a[1]) : '–') + ' → ' + (n[1] != null ? nf2.format(n[1]) : '–') + ' Kč/MWh' +
+          (i ? ' <b class="' + (i > 0 ? 'up' : 'dn') + '">(' + (i > 0 ? '+' : '−') + nf2.format(Math.abs(i)) + ')</b>' : '') + (a[0] !== n[0] ? ', stálý plat ' + nf2.format(a[0] || 0) + ' → ' + nf2.format(n[0] || 0) + ' Kč' : '');
+      }).join('<br>') + (z.detail.length > 6 ? '<br>… a dalších ' + (z.detail.length - 6) : '') + '</div>';
+      var d = z.datum.split('-');
+      return '<li><span class="d">' + (+d[2]) + '. ' + (+d[1]) + '. ' + d[0] + '</span><span class="t"><span class="b ' + b + '">' + esc(z.typ) + '</span>' + esc(z.dodavatel) + ' – ' + esc(z.produkt) + '</span>' + det + '</li>';
+    }).join('') : '<li class="empty" style="display:block">Zatím žádné změny. Historie se plní od prvního stažení, každý den se porovná s předchozím.</li>';
+  }
+
+  document.querySelectorAll('[data-kom]').forEach(function (b) { b.addEventListener('click', function () { setKom(b.dataset.kom); }); });
+  document.querySelectorAll('[data-view]').forEach(function (b) { b.addEventListener('click', function () {
+    S.view = b.dataset.view; document.querySelectorAll('[data-view]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+    $('vT').hidden = S.view !== 't'; $('vZ').hidden = S.view !== 'z';
+  }); });
+  $('dist').addEventListener('change', function () { ls.s('dist-' + S.kom, $('dist').value); render(); });
+  $('tar').addEventListener('change', function () { ls.s('tar-' + S.kom, $('tar').value); render(); });
+  $('q').addEventListener('input', render);
+  $('fx').addEventListener('change', render);
+  $('qz').addEventListener('input', renderZ);
+  $('tbl').addEventListener('click', function (e) { var b = e.target.closest('button[data-s]'); if (!b) return; if (S.sort === b.dataset.s) S.dir *= -1; else { S.sort = b.dataset.s; S.dir = 1; } render(); });
+  $('csv').addEventListener('click', function () {
+    var two = S.kom === 'el' && ['D01d','D02d'].indexOf($('tar').value) < 0;
+    var lines = [['Dodavatel','Produkt','Fixace měs.','Stálý plat Kč/měs', two ? 'VT Kč/MWh' : 'Cena Kč/MWh'].concat(two ? ['NT Kč/MWh'] : []).concat(['Obchodní část za rok Kč'])];
+    (S.last || []).forEach(function (r) { lines.push([r.p.dodavatel, r.p.produkt, r.fix, r.mes, r.vt].concat(two ? [r.nt] : []).concat([Math.round(r.rok)])); });
+    var csv = '﻿' + lines.map(function (l) { return l.map(function (v) { v = v == null ? '' : typeof v === 'number' ? String(v).replace('.', ',') : String(v); return /[;"\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }).join(';'); }).join('\r\n');
+    var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type:'text/csv;charset=utf-8' }));
+    a.download = 'ceniky-' + S.kom + '-' + $('dist').value + '-' + $('tar').value + '.csv'; document.body.appendChild(a); a.click(); a.remove();
+  });
+})();
+</script>
+</body>
+</html>

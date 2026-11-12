@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Porovnání nabídek</title>
+<meta name="description" content="Roční cena elektřiny a plynu u FFY a u konkurence, rozložená na obchodní část, distribuci a daně. Data ze srovnávače ERÚ.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script>if (window.self !== window.top) document.documentElement.classList.add('embedded');</script>
+<style>
+  :root {
+    --blue:#214571; --blue-d:#18314E; --green:#45e7a3; --green-d:#1AC77F; --green-l:#EDFDF6; --ink:#0a141e; --bronze:#e8af46;
+    --bronze-l:#FDF7ED; --bg:#eff4fa; --white:#fff; --muted:#548bc9; --line:#d0dff0; --line2:#b1cae7; --border:#e3e8ef;
+    --reg:#92B5DD; --err:#e0786a; --err-bg:#fff4f2;
+  }
+  * { box-sizing:border-box; }
+  [hidden] { display:none !important; }
+  html,body { margin:0; }
+  body { font-family:'Albert Sans','Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,sans-serif; background:var(--bg); color:var(--blue); line-height:1.45; }
+  .wrap { max-width:1180px; margin:0 auto; padding:32px 16px 64px; position:relative; z-index:1; }
+  .arc { position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; }
+  .brand svg { height:31px; width:auto; display:block; margin-bottom:24px; }
+  .embedded .brand { display:none; }
+  .embedded .wrap { padding-top:24px; }
+  .eyebrow { display:inline-block; background:var(--green); color:var(--ink); font-size:13px; font-weight:700; padding:3px 8px; border-radius:2px; }
+  h1 { font-size:clamp(28px,4.5vw,38px); font-weight:800; line-height:1.15; margin:12px 0 6px; text-wrap:balance; }
+  h2 { font-size:18px; font-weight:800; margin:0 0 12px; display:flex; align-items:center; gap:8px; }
+  h2 .n { display:inline-grid; place-items:center; width:24px; height:24px; border-radius:50%; background:var(--green); color:var(--ink); font-size:13px; flex:none; }
+  .perex { font-size:16px; margin:0 0 20px; max-width:70ch; }
+  .perex small { color:var(--muted); display:block; margin-top:4px; }
+
+  .panel { background:var(--white); border:1px solid var(--border); border-radius:21px 0 21px 0; padding:18px 20px; min-width:0; }
+  .grid { display:grid; grid-template-columns:minmax(0,1.05fr) minmax(0,1fr); gap:14px; align-items:start; }
+  @media (max-width:900px) { .grid { grid-template-columns:minmax(0,1fr); } }
+  .stack { display:grid; gap:14px; min-width:0; }
+
+  .seg { display:inline-flex; background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:3px; gap:2px; flex-wrap:wrap; }
+  .seg button { font:inherit; font-size:15px; font-weight:700; color:var(--blue); background:none; border:0; border-radius:7px; padding:8px 16px; cursor:pointer; }
+  .seg button[aria-pressed="true"] { background:var(--blue); color:#fff; }
+
+  .fields { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px 14px; margin-top:14px; }
+  .fields .full { grid-column:1 / -1; }
+  @media (max-width:480px) { .fields { grid-template-columns:minmax(0,1fr); } }
+  label.f { display:grid; gap:4px; font-size:13px; font-weight:700; min-width:0; }
+  label.f > span.h { font-weight:500; color:var(--muted); }
+  input, select { font:inherit; font-size:16px; font-weight:600; color:var(--blue); background:var(--white); border:1.5px solid var(--line); border-radius:10px; padding:9px 11px; width:100%; min-width:0; }
+  input:focus, select:focus { outline:none; border-color:var(--green); }
+  input[type=number] { font-variant-numeric:tabular-nums; }
+  .unit { position:relative; }
+  .unit input { padding-right:62px; }
+  .unit em { position:absolute; right:11px; top:50%; transform:translateY(-50%); font-style:normal; font-size:13px; font-weight:700; color:var(--muted); pointer-events:none; }
+  .psc-out { font-size:13px; margin-top:2px; min-height:19px; }
+  .psc-out b { font-weight:800; }
+  .psc-out.warn { color:#a3711a; }
+  .check { display:flex; gap:8px; align-items:center; font-size:14px; font-weight:600; }
+  .check input { width:18px; height:18px; accent-color:var(--blue); }
+
+  .btn { font:inherit; font-size:14px; font-weight:700; color:var(--ink); background:var(--white); border:1px solid var(--border); border-radius:8px; padding:8px 12px; cursor:pointer; }
+  .btn:hover { background:var(--bg); }
+  .btn.green { background:var(--green); border-color:var(--green); }
+  .btn.green:hover { background:#6FECB8; }
+  .btn.small { font-size:13px; padding:5px 9px; }
+  .btns { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+  :focus-visible { outline:2px solid var(--muted); outline-offset:2px; }
+
+  /* našeptávač */
+  .ac { position:relative; }
+  .ac input { padding-left:38px; }
+  .ac .ico { position:absolute; left:12px; top:50%; transform:translateY(-50%); width:16px; height:16px; color:var(--muted); pointer-events:none; }
+  .ac-list { position:absolute; left:0; right:0; top:calc(100% + 4px); z-index:20; list-style:none; margin:0; padding:4px; background:var(--white); border:1px solid var(--border); border-radius:12px; box-shadow:0 10px 30px rgba(10,20,30,.12); max-height:340px; overflow:auto; }
+  .ac-list li { display:flex; justify-content:space-between; align-items:baseline; gap:12px; padding:8px 10px; border-radius:8px; cursor:pointer; font-size:15px; }
+  .ac-list li[aria-selected="true"] { background:var(--bg); }
+  .ac-list li .t { min-width:0; overflow-wrap:anywhere; }
+  .ac-list li .t mark { background:#DBFAED; color:inherit; border-radius:2px; }
+  .ac-list li .m { flex:none; font-size:12px; font-weight:700; color:var(--muted); }
+  .ac-list li.sep { cursor:default; font-size:11px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); padding:8px 10px 2px; }
+  .ac-list li.none { cursor:default; color:var(--muted); }
+
+  .plist { margin-top:12px; border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+  .plist .ph { display:flex; justify-content:space-between; align-items:center; gap:8px; padding:10px 12px; background:var(--bg); font-weight:800; }
+  .plist .row { display:grid; grid-template-columns:minmax(0,1fr) auto auto; gap:10px; align-items:center; padding:9px 12px; border-top:1px solid var(--border); font-size:14px; }
+  .plist .row .nm { font-weight:700; overflow-wrap:anywhere; }
+  .plist .row .fx { font-size:12px; color:var(--muted); }
+  .plist .row .pr { font-weight:800; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .plist .empty { padding:10px 12px; border-top:1px solid var(--border); color:var(--muted); font-size:14px; }
+
+  .chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .chip { display:inline-flex; align-items:center; gap:6px; background:var(--bg); border:1px solid var(--line); border-radius:999px; padding:4px 6px 4px 11px; font-size:13px; font-weight:700; max-width:100%; }
+  .chip span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .chip button { all:unset; cursor:pointer; width:20px; height:20px; display:grid; place-items:center; border-radius:50%; color:var(--muted); }
+  .chip button:hover { background:var(--line); color:var(--blue); }
+
+  .manual { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; margin-top:10px; }
+  @media (max-width:480px) { .manual { grid-template-columns:minmax(0,1fr); } }
+  .note { font-size:13px; color:var(--muted); margin:8px 0 0; }
+  .msg { margin-top:10px; padding:10px 14px; border-left:4px solid var(--bronze); border-radius:0 0 21px 0; background:var(--bronze-l); font-size:14px; }
+  .msg.err { border-color:var(--err); background:var(--err-bg); }
+
+  /* výsledky */
+  .results { margin-top:14px; }
+  .rhead { display:flex; justify-content:space-between; align-items:flex-end; gap:10px; flex-wrap:wrap; margin-bottom:12px; }
+  .rhead p { margin:0; font-size:14px; color:var(--muted); }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; }
+  .card { background:var(--white); border:1px solid var(--border); border-radius:21px 0 21px 0; padding:16px 18px; min-width:0; display:flex; flex-direction:column; gap:6px; }
+  .card.ffy { background:var(--blue); border-color:var(--blue); color:#fff; }
+  .card .who { font-size:12px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); overflow-wrap:anywhere; }
+  .card.ffy .who { color:var(--green); }
+  .card .prod { font-size:16px; font-weight:800; line-height:1.25; overflow-wrap:anywhere; }
+  .card .fx { font-size:12px; color:var(--muted); }
+  .card.ffy .fx { color:#B1CAE7; }
+  .card .tot { font-size:28px; font-weight:800; font-variant-numeric:tabular-nums; line-height:1.1; margin-top:6px; white-space:nowrap; }
+  .card .tot small { font-size:13px; font-weight:700; margin-left:4px; }
+  .card .mo { font-size:13px; font-variant-numeric:tabular-nums; }
+  .card.ffy .mo { color:#D0DFF0; }
+  .diff { display:inline-block; align-self:flex-start; font-size:13px; font-weight:800; padding:3px 8px; border-radius:6px; font-variant-numeric:tabular-nums; }
+  .diff.up { background:var(--green-l); color:#107E51; }
+  .diff.down { background:var(--bronze-l); color:#7F5810; }
+  .diff.base { background:var(--green); color:var(--ink); }
+  .stackbar { display:flex; height:10px; border-radius:5px; overflow:hidden; margin-top:6px; background:var(--bg); }
+  .stackbar i { display:block; height:100%; }
+  .stackbar .o { background:var(--blue); }
+  .card.ffy .stackbar { background:var(--blue-d); }
+  .card.ffy .stackbar .o { background:var(--green); }
+  .stackbar .r { background:var(--reg); }
+  .stackbar .t { background:var(--bronze); }
+  .legend { display:flex; flex-wrap:wrap; gap:6px 16px; font-size:13px; margin-top:10px; }
+  .legend span { display:inline-flex; align-items:center; gap:6px; }
+  .legend i { width:12px; height:12px; border-radius:3px; display:inline-block; }
+
+  .tbl-wrap { overflow-x:auto; margin-top:14px; background:var(--white); border:1px solid var(--border); border-radius:21px 0 21px 0; }
+  table { border-collapse:collapse; width:100%; font-size:14px; font-variant-numeric:tabular-nums; }
+  th, td { padding:9px 12px; text-align:right; white-space:nowrap; }
+  th:first-child, td:first-child { text-align:left; white-space:normal; min-width:200px; }
+  thead th { background:var(--blue); color:#fff; font-weight:700; vertical-align:bottom; }
+  thead th.ffy { background:var(--blue-d); }
+  thead th .s { display:block; font-size:12px; font-weight:500; color:#B1CAE7; white-space:normal; max-width:200px; margin-left:auto; }
+  tbody tr:nth-child(even) td { background:var(--bg); }
+  tr.grp td { background:var(--white) !important; font-weight:800; padding-top:14px; color:var(--muted); font-size:12px; letter-spacing:.05em; text-transform:uppercase; }
+  tr.sum td { font-weight:800; }
+  tr.total td { background:var(--green) !important; color:var(--ink); font-weight:800; font-size:15px; }
+  td.ffy { box-shadow:inset 3px 0 0 var(--green); }
+  .sub { color:var(--muted); font-size:12px; display:block; font-weight:500; }
+
+  .empty-state { text-align:center; padding:28px 16px; color:var(--muted); }
+  .src { font-size:13px; color:var(--muted); margin-top:18px; }
+  .toast { position:fixed; left:50%; bottom:20px; transform:translateX(-50%); background:var(--blue); color:#fff; padding:10px 16px; border-radius:10px; font-weight:700; font-size:14px; z-index:50; }
+  .sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<svg class="arc" viewBox="0 0 210 297" preserveAspectRatio="xMaxYMid meet" aria-hidden="true">
+  <path fill="#DFE9F6" d="M210,0 H165 C120,22 98,75 104,135 C110,195 140,250 177,297 H210 Z"/>
+</svg>
+<div class="wrap">
+  <div class="brand"><svg id="Vrstva_1" xmlns="http://www.w3.org/2000/svg" width="843.92" height="139.49" version="1.1" viewBox="0 0 843.92 139.49">
+  <defs>
+    <style>
+      .st0 {
+        fill: #214571;
+      }
+
+      .st1 {
+        fill: #45e7a3;
+      }
+
+      .st2 {
+        fill: #30c487;
+      }
+    </style>
+  </defs>
+  <g>
+    <path class="st2" d="M88.66,38.45c2.04-2.35,4.14-4.6,6.28-6.76C65.82,2.28,29.46-8.68,10.91,7.44-9.01,24.74-.89,66.68,29.06,101.11c13.54,15.56,29.21,26.93,44.17,33.11-.95-.64-1.87-1.34-2.75-2.1-19.92-17.3-11.78-59.23,18.17-93.66"/>
+    <path class="st1" d="M178.96,7.44c-18.56-16.12-54.92-5.16-84.02,24.25-2.14,2.16-4.22,4.4-6.28,6.76-29.95,34.43-38.09,76.37-18.17,93.67.88.76,1.79,1.45,2.75,2.1,7.54,3.12,14.89,4.91,21.7,5.27,6.8-.36,14.16-2.16,21.7-5.27,14.95-6.18,30.64-17.54,44.17-33.11,29.95-34.43,38.09-76.37,18.17-93.66"/>
+  </g>
+  <polygon class="st0" points="222.52 106.8 238.84 106.8 238.84 75.74 266.93 75.74 266.93 62.6 238.84 62.6 238.84 46.28 276.36 46.28 276.36 32.6 222.52 32.6 222.52 106.8"/>
+  <polygon class="st0" points="359.78 106.8 413.62 106.8 413.62 93.13 376.1 93.13 376.1 75.74 404.19 75.74 404.19 62.6 376.1 62.6 376.1 46.28 413.62 46.28 413.62 32.6 359.78 32.6 359.78 106.8"/>
+  <polygon class="st0" points="426.24 106.8 480.08 106.8 480.08 93.13 442.56 93.13 442.56 75.74 470.65 75.74 470.65 62.6 442.56 62.6 442.56 46.28 480.08 46.28 480.08 32.6 426.24 32.6 426.24 106.8"/>
+  <path class="st0" d="M303.82,46.28h15.26c3.74,0,6.52.88,8.32,2.65,1.8,1.77,2.7,4.17,2.7,7.21,0,2.05-.41,3.84-1.22,5.35-.81,1.52-2.03,2.67-3.66,3.44-1.63.78-3.71,1.17-6.25,1.17h-15.16v-19.82h0ZM332.01,77.76c3.39-1.34,6.18-3.16,8.37-5.46,2.19-2.29,3.82-4.84,4.88-7.63s1.59-5.64,1.59-8.53c0-4.24-1.01-8.14-3.02-11.71-2.02-3.57-5.02-6.43-9.01-8.59-3.99-2.15-8.99-3.23-15-3.23h-32.33v74.2h16.32v-27.03h10.51l15.67,27.03h18.23l-17.44-28.64c.41-.14.84-.25,1.23-.4"/>
+  <polygon class="st0" points="679.91 32.6 662.42 65.04 644.83 32.6 626.17 32.6 654.15 81.68 654.15 106.8 670.48 106.8 670.48 81.57 698.56 32.6 679.91 32.6"/>
+  <g>
+    <path class="st0" d="M751.32,82.05c-1.84,3.57-4.35,6.38-7.53,8.43-3.18,2.05-6.89,3.07-11.13,3.07s-7.86-1.02-11.08-3.07c-3.22-2.05-5.72-4.86-7.53-8.43-1.8-3.57-2.7-7.68-2.7-12.35s.9-8.89,2.7-12.45c1.8-3.57,4.31-6.36,7.53-8.37,3.21-2.01,6.91-3.02,11.08-3.02s7.95,1.01,11.13,3.02c3.18,2.01,5.69,4.81,7.53,8.37,1.84,3.57,2.76,7.72,2.76,12.45s-.92,8.78-2.76,12.35M759.59,42.41c-3.46-3.36-7.49-5.95-12.08-7.79s-9.54-2.76-14.84-2.76-10.14.92-14.73,2.76c-4.59,1.84-8.62,4.43-12.08,7.79s-6.18,7.35-8.16,11.98-2.97,9.74-2.97,15.32.99,10.69,2.97,15.32,4.7,8.62,8.16,11.98c3.46,3.36,7.49,5.95,12.08,7.79,4.59,1.84,9.5,2.76,14.73,2.76s10.24-.92,14.84-2.76c4.59-1.84,8.62-4.43,12.08-7.79,3.46-3.35,6.18-7.35,8.16-11.98s2.97-9.73,2.97-15.32-.99-10.69-2.97-15.32-4.7-8.62-8.16-11.98"/>
+    <path class="st0" d="M513.82,51.04c0-2.61.67-4.5,2.01-5.67s3.43-1.54,6.25-1.11v-13.78c-5.09-.64-9.4-.32-12.93.95-3.53,1.27-6.24,3.41-8.11,6.41s-2.81,7.01-2.81,12.03v3.92h-6.04v13.67h6.04v39.32h15.58v-39.32h8.8v-13.67h-8.8v-2.76h0Z"/>
+    <path class="st0" d="M827.49,32.6v46.32c0,3.18-.64,5.87-1.91,8.06-1.27,2.19-3.06,3.83-5.35,4.93-2.3,1.1-4.97,1.64-8,1.64s-5.48-.55-7.74-1.64-4.03-2.74-5.3-4.93c-1.27-2.19-1.91-4.88-1.91-8.06v-46.32h-16.43v45.05c0,6.72,1.43,12.28,4.29,16.69,2.86,4.42,6.64,7.72,11.34,9.91s9.87,3.29,15.53,3.29c4.1,0,8.07-.62,11.92-1.86s7.28-3.09,10.28-5.57c3-2.47,5.37-5.56,7.1-9.27,1.73-3.71,2.6-8.11,2.6-13.2v-45.05h-16.43,0Z"/>
+    <path class="st0" d="M617.06,53.75c-2.33.46-4.42,1.29-6.25,2.49-1.84,1.2-3.43,2.72-4.77,4.56l-1.06-7h-14.1v53h15.48v-23c0-3.53.58-6.41,1.75-8.64,1.17-2.23,2.7-3.92,4.61-5.09s3.92-1.87,6.04-2.12,4.1-.09,5.93.48v-14.63c-2.76-.49-5.3-.51-7.63-.05"/>
+    <path class="st0" d="M563.69,87.67c-1.1,1.94-2.47,3.41-4.13,4.4-1.66.99-3.41,1.48-5.25,1.48s-3.57-.49-5.19-1.48c-1.63-.99-2.88-2.47-3.76-4.45-.89-1.98-1.33-4.42-1.33-7.31s.46-5.42,1.38-7.37c.92-1.94,2.19-3.41,3.82-4.4,1.62-.99,3.39-1.49,5.3-1.49s3.67.5,5.3,1.49c1.62.99,2.95,2.47,3.98,4.45,1.02,1.98,1.54,4.42,1.54,7.31s-.55,5.42-1.64,7.37M568.51,56.4c-4.1-2.23-8.76-3.34-13.99-3.34s-9.79,1.11-13.89,3.34c-4.1,2.22-7.35,5.37-9.75,9.43-2.4,4.06-3.6,8.89-3.6,14.47s1.17,10.42,3.5,14.52c2.33,4.1,5.55,7.24,9.65,9.43,4.1,2.19,8.73,3.29,13.89,3.29s9.82-1.1,13.99-3.29,7.47-5.33,9.91-9.43,3.66-8.94,3.66-14.52-1.2-10.4-3.6-14.47c-2.41-4.06-5.66-7.21-9.75-9.43"/>
+  </g>
+</svg></div>
+  <span class="eyebrow">Interní nástroj</span>
+  <h1>Porovnání nabídek</h1>
+  <p class="perex">Roční cena u FFY a u konkurence pro konkrétní odběrné místo, rozložená na obchodní část, distribuci a daně.
+    <small id="srcLine">Načítám data…</small></p>
+
+  <div id="dataErr" class="msg err" hidden></div>
+
+  <div class="grid" id="app" hidden>
+    <div class="stack">
+      <section class="panel" aria-labelledby="h-om">
+        <h2 id="h-om"><span class="n">1</span>Odběrné místo</h2>
+        <div class="seg" role="group" aria-label="Komodita">
+          <button type="button" data-kom="el" aria-pressed="true">Elektřina</button>
+          <button type="button" data-kom="gas" aria-pressed="false">Plyn</button>
+        </div>
+        <div class="fields">
+          <label class="f">PSČ <span class="h">vyplní distributora</span>
+            <input id="psc" inputmode="numeric" autocomplete="off" placeholder="370 01" maxlength="6">
+          </label>
+          <label class="f">Distributor
+            <select id="dist"></select>
+          </label>
+          <div class="full psc-out" id="pscOut" aria-live="polite"></div>
+
+          <label class="f el">Distribuční sazba
+            <select id="sazba"></select>
+          </label>
+          <label class="f el">Jistič
+            <select id="jistic"></select>
+          </label>
+          <label class="f el" id="vtL">Spotřeba VT <span class="h">vysoký tarif</span>
+            <span class="unit"><input id="vt" type="number" min="0" step="0.1" value="2.5"><em>MWh/rok</em></span>
+          </label>
+          <label class="f el" id="ntWrap">Spotřeba NT <span class="h">nízký tarif</span>
+            <span class="unit"><input id="nt" type="number" min="0" step="0.1" value="0"><em>MWh/rok</em></span>
+          </label>
+
+          <label class="f gas" hidden>Roční spotřeba
+            <span class="unit"><input id="gmwh" type="number" min="0" max="63" step="0.5" value="15"><em id="gunitLbl">MWh/rok</em></span>
+          </label>
+          <label class="f gas" hidden>Jednotka
+            <select id="gunit"><option value="mwh">MWh</option><option value="m3">m³ (×10,6 kWh)</option></select>
+          </label>
+          <div class="full gas psc-out" id="pasmoOut" hidden></div>
+          <label class="full check gas" hidden><input type="checkbox" id="dan"> Podnikatel, účtovat daň ze zemního plynu (domácnost je osvobozená)</label>
+
+          <label class="f">Regulované ceny
+            <select id="rok"></select>
+          </label>
+        </div>
+      </section>
+    </div>
+
+    <div class="stack">
+      <section class="panel" aria-labelledby="h-ffy">
+        <h2 id="h-ffy"><span class="n">2</span>Nabídka FFY</h2>
+        <label class="f">Produkt
+          <select id="ffySel"></select>
+        </label>
+        <div id="ffyManual" hidden>
+          <div class="manual">
+            <label class="f">Stálý plat <span class="unit"><input id="fm" type="number" min="0" step="1"><em>Kč/měs</em></span></label>
+            <label class="f" id="fvtL">Cena VT <span class="unit"><input id="fvt" type="number" min="0" step="1"><em>Kč/MWh</em></span></label>
+            <label class="f" id="fntL">Cena NT <span class="unit"><input id="fnt" type="number" min="0" step="1"><em>Kč/MWh</em></span></label>
+          </div>
+          <p class="note">Ceny bez DPH, jen obchodní část. Pamatuje si je tento prohlížeč.</p>
+        </div>
+        <div id="ffyWarn" class="msg" hidden></div>
+      </section>
+
+      <section class="panel" aria-labelledby="h-k">
+        <h2 id="h-k"><span class="n">3</span>Konkurence</h2>
+        <div class="ac">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+          <input id="q" type="text" role="combobox" aria-expanded="false" aria-controls="acList" aria-autocomplete="list" autocomplete="off" placeholder="Začněte psát dodavatele nebo produkt">
+          <ul class="ac-list" id="acList" role="listbox" aria-label="Dodavatelé a produkty" hidden></ul>
+        </div>
+        <div id="plist"></div>
+        <div class="chips" id="chips" aria-label="Vybrané nabídky"></div>
+        <div class="btns">
+          <button class="btn small" type="button" id="cheap">+ 3 nejlevnější na trhu</button>
+          <button class="btn small" type="button" id="addManual">+ Ceník z faktury zákazníka</button>
+          <button class="btn small" type="button" id="clearK" hidden>Vyčistit</button>
+        </div>
+        <div id="manK" hidden>
+          <div class="fields" style="margin-top:10px">
+            <label class="f full">Název <input id="kn" type="text" placeholder="např. Současný dodavatel zákazníka"></label>
+          </div>
+          <div class="manual">
+            <label class="f">Stálý plat <span class="unit"><input id="km" type="number" min="0" step="1"><em>Kč/měs</em></span></label>
+            <label class="f" id="kvtL">Cena VT <span class="unit"><input id="kvt" type="number" min="0" step="1"><em>Kč/MWh</em></span></label>
+            <label class="f" id="kntL">Cena NT <span class="unit"><input id="knt" type="number" min="0" step="1"><em>Kč/MWh</em></span></label>
+          </div>
+          <div class="btns"><button class="btn green small" type="button" id="kAdd">Přidat do porovnání</button><button class="btn small" type="button" id="kCancel">Zrušit</button></div>
+          <p class="note">Obchodní část bez DPH, jak je na faktuře nebo v ceníku.</p>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <section class="results" id="results" hidden aria-live="polite">
+    <div class="rhead">
+      <div><h2 style="margin:0">Výsledek za rok</h2><p id="rsub"></p></div>
+      <div class="btns" style="margin:0">
+        <button class="btn" type="button" id="copy">Kopírovat pro zákazníka</button>
+      </div>
+    </div>
+    <div class="cards" id="cards"></div>
+    <div class="legend" aria-hidden="true">
+      <span><i style="background:var(--blue)"></i>Obchodní část</span>
+      <span><i style="background:var(--reg)"></i>Distribuce a regulované platby</span>
+      <span><i style="background:var(--bronze)"></i>Daň a DPH</span>
+    </div>
+    <div class="tbl-wrap"><table id="tbl"></table></div>
+    <p class="src" id="foot"></p>
+  </section>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var DPH = 0.21, M3 = 0.0106;
+  var EL_N = { CEZ:'ČEZ Distribuce', EGD:'EG.D', PRE:'PREdistribuce' };
+  var GAS_N = { GN:'GasNet', EGD:'EG.D (Gas Distribution)', PPD:'Pražská plynárenská Distribuce' };
+  var SAZBY = ['D01d','D02d','D25d','D26d','D27d','D35d','D45d','D56d','D57d','D61d'];
+  var SAZBY_POP = { D01d:'malá spotřeba', D02d:'běžná domácnost', D25d:'ohřev vody, 8 h NT', D26d:'akumulační topení, 8 h NT', D27d:'elektromobil, 8 h NT', D35d:'hybridní TČ, 16 h NT', D45d:'přímotopy, 20 h NT', D56d:'tepelné čerpadlo, 22 h NT', D57d:'tepelné čerpadlo, 20 h NT', D61d:'víkendový objekt' };
+  var PASMA = [['0-1.89',1.89,'do 1,89 MWh'],['1.89-7.56',7.56,'1,89–7,56 MWh'],['7.56-15',15,'7,56–15 MWh'],['15-25',25,'15–25 MWh'],['25-45',45,'25–45 MWh'],['45-63',63,'45–63 MWh']];
+  var FFY_RE = /free\s*for\s*you/i;
+
+  var $ = function (id) { return document.getElementById(id); };
+  var nf0 = new Intl.NumberFormat('cs-CZ', { maximumFractionDigits:0 });
+  var nf2 = new Intl.NumberFormat('cs-CZ', { minimumFractionDigits:2, maximumFractionDigits:2 });
+  var kc = function (v) { return nf0.format(Math.round(v)) + ' Kč'; };
+  var norm = function (s) { return String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(); };
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]; }); };
+  var num = function (el) { var v = parseFloat(String(el.value).replace(',', '.')); return isFinite(v) && v >= 0 ? v : 0; };
+  var store = { get:function (k) { try { return JSON.parse(localStorage.getItem('ffy-porovnani-' + k)); } catch (e) { return null; } },
+                set:function (k, v) { try { localStorage.setItem('ffy-porovnani-' + k, JSON.stringify(v)); } catch (e) {} } };
+
+  var CEN = null, REG = {}, PSC = null;
+  var S = { kom:'el', picked:{ el:[], gas:[] }, openSupplier:null };
+
+  /* ---------- načtení dat ---------- */
+  function j(url) { return fetch(url, { cache:'no-cache' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); }
+  var Y = new Date().getFullYear();
+  Promise.all([
+    j('data/ceniky-eru.json').catch(function () { return null; }),
+    j('data/regulovane-ceny-' + (Y - 1) + '.json').catch(function () { return null; }),
+    j('data/regulovane-ceny-' + Y + '.json').catch(function () { return null; }),
+    j('data/regulovane-ceny-' + (Y + 1) + '.json').catch(function () { return null; }),
+    j('data/psc.json').catch(function () { return null; })
+  ]).then(function (r) {
+    CEN = r[0]; PSC = r[4];
+    [r[1], r[2], r[3]].forEach(function (x) { if (x && x.rok) REG[x.rok] = x; });
+    var roky = Object.keys(REG).sort();
+    if (!roky.length) return fail('Chybí soubor s regulovanými cenami (data/regulovane-ceny-' + Y + '.json).');
+    if (!CEN) return fail('Ceníky dodavatelů zatím nejsou stažené. Na GitHubu spusťte Actions → „Stáhnout ceníky dodavatelů (srovnávač ERÚ)“ → Run workflow a po pár minutách stránku obnovte.');
+    var pref = REG[Y] ? String(Y) : roky[roky.length - 1];
+    $('rok').innerHTML = roky.map(function (y) { return '<option value="' + y + '"' + (y === pref ? ' selected' : '') + '>' + y + (REG[y].platnost_od ? ' (od ' + fmtD(REG[y].platnost_od) + ')' : '') + '</option>'; }).join('');
+    var d = new Date(CEN.stazeno);
+    $('srcLine').textContent = 'Ceníky ze srovnávače ERÚ, staženo ' + (isNaN(d) ? '?' : d.toLocaleString('cs-CZ', { day:'numeric', month:'numeric', year:'numeric', hour:'2-digit', minute:'2-digit' })) + '. ' +
+      CEN.elektrina.length + ' produktů elektřiny, ' + CEN.plyn.length + ' produktů plynu. Všechny ceny bez DPH, DPH 21 % se připočítá.';
+    restore(); setKom(S.kom, true); $('app').hidden = false;
+  });
+  function fail(t) { $('srcLine').textContent = ''; $('dataErr').textContent = t; $('dataErr').hidden = false; }
+  function fmtD(s) { var p = s.split('-'); return +p[2] + '. ' + +p[1] + '. ' + p[0]; }
+
+  /* ---------- stav formuláře ---------- */
+  function restore() {
+    var s = store.get('form') || {};
+    if (s.kom) S.kom = s.kom;
+    if (s.picked) S.picked = s.picked;
+    ['vt','nt','gmwh'].forEach(function (k) { if (s[k] != null) $(k).value = s[k]; });
+    if (s.gunit) $('gunit').value = s.gunit;
+    if (s.dan) $('dan').checked = true;
+    S.saved = s;
+  }
+  function save() {
+    store.set('form', { kom:S.kom, picked:S.picked, vt:$('vt').value, nt:$('nt').value, gmwh:$('gmwh').value, gunit:$('gunit').value, dan:$('dan').checked,
+      dist_el:S.kom === 'el' ? $('dist').value : (S.saved.dist_el), dist_gas:S.kom === 'gas' ? $('dist').value : (S.saved.dist_gas),
+      sazba:$('sazba').value || S.saved.sazba, jistic:$('jistic').value || S.saved.jistic, ffy_el:S.saved.ffy_el, ffy_gas:S.saved.ffy_gas });
+    S.saved = store.get('form');
+  }
+
+  function setKom(k, first) {
+    S.kom = k;
+    document.querySelectorAll('[data-kom]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.kom === k)); });
+    document.querySelectorAll('.el').forEach(function (e) { e.hidden = k !== 'el'; });
+    document.querySelectorAll('.gas').forEach(function (e) { e.hidden = k !== 'gas'; });
+    var names = k === 'el' ? EL_N : GAS_N, saved = S.saved || {};
+    var cur = k === 'el' ? saved.dist_el : saved.dist_gas;
+    $('dist').innerHTML = Object.keys(names).map(function (c) { return '<option value="' + c + '">' + names[c] + '</option>'; }).join('');
+    if (cur && names[cur]) $('dist').value = cur;
+    if (k === 'el' && !$('sazba').options.length) {
+      $('sazba').innerHTML = SAZBY.map(function (s) { return '<option value="' + s + '">' + s + ' – ' + SAZBY_POP[s] + '</option>'; }).join('');
+      $('sazba').value = saved.sazba || 'D02d';
+    }
+    $('fvtL').firstChild.nodeValue = k === 'el' ? 'Cena VT ' : 'Cena za plyn ';
+    $('kvtL').firstChild.nodeValue = k === 'el' ? 'Cena VT ' : 'Cena za plyn ';
+    $('q').value = ''; closeAc(); S.openSupplier = null; $('manK').hidden = true;
+    if (/^\d{3}\s?\d{2}$/.test($('psc').value.trim())) applyPsc();
+    fillJistic(); fillFfy(); render();
+    if (!first) save();
+  }
+
+  function fillJistic() {
+    if (S.kom !== 'el') return;
+    var R = reg(), sz = $('sazba').value, d = R.elektrina.distribuce[$('dist').value][sz];
+    var prev = $('jistic').value || (S.saved && S.saved.jistic) || '3x25';
+    var opts = Object.keys(d.jistic).filter(function (k) { return d.jistic[k] != null; });
+    if (d.jistic_nad_3x63) opts = opts.concat(Object.keys(d.jistic_nad_3x63).filter(function (k) { return k !== 'zaA'; }));
+    $('jistic').innerHTML = opts.map(function (o) { return '<option value="' + o + '">' + o.replace('3x10/1x25', 'do 3×10 A nebo 1×25 A').replace(/^3x(\d+)$/, 'do 3×$1 A') + '</option>'; }).join('');
+    $('jistic').value = opts.indexOf(prev) >= 0 ? prev : '3x25';
+    var two = d.nt != null;
+    $('ntWrap').hidden = !two; $('fntL').hidden = !two; $('kntL').hidden = !two;
+    $('vtL').firstChild.nodeValue = two ? 'Spotřeba VT ' : 'Roční spotřeba ';
+    $('vtL').querySelector('.h').textContent = two ? 'vysoký tarif' : 'jednotarifová sazba';
+    $('fvtL').firstChild.nodeValue = two ? 'Cena VT ' : 'Cena za MWh ';
+    $('kvtL').firstChild.nodeValue = two ? 'Cena VT ' : 'Cena za MWh ';
+  }
+
+  function reg() { return REG[$('rok').value]; }
+  function pasmo(mwh) { for (var i = 0; i < PASMA.length; i++) if (mwh < PASMA[i][1] || i === PASMA.length - 1) return PASMA[i]; }
+  function gasMwh() { var v = num($('gmwh')); return $('gunit').value === 'm3' ? v * M3 : v; }
+
+  /* ---------- PSČ ---------- */
+  function applyPsc() {
+    var p = $('psc').value.replace(/\s+/g, ''), out = $('pscOut');
+    out.className = 'full psc-out';
+    if (!/^\d{5}$/.test(p)) { out.textContent = p.length > 5 ? 'PSČ má pět číslic.' : ''; return; }
+    var r = PSC && PSC.data[p];
+    if (!r) { out.textContent = 'PSČ ' + p.slice(0, 3) + ' ' + p.slice(3) + ' v seznamu není, vyberte distributora ručně.'; out.classList.add('warn'); return; }
+    var c = S.kom === 'el' ? r[0] : r[1], names = S.kom === 'el' ? EL_N : GAS_N;
+    $('dist').value = c;
+    var ok = PSC.okresy[r[4]].split(';').join(' / ');
+    out.innerHTML = '<b>' + esc(r[3]) + '</b>, ' + esc(ok) + ' → ' + esc(names[c]) + (r[2] ? ' · hranice okresů, ověřte podle EAN/EIC' : '');
+    if (r[2]) out.classList.add('warn');
+    fillJistic(); fillFfy(); render(); save();
+  }
+
+  /* ---------- produkty ---------- */
+  function list() { return S.kom === 'el' ? CEN.elektrina : CEN.plyn; }
+  function key(p) { return p.dodavatel + '|' + p.produkt; }
+  function tarif() { return S.kom === 'el' ? $('sazba').value : pasmo(gasMwh())[0]; }
+  function priceOf(p) { var c = p.ceny && p.ceny[$('dist').value]; return c ? c[tarif()] || null : null; }
+  function available() { return list().filter(function (p) { return priceOf(p); }); }
+  function byKey(k) { var L = list(); for (var i = 0; i < L.length; i++) if (key(L[i]) === k) return L[i]; return null; }
+  function fixTxt(m) { return m ? 'fixace ' + m + ' měs.' : 'bez fixace'; }
+
+  /* ---------- FFY ---------- */
+  function fillFfy() {
+    var ffy = available().filter(function (p) { return FFY_RE.test(p.dodavatel); });
+    var prev = (S.saved || {})['ffy_' + S.kom];
+    $('ffySel').innerHTML = ffy.map(function (p) { return '<option value="' + esc(key(p)) + '">' + esc(p.produkt) + ' (ERÚ, ' + fixTxt(p.fixace_mes) + ')</option>'; }).join('') +
+      '<option value="__manual">Vlastní ceník FFY (zadat ručně)</option>';
+    $('ffySel').value = prev && (prev === '__manual' || ffy.some(function (p) { return key(p) === prev; })) ? prev : (ffy.length ? key(ffy[0]) : '__manual');
+    var m = store.get('ffyman-' + S.kom) || {};
+    $('fm').value = m.m != null ? m.m : ''; $('fvt').value = m.vt != null ? m.vt : ''; $('fnt').value = m.nt != null ? m.nt : '';
+    ffyUi();
+  }
+  function ffyUi() {
+    var man = $('ffySel').value === '__manual';
+    $('ffyManual').hidden = !man;
+    var w = $('ffyWarn'), p = man ? null : byKey($('ffySel').value);
+    if (p) {
+      var d = new Date(CEN.stazeno);
+      w.innerHTML = 'Cena je z ceníku, který má FFY zadaný ve srovnávači ERÚ. Pokud neodpovídá aktuální nabídce, vyberte „Vlastní ceník FFY“.';
+      w.hidden = false;
+    } else w.hidden = true;
+  }
+  function ffyOffer() {
+    if ($('ffySel').value === '__manual') {
+      var m = { m:num($('fm')), vt:num($('fvt')), nt:$('fnt').value === '' ? null : num($('fnt')) };
+      if (!$('fvt').value) return null;
+      return { ffy:true, who:'FREE for YOU', name:'Vlastní ceník FFY', fix:'', c:[m.m, m.vt, m.nt] };
+    }
+    var p = byKey($('ffySel').value), c = p && priceOf(p);
+    return c ? { ffy:true, who:'FREE for YOU', name:p.produkt, fix:fixTxt(p.fixace_mes), c:c, eru:true } : null;
+  }
+
+  /* ---------- našeptávač ---------- */
+  var acItems = [], acIdx = -1;
+  function suppliers() {
+    var m = {};
+    available().forEach(function (p) { if (FFY_RE.test(p.dodavatel)) return; (m[p.dodavatel] = m[p.dodavatel] || []).push(p); });
+    return m;
+  }
+  function hl(text, q) {
+    if (!q) return esc(text);
+    var n = norm(text), i = n.indexOf(q);
+    return i < 0 ? esc(text) : esc(text.slice(0, i)) + '<mark>' + esc(text.slice(i, i + q.length)) + '</mark>' + esc(text.slice(i + q.length));
+  }
+  function runAc() {
+    var q = norm($('q').value.trim()), sup = suppliers(), names = Object.keys(sup);
+    var ul = $('acList');
+    if (!q) { closeAc(); return; }
+    var words = q.split(/\s+/);
+    var match = function (s) { var n = norm(s); return words.every(function (w) { return n.indexOf(w) >= 0; }); };
+    var sMatch = names.filter(match).sort(function (a, b) { return (norm(a).indexOf(q) === 0 ? 0 : 1) - (norm(b).indexOf(q) === 0 ? 0 : 1) || a.localeCompare(b, 'cs'); });
+    var pMatch = [];
+    names.forEach(function (n) { sup[n].forEach(function (p) { if (sMatch.indexOf(n) < 0 && match(p.produkt)) pMatch.push(p); }); });
+    acItems = [];
+    var html = '';
+    if (sMatch.length) {
+      html += '<li class="sep" role="presentation">Dodavatelé</li>';
+      sMatch.slice(0, 8).forEach(function (n) {
+        acItems.push({ t:'s', v:n });
+        html += '<li role="option" id="ac' + (acItems.length - 1) + '" data-i="' + (acItems.length - 1) + '"><span class="t">' + hl(n, words[0]) + '</span><span class="m">' + sup[n].length + ' ' + (sup[n].length === 1 ? 'produkt' : sup[n].length < 5 ? 'produkty' : 'produktů') + '</span></li>';
+      });
+    }
+    if (pMatch.length) {
+      html += '<li class="sep" role="presentation">Produkty</li>';
+      pMatch.slice(0, 8).forEach(function (p) {
+        acItems.push({ t:'p', v:key(p) });
+        html += '<li role="option" id="ac' + (acItems.length - 1) + '" data-i="' + (acItems.length - 1) + '"><span class="t">' + hl(p.produkt, words[0]) + '</span><span class="m">' + esc(p.dodavatel) + '</span></li>';
+      });
+    }
+    if (!acItems.length) html = '<li class="none" role="presentation">Nic nenalezeno pro tohoto distributora a ' + (S.kom === 'el' ? 'sazbu' : 'pásmo') + '.</li>';
+    ul.innerHTML = html; ul.hidden = false; $('q').setAttribute('aria-expanded', 'true');
+    acIdx = acItems.length ? 0 : -1; markAc();
+  }
+  function markAc() {
+    $('acList').querySelectorAll('[role=option]').forEach(function (li) { li.setAttribute('aria-selected', String(+li.dataset.i === acIdx)); });
+    if (acIdx >= 0) { $('q').setAttribute('aria-activedescendant', 'ac' + acIdx); var el = $('ac' + acIdx); if (el) el.scrollIntoView({ block:'nearest' }); }
+    else $('q').removeAttribute('aria-activedescendant');
+  }
+  function closeAc() { $('acList').hidden = true; $('q').setAttribute('aria-expanded', 'false'); acIdx = -1; }
+  function pickAc(i) {
+    var it = acItems[i]; if (!it) return;
+    if (it.t === 's') { S.openSupplier = it.v; $('q').value = it.v; }
+    else { addPick(it.v); $('q').value = ''; S.openSupplier = null; }
+    closeAc(); render();
+  }
+  $('q').addEventListener('input', function () { S.openSupplier = null; runAc(); renderPlist(); });
+  $('q').addEventListener('focus', function () { if ($('q').value.trim()) runAc(); });
+  $('q').addEventListener('keydown', function (e) {
+    if ($('acList').hidden && (e.key === 'ArrowDown')) { runAc(); return; }
+    if (e.key === 'ArrowDown') { e.preventDefault(); if (acItems.length) { acIdx = (acIdx + 1) % acItems.length; markAc(); } }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); if (acItems.length) { acIdx = (acIdx - 1 + acItems.length) % acItems.length; markAc(); } }
+    else if (e.key === 'Enter') { if (!$('acList').hidden && acIdx >= 0) { e.preventDefault(); pickAc(acIdx); } }
+    else if (e.key === 'Escape') { closeAc(); }
+  });
+  $('acList').addEventListener('mousedown', function (e) { var li = e.target.closest('[data-i]'); if (li) { e.preventDefault(); pickAc(+li.dataset.i); } });
+  document.addEventListener('click', function (e) { if (!e.target.closest('.ac')) closeAc(); });
+
+  function renderPlist() {
+    var box = $('plist'), n = S.openSupplier;
+    if (!n) { box.innerHTML = ''; return; }
+    var ps = (suppliers()[n] || []).map(function (p) { return { p:p, r:calc({ c:priceOf(p) }) }; }).sort(function (a, b) { return a.r.total - b.r.total; });
+    var picked = S.picked[S.kom];
+    box.innerHTML = '<div class="plist"><div class="ph"><span>' + esc(n) + '</span>' +
+      (ps.length > 1 ? '<button class="btn small" type="button" data-all>Přidat vše</button>' : '') + '</div>' +
+      (ps.length ? ps.map(function (x) {
+        var k = key(x.p), on = picked.indexOf(k) >= 0;
+        return '<div class="row"><div><div class="nm">' + esc(x.p.produkt) + '</div><div class="fx">' + fixTxt(x.p.fixace_mes) + '</div></div><div class="pr">' + kc(x.r.total) + '<span class="sub">za rok s DPH</span></div>' +
+          '<button class="btn small' + (on ? '' : ' green') + '" type="button" data-k="' + esc(k) + '"' + (on ? ' disabled' : '') + '>' + (on ? 'Přidáno' : 'Přidat') + '</button></div>';
+      }).join('') : '<div class="empty">Pro zvoleného distributora a ' + (S.kom === 'el' ? 'sazbu' : 'pásmo') + ' nemá dodavatel ve srovnávači žádný produkt.</div>') + '</div>';
+  }
+  $('plist').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    if (b.hasAttribute('data-all')) (suppliers()[S.openSupplier] || []).forEach(function (p) { addPick(key(p)); });
+    else if (b.dataset.k) addPick(b.dataset.k);
+    render();
+  });
+
+  function addPick(k) { var a = S.picked[S.kom]; if (a.indexOf(k) < 0) { if (a.length >= 8) { toast('Najednou jde porovnat nejvýš 8 nabídek'); return; } a.push(k); } save(); }
+  $('chips').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-k]'); if (!b) return;
+    S.picked[S.kom] = S.picked[S.kom].filter(function (k) { return k !== b.dataset.k; }); save(); render();
+  });
+  $('clearK').addEventListener('click', function () { S.picked[S.kom] = []; save(); render(); });
+  $('cheap').addEventListener('click', function () {
+    available().filter(function (p) { return !FFY_RE.test(p.dodavatel); })
+      .map(function (p) { return { k:key(p), t:calc({ c:priceOf(p) }).total }; })
+      .sort(function (a, b) { return a.t - b.t; }).slice(0, 3).forEach(function (x) { addPick(x.k); });
+    render();
+  });
+  $('addManual').addEventListener('click', function () { $('manK').hidden = false; $('kn').focus(); });
+  $('kCancel').addEventListener('click', function () { $('manK').hidden = true; });
+  $('kAdd').addEventListener('click', function () {
+    if (!$('kvt').value) { $('kvt').focus(); return; }
+    var nt = S.kom === 'el' && !$('kntL').hidden && $('knt').value !== '' ? num($('knt')) : null;
+    addPick('__m|' + JSON.stringify({ n:$('kn').value.trim() || 'Ceník zákazníka', c:[num($('km')), num($('kvt')), nt] }));
+    ['kn','km','kvt','knt'].forEach(function (i) { $(i).value = ''; }); $('manK').hidden = true; render();
+  });
+
+  /* ---------- výpočet ---------- */
+  function calc(o) {
+    var R = reg(), c = o.c || [0, 0, null], r = {};
+    if (S.kom === 'el') {
+      var E = R.elektrina, ot = E.ostatni, d = E.distribuce[$('dist').value][$('sazba').value];
+      var vt = num($('vt')), nt = d.nt != null ? num($('nt')) : 0, mwh = vt + nt, jk = $('jistic').value;
+      var jis = d.jistic[jk] != null ? d.jistic[jk] : (d.jistic_nad_3x63 || {})[jk] || 0;
+      r.oStale = (c[0] || 0) * 12;
+      r.oEnergie = vt * (c[1] || 0) + nt * (c[2] != null ? c[2] : (c[1] || 0));
+      r.rStale = (jis + ot.nesitova_infrastruktura_mesic + (ot.ote_mesic || 0)) * 12;
+      r.rDist = vt * d.vt + nt * (d.nt || 0);
+      r.rOst = mwh * (ot.systemove_sluzby_mwh + (ot.poze_mwh || 0));
+      r.dan = mwh * ot.dan_mwh; r.mwh = mwh;
+    } else {
+      var G = R.plyn, mw = gasMwh(), pz = pasmo(mw), row = G.distribuce[$('dist').value].filter(function (x) { return x.pasmo === pz[0]; })[0];
+      r.oStale = (c[0] || 0) * 12;
+      r.oEnergie = mw * (c[1] || 0);
+      r.rStale = row.staly_plat * 12;
+      r.rDist = mw * row.distribuce;
+      r.rOst = mw * G.ote_mwh;
+      r.dan = $('dan').checked ? mw * G.dan_mwh : 0; r.mwh = mw;
+    }
+    r.obchod = r.oStale + r.oEnergie; r.regul = r.rStale + r.rDist + r.rOst;
+    r.zaklad = r.obchod + r.regul + r.dan; r.dph = r.zaklad * DPH; r.total = r.zaklad + r.dph;
+    return r;
+  }
+
+  function offers() {
+    var out = [], f = ffyOffer();
+    if (f) out.push(f);
+    S.picked[S.kom].forEach(function (k) {
+      if (k.indexOf('__m|') === 0) { var m = JSON.parse(k.slice(4)); out.push({ who:'Ruční zadání', name:m.n, fix:'', c:m.c, k:k }); return; }
+      var p = byKey(k), c = p && priceOf(p);
+      out.push(c ? { who:p.dodavatel, name:p.produkt, fix:fixTxt(p.fixace_mes), c:c, k:k, eru:true } : { who:p ? p.dodavatel : k.split('|')[0], name:p ? p.produkt : k.split('|')[1], k:k, na:true });
+    });
+    return out;
+  }
+
+  /* ---------- vykreslení ---------- */
+  function render() {
+    if (!CEN) return;
+    var picked = S.picked[S.kom];
+    $('chips').innerHTML = picked.map(function (k) {
+      var lbl = k.indexOf('__m|') === 0 ? JSON.parse(k.slice(4)).n : k.replace('|', ' – ');
+      return '<span class="chip"><span title="' + esc(lbl) + '">' + esc(lbl) + '</span><button type="button" data-k="' + esc(k) + '" aria-label="Odebrat ' + esc(lbl) + '">✕</button></span>';
+    }).join('');
+    $('clearK').hidden = !picked.length;
+    if (S.kom === 'gas') {
+      var mw = gasMwh(), pz = pasmo(mw);
+      $('pasmoOut').innerHTML = ($('gunit').value === 'm3' ? '≈ ' + nf2.format(mw) + ' MWh · ' : '') + 'pásmo distribuce <b>' + pz[2] + '</b>' + (mw > 63 ? ' · nad 63 MWh už nejde o maloodběr, výpočet je jen orientační' : '');
+      $('gunitLbl').textContent = $('gunit').value === 'm3' ? 'm³/rok' : 'MWh/rok';
+    }
+    renderPlist();
+
+    var O = offers(), ok = O.filter(function (o) { return !o.na; });
+    $('results').hidden = !ok.length;
+    if (!ok.length) return;
+    ok.forEach(function (o) { o.r = calc(o); });
+    var base = ok[0].ffy ? ok[0] : null;
+    var maxT = Math.max.apply(null, ok.map(function (o) { return o.r.total; }));
+
+    $('rsub').textContent = (S.kom === 'el'
+      ? (EL_N[$('dist').value] + ' · ' + $('sazba').value + ' · jistič ' + $('jistic').selectedOptions[0].text + ' · ' + nf2.format(num($('vt'))) + ' MWh VT' + ($('ntWrap').hidden ? '' : ' + ' + nf2.format(num($('nt'))) + ' MWh NT'))
+      : (GAS_N[$('dist').value] + ' · ' + nf2.format(gasMwh()) + ' MWh/rok · pásmo ' + pasmo(gasMwh())[2] + ($('dan').checked ? ' · s daní z plynu' : ''))) + ' · regulované ceny ' + $('rok').value;
+
+    $('cards').innerHTML = ok.map(function (o) {
+      var r = o.r, w = function (v) { return (v / maxT * 100).toFixed(2) + '%'; };
+      var diff = '';
+      if (o === base) diff = '<span class="diff base">Nabídka FFY</span>';
+      else if (base) { var dd = r.total - base.r.total; diff = '<span class="diff ' + (dd >= 0 ? 'up' : 'down') + '">' + (dd >= 0 ? 'FFY levnější o ' : 'FFY dražší o ') + kc(Math.abs(dd)) + '</span>'; }
+      return '<article class="card' + (o.ffy ? ' ffy' : '') + '"><div class="who">' + esc(o.who) + '</div><div class="prod">' + esc(o.name) + '</div>' +
+        (o.fix ? '<div class="fx">' + esc(o.fix) + '</div>' : '') +
+        '<div class="tot">' + kc(r.total) + '<small>/rok</small></div><div class="mo">' + kc(r.total / 12) + ' měsíčně · ' + nf0.format(r.total / Math.max(r.mwh, 0.001)) + ' Kč/MWh</div>' +
+        '<div class="stackbar" role="img" aria-label="Obchodní část ' + kc(r.obchod * 1.21) + ', regulovaná ' + kc(r.regul * 1.21) + ', daň ' + kc(r.dan * 1.21) + ' (vše s DPH)"><i class="o" style="width:' + w(r.obchod * 1.21) + '"></i><i class="r" style="width:' + w(r.regul * 1.21) + '"></i><i class="t" style="width:' + w(r.dan * 1.21) + '"></i></div>' +
+        diff + '</article>';
+    }).join('') + O.filter(function (o) { return o.na; }).map(function (o) {
+      return '<article class="card"><div class="who">' + esc(o.who) + '</div><div class="prod">' + esc(o.name) + '</div><div class="fx">Pro tohoto distributora a ' + (S.kom === 'el' ? 'sazbu' : 'pásmo') + ' produkt v ERÚ není.</div></article>';
+    }).join('');
+
+    var dn = S.kom === 'el' ? 'Daň z elektřiny' : 'Daň ze zemního plynu';
+    var rows = [
+      ['g', 'Obchodní část (dodavatel)'],
+      ['oStale', 'Stálý plat dodavatele', function (o) { return nf2.format(o.c[0] || 0) + ' Kč/měs'; }],
+      ['oEnergie', S.kom === 'el' ? 'Silová elektřina' : 'Dodávka plynu', function (o) { return S.kom === 'el' ? nf0.format(o.c[1] || 0) + (o.c[2] != null && !$('ntWrap').hidden ? ' / ' + nf0.format(o.c[2]) : '') + ' Kč/MWh' : nf0.format(o.c[1] || 0) + ' Kč/MWh'; }],
+      ['obchod', 'Obchodní část celkem', null, 'sum'],
+      ['g', 'Distribuce a regulované platby (stejné u všech)'],
+      ['rStale', S.kom === 'el' ? 'Jistič, nesíťová infrastruktura, OTE' : 'Stálý plat za kapacitu'],
+      ['rDist', S.kom === 'el' ? 'Distribuce elektřiny' : 'Distribuce plynu'],
+      ['rOst', S.kom === 'el' ? 'Systémové služby' : 'Činnost operátora trhu'],
+      ['regul', 'Regulovaná část celkem', null, 'sum'],
+      ['g', 'Daně'],
+      ['dan', dn],
+      ['zaklad', 'Celkem bez DPH', null, 'sum'],
+      ['dph', 'DPH 21 %'],
+      ['total', 'Celkem s DPH za rok', null, 'total'],
+      ['mes', 'Průměrně měsíčně s DPH']
+    ];
+    var h = '<thead><tr><th scope="col">Kč bez DPH, pokud není uvedeno jinak</th>' + ok.map(function (o) {
+      return '<th scope="col"' + (o.ffy ? ' class="ffy"' : '') + '>' + esc(o.name) + '<span class="s">' + esc(o.who) + '</span></th>';
+    }).join('') + '</tr></thead><tbody>';
+    rows.forEach(function (rw) {
+      if (rw[0] === 'g') { h += '<tr class="grp"><td colspan="' + (ok.length + 1) + '">' + rw[1] + '</td></tr>'; return; }
+      h += '<tr' + (rw[3] ? ' class="' + rw[3] + '"' : '') + '><td>' + rw[1] + '</td>' + ok.map(function (o) {
+        var v = rw[0] === 'mes' ? o.r.total / 12 : o.r[rw[0]];
+        return '<td' + (o.ffy ? ' class="ffy"' : '') + '>' + kc(v) + (rw[2] ? '<span class="sub">' + rw[2](o) + '</span>' : '') + '</td>';
+      }).join('') + '</tr>';
+    });
+    $('tbl').innerHTML = h + '</tbody>';
+
+    var R = reg();
+    $('foot').innerHTML = 'Regulované ceny ' + R.rok + ' podle cenových výměrů ERÚ, obchodní ceny ze srovnávače ERÚ (srovnavac.eru.gov.cz). ' +
+      'Srovnání nezahrnuje jednorázové bonusy a slevy. ' + (S.kom === 'el' ? 'Rozdělení spotřeby na VT a NT ovlivňuje výsledek, u dvoutarifových sazeb ho vezměte z faktury.' : 'Pásmo distribuce se určuje podle roční spotřeby; spotřeba přesně na hranici pásma spadá do vyššího pásma.');
+  }
+
+  /* ---------- kopírování ---------- */
+  $('copy').addEventListener('click', function () {
+    var O = offers().filter(function (o) { return !o.na; }); if (!O.length) return;
+    var base = O[0].ffy ? O[0] : null;
+    var t = 'Porovnání ročních nákladů na ' + (S.kom === 'el' ? 'elektřinu' : 'plyn') + '\n' + $('rsub').textContent + '\n\n';
+    O.forEach(function (o) {
+      var r = calc(o);
+      t += o.who + ' – ' + o.name + (o.fix ? ' (' + o.fix + ')' : '') + '\n' +
+        '  obchodní část: ' + kc(r.obchod * 1.21) + ', distribuce a regulované platby: ' + kc(r.regul * 1.21) + ', daň: ' + kc(r.dan * 1.21) + '\n' +
+        '  celkem s DPH: ' + kc(r.total) + ' za rok, tj. ' + kc(r.total / 12) + ' měsíčně' +
+        (base && o !== base ? '\n  rozdíl proti FREE for YOU: ' + (r.total - calc(base).total >= 0 ? '+' : '−') + kc(Math.abs(r.total - calc(base).total)) : '') + '\n\n';
+    });
+    t += 'Částky jsou včetně DPH 21 %. Distribuce a regulované platby jsou u všech dodavatelů stejné, liší se jen obchodní část. Zdroj obchodních cen: srovnávač ERÚ.';
+    var done = function () { toast('Zkopírováno'); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done, function () { fallbackCopy(t); });
+    else fallbackCopy(t);
+  });
+  function fallbackCopy(t) { var a = document.createElement('textarea'); a.value = t; document.body.appendChild(a); a.select(); try { document.execCommand('copy'); toast('Zkopírováno'); } catch (e) {} a.remove(); }
+  function toast(s) { var d = document.createElement('div'); d.className = 'toast'; d.textContent = s; document.body.appendChild(d); setTimeout(function () { d.remove(); }, 1800); }
+
+  /* ---------- události ---------- */
+  document.querySelectorAll('[data-kom]').forEach(function (b) { b.addEventListener('click', function () { if (b.dataset.kom !== S.kom) setKom(b.dataset.kom); }); });
+  $('psc').addEventListener('input', applyPsc);
+  $('dist').addEventListener('change', function () { $('pscOut').textContent = ''; fillJistic(); fillFfy(); render(); save(); });
+  $('sazba').addEventListener('change', function () { fillJistic(); fillFfy(); render(); save(); });
+  $('rok').addEventListener('change', function () { fillJistic(); render(); });
+  ['jistic','gunit','dan'].forEach(function (i) { $(i).addEventListener('change', function () { render(); save(); }); });
+  ['vt','nt','gmwh'].forEach(function (i) { $(i).addEventListener('input', function () { if (S.kom === 'gas') fillFfyKeep(); render(); save(); }); });
+  function fillFfyKeep() { var v = $('ffySel').value; fillFfy(); if ([].some.call($('ffySel').options, function (o) { return o.value === v; })) { $('ffySel').value = v; ffyUi(); } }
+  $('ffySel').addEventListener('change', function () { S.saved['ffy_' + S.kom] = $('ffySel').value; ffyUi(); render(); save(); });
+  ['fm','fvt','fnt'].forEach(function (i) { $(i).addEventListener('input', function () {
+    store.set('ffyman-' + S.kom, { m:$('fm').value === '' ? null : num($('fm')), vt:$('fvt').value === '' ? null : num($('fvt')), nt:$('fnt').value === '' ? null : num($('fnt')) }); render();
+  }); });
+})();
+</script>
+</body>
+</html>

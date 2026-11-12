@@ -15,6 +15,16 @@
     "description": "Zjistí distributora elektřiny a plynu podle PSČ odběrného místa."
   },
   {
+    "file": "porovnani-nabidek.html",
+    "title": "Porovnání nabídek",
+    "description": "Roční cena u FFY a u konkurence s rozpadem na obchodní část, distribuci a daně. Našeptávač dodavatelů."
+  },
+  {
+    "file": "ceniky-dodavatelu.html",
+    "title": "Ceníky dodavatelů",
+    "description": "Obchodní ceny všech dodavatelů ze srovnávače ERÚ, denně aktualizované, s historií změn."
+  },
+  {
     "file": "ceny-konkurence.html",
     "title": "Ceny konkurence",
     "description": "Stáhne aktuální tarify elektřiny a plynu všech dodavatelů z kurzy.cz a porovná je podle kraje a sazby."
