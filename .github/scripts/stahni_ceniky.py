@@ -2,8 +2,8 @@
 """
 Stáhne obchodní ceny všech dodavatelů ze srovnávače ERÚ (srovnavac.eru.gov.cz) pro domácnosti.
 
-  elektřina – distributoři ČEZ, PRE, EG.D × sazby D01d–D61d
-  plyn      – distributoři GasNet, EG.D (Gas Distribution), PPD × 6 pásem spotřeby do 63 MWh
+  elektřina – distributoři ČEZ, PRE, EG.D × sazby D01d–D61d, standardní i dynamické produkty
+  plyn      – distributoři GasNet, EG.D (Gas Distribution), PPD × 6 pásem spotřeby do 63 MWh, standardní i dynamické
 
 U každého produktu ukládá obchodní (tržní) složku – stálý měsíční plat a cenu za MWh (u elektřiny VT a NT),
 všechno bez DPH – a z detailu produktu odkazy na PDF (ceník, obchodní podmínky, vzor smlouvy),
@@ -185,45 +185,70 @@ class Detaily:
               f"{len(self.odlozeno - set(self.hotovo))} odloženo na příští běh (limit {MAX_DETAILU} za běh)", flush=True)
 
 
+# druhy produktů ve srovnávači (productType): standardní a dynamické (cena podle spotu)
+EL_TYPY = {1: False, 3: True}     # elektřina: 1 = standardní, 3 = dynamické
+GAS_TYPY = {6: False, 8: True}    # plyn: 6 = standardní, 8 = dynamické (7 je duplicitní výpis standardních)
+
+
+def ceny_el(c, sn, dyn):
+    """[stálý plat, VT, NT, přirážka]; u dynamických je VT = NT = odhad ERÚ (průměrný spot za 12 měs. + přirážka)."""
+    if dyn:
+        v = c.get("ETP-S")
+        return [c.get("ETS-01"), v, None if sn in JEDNOTARIF else v, c.get("ETV-01S")]
+    return [c.get("ETS-01"), c.get("ETP-01"), None if sn in JEDNOTARIF else c.get("ETP-02")]
+
+
+def ceny_gas(c, dyn):
+    """[stálý plat, cena za MWh, přirážka]; u dynamických je cena odhad ERÚ (průměrný spot + přirážka)."""
+    if dyn:
+        return [c.get("PTS-01"), c.get("PTP-01S"), c.get("PTV-01S")]
+    return [c.get("PTS-01"), c.get("PTP-01")]
+
+
 def stahni(sid, budouci=False, det=None):
-    """Vrátí (el, gas, nepovedene) – nepovedene je seznam (komodita, distributor, tarif), kde dotaz selhal."""
+    """Vrátí (el, gas, nepovedene) – nepovedene je seznam (komodita, distributor, tarif, dynamicky), kde dotaz selhal."""
     el, gas, nepovedene = {}, {}, []
-    for did, dn in EL_DIST.items():
-        for tid, sn in SAZBY.items():
-            t0 = time.monotonic()
-            try:
-                L = produkty(sid, budouci=budouci, powerType=1, productType=1, distributorId=did, tariffId=tid,
-                             tariffName=sn.replace("D", "D "), circuitBreaker=JISTIC_3x25,
-                             consumption={"consumptionPattern": [], "deliveryDiagramId": 0, "deliveryDiagramRegion": "",
-                                          "high": 2, "low": 0 if sn in JEDNOTARIF else 2, "unit": 1})
-            except Exception as e:
-                print(f"  elektřina {dn} {sn}: CHYBA {e}", flush=True)
-                nepovedene.append(("elektrina", dn, sn)); continue
-            for p in L:
-                c = slozky(p)
-                zaznam(el, p)["ceny"].setdefault(dn, {})[sn] = [c.get("ETS-01"), c.get("ETP-01"),
-                                                                 None if sn in JEDNOTARIF else c.get("ETP-02")]
-            if det:
-                det.po_vyhledavani(L)
-            print(f"  elektřina {dn} {sn}: {len(L)} produktů ({time.monotonic() - t0:.1f} s, celkem {time.monotonic() - START:.0f} s)", flush=True)
-            time.sleep(PAUZA)
-    for did, dn in GAS_DIST.items():
-        for pasmo, mwh in PASMA.items():
-            t0 = time.monotonic()
-            try:
-                L = produkty(sid, budouci=budouci, powerType=2, productType=6, distributorId=did, circuitBreaker=BEZ_JISTICE,
-                             consumption={"consumptionPattern": [], "deliveryDiagramId": 0, "deliveryDiagramRegion": "",
-                                          "high": mwh, "low": 0, "unit": 1})
-            except Exception as e:
-                print(f"  plyn {dn} {pasmo}: CHYBA {e}", flush=True)
-                nepovedene.append(("plyn", dn, pasmo)); continue
-            for p in L:
-                c = slozky(p)
-                zaznam(gas, p)["ceny"].setdefault(dn, {})[pasmo] = [c.get("PTS-01"), c.get("PTP-01")]
-            if det:
-                det.po_vyhledavani(L)
-            print(f"  plyn {dn} {pasmo}: {len(L)} produktů ({time.monotonic() - t0:.1f} s, celkem {time.monotonic() - START:.0f} s)", flush=True)
-            time.sleep(PAUZA)
+    for pt, dyn in EL_TYPY.items():
+        druh = "dynamické" if dyn else "standardní"
+        for did, dn in EL_DIST.items():
+            for tid, sn in SAZBY.items():
+                t0 = time.monotonic()
+                try:
+                    L = produkty(sid, budouci=budouci, powerType=1, productType=pt, distributorId=did, tariffId=tid,
+                                 tariffName=sn.replace("D", "D "), circuitBreaker=JISTIC_3x25,
+                                 consumption={"consumptionPattern": [], "deliveryDiagramId": 0, "deliveryDiagramRegion": "",
+                                              "high": 2, "low": 0 if sn in JEDNOTARIF else 2, "unit": 1})
+                except Exception as e:
+                    print(f"  elektřina {druh} {dn} {sn}: CHYBA {e}", flush=True)
+                    nepovedene.append(("elektrina", dn, sn, dyn)); continue
+                for p in L:
+                    r = zaznam(el, p)
+                    r["dynamicky"] = dyn
+                    r["ceny"].setdefault(dn, {})[sn] = ceny_el(slozky(p), sn, dyn)
+                if det:
+                    det.po_vyhledavani(L)
+                print(f"  elektřina {druh} {dn} {sn}: {len(L)} produktů ({time.monotonic() - t0:.1f} s, celkem {time.monotonic() - START:.0f} s)", flush=True)
+                time.sleep(PAUZA)
+    for pt, dyn in GAS_TYPY.items():
+        druh = "dynamické" if dyn else "standardní"
+        for did, dn in GAS_DIST.items():
+            for pasmo, mwh in PASMA.items():
+                t0 = time.monotonic()
+                try:
+                    L = produkty(sid, budouci=budouci, powerType=2, productType=pt, distributorId=did, circuitBreaker=BEZ_JISTICE,
+                                 consumption={"consumptionPattern": [], "deliveryDiagramId": 0, "deliveryDiagramRegion": "",
+                                              "high": mwh, "low": 0, "unit": 1})
+                except Exception as e:
+                    print(f"  plyn {druh} {dn} {pasmo}: CHYBA {e}", flush=True)
+                    nepovedene.append(("plyn", dn, pasmo, dyn)); continue
+                for p in L:
+                    r = zaznam(gas, p)
+                    r["dynamicky"] = dyn
+                    r["ceny"].setdefault(dn, {})[pasmo] = ceny_gas(slozky(p), dyn)
+                if det:
+                    det.po_vyhledavani(L)
+                print(f"  plyn {druh} {dn} {pasmo}: {len(L)} produktů ({time.monotonic() - t0:.1f} s, celkem {time.monotonic() - START:.0f} s)", flush=True)
+                time.sleep(PAUZA)
     return el, gas, nepovedene
 
 
@@ -237,9 +262,11 @@ def rozdil(stare, nove, komodita, datum):
     for k in nove.keys() & stare.keys():
         a, b = stare[k]["ceny"], nove[k]["ceny"]
         detail = []
+        # u dynamických se odhad podle spotu mění každý měsíc – za změnu bereme jen stálý plat a přirážku
+        cmp = (lambda c: None if c is None else [c[0], c[-1]]) if nove[k].get("dynamicky") else (lambda c: c)
         for d in b:
             for s in b[d]:
-                if a.get(d, {}).get(s) != b[d][s]:
+                if cmp(a.get(d, {}).get(s)) != cmp(b[d][s]):
                     detail.append({"distributor": d, "tarif": s, "z": a.get(d, {}).get(s), "na": b[d][s]})
         if detail:
             zmeny.append({"datum": datum, "komodita": komodita, "typ": "změna ceny", **zaklad(nove[k]), "detail": detail[:40]})
@@ -248,6 +275,78 @@ def rozdil(stare, nove, komodita, datum):
             zmeny.append({"datum": datum, "komodita": komodita, "typ": "nový ceník", **zaklad(nove[k]), "cenik": cb})
     return zmeny
 
+
+
+# ---------- Dodavatelé mimo ERÚ (ručně vedený seznam stránek s ceníky) ----------
+class _Odkazy(__import__("html.parser").parser.HTMLParser):
+    def __init__(self):
+        super().__init__(); self.out, self._a = [], None
+    def handle_starttag(self, tag, attrs):
+        if tag == "a":
+            self._a = [dict(attrs).get("href") or "", ""]
+    def handle_data(self, data):
+        if self._a is not None:
+            self._a[1] += data
+    def handle_endtag(self, tag):
+        if tag == "a" and self._a is not None:
+            self.out.append((self._a[0], " ".join(self._a[1].split()))); self._a = None
+
+
+def nazev_souboru(url):
+    n = urllib.parse.unquote(url.split("?")[0].rstrip("/").split("/")[-1])
+    n = re.sub(r"\.(pdf|zip|xlsx?|docx?)$", "", n, flags=re.I)
+    n = re.sub(r"[._]?[0-9a-f]{8}$", "", n)        # hash ve jménu souboru (např. .475e5650)
+    return re.sub(r"[-_]+", " ", n).strip()
+
+
+def mimo_eru(seznam_path, stare):
+    """Projde stránky s ceníky dodavatelů mimo ERÚ a vrátí seznam s aktuálními odkazy na soubory."""
+    cfg = load(seznam_path, {}).get("dodavatele", [])
+    stare = {x["dodavatel"]: x for x in stare or []}
+    out = []
+    for d in cfg:
+        r = {k: d.get(k) for k in ("dodavatel", "web", "stranka", "komodity", "pozn")}
+        try:
+            _, html = http(d["stranka"])
+            p = _Odkazy(); p.feed(html)
+            fil = re.compile(d.get("filtr") or "cenik", re.I)
+            vyn = re.compile(d["vynechat"], re.I) if d.get("vynechat") else None
+            soubory, videno = [], set()
+            for href, text in p.out:
+                if not href or href.startswith(("mailto:", "tel:", "#", "javascript:")):
+                    continue
+                url = urllib.parse.urljoin(d["stranka"], href)
+                if not re.search(r"\.(pdf|zip|xlsx?|docx?)(\?|$)", url, re.I) or url in videno:
+                    continue
+                kde = urllib.parse.unquote(url) + " " + text
+                if not fil.search(kde) or (vyn and vyn.search(kde)):
+                    continue
+                videno.add(url)
+                soubory.append({"nazev": nazev_souboru(url), "text": text[:120], "url": url})
+            r["soubory"] = soubory
+            r["zkontrolovano"] = dt.date.today().isoformat()
+            print(f"  mimo ERÚ {d['dodavatel']}: {len(soubory)} souborů", flush=True)
+        except Exception as e:
+            s = stare.get(d["dodavatel"]) or {}
+            r["soubory"] = s.get("soubory", [])
+            r["zkontrolovano"] = s.get("zkontrolovano")
+            r["chyba"] = str(e)[:200]
+            print(f"  mimo ERÚ {d['dodavatel']}: CHYBA {e}", flush=True)
+        time.sleep(0.3)
+        out.append(r)
+    return out
+
+
+def rozdil_mimo(stare, nove, datum):
+    zmeny, st = [], {x["dodavatel"]: {f["url"] for f in x.get("soubory") or []} for x in stare or []}
+    for x in nove:
+        if x["dodavatel"] not in st or x.get("chyba"):
+            continue
+        for f in x.get("soubory") or []:
+            if f["url"] not in st[x["dodavatel"]]:
+                zmeny.append({"datum": datum, "komodita": "mimo ERÚ", "typ": "nový ceník", "dodavatel": x["dodavatel"],
+                              "produkt": f["nazev"], "cenik": f["url"]})
+    return zmeny
 
 def load(path, default):
     try:
@@ -283,18 +382,21 @@ def main():
     print("Elektřina a plyn, aktuální ceny", flush=True)
     det = Detaily(sid, {**s_el, **s_gas}, a.vsechny_detaily)
     el, gas, nepovedene = stahni(sid, det=det)
-    if len(nepovedene) > (len(EL_DIST) * len(SAZBY) + len(GAS_DIST) * len(PASMA)) // 2 or len(el) < 20 or len(gas) < 20:
+    celkem_dotazu = len(EL_TYPY) * len(EL_DIST) * len(SAZBY) + len(GAS_TYPY) * len(GAS_DIST) * len(PASMA)
+    if len(nepovedene) > celkem_dotazu // 2 or len(el) < 20 or len(gas) < 20:
         sys.exit(f"Srovnávač ERÚ neodpovídá (nepovedlo se {len(nepovedene)} dotazů, elektřina {len(el)}, plyn {len(gas)} produktů), "
                  "nic neukládám, data zůstávají z minula.")
     if nepovedene:
         # kde dotaz selhal, ponecháme ceny z minula
-        for kom, dn, tarif in nepovedene:
+        for kom, dn, tarif, dyn in nepovedene:
             nove, stara = (el, s_el) if kom == "elektrina" else (gas, s_gas)
             for pid, r in stara.items():
+                if bool(r.get("dynamicky")) != dyn:
+                    continue
                 c = (r.get("ceny") or {}).get(dn, {}).get(tarif)
                 if c is not None and pid in nove:
                     nove[pid]["ceny"].setdefault(dn, {})[tarif] = c
-        print(f"Nepovedené dotazy ({len(nepovedene)}), ponechány ceny z minula: " + ", ".join(f"{a} {b} {c}" for a, b, c in nepovedene), flush=True)
+        print(f"Nepovedené dotazy ({len(nepovedene)}), ponechány ceny z minula: " + ", ".join(f"{a} {b} {c}{' dyn.' if d else ''}" for a, b, c, d in nepovedene), flush=True)
     det.doplnit(el, gas)
 
     # srovnávač umí i „budoucí ceny“ (např. po vydání regulovaných cen na příští rok)
@@ -309,8 +411,13 @@ def main():
     except Exception as e:
         print(f"budoucí ceny: {e}", file=sys.stderr)
 
+    print("Dodavatelé mimo ERÚ", flush=True)
+    mimo = mimo_eru(os.path.join(a.slozka, "dodavatele-mimo-eru.json"), stare.get("mimo_eru"))
+
     zmeny = load(p_zm, [])
     pred = len(zmeny)
+    if stare.get("mimo_eru"):
+        zmeny += rozdil_mimo(stare.get("mimo_eru"), mimo, dnes)
     if stare:
         # starší formát (klíč dodavatel|produkt bez id) neporovnáváme, jen založíme historii
         if all(x.get("id") for x in stare.get("elektrina", [])[:5]):
@@ -320,14 +427,17 @@ def main():
     srt = lambda t: sorted(t.values(), key=lambda x: (x["dodavatel"].lower(), x["produkt"].lower(), x.get("fixace_mes") or 0))
     out = {
         "verze": 2,
-        "zdroj": "Srovnávač ERÚ, srovnavac.eru.gov.cz – domácnosti, standardní produkty",
+        "zdroj": "Srovnávač ERÚ, srovnavac.eru.gov.cz – domácnosti, standardní a dynamické produkty",
         "stazeno": dt.datetime.now(dt.timezone.utc).isoformat(timespec="minutes"),
         "dph": 0.21,
-        "jednotky": "Kč BEZ DPH; plyn [stálý plat Kč/měs, cena Kč/MWh], elektřina [stálý plat Kč/měs, VT Kč/MWh, NT Kč/MWh]",
+        "jednotky": "Kč BEZ DPH; plyn [stálý plat Kč/měs, cena Kč/MWh(, přirážka)], elektřina [stálý plat Kč/měs, VT Kč/MWh, NT Kč/MWh(, přirážka)]",
+        "dynamicke": "U dynamických produktů (dynamicky: true) je cena za MWh odhad ERÚ: průměrná spotová cena za posledních 12 měsíců podle typového diagramu + přirážka obchodníka (poslední položka).",
         "pozn": "Elektřina dotazována s jističem 3x25 A; obchodní ceny na jističi obvykle nezávisí.",
         "elektrina": srt(el),
         "plyn": srt(gas),
     }
+    if mimo:
+        out["mimo_eru"] = mimo
     if budouci:
         out["budouci"] = budouci
     save(p_akt, out)

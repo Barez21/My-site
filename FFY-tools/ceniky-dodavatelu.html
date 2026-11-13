@@ -81,8 +81,23 @@
   .pdf:hover { border-color:var(--green); background:var(--green-l); }
   .pdf svg { width:13px; height:13px; }
   .tag.z { background:#F8E8C9; color:#5B3F0B; }
+  .tag.dyn { background:#D0DFF0; color:var(--blue); }
+  td .est { display:block; font-size:12px; color:var(--muted); }
   .b.cenik { background:#B7F6DB; color:var(--ink); }
   .ch .det a { color:var(--blue); font-weight:700; }
+  .mnote { font-size:14px; color:var(--muted); max-width:80ch; margin:0 0 14px; }
+  .mgrid { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:12px; }
+  .mcard { background:var(--white); border:1px solid var(--border); border-radius:21px 0 21px 0; padding:16px 18px; min-width:0; display:grid; gap:8px; align-content:start; }
+  .mcard h3 { margin:0; font-size:17px; font-weight:800; overflow-wrap:anywhere; }
+  .mcard h3 a { color:inherit; text-decoration:none; }
+  .mcard h3 a:hover { text-decoration:underline; }
+  .mcard .meta { font-size:13px; color:var(--muted); }
+  .mcard .warn { font-size:13px; color:#7F5810; background:var(--bronze-l); border-radius:6px; padding:6px 8px; }
+  .mcard .meta a { color:var(--blue); font-weight:700; }
+  #mimoVyn { margin-top:18px; font-size:13px; }
+  .mcard ul { list-style:none; margin:0; padding:0; display:grid; gap:6px; }
+  .mcard li { display:flex; justify-content:space-between; align-items:center; gap:10px; font-size:14px; }
+  .mcard li span { min-width:0; overflow-wrap:anywhere; }
   .empty { padding:24px; text-align:center; color:var(--muted); }
 </style>
 </head>
@@ -139,6 +154,7 @@
       <div class="seg" role="group" aria-label="Pohled">
         <button type="button" data-view="t" aria-pressed="true">Ceníky</button>
         <button type="button" data-view="z" aria-pressed="false">Změny</button>
+        <button type="button" data-view="m" aria-pressed="false">Mimo ERÚ</button>
       </div>
       <div class="seg" role="group" aria-label="DPH">
         <button type="button" data-dph="0" aria-pressed="true">bez DPH</button>
@@ -154,6 +170,9 @@
         <label class="f">Fixace
           <select id="fx"><option value="">vše</option><option value="0">bez fixace</option><option value="1-12">do 12 měsíců</option><option value="13-24">13–24 měsíců</option><option value="25-999">přes 24 měsíců</option></select>
         </label>
+        <label class="f">Druh produktu
+          <select id="dy"><option value="">všechny</option><option value="s">standardní (pevná cena)</option><option value="d">dynamické (podle spotu)</option></select>
+        </label>
         <label class="f">Zákazníci
           <select id="zk"><option value="">všechny produkty</option><option value="n">dostupné pro nové</option><option value="s">jen stávající a retenční</option></select>
         </label>
@@ -161,6 +180,12 @@
       <div class="kpis" id="kpis"></div>
       <div class="tbl-wrap"><table id="tbl"></table></div>
       <div class="foot"><span id="cnt"></span><button class="btn" type="button" id="csv">Stáhnout CSV</button></div>
+    </div>
+
+    <div id="vM" hidden>
+      <p class="mnote">Dodavatelé, kteří pro domácnosti nabízejí, ale nemají produkty ve srovnávači ERÚ. Ceníky se denně kontrolují přímo na jejich webu, ceny z nich ale automaticky nečteme. Do Porovnání nabídek je zadáte přes „Ceník z faktury zákazníka“.</p>
+      <div class="mgrid" id="mimo"></div>
+      <p class="mnote" id="mimoVyn"></p>
     </div>
 
     <div id="vZ" hidden>
@@ -220,14 +245,16 @@
   function rows() {
     var L = S.kom === 'el' ? D.elektrina : D.plyn, d = $('dist').value, t = $('tar').value, two = S.kom === 'el' && ['D01d','D02d'].indexOf(t) < 0;
     var q = norm($('q').value.trim()).split(/\s+/).filter(Boolean), fx = $('fx').value, fr = fx && fx !== '0' ? fx.split('-').map(Number) : null;
-    var m = S.kom === 'el' ? MODEL.el[t] : MODEL.gas[t], f = S.dph ? 1.21 : 1, zk = $('zk').value;
+    var m = S.kom === 'el' ? MODEL.el[t] : MODEL.gas[t], f = S.dph ? 1.21 : 1, zk = $('zk').value, dy = $('dy').value;
     return L.map(function (p) {
       var c = p.ceny && p.ceny[d] && p.ceny[d][t]; if (!c) return null;
       var rok = S.kom === 'el' ? c[0] * 12 + m[0] * c[1] + m[1] * (c[2] != null ? c[2] : c[1]) : c[0] * 12 + m * c[1];
-      return { p:p, mes:(c[0] || 0) * f, vt:(c[1] || 0) * f, nt:two && c[2] != null ? c[2] * f : null, rok:rok * f, fix:p.fixace_mes || 0, ffy:FFY.test(p.dodavatel), zak:zakT(p) };
+      return { p:p, mes:(c[0] || 0) * f, vt:(c[1] || 0) * f, nt:two && c[2] != null ? c[2] * f : null, rok:rok * f, fix:p.fixace_mes || 0, ffy:FFY.test(p.dodavatel), zak:zakT(p), dyn:!!p.dynamicky, prir:p.dynamicky ? (S.kom === 'el' ? c[3] : c[2]) * f : null };
     }).filter(function (r) {
       if (!r) return false;
       if (q.length) { var n = norm(r.p.dodavatel + ' ' + r.p.produkt); if (!q.every(function (w) { return n.indexOf(w) >= 0; })) return false; }
+      if (dy === 's' && r.dyn) return false;
+      if (dy === 'd' && !r.dyn) return false;
       if (zk === 'n' && r.zak) return false;
       if (zk === 's' && !r.zak) return false;
       if (fx === '0' && r.fix) return false;
@@ -255,19 +282,37 @@
     var h = '<thead><tr><th class="l">#</th>' + th('dod', 'Dodavatel a produkt', 'l') + th('fix', 'Fixace') + th('mes', 'Stálý plat<br>Kč/měs') +
       th('vt', S.kom === 'el' ? (two ? 'VT Kč/MWh' : 'Cena Kč/MWh') : 'Cena Kč/MWh') + (two ? th('nt', 'NT Kč/MWh') : '') + th('rok', 'Obchodní část<br>za rok') + '<th>Ceník</th></tr></thead><tbody>';
     h += R.length ? R.map(function (r) {
-      return '<tr' + (r.ffy ? ' class="ffy"' : '') + '><td class="rank">' + rk(r) + '</td><td class="l">' + esc(r.p.dodavatel) + (r.ffy ? '<span class="tag ffy">FFY</span>' : '') + (r.zak ? '<span class="tag z">' + r.zak + '</span>' : '') +
-        '<span class="sub">' + esc(r.p.produkt) + (r.p.smlouva && r.p.smlouva !== 'na dobu neurčitou' ? ' · smlouva ' + esc(r.p.smlouva) : '') + '</span></td><td>' + (r.fix ? r.fix + ' měs.' : '–') + '</td><td>' + nf2.format(r.mes || 0) + '</td><td>' + nfP.format(r.vt || 0) + '</td>' +
-        (two ? '<td>' + (r.nt != null ? nfP.format(r.nt) : '–') + '</td>' : '') + '<td><b>' + nf0.format(r.rok) + '</b></td><td>' + (r.p.dokumenty && r.p.dokumenty.cenik ? '<a class="pdf" href="' + esc(r.p.dokumenty.cenik) + '" target="_blank" rel="noopener" title="Ceník ' + esc(r.p.produkt) + ' (PDF)">' + PDF_ICO + 'PDF</a>' : '–') + '</td></tr>';
+      return '<tr' + (r.ffy ? ' class="ffy"' : '') + '><td class="rank">' + rk(r) + '</td><td class="l">' + esc(r.p.dodavatel) + (r.ffy ? '<span class="tag ffy">FFY</span>' : '') + (r.zak ? '<span class="tag z">' + r.zak + '</span>' : '') + (r.dyn ? '<span class="tag dyn" title="Cena podle spotového trhu">spot</span>' : '') +
+        '<span class="sub">' + esc(r.p.produkt) + (r.p.smlouva && r.p.smlouva !== 'na dobu neurčitou' ? ' · smlouva ' + esc(r.p.smlouva) : '') + '</span></td><td>' + (r.fix ? r.fix + ' měs.' : '–') + '</td><td>' + nf2.format(r.mes || 0) + '</td><td>' + (r.dyn ? '≈ ' : '') + nfP.format(r.vt || 0) + (r.dyn && r.prir != null ? '<span class="est">z toho přirážka ' + nfP.format(r.prir) + '</span>' : '') + '</td>' +
+        (two ? '<td>' + (r.nt != null ? (r.dyn ? '≈ ' : '') + nfP.format(r.nt) : '–') + '</td>' : '') + '<td><b>' + nf0.format(r.rok) + '</b></td><td>' + (r.p.dokumenty && r.p.dokumenty.cenik ? '<a class="pdf" href="' + esc(r.p.dokumenty.cenik) + '" target="_blank" rel="noopener" title="Ceník ' + esc(r.p.produkt) + ' (PDF)">' + PDF_ICO + 'PDF</a>' : '–') + '</td></tr>';
     }).join('') : '<tr><td colspan="8" class="empty">Nic neodpovídá filtru.</td></tr>';
     $('tbl').innerHTML = h + '</tbody>';
-    $('cnt').textContent = 'Zobrazeno ' + R.length + ' z ' + all.length + '. „Obchodní část za rok“ je stálý plat × 12 + cena × modelová spotřeba ' + mtxt + ', ' + (S.dph ? 's DPH 21 %' : 'bez DPH') + '. Pořadí # je podle ní. Všechny ceny v tabulce jsou ' + (S.dph ? 's DPH.' : 'bez DPH.');
+    $('cnt').textContent = 'Zobrazeno ' + R.length + ' z ' + all.length + '. „Obchodní část za rok“ je stálý plat × 12 + cena × modelová spotřeba ' + mtxt + ', ' + (S.dph ? 's DPH 21 %' : 'bez DPH') + '. Pořadí # je podle ní. Všechny ceny v tabulce jsou ' + (S.dph ? 's DPH.' : 'bez DPH.') + (R.some(function (r) { return r.dyn; }) ? ' U dynamických produktů (štítek spot) je cena za MWh odhad ERÚ: průměrná spotová cena za posledních 12 měsíců + přirážka obchodníka.' : '');
     S.last = R;
   }
   function kpi(k, v, s, dark) { return '<div class="kpi' + (dark ? ' dark' : '') + '"><div class="k">' + k + '</div><div class="v">' + v + '</div><div class="s">' + s + '</div></div>'; }
 
+  var vynNacteno = false;
+  function renderM() {
+    if (!vynNacteno) { vynNacteno = true; fetch('data/dodavatele-mimo-eru.json', { cache:'no-cache' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) { if (j && j.vynechano) $('mimoVyn').textContent = 'Vynecháno: ' + j.vynechano; }).catch(function () {}); }
+    var L = (D && D.mimo_eru) || [];
+    var nazev = function (f) { var t = (f.text || '').trim(); return t.length > 5 && !/^(stáhnout|stahnout|ke stažení|pdf|ceník|cenik)\b.{0,12}$/i.test(t) ? t : f.nazev; };
+    var typ = function (u) { var m = u.match(/\.(pdf|zip|xlsx?|docx?)(\?|$)/i); return m ? m[1].toUpperCase() : 'odkaz'; };
+    $('mimo').innerHTML = L.length ? L.map(function (d) {
+      var dt = d.zkontrolovano ? d.zkontrolovano.split('-') : null;
+      return '<article class="mcard"><h3><a href="' + esc(d.web || d.stranka) + '" target="_blank" rel="noopener">' + esc(d.dodavatel) + '</a></h3>' +
+        '<div class="meta">' + esc((d.komodity || []).join(', ')) + (dt ? ' · zkontrolováno ' + (+dt[2]) + '. ' + (+dt[1]) + '. ' + dt[0] : '') + '</div>' +
+        (d.chyba ? '<div class="warn">Stránku se při poslední kontrole nepodařilo načíst, odkazy jsou z dřívějška.</div>' : '') +
+        ((d.soubory || []).length ? '<ul>' + d.soubory.map(function (f) {
+          return '<li><span>' + esc(nazev(f)) + '</span><a class="pdf" href="' + esc(f.url) + '" target="_blank" rel="noopener">' + PDF_ICO + typ(f.url) + '</a></li>';
+        }).join('') + '</ul>' : '') +
+        '<div class="meta">' + (d.pozn ? esc(d.pozn) + ' ' : '') + '<a href="' + esc(d.stranka) + '" target="_blank" rel="noopener">Stránka s ceníky</a></div></article>';
+    }).join('') : '<div class="empty">Seznam se naplní při příštím běhu stahování ceníků.</div>';
+  }
+
   function renderZ() {
     var q = norm($('qz').value.trim()).split(/\s+/).filter(Boolean), kom = S.kom === 'el' ? 'elektřina' : 'plyn';
-    var L = Z.filter(function (z) { if (z.komodita !== kom) return false; var n = norm(z.dodavatel + ' ' + z.produkt); return q.every(function (w) { return n.indexOf(w) >= 0; }); }).slice().reverse().slice(0, 300);
+    var L = Z.filter(function (z) { if (z.komodita !== kom && z.komodita !== 'mimo ERÚ') return false; var n = norm(z.dodavatel + ' ' + z.produkt); return q.every(function (w) { return n.indexOf(w) >= 0; }); }).slice().reverse().slice(0, 300);
     $('changes').innerHTML = L.length ? L.map(function (z) {
       var b = z.typ === 'změna ceny' ? 'změna' : z.typ === 'nový ceník' ? 'cenik' : z.typ, det = z.cenik ? '<div class="det"><a href="' + esc(z.cenik) + '" target="_blank" rel="noopener">Otevřít nový ceník (PDF)</a></div>' : '';
       if (z.detail) det = '<div class="det">' + z.detail.slice(0, 6).map(function (x) {
@@ -283,13 +328,16 @@
   document.querySelectorAll('[data-kom]').forEach(function (b) { b.addEventListener('click', function () { setKom(b.dataset.kom); }); });
   document.querySelectorAll('[data-view]').forEach(function (b) { b.addEventListener('click', function () {
     S.view = b.dataset.view; document.querySelectorAll('[data-view]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
-    $('vT').hidden = S.view !== 't'; $('vZ').hidden = S.view !== 'z';
+    $('vT').hidden = S.view !== 't'; $('vZ').hidden = S.view !== 'z'; $('vM').hidden = S.view !== 'm';
+    document.querySelector('[aria-label="Komodita"]').hidden = S.view === 'm'; document.querySelector('[aria-label="DPH"]').hidden = S.view === 'm';
+    if (S.view === 'm') renderM();
   }); });
   $('dist').addEventListener('change', function () { ls.s('dist-' + S.kom, $('dist').value); render(); });
   $('tar').addEventListener('change', function () { ls.s('tar-' + S.kom, $('tar').value); render(); });
   $('q').addEventListener('input', render);
   $('fx').addEventListener('change', render);
   $('zk').addEventListener('change', render);
+  $('dy').addEventListener('change', render);
   function setDph(v) { S.dph = v; ls.s('dph', v ? '1' : '0'); document.querySelectorAll('[data-dph]').forEach(function (b) { b.setAttribute('aria-pressed', String((b.dataset.dph === '1') === v)); }); if (D) render(); }
   document.querySelectorAll('[data-dph]').forEach(function (b) { b.addEventListener('click', function () { setDph(b.dataset.dph === '1'); }); });
   setDph(S.dph);

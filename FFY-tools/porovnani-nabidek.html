@@ -150,6 +150,7 @@
   .pdf:hover { opacity:1; background:rgba(69,231,163,.15); }
   .pdf svg { width:13px; height:13px; }
   .tagz { display:inline-block; font-size:11px; font-weight:800; padding:1px 6px; border-radius:4px; background:#F8E8C9; color:#5B3F0B; margin-left:6px; vertical-align:1px; white-space:nowrap; }
+  .tagz.dyn { background:#D0DFF0; color:#214571; }
   .card.ffy .tagz { background:#5B3F0B; color:#F8E8C9; }
   .plist .row { grid-template-columns:minmax(0,1fr) auto auto auto; }
   .dphnote { font-weight:700; }
@@ -444,7 +445,8 @@
   function key(p) { return p.id || (p.dodavatel + '|' + p.produkt); }
   function label(p) { var n = 0; list().forEach(function (x) { if (x.dodavatel === p.dodavatel && x.produkt === p.produkt) n++; }); return p.produkt + (n > 1 ? ' (' + fixTxt(p.fixace_mes) + ')' : ''); }
   function cenik(p) { return p && p.dokumenty && p.dokumenty.cenik; }
-  function zakTag(p) { var z = (p && p.zakaznici || '').toLowerCase(); if (!z || /nov/.test(z)) return ''; return '<span class="tagz">' + (/retenč/.test(z) ? 'retenční' : 'jen stávající') + '</span>'; }
+  function dynTag(p) { return p && p.dynamicky ? '<span class="tagz dyn" title="Cena podle spotového trhu. ERÚ ji odhaduje z průměru spotu za 12 měsíců + přirážka obchodníka.">spot, odhad</span>' : ''; }
+  function zakTag(p) { var z = (p && p.zakaznici || '').toLowerCase(); if (!z || /nov/.test(z)) return dynTag(p); return dynTag(p) + '<span class="tagz">' + (/retenč/.test(z) ? 'retenční' : 'jen stávající') + '</span>'; }
   function proNove(p) { var z = (p.zakaznici || '').toLowerCase(); return !z || /nov/.test(z); }
   var PDF_ICO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>';
   function pdfLink(p) { var u = cenik(p); return u ? '<a class="pdf" href="' + esc(u) + '" target="_blank" rel="noopener">' + PDF_ICO + 'Ceník PDF</a>' : ''; }
@@ -577,7 +579,7 @@
   });
   $('clearK').addEventListener('click', function () { S.picked[S.kom] = []; save(); render(); });
   $('cheap').addEventListener('click', function () {
-    available().filter(function (p) { return !FFY_RE.test(p.dodavatel) && proNove(p); })
+    available().filter(function (p) { return !FFY_RE.test(p.dodavatel) && proNove(p) && !p.dynamicky; })
       .map(function (p) { return { k:key(p), t:calc({ c:priceOf(p) }).total }; })
       .sort(function (a, b) { return a.t - b.t; }).slice(0, 3).forEach(function (x) { addPick(x.k); });
     render();
@@ -664,7 +666,7 @@
       if (o === base) diff = '<span class="diff base">Nabídka FFY</span>';
       else if (base) { var dd = r.cena - base.r.cena; diff = '<span class="diff ' + (dd >= 0 ? 'up' : 'down') + '">' + (dd >= 0 ? 'FFY levnější o ' : 'FFY dražší o ') + kc(Math.abs(dd)) + '</span>'; }
       return '<article class="card' + (o.ffy ? ' ffy' : '') + '"><div class="who">' + esc(o.who) + '</div><div class="prod">' + esc(o.name) + '</div>' +
-        (o.fix ? '<div class="fx">' + esc(o.fix) + (o.p ? zakTag(o.p) : '') + '</div>' : '') + (o.p ? pdfLink(o.p) : '') +
+        ((o.fix || (o.p && o.p.dynamicky)) ? '<div class="fx">' + esc(o.fix) + (o.p ? zakTag(o.p) : '') + '</div>' : '') + (o.p ? pdfLink(o.p) : '') +
         '<div class="tot">' + kc(r.cena) + '<small>/rok ' + sd + '</small></div><div class="mo">' + kc(r.cena / 12) + ' měsíčně · ' + nf0.format(r.cena / Math.max(r.mwh, 0.001)) + ' Kč/MWh</div>' +
         '<div class="stackbar" role="img" aria-label="Obchodní část ' + kc(r.obchod * 1.21) + ', regulovaná ' + kc(r.regul * 1.21) + ', daň ' + kc(r.dan * 1.21) + ' (vše s DPH)"><i class="o" style="width:' + w(r.obchod * 1.21) + '"></i><i class="r" style="width:' + w(r.regul * 1.21) + '"></i><i class="t" style="width:' + w(r.dan * 1.21) + '"></i></div>' +
         diff + '</article>';

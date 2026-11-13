@@ -1,0 +1,106 @@
+{
+  "popis": "Dodavatelé pro domácnosti, kteří nemají produkty ve srovnávači ERÚ. Skript stahni_ceniky.py každý den otevře 'stranka', vybere odkazy na soubory (PDF, ZIP, XLSX), jejichž adresa nebo text odpovídá 'filtr' a neodpovídá 'vynechat' (regulární výrazy, bez ohledu na velikost písmen), a uloží je do ceniky-eru.json → mimo_eru. Seznam se upravuje ručně.",
+  "aktualizovano": "2026-11-13",
+  "dodavatele": [
+    {
+      "dodavatel": "RIGHT POWER, a.s.",
+      "web": "https://www.rightpower.cz/",
+      "stranka": "https://www.rightpower.cz/ke-stazeni/",
+      "komodity": [
+        "elektřina",
+        "plyn"
+      ],
+      "filtr": "cenik.*extra",
+      "vynechat": "-20(1\\d|2[0-5])\\.pdf"
+    },
+    {
+      "dodavatel": "Utylis Energie s.r.o.",
+      "web": "https://www.utylis.cz/",
+      "stranka": "https://www.utylis.cz/ceniky/",
+      "komodity": [
+        "elektřina",
+        "plyn"
+      ],
+      "filtr": "cenik",
+      "vynechat": "podnikatel|doplnk"
+    },
+    {
+      "dodavatel": "WATTe cz a.s.",
+      "web": "https://www.watte.cz/",
+      "stranka": "https://www.watte.cz/dokumenty/",
+      "komodity": [
+        "elektřina",
+        "plyn"
+      ],
+      "filtr": "cenik",
+      "vynechat": "company|-20(1\\d|2[0-5])-12-31",
+      "pozn": "Ceníky jsou ve ZIP archivech."
+    },
+    {
+      "dodavatel": "L.D.Energy, s.r.o.",
+      "web": "https://ldenergy.cz/",
+      "stranka": "https://ldenergy.cz/domacnosti",
+      "komodity": [
+        "elektřina"
+      ],
+      "filtr": "cenik.*domacnost",
+      "vynechat": "20(1\\d|2[0-4])|od-01-01-2025-zakaznici"
+    },
+    {
+      "dodavatel": "EnerSpot a.s.",
+      "web": "https://enerspot.cz/",
+      "stranka": "https://enerspot.cz/tarify-a-ceny/cenik-tarifu/",
+      "komodity": [
+        "elektřina"
+      ],
+      "filtr": "cenik",
+      "vynechat": "",
+      "pozn": "Ceník je přímo na webové stránce, ne v PDF."
+    },
+    {
+      "dodavatel": "Strong energy s.r.o.",
+      "web": "https://www.strongenergy.site/",
+      "stranka": "https://www.strongenergy.site/important-documents.html",
+      "komodity": [
+        "plyn"
+      ],
+      "filtr": "cenik",
+      "vynechat": ""
+    },
+    {
+      "dodavatel": "Your energy, s.r.o.",
+      "web": "https://www.yourenergy.cz/",
+      "stranka": "https://www.yourenergy.cz/dokumenty-ke-stazeni/",
+      "komodity": [
+        "elektřina"
+      ],
+      "filtr": "cenik",
+      "vynechat": "",
+      "pozn": "Na webu je jen ceník z roku 2024."
+    },
+    {
+      "dodavatel": "Clever Energies s.r.o.",
+      "web": "https://cleverenergies.cz/",
+      "stranka": "https://cleverenergies.cz/ke-stazeni/",
+      "komodity": [
+        "elektřina",
+        "plyn"
+      ],
+      "filtr": "cenik|ceník",
+      "vynechat": "rozš|rozs|služeb|sluzeb",
+      "pozn": "Ceník produktů na webu není, jen ceník doplňkových služeb."
+    },
+    {
+      "dodavatel": "Zet Energy a.s.",
+      "web": "https://www.zetenergy.cz/",
+      "stranka": "https://www.zetenergy.cz/ke-stazeni.html",
+      "komodity": [
+        "elektřina"
+      ],
+      "filtr": "cenik",
+      "vynechat": "",
+      "pozn": "Ceník produktů na webu není."
+    }
+  ],
+  "vynechano": "Dodavatelé z přehledu OTE, kteří domácnostem nenabízejí nebo dodávají jen ve své lokální soustavě: ČEZ ESCO, Powertica, Bonett (firmy), EEIKA Šafránek, ENIC, ENSTRA, Harfa Energo, Správa železnic, Technologie hl. m. Prahy, letiště, teplárny, Slovenské elektrárne ČR, MET ČR, Precheza, Orlen Unipetrol, eVoltio (výkup z FVE) a další. Neověřeno: TAURON Czech Energy, AGF Energy, AVIS komodity, Avia Energo, Smart Energies Expert, RENTEL POWER, Solar Global Energy, CEFIL, Transfer Energy, Virtual energy, Best New Energy, Energie z Vysočiny."
+}
