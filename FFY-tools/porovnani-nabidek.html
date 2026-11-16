@@ -361,7 +361,7 @@
     $('rok').innerHTML = roky.map(function (y) { return '<option value="' + y + '"' + (y === pref ? ' selected' : '') + '>' + y + (REG[y].platnost_od ? ' (od ' + fmtD(REG[y].platnost_od) + ')' : '') + '</option>'; }).join('');
     var d = new Date(CEN.stazeno);
     $('srcLine').textContent = 'Ceníky ze srovnávače ERÚ, staženo ' + (isNaN(d) ? '?' : d.toLocaleString('cs-CZ', { day:'numeric', month:'numeric', year:'numeric', hour:'2-digit', minute:'2-digit' })) + '. ' +
-      CEN.elektrina.length + ' produktů elektřiny, ' + CEN.plyn.length + ' produktů plynu. ERÚ uvádí ceny bez DPH; u výsledku přepnete zobrazení s DPH nebo bez.';
+      CEN.elektrina.filter(function (p) { return (p.segment || 'domácnost') === 'domácnost'; }).length + ' produktů elektřiny a ' + CEN.plyn.filter(function (p) { return (p.segment || 'domácnost') === 'domácnost'; }).length + ' produktů plynu pro domácnosti. ERÚ uvádí ceny bez DPH; u výsledku přepnete zobrazení s DPH nebo bez.';
     restore(); setKom(S.kom, true); $('app').hidden = false;
   });
   function fail(t) { $('srcLine').textContent = ''; $('dataErr').textContent = t; $('dataErr').hidden = false; }
@@ -441,7 +441,8 @@
   }
 
   /* ---------- produkty ---------- */
-  function list() { return S.kom === 'el' ? CEN.elektrina : CEN.plyn; }
+  // jen produkty pro domácnosti (firemní sazby C a regulované ceny pro ně kalkulačka zatím nemá)
+  function list() { return (S.kom === 'el' ? CEN.elektrina : CEN.plyn).filter(function (p) { return (p.segment || 'domácnost') === 'domácnost'; }); }
   function key(p) { return p.id || (p.dodavatel + '|' + p.produkt); }
   function label(p) { var n = 0; list().forEach(function (x) { if (x.dodavatel === p.dodavatel && x.produkt === p.produkt) n++; }); return p.produkt + (n > 1 ? ' (' + fixTxt(p.fixace_mes) + ')' : ''); }
   function cenik(p) { return p && p.dokumenty && p.dokumenty.cenik; }

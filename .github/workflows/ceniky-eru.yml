@@ -8,7 +8,7 @@ on:
 jobs:
   stahnout:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     permissions:
       contents: write
     steps:
@@ -17,15 +17,19 @@ jobs:
         env:
           FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
+      - name: Knihovna pro čtení PDF
+        continue-on-error: true       # bez ní skript poběží dál, jen nepřečte platnost z PDF
+        run: python3 -m pip install --quiet --user --break-system-packages pypdf || python3 -m pip install --quiet --user pypdf
+
       - name: Stáhnout ceníky
-        timeout-minutes: 15
+        timeout-minutes: 25
         run: python3 .github/scripts/stahni_ceniky.py --slozka FFY-tools/data
 
       - name: Commit
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add FFY-tools/data/ceniky-eru.json FFY-tools/data/ceniky-zmeny.json
+          git add FFY-tools/data/ceniky-eru.json FFY-tools/data/ceniky-zmeny.json FFY-tools/data/ceniky-verze.json
           git diff --staged --quiet && exit 0
           git commit -m "auto: ceníky dodavatelů z ERÚ $(date +%Y-%m-%d)"
           git pull --rebase origin main

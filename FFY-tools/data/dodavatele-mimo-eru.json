@@ -1,6 +1,6 @@
 {
-  "popis": "Dodavatelé pro domácnosti, kteří nemají produkty ve srovnávači ERÚ. Skript stahni_ceniky.py každý den otevře 'stranka', vybere odkazy na soubory (PDF, ZIP, XLSX), jejichž adresa nebo text odpovídá 'filtr' a neodpovídá 'vynechat' (regulární výrazy, bez ohledu na velikost písmen), a uloží je do ceniky-eru.json → mimo_eru. Seznam se upravuje ručně.",
-  "aktualizovano": "2026-11-13",
+  "popis": "Dodavatelé pro domácnosti a firmy, kteří nemají produkty ve srovnávači ERÚ. Skript stahni_ceniky.py každý den otevře 'stranka', vybere odkazy na soubory (PDF, ZIP, XLSX), jejichž adresa nebo text odpovídá 'filtr' a neodpovídá 'vynechat' (regulární výrazy, bez ohledu na velikost písmen). S 'archiv': true jsou aktuální jen soubory s nejnovějším rokem v názvu, starší jdou do archivu. Ceníky, které ze stránky zmizí, zůstávají v archivu. U každého souboru se z názvu odhadne, jestli je pro domácnosti, nebo firmy. Seznam se upravuje ručně.",
+  "aktualizovano": "2026-11-16",
   "dodavatele": [
     {
       "dodavatel": "RIGHT POWER, a.s.",
@@ -11,7 +11,8 @@
         "plyn"
       ],
       "filtr": "cenik.*extra",
-      "vynechat": "-20(1\\d|2[0-5])\\.pdf"
+      "vynechat": "",
+      "archiv": true
     },
     {
       "dodavatel": "Utylis Energie s.r.o.",
@@ -22,7 +23,8 @@
         "plyn"
       ],
       "filtr": "cenik",
-      "vynechat": "podnikatel|doplnk"
+      "vynechat": "doplnk",
+      "archiv": true
     },
     {
       "dodavatel": "WATTe cz a.s.",
@@ -33,8 +35,9 @@
         "plyn"
       ],
       "filtr": "cenik",
-      "vynechat": "company|-20(1\\d|2[0-5])-12-31",
-      "pozn": "Ceníky jsou ve ZIP archivech."
+      "vynechat": "",
+      "pozn": "Ceníky jsou ve ZIP archivech.",
+      "archiv": true
     },
     {
       "dodavatel": "L.D.Energy, s.r.o.",
@@ -44,7 +47,8 @@
         "elektřina"
       ],
       "filtr": "cenik.*domacnost",
-      "vynechat": "20(1\\d|2[0-4])|od-01-01-2025-zakaznici"
+      "vynechat": "",
+      "archiv": true
     },
     {
       "dodavatel": "EnerSpot a.s.",
@@ -76,7 +80,8 @@
       ],
       "filtr": "cenik",
       "vynechat": "",
-      "pozn": "Na webu je jen ceník z roku 2024."
+      "pozn": "Na webu je jen ceník z roku 2024.",
+      "archiv": true
     },
     {
       "dodavatel": "Clever Energies s.r.o.",
@@ -86,9 +91,10 @@
         "elektřina",
         "plyn"
       ],
-      "filtr": "cenik|ceník",
+      "filtr": "cen",
       "vynechat": "rozš|rozs|služeb|sluzeb",
-      "pozn": "Ceník produktů na webu není, jen ceník doplňkových služeb."
+      "pozn": "Na webu je i archiv ceníků od roku 2016.",
+      "archiv": true
     },
     {
       "dodavatel": "Zet Energy a.s.",
